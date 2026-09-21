@@ -1,0 +1,105 @@
+{
+  "queries": {
+    "drink": "What is the preferred drink of unit-b03646cbf4?",
+    "city": "What is the home city of unit-121330aded?",
+    "composition": "Give the preferred drink of unit-b03646cbf4, then the home city of unit-121330aded. Separate with a semicolon."
+  },
+  "arms": [
+    [
+      "drink_single",
+      "drink",
+      [
+        0
+      ],
+      "native",
+      "oolong"
+    ],
+    [
+      "city_single",
+      "city",
+      [
+        1
+      ],
+      "native",
+      "Lima"
+    ],
+    [
+      "drink_shared",
+      "drink",
+      [
+        0,
+        1
+      ],
+      "native",
+      "oolong"
+    ],
+    [
+      "city_shared",
+      "city",
+      [
+        0,
+        1
+      ],
+      "native",
+      "Lima"
+    ],
+    [
+      "composition_none",
+      "composition",
+      [],
+      "none",
+      "oolong; Lima"
+    ],
+    [
+      "composition_text",
+      "composition",
+      [],
+      "text",
+      "oolong; Lima"
+    ],
+    [
+      "composition_native",
+      "composition",
+      [
+        0,
+        1
+      ],
+      "native",
+      "oolong; Lima"
+    ]
+  ],
+  "singleton_training_examples": [
+    {
+      "memory_ids": [
+        100001
+      ],
+      "answer": "oolong",
+      "category": "preference",
+      "id": "train-1-0",
+      "query": "What is the preferred drink of unit-b03646cbf4?"
+    },
+    {
+      "memory_ids": [
+        100002
+      ],
+      "answer": "Lima",
+      "category": "entity_property",
+      "id": "train-2-0",
+      "query": "What is the home city of unit-121330aded?"
+    }
+  ],
+  "composition_template_training_example": {
+    "memory_ids": [
+      100000,
+      100001
+    ],
+    "answer": "violet; oolong",
+    "category": "composition",
+    "id": "train-compose-0",
+    "query": "Give the beacon color of unit-e470f703d0, then the preferred drink of unit-b03646cbf4. Separate with a semicolon."
+  },
+  "composition_pair_seen_in_training": false,
+  "rule": "Require singleton and shared-bank direct-answer checks plus a passing text-composition control before attributing failure to composition.",
+  "adaptation": "none",
+  "native_path": "unchanged original learned attention"
+}

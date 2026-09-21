@@ -1,0 +1,258 @@
+{
+  "runtime": "rust-libtorch",
+  "id": "rust-1789935257815316695-81",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhich TCP port is registered for IANA service msr-plugin-port? Reply with the port number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    22365,
+    25804,
+    2548,
+    369,
+    9393,
+    364,
+    353,
+    37492,
+    2393,
+    9537,
+    81,
+    22890,
+    40084,
+    30,
+    17308,
+    440,
+    279,
+    2548,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    18,
+    24,
+    18,
+    16
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "fb07f7308e4e17944f9afe53457ade8122929877b922679e40d0b278baf7d19f",
+  "memory_encoding": "keyed",
+  "answer": "3931",
+  "finish_reason": "stop",
+  "elapsed_ms": 3092.4389699999997,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "Which TCP port is registered for IANA service msr-plugin-port? Reply with the port number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service msr-plugin-port has these registered transport/port assignments: TCP port 3931; UDP port 3931.",
+            "id": "iana.msr-plugin-port",
+            "key": "IANA service msr-plugin-port",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.msr-plugin-port",
+              "revision": "c5ee4dc3ca80830518d41095f6081af21cd7743a788e692ea092549198e59de8"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 42,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.msr-plugin-port",
+          "revision": "c5ee4dc3ca80830518d41095f6081af21cd7743a788e692ea092549198e59de8"
+        }
+      ],
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user Which TCP is for Reply with assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.030943728052079678
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            45
+          ],
+          "score": 0.02462155744433403
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            68
+          ],
+          "score": 0.0170685313642025
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            70
+          ],
+          "score": 0.021274801343679428
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            71
+          ],
+          "score": 0.01120132114738226
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            73
+          ],
+          "score": 0.02713014744222164
+        },
+        {
+          "text": "for",
+          "source": "sequence",
+          "positions": [
+            75
+          ],
+          "score": 0.011643502861261368
+        },
+        {
+          "text": "Reply",
+          "source": "sequence",
+          "positions": [
+            84
+          ],
+          "score": 0.02975410781800747
+        },
+        {
+          "text": "with",
+          "source": "sequence",
+          "positions": [
+            85
+          ],
+          "score": 0.011092783883213997
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            94
+          ],
+          "score": 0.025807790458202362
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            96
+          ],
+          "score": 0.030558552592992783
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            98
+          ],
+          "score": 0.06872715801000595
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 42,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.msr-plugin-port",
+          "revision": "c5ee4dc3ca80830518d41095f6081af21cd7743a788e692ea092549198e59de8"
+        }
+      ],
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 62
+}

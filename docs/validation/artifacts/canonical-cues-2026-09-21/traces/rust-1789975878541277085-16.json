@@ -1,0 +1,2552 @@
+{
+  "runtime": "rust-libtorch",
+  "id": "rust-1789975878541277085-16",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the NASA archive, what is the orbital period in days for planet TIC 356227008 b? Return the number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    20774,
+    17593,
+    11,
+    1092,
+    369,
+    279,
+    62409,
+    4031,
+    303,
+    2756,
+    364,
+    11247,
+    231101,
+    220,
+    18,
+    20,
+    21,
+    17,
+    17,
+    22,
+    15,
+    15,
+    23,
+    292,
+    30,
+    3301,
+    279,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    17,
+    13,
+    24,
+    21,
+    16,
+    19,
+    22,
+    19,
+    19,
+    23,
+    22,
+    15,
+    17
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "e53a54d1c6e76dec5f0a7ffa89ed6a979de2ac4ebef3d5ec356a2b75b93dd01d",
+  "memory_encoding": "content",
+  "memory_before_prompt": true,
+  "memory_position_offset": -124,
+  "answer": "2.96147448702",
+  "finish_reason": "stop",
+  "elapsed_ms": 11193.659855,
+  "memory_encoding_passes": 1,
+  "native_reads": 224,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the NASA archive, what is the orbital period in days for planet TIC 356227008 b? Return the number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "For planet TIC 356227008 b, the NASA Exoplanet Archive composite table lists: host star TIC 356227008; discovery year 2026; discovery method Transit; discovery facility Transiting Exoplanet Survey Satellite (TESS); orbital period 2.96147448702 days; reported planet radius 2.39024009 Earth radii; reported system distance 387.60900000 parsecs.",
+            "id": "nasa.TIC 356227008 b",
+            "key": "planet TIC 356227008 b",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "nasa.TIC 356227008 b",
+              "revision": "cc3e51a8cfc15219b18775be3740d1e4be34d3b6fd2a0e1171f2bdac06e258bb"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 124,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TIC 356227008 b",
+          "revision": "cc3e51a8cfc15219b18775be3740d1e4be34d3b6fd2a0e1171f2bdac06e258bb"
+        }
+      ],
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 356227008 Answer user what is in 356227008 Return assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.019390146248042583
+        },
+        {
+          "text": "356227008",
+          "source": "aimee",
+          "positions": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "score": 0.02163356330129318
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            127
+          ],
+          "score": 0.027694176882505417
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            150
+          ],
+          "score": 0.014047965407371521
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            158
+          ],
+          "score": 0.026605961844325066
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            159
+          ],
+          "score": 0.013686401769518852
+        },
+        {
+          "text": "in",
+          "source": "sequence",
+          "positions": [
+            163
+          ],
+          "score": 0.014195289462804794
+        },
+        {
+          "text": "356227008",
+          "source": "sequence",
+          "positions": [
+            169,
+            170,
+            171,
+            172,
+            173,
+            174,
+            175,
+            176,
+            177
+          ],
+          "score": 0.030951555585488677
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            180
+          ],
+          "score": 0.012941999360918999
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            188
+          ],
+          "score": 0.024443602189421654
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            190
+          ],
+          "score": 0.03322901576757431
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            192
+          ],
+          "score": 0.07188430428504944
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 124,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TIC 356227008 b",
+          "revision": "cc3e51a8cfc15219b18775be3740d1e4be34d3b6fd2a0e1171f2bdac06e258bb"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 356227008 2.96147448702 Answer user According 356227008 the assistant think think 2",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.01392217562533915
+        },
+        {
+          "text": "356227008",
+          "source": "aimee",
+          "positions": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "score": 0.030017389566637576
+        },
+        {
+          "text": "2.96147448702",
+          "source": "aimee",
+          "positions": [
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84
+          ],
+          "score": 0.017318331985734403
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            127
+          ],
+          "score": 0.040403734892606735
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            150
+          ],
+          "score": 0.015545539557933807
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.015640664845705032
+        },
+        {
+          "text": "356227008",
+          "source": "sequence",
+          "positions": [
+            169,
+            170,
+            171,
+            172,
+            173,
+            174,
+            175,
+            176,
+            177
+          ],
+          "score": 0.052605794626288116
+        },
+        {
+          "text": "the",
+          "source": "sequence",
+          "positions": [
+            181
+          ],
+          "score": 0.015049077570438385
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            188
+          ],
+          "score": 0.027637824416160583
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            190
+          ],
+          "score": 0.026484116911888123
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            192
+          ],
+          "score": 0.017012057825922966
+        },
+        {
+          "text": "2",
+          "source": "sequence",
+          "positions": [
+            194
+          ],
+          "score": 0.029798254370689392
+        }
+      ],
+      "step": 1,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 124,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TIC 356227008 b",
+          "revision": "cc3e51a8cfc15219b18775be3740d1e4be34d3b6fd2a0e1171f2bdac06e258bb"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 356227008 2.96147448702 Answer According what orbital period 356227008 assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.018988517113029957
+        },
+        {
+          "text": "356227008",
+          "source": "aimee",
+          "positions": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "score": 0.04605034785345197
+        },
+        {
+          "text": "2.96147448702",
+          "source": "aimee",
+          "positions": [
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84
+          ],
+          "score": 0.01739627541974187
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            127
+          ],
+          "score": 0.027786536142230034
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.01980314962565899
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            158
+          ],
+          "score": 0.013487391173839569
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.026784460991621017
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            162
+          ],
+          "score": 0.01327559631317854
+        },
+        {
+          "text": "356227008",
+          "source": "sequence",
+          "positions": [
+            169,
+            170,
+            171,
+            172,
+            173,
+            174,
+            175,
+            176,
+            177
+          ],
+          "score": 0.07225050893612206
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            188
+          ],
+          "score": 0.030408738180994987
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            190
+          ],
+          "score": 0.015626344829797745
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            192
+          ],
+          "score": 0.014021209441125393
+        }
+      ],
+      "step": 2,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 124,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TIC 356227008 b",
+          "revision": "cc3e51a8cfc15219b18775be3740d1e4be34d3b6fd2a0e1171f2bdac06e258bb"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "356227008 2.96147448702 2.39024009 Answer According orbital period 356227008 b Return think 2.9",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "356227008",
+          "source": "aimee",
+          "positions": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "score": 0.03793751681223512
+        },
+        {
+          "text": "2.96147448702",
+          "source": "aimee",
+          "positions": [
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84
+          ],
+          "score": 0.13305842933186796
+        },
+        {
+          "text": "2.39024009",
+          "source": "aimee",
+          "positions": [
+            91,
+            92,
+            93,
+            94,
+            95,
+            96,
+            97,
+            98,
+            99,
+            100
+          ],
+          "score": 0.014447679612203501
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            127
+          ],
+          "score": 0.020428040996193886
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.014710660092532635
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.020537877455353737
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            162
+          ],
+          "score": 0.013387147337198257
+        },
+        {
+          "text": "356227008",
+          "source": "sequence",
+          "positions": [
+            169,
+            170,
+            171,
+            172,
+            173,
+            174,
+            175,
+            176,
+            177
+          ],
+          "score": 0.08025387383531779
+        },
+        {
+          "text": "b",
+          "source": "sequence",
+          "positions": [
+            178
+          ],
+          "score": 0.015179893001914024
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            180
+          ],
+          "score": 0.01594904437661171
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            190
+          ],
+          "score": 0.013504700735211372
+        },
+        {
+          "text": "2.9",
+          "source": "sequence",
+          "positions": [
+            194,
+            195,
+            196
+          ],
+          "score": 0.1182751264423132
+        }
+      ],
+      "step": 3,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 124,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TIC 356227008 b",
+          "revision": "cc3e51a8cfc15219b18775be3740d1e4be34d3b6fd2a0e1171f2bdac06e258bb"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 356227008 2.96147448702 387.60900000 Answer orbital period 356227008 b Return number 2.96",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.012200902914628386
+        },
+        {
+          "text": "356227008",
+          "source": "aimee",
+          "positions": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "score": 0.03462349181063473
+        },
+        {
+          "text": "2.96147448702",
+          "source": "aimee",
+          "positions": [
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84
+          ],
+          "score": 0.09773119517194573
+        },
+        {
+          "text": "387.60900000",
+          "source": "aimee",
+          "positions": [
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119,
+            120
+          ],
+          "score": 0.011651999724563211
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            127
+          ],
+          "score": 0.012213589623570442
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.025428470224142075
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            162
+          ],
+          "score": 0.03026624582707882
+        },
+        {
+          "text": "356227008",
+          "source": "sequence",
+          "positions": [
+            169,
+            170,
+            171,
+            172,
+            173,
+            174,
+            175,
+            176,
+            177
+          ],
+          "score": 0.07678167405538261
+        },
+        {
+          "text": "b",
+          "source": "sequence",
+          "positions": [
+            178
+          ],
+          "score": 0.01427161693572998
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            180
+          ],
+          "score": 0.013749232515692711
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            182
+          ],
+          "score": 0.014802709221839905
+        },
+        {
+          "text": "2.96",
+          "source": "sequence",
+          "positions": [
+            194,
+            195,
+            196,
+            197
+          ],
+          "score": 0.20301835983991623
+        }
+      ],
+      "step": 4,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 124,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TIC 356227008 b",
+          "revision": "cc3e51a8cfc15219b18775be3740d1e4be34d3b6fd2a0e1171f2bdac06e258bb"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "356227008 Exoplanet 2.96147448702 387.60900000 NASA orbital period days planet 356227008 number 2.961",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "356227008",
+          "source": "aimee",
+          "positions": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "score": 0.03642472601495683
+        },
+        {
+          "text": "Exoplanet",
+          "source": "aimee",
+          "positions": [
+            22,
+            23,
+            24
+          ],
+          "score": 0.013266456313431263
+        },
+        {
+          "text": "2.96147448702",
+          "source": "aimee",
+          "positions": [
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84
+          ],
+          "score": 0.0514127726200968
+        },
+        {
+          "text": "387.60900000",
+          "source": "aimee",
+          "positions": [
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119,
+            120
+          ],
+          "score": 0.020786568988114595
+        },
+        {
+          "text": "NASA",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.01847711205482483
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.03498281165957451
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            162
+          ],
+          "score": 0.02558404952287674
+        },
+        {
+          "text": "days",
+          "source": "sequence",
+          "positions": [
+            164
+          ],
+          "score": 0.015906963497400284
+        },
+        {
+          "text": "planet",
+          "source": "sequence",
+          "positions": [
+            166
+          ],
+          "score": 0.0153492521494627
+        },
+        {
+          "text": "356227008",
+          "source": "sequence",
+          "positions": [
+            169,
+            170,
+            171,
+            172,
+            173,
+            174,
+            175,
+            176,
+            177
+          ],
+          "score": 0.08187850483227521
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            182
+          ],
+          "score": 0.014782486483454704
+        },
+        {
+          "text": "2.961",
+          "source": "sequence",
+          "positions": [
+            194,
+            195,
+            196,
+            197,
+            198
+          ],
+          "score": 0.23838973231613636
+        }
+      ],
+      "step": 5,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 124,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TIC 356227008 b",
+          "revision": "cc3e51a8cfc15219b18775be3740d1e4be34d3b6fd2a0e1171f2bdac06e258bb"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "356227008 2.96147448702 2.39024009 387.60900000 Answer NASA orbital period 356227008 b number 2.9614",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "356227008",
+          "source": "aimee",
+          "positions": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "score": 0.025609156989958137
+        },
+        {
+          "text": "2.96147448702",
+          "source": "aimee",
+          "positions": [
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84
+          ],
+          "score": 0.10904728944296949
+        },
+        {
+          "text": "2.39024009",
+          "source": "aimee",
+          "positions": [
+            91,
+            92,
+            93,
+            94,
+            95,
+            96,
+            97,
+            98,
+            99,
+            100
+          ],
+          "score": 0.011379226503777318
+        },
+        {
+          "text": "387.60900000",
+          "source": "aimee",
+          "positions": [
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119,
+            120
+          ],
+          "score": 0.015700355841545388
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            127
+          ],
+          "score": 0.013252953998744488
+        },
+        {
+          "text": "NASA",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.011201469227671623
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.02248815819621086
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            162
+          ],
+          "score": 0.02520543709397316
+        },
+        {
+          "text": "356227008",
+          "source": "sequence",
+          "positions": [
+            169,
+            170,
+            171,
+            172,
+            173,
+            174,
+            175,
+            176,
+            177
+          ],
+          "score": 0.06392772903200239
+        },
+        {
+          "text": "b",
+          "source": "sequence",
+          "positions": [
+            178
+          ],
+          "score": 0.013363293372094631
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            182
+          ],
+          "score": 0.016484003514051437
+        },
+        {
+          "text": "2.9614",
+          "source": "sequence",
+          "positions": [
+            194,
+            195,
+            196,
+            197,
+            198,
+            199
+          ],
+          "score": 0.292045172303915
+        }
+      ],
+      "step": 6,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 124,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TIC 356227008 b",
+          "revision": "cc3e51a8cfc15219b18775be3740d1e4be34d3b6fd2a0e1171f2bdac06e258bb"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 356227008 2.96147448702 387.60900000 orbital period days planet 356227008 number think 2.96147",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.014030802296474576
+        },
+        {
+          "text": "356227008",
+          "source": "aimee",
+          "positions": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "score": 0.02231734700035304
+        },
+        {
+          "text": "2.96147448702",
+          "source": "aimee",
+          "positions": [
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84
+          ],
+          "score": 0.0647522402141476
+        },
+        {
+          "text": "387.60900000",
+          "source": "aimee",
+          "positions": [
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119,
+            120
+          ],
+          "score": 0.010859508096473292
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.02039123699069023
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            162
+          ],
+          "score": 0.01947356015443802
+        },
+        {
+          "text": "days",
+          "source": "sequence",
+          "positions": [
+            164
+          ],
+          "score": 0.00954331737011671
+        },
+        {
+          "text": "planet",
+          "source": "sequence",
+          "positions": [
+            166
+          ],
+          "score": 0.01030523981899023
+        },
+        {
+          "text": "356227008",
+          "source": "sequence",
+          "positions": [
+            169,
+            170,
+            171,
+            172,
+            173,
+            174,
+            175,
+            176,
+            177
+          ],
+          "score": 0.053643833845853806
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            182
+          ],
+          "score": 0.013861116021871567
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            190
+          ],
+          "score": 0.011923669837415218
+        },
+        {
+          "text": "2.96147",
+          "source": "sequence",
+          "positions": [
+            194,
+            195,
+            196,
+            197,
+            198,
+            199,
+            200
+          ],
+          "score": 0.38882968947291374
+        }
+      ],
+      "step": 7,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 124,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TIC 356227008 b",
+          "revision": "cc3e51a8cfc15219b18775be3740d1e4be34d3b6fd2a0e1171f2bdac06e258bb"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "356227008 2.96147448702 Answer orbital period days 356227008 b number think think 2.961474",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "356227008",
+          "source": "aimee",
+          "positions": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "score": 0.02043140248861164
+        },
+        {
+          "text": "2.96147448702",
+          "source": "aimee",
+          "positions": [
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84
+          ],
+          "score": 0.10925415126257576
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            127
+          ],
+          "score": 0.013694459572434425
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.024281352758407593
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            162
+          ],
+          "score": 0.016740422695875168
+        },
+        {
+          "text": "days",
+          "source": "sequence",
+          "positions": [
+            164
+          ],
+          "score": 0.010600509122014046
+        },
+        {
+          "text": "356227008",
+          "source": "sequence",
+          "positions": [
+            169,
+            170,
+            171,
+            172,
+            173,
+            174,
+            175,
+            176,
+            177
+          ],
+          "score": 0.048035678220912814
+        },
+        {
+          "text": "b",
+          "source": "sequence",
+          "positions": [
+            178
+          ],
+          "score": 0.012200111523270607
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            182
+          ],
+          "score": 0.011853869073092937
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            190
+          ],
+          "score": 0.016366133466362953
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            192
+          ],
+          "score": 0.01031720545142889
+        },
+        {
+          "text": "2.961474",
+          "source": "sequence",
+          "positions": [
+            194,
+            195,
+            196,
+            197,
+            198,
+            199,
+            200,
+            201
+          ],
+          "score": 0.35953751765191555
+        }
+      ],
+      "step": 8,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 124,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TIC 356227008 b",
+          "revision": "cc3e51a8cfc15219b18775be3740d1e4be34d3b6fd2a0e1171f2bdac06e258bb"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "356227008 2.96147448702 387.60900000 Answer orbital period days 356227008 b number think 2.9614744",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "356227008",
+          "source": "aimee",
+          "positions": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "score": 0.0172394271066878
+        },
+        {
+          "text": "2.96147448702",
+          "source": "aimee",
+          "positions": [
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84
+          ],
+          "score": 0.10114658379461616
+        },
+        {
+          "text": "387.60900000",
+          "source": "aimee",
+          "positions": [
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119,
+            120
+          ],
+          "score": 0.009923692428856157
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            127
+          ],
+          "score": 0.013116547837853432
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.026693662628531456
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            162
+          ],
+          "score": 0.017550718039274216
+        },
+        {
+          "text": "days",
+          "source": "sequence",
+          "positions": [
+            164
+          ],
+          "score": 0.0097711943089962
+        },
+        {
+          "text": "356227008",
+          "source": "sequence",
+          "positions": [
+            169,
+            170,
+            171,
+            172,
+            173,
+            174,
+            175,
+            176,
+            177
+          ],
+          "score": 0.038447145256213844
+        },
+        {
+          "text": "b",
+          "source": "sequence",
+          "positions": [
+            178
+          ],
+          "score": 0.00953482836484909
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            182
+          ],
+          "score": 0.016503872349858284
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            190
+          ],
+          "score": 0.01521755289286375
+        },
+        {
+          "text": "2.9614744",
+          "source": "sequence",
+          "positions": [
+            194,
+            195,
+            196,
+            197,
+            198,
+            199,
+            200,
+            201,
+            202
+          ],
+          "score": 0.3791439477354288
+        }
+      ],
+      "step": 9,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 124,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TIC 356227008 b",
+          "revision": "cc3e51a8cfc15219b18775be3740d1e4be34d3b6fd2a0e1171f2bdac06e258bb"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "356227008 2.96147448702 387.60900000 orbital period 356227008 b number assistant think think 2.96147448",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "356227008",
+          "source": "aimee",
+          "positions": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "score": 0.017671141249593347
+        },
+        {
+          "text": "2.96147448702",
+          "source": "aimee",
+          "positions": [
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84
+          ],
+          "score": 0.05846530913549941
+        },
+        {
+          "text": "387.60900000",
+          "source": "aimee",
+          "positions": [
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119,
+            120
+          ],
+          "score": 0.010975833181873895
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.02328856848180294
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            162
+          ],
+          "score": 0.016195204108953476
+        },
+        {
+          "text": "356227008",
+          "source": "sequence",
+          "positions": [
+            169,
+            170,
+            171,
+            172,
+            173,
+            174,
+            175,
+            176,
+            177
+          ],
+          "score": 0.03449615207500756
+        },
+        {
+          "text": "b",
+          "source": "sequence",
+          "positions": [
+            178
+          ],
+          "score": 0.0120367631316185
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            182
+          ],
+          "score": 0.01755054108798504
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            188
+          ],
+          "score": 0.010787399485707283
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            190
+          ],
+          "score": 0.018539439886808395
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            192
+          ],
+          "score": 0.011659793555736542
+        },
+        {
+          "text": "2.96147448",
+          "source": "sequence",
+          "positions": [
+            194,
+            195,
+            196,
+            197,
+            198,
+            199,
+            200,
+            201,
+            202,
+            203
+          ],
+          "score": 0.41553026996552944
+        }
+      ],
+      "step": 10,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 124,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TIC 356227008 b",
+          "revision": "cc3e51a8cfc15219b18775be3740d1e4be34d3b6fd2a0e1171f2bdac06e258bb"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 356227008 2.96147448702 387.60900000 Answer orbital period 356227008 number think think 2.961474487",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.016717636724933982
+        },
+        {
+          "text": "356227008",
+          "source": "aimee",
+          "positions": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "score": 0.014228791813366115
+        },
+        {
+          "text": "2.96147448702",
+          "source": "aimee",
+          "positions": [
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84
+          ],
+          "score": 0.04053016258694697
+        },
+        {
+          "text": "387.60900000",
+          "source": "aimee",
+          "positions": [
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119,
+            120
+          ],
+          "score": 0.018489528098143637
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            127
+          ],
+          "score": 0.013844950124621391
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.020712723955512047
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            162
+          ],
+          "score": 0.019572600722312927
+        },
+        {
+          "text": "356227008",
+          "source": "sequence",
+          "positions": [
+            169,
+            170,
+            171,
+            172,
+            173,
+            174,
+            175,
+            176,
+            177
+          ],
+          "score": 0.029848191945347935
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            182
+          ],
+          "score": 0.02090294472873211
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            190
+          ],
+          "score": 0.020868590101599693
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            192
+          ],
+          "score": 0.012729107402265072
+        },
+        {
+          "text": "2.961474487",
+          "source": "sequence",
+          "positions": [
+            194,
+            195,
+            196,
+            197,
+            198,
+            199,
+            200,
+            201,
+            202,
+            203,
+            204
+          ],
+          "score": 0.37527524400502443
+        }
+      ],
+      "step": 11,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 124,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TIC 356227008 b",
+          "revision": "cc3e51a8cfc15219b18775be3740d1e4be34d3b6fd2a0e1171f2bdac06e258bb"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "356227008 2.96147448702 387.60900000 Answer orbital period days 356227008 number think think 2.9614744870",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "356227008",
+          "source": "aimee",
+          "positions": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "score": 0.0187953170388937
+        },
+        {
+          "text": "2.96147448702",
+          "source": "aimee",
+          "positions": [
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84
+          ],
+          "score": 0.09613524985616095
+        },
+        {
+          "text": "387.60900000",
+          "source": "aimee",
+          "positions": [
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119,
+            120
+          ],
+          "score": 0.015295296965632588
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            127
+          ],
+          "score": 0.01086282730102539
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.02083606645464897
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            162
+          ],
+          "score": 0.02263660542666912
+        },
+        {
+          "text": "days",
+          "source": "sequence",
+          "positions": [
+            164
+          ],
+          "score": 0.010388445109128952
+        },
+        {
+          "text": "356227008",
+          "source": "sequence",
+          "positions": [
+            169,
+            170,
+            171,
+            172,
+            173,
+            174,
+            175,
+            176,
+            177
+          ],
+          "score": 0.044687951914966106
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            182
+          ],
+          "score": 0.01956413872539997
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            190
+          ],
+          "score": 0.01374016609042883
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            192
+          ],
+          "score": 0.01197013258934021
+        },
+        {
+          "text": "2.9614744870",
+          "source": "sequence",
+          "positions": [
+            194,
+            195,
+            196,
+            197,
+            198,
+            199,
+            200,
+            201,
+            202,
+            203,
+            204,
+            205
+          ],
+          "score": 0.3700424898415804
+        }
+      ],
+      "step": 12,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 124,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TIC 356227008 b",
+          "revision": "cc3e51a8cfc15219b18775be3740d1e4be34d3b6fd2a0e1171f2bdac06e258bb"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "356227008 2.96147448702 days 387.60900000 NASA orbital period planet 356227008 number think 2.96147448702",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "356227008",
+          "source": "aimee",
+          "positions": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "score": 0.017053059389581904
+        },
+        {
+          "text": "2.96147448702",
+          "source": "aimee",
+          "positions": [
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84
+          ],
+          "score": 0.04220347230148036
+        },
+        {
+          "text": "days",
+          "source": "aimee",
+          "positions": [
+            85
+          ],
+          "score": 0.061204880475997925
+        },
+        {
+          "text": "387.60900000",
+          "source": "aimee",
+          "positions": [
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119,
+            120
+          ],
+          "score": 0.011205419228645042
+        },
+        {
+          "text": "NASA",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.012476243078708649
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.02558285742998123
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            162
+          ],
+          "score": 0.021349288523197174
+        },
+        {
+          "text": "planet",
+          "source": "sequence",
+          "positions": [
+            166
+          ],
+          "score": 0.010961121879518032
+        },
+        {
+          "text": "356227008",
+          "source": "sequence",
+          "positions": [
+            169,
+            170,
+            171,
+            172,
+            173,
+            174,
+            175,
+            176,
+            177
+          ],
+          "score": 0.043563521234318614
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            182
+          ],
+          "score": 0.016192752867937088
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            190
+          ],
+          "score": 0.013827359303832054
+        },
+        {
+          "text": "2.96147448702",
+          "source": "sequence",
+          "positions": [
+            194,
+            195,
+            196,
+            197,
+            198,
+            199,
+            200,
+            201,
+            202,
+            203,
+            204,
+            205,
+            206
+          ],
+          "score": 0.38939595967531204
+        }
+      ],
+      "step": 13,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 124,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TIC 356227008 b",
+          "revision": "cc3e51a8cfc15219b18775be3740d1e4be34d3b6fd2a0e1171f2bdac06e258bb"
+        }
+      ],
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 83
+}

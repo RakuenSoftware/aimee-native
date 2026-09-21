@@ -1,0 +1,821 @@
+{
+  "runtime": "rust-libtorch",
+  "id": "rust-1789975841583467541-9",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhich TCP port is registered for IANA service msr-plugin-port? Reply with the port number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    22365,
+    25804,
+    2548,
+    369,
+    9393,
+    364,
+    353,
+    37492,
+    2393,
+    9537,
+    81,
+    22890,
+    40084,
+    30,
+    17308,
+    440,
+    279,
+    2548,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    18,
+    24,
+    18,
+    16
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "e53a54d1c6e76dec5f0a7ffa89ed6a979de2ac4ebef3d5ec356a2b75b93dd01d",
+  "memory_encoding": "content",
+  "memory_before_prompt": true,
+  "memory_position_offset": -34,
+  "answer": "3931",
+  "finish_reason": "stop",
+  "elapsed_ms": 4310.1032620000005,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "Which TCP port is registered for IANA service msr-plugin-port? Reply with the port number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service msr-plugin-port has these registered transport/port assignments: TCP port 3931; UDP port 3931.",
+            "id": "iana.msr-plugin-port",
+            "key": "IANA service msr-plugin-port",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.msr-plugin-port",
+              "revision": "c5ee4dc3ca80830518d41095f6081af21cd7743a788e692ea092549198e59de8"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 34,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.msr-plugin-port",
+          "revision": "c5ee4dc3ca80830518d41095f6081af21cd7743a788e692ea092549198e59de8"
+        }
+      ],
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user Which TCP is for msr-plugin-port Reply assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.03199097979813814
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            37
+          ],
+          "score": 0.025015434250235558
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            60
+          ],
+          "score": 0.017430130392313004
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            62
+          ],
+          "score": 0.02162254974246025
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            63
+          ],
+          "score": 0.01174951158463955
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            65
+          ],
+          "score": 0.027112886309623718
+        },
+        {
+          "text": "for",
+          "source": "sequence",
+          "positions": [
+            67
+          ],
+          "score": 0.01166018657386303
+        },
+        {
+          "text": "msr-plugin-port",
+          "source": "sequence",
+          "positions": [
+            71,
+            72,
+            73,
+            74
+          ],
+          "score": 0.01165133249014616
+        },
+        {
+          "text": "Reply",
+          "source": "sequence",
+          "positions": [
+            76
+          ],
+          "score": 0.029983486980199814
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            86
+          ],
+          "score": 0.026157109066843987
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            88
+          ],
+          "score": 0.030917217954993248
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            90
+          ],
+          "score": 0.06955763697624207
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 34,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.msr-plugin-port",
+          "revision": "c5ee4dc3ca80830518d41095f6081af21cd7743a788e692ea092549198e59de8"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user Which TCP port is Reply assistant think think 3",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.019659580662846565
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            37
+          ],
+          "score": 0.04151484742760658
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            60
+          ],
+          "score": 0.017453335225582123
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            62
+          ],
+          "score": 0.045574694871902466
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            63
+          ],
+          "score": 0.02636760286986828
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            64
+          ],
+          "score": 0.01643873006105423
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            65
+          ],
+          "score": 0.016158409416675568
+        },
+        {
+          "text": "Reply",
+          "source": "sequence",
+          "positions": [
+            76
+          ],
+          "score": 0.01566295698285103
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            86
+          ],
+          "score": 0.03313154727220535
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            88
+          ],
+          "score": 0.04087047278881073
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            90
+          ],
+          "score": 0.02434879168868065
+        },
+        {
+          "text": "3",
+          "source": "sequence",
+          "positions": [
+            92
+          ],
+          "score": 0.04254470765590668
+        }
+      ],
+      "step": 1,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 34,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.msr-plugin-port",
+          "revision": "c5ee4dc3ca80830518d41095f6081af21cd7743a788e692ea092549198e59de8"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "msr-plugin-port 3931 Answer Which TCP port is IANA msr-plugin-port Reply number 39",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "msr-plugin-port",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10
+          ],
+          "score": 0.017642574151977897
+        },
+        {
+          "text": "3931",
+          "source": "aimee",
+          "positions": [
+            21,
+            22,
+            23,
+            24
+          ],
+          "score": 0.09188710222952068
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            37
+          ],
+          "score": 0.038235295563936234
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            62
+          ],
+          "score": 0.03077218309044838
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            63
+          ],
+          "score": 0.05974733829498291
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            64
+          ],
+          "score": 0.05708764120936394
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            65
+          ],
+          "score": 0.018069926649332047
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            68,
+            69
+          ],
+          "score": 0.02078854199498892
+        },
+        {
+          "text": "msr-plugin-port",
+          "source": "sequence",
+          "positions": [
+            71,
+            72,
+            73,
+            74
+          ],
+          "score": 0.027304885908961296
+        },
+        {
+          "text": "Reply",
+          "source": "sequence",
+          "positions": [
+            76
+          ],
+          "score": 0.018811680376529694
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            80
+          ],
+          "score": 0.01886066421866417
+        },
+        {
+          "text": "39",
+          "source": "sequence",
+          "positions": [
+            92,
+            93
+          ],
+          "score": 0.0890232902020216
+        }
+      ],
+      "step": 2,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 34,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.msr-plugin-port",
+          "revision": "c5ee4dc3ca80830518d41095f6081af21cd7743a788e692ea092549198e59de8"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "msr-plugin-port 3931 Answer Which TCP port IANA msr-plugin-port Reply number think 393",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "msr-plugin-port",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10
+          ],
+          "score": 0.023029758129268885
+        },
+        {
+          "text": "3931",
+          "source": "aimee",
+          "positions": [
+            21,
+            22,
+            23,
+            24
+          ],
+          "score": 0.06323942530434579
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            37
+          ],
+          "score": 0.025018151849508286
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            62
+          ],
+          "score": 0.030302133411169052
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            63
+          ],
+          "score": 0.06165456399321556
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            64
+          ],
+          "score": 0.06545940041542053
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            68,
+            69
+          ],
+          "score": 0.027603818103671074
+        },
+        {
+          "text": "msr-plugin-port",
+          "source": "sequence",
+          "positions": [
+            71,
+            72,
+            73,
+            74
+          ],
+          "score": 0.038604100700467825
+        },
+        {
+          "text": "Reply",
+          "source": "sequence",
+          "positions": [
+            76
+          ],
+          "score": 0.01718834787607193
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            80
+          ],
+          "score": 0.017309090122580528
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            88
+          ],
+          "score": 0.0226057730615139
+        },
+        {
+          "text": "393",
+          "source": "sequence",
+          "positions": [
+            92,
+            93,
+            94
+          ],
+          "score": 0.12989630550146103
+        }
+      ],
+      "step": 3,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 34,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.msr-plugin-port",
+          "revision": "c5ee4dc3ca80830518d41095f6081af21cd7743a788e692ea092549198e59de8"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative msr-plugin-port TCP 3931 Answer Which TCP port IANA msr-plugin-port number 3931",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.011928873835131526
+        },
+        {
+          "text": "msr-plugin-port",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10
+          ],
+          "score": 0.019079154822975397
+        },
+        {
+          "text": "TCP",
+          "source": "aimee",
+          "positions": [
+            18
+          ],
+          "score": 0.011812346987426281
+        },
+        {
+          "text": "3931",
+          "source": "aimee",
+          "positions": [
+            21,
+            22,
+            23,
+            24
+          ],
+          "score": 0.03668230870971456
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            37
+          ],
+          "score": 0.014171409420669079
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            62
+          ],
+          "score": 0.020256318151950836
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            63
+          ],
+          "score": 0.06731832027435303
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            64
+          ],
+          "score": 0.04615902900695801
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            68,
+            69
+          ],
+          "score": 0.027747400104999542
+        },
+        {
+          "text": "msr-plugin-port",
+          "source": "sequence",
+          "positions": [
+            71,
+            72,
+            73,
+            74
+          ],
+          "score": 0.03201199136674404
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            80
+          ],
+          "score": 0.015747781842947006
+        },
+        {
+          "text": "3931",
+          "source": "sequence",
+          "positions": [
+            92,
+            93,
+            94,
+            95
+          ],
+          "score": 0.2875356897711754
+        }
+      ],
+      "step": 4,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 34,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.msr-plugin-port",
+          "revision": "c5ee4dc3ca80830518d41095f6081af21cd7743a788e692ea092549198e59de8"
+        }
+      ],
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 62
+}

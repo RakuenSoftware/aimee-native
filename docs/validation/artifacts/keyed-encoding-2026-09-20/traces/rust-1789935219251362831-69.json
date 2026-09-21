@@ -1,0 +1,259 @@
+{
+  "runtime": "rust-libtorch",
+  "id": "rust-1789935219251362831-69",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhich TCP port is registered for IANA service ivecon-port? Reply with the port number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    22365,
+    25804,
+    2548,
+    369,
+    9393,
+    364,
+    353,
+    37492,
+    2393,
+    95172,
+    435,
+    40084,
+    30,
+    17308,
+    440,
+    279,
+    2548,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    18,
+    17,
+    20,
+    23
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "fb07f7308e4e17944f9afe53457ade8122929877b922679e40d0b278baf7d19f",
+  "memory_encoding": "keyed",
+  "answer": "3258",
+  "finish_reason": "stop",
+  "elapsed_ms": 3094.920676,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "Which TCP port is registered for IANA service ivecon-port? Reply with the port number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service ivecon-port has these registered transport/port assignments: TCP port 3258; UDP port 3258.",
+            "id": "iana.ivecon-port",
+            "key": "IANA service ivecon-port",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.ivecon-port",
+              "revision": "4d7d5611031f994d9380ba948f873076def624c5d1e0beedfcad1ae377f29442"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 40,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.ivecon-port",
+          "revision": "4d7d5611031f994d9380ba948f873076def624c5d1e0beedfcad1ae377f29442"
+        }
+      ],
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user Which TCP is for ivecon-port Reply assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.035407585091888905
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            43
+          ],
+          "score": 0.023568807169795036
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            66
+          ],
+          "score": 0.019129330292344093
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            68
+          ],
+          "score": 0.022912584245204926
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            69
+          ],
+          "score": 0.01218038983643055
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            71
+          ],
+          "score": 0.02926492691040039
+        },
+        {
+          "text": "for",
+          "source": "sequence",
+          "positions": [
+            73
+          ],
+          "score": 0.012799358926713467
+        },
+        {
+          "text": "ivecon-port",
+          "source": "sequence",
+          "positions": [
+            77,
+            78,
+            79
+          ],
+          "score": 0.012721658800728619
+        },
+        {
+          "text": "Reply",
+          "source": "sequence",
+          "positions": [
+            81
+          ],
+          "score": 0.03173556178808212
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            91
+          ],
+          "score": 0.027135811746120453
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            93
+          ],
+          "score": 0.03069976344704628
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            95
+          ],
+          "score": 0.06754343956708908
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 40,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.ivecon-port",
+          "revision": "4d7d5611031f994d9380ba948f873076def624c5d1e0beedfcad1ae377f29442"
+        }
+      ],
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 61
+}

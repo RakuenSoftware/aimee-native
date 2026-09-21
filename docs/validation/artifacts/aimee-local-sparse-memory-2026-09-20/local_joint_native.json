@@ -1,0 +1,62 @@
+{
+  "name": "local_joint_native",
+  "request": {
+    "messages": [
+      {
+        "role": "system",
+        "content": "Answer using the available memory. Return only the requested value or values. If unknown, return unknown."
+      },
+      {
+        "role": "user",
+        "content": "Give the preferred drink of unit-b03646cbf4, then the home city of unit-121330aded. Separate with a semicolon."
+      }
+    ],
+    "max_tokens": 48,
+    "temperature": 0,
+    "preload_memory": false
+  },
+  "http_status": 200,
+  "seconds": 3.361353416927159,
+  "response": {
+    "id": "50c79bb046dc48a2b79f509795e90dcb",
+    "object": "chat.completion",
+    "model": "qwen-aimee-direct",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "oolong;Lima"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 74,
+      "completion_tokens": 6,
+      "total_tokens": 80
+    },
+    "aimee": {
+      "requested": true,
+      "request": {
+        "origin": "qwen_attention_query",
+        "query_source": "projected_attention_query",
+        "query": "Authoritative drink unit-b03646cbf4 oolong unit-121330aded Lima drink unit-b03646cbf4 city unit-121330aded oolong Lima",
+        "limit": 4
+      },
+      "returned_memory_ids": [
+        "user-research:5",
+        "user-research:6"
+      ],
+      "native_reads": 96,
+      "recall_calls": 6,
+      "preload_calls": 0,
+      "native_recall_calls": 6,
+      "bank_memory_ids": [
+        "user-research:5",
+        "user-research:6"
+      ],
+      "memory_encoding_tokens": 40
+    }
+  }
+}

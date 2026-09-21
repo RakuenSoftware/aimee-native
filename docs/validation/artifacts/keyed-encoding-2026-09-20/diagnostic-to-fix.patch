@@ -1,0 +1,323 @@
+--- a/src/adapter.rs
++++ b/src/adapter.rs
+@@ -29,6 +29,34 @@
+     pub decode_recall: bool,
+     pub reuse: bool,
+ }
++impl State {
++    pub fn bank_position_offset(&self) -> i64 {
++        if self.before_prompt {
++            -(self.memory_ids.len() as i64)
++        } else {
++            self.position_shift
++        }
++    }
++    /// Memory is encoded independently at positions 0..M. At both attention
++    /// addressing and consumption it must occupy -M..-1, before the conversation.
++    /// Keep the cached bank unshifted: repeated reads and reuse must not rotate it
++    /// again, and a replacement bank must use its own length.
++    fn bank_for_read(&self, model: &Model, index: usize, device: Device) -> Result<Option<Bank>> {
++        let Some(bank) = self.banks.get(&index) else {
++            return Ok(None);
++        };
++        let count = self.memory_ids.len() as i64;
++        ensure!(
++            bank.keys.size()[2] == count && bank.values.size()[2] == count,
++            "native bank/token address length differs"
++        );
++        let offset = self.bank_position_offset();
++        Ok(Some(Bank {
++            keys: model.shift_memory_keys(&bank.keys.to_device(device), offset),
++            values: bank.values.shallow_clone(),
++        }))
++    }
++}
+ struct Cached {
+     key: String,
+     banks: HashMap<usize, Bank>,
+@@ -83,6 +111,71 @@
+         assert!(adapter.cache.is_empty());
+         assert!(adapter.generation.is_none());
+     }
++
++    #[test]
++    fn bank_positions_are_disjoint_by_default_and_do_not_drift_on_reuse() {
++        use tch::Kind;
++        let model = crate::model::position_tests::rotary_model();
++        let source = Source(VecDeque::from([Some("generation".into())]));
++        let mut adapter = Adapter::new(Box::new(source), 4, 1024, 4096);
++        let mut state = adapter.begin(true, true).unwrap();
++        assert!(
++            state.before_prompt,
++            "default must separate memory and prompt positions"
++        );
++        assert!(
++            state
++                .bank_for_read(&model, 0, Device::Cpu)
++                .unwrap()
++                .is_none()
++        );
++        for count in [5, 17, 1] {
++            state.memory_ids = vec![0; count];
++            let keys = (Tensor::arange(count as i64 * 16, (Kind::Float, Device::Cpu)).reshape([
++                1,
++                2,
++                count as i64,
++                8,
++            ]) * 0.11)
++                .sin();
++            let values = &keys * 0.5;
++            state.banks.insert(
++                0,
++                Bank {
++                    keys: keys.shallow_clone(),
++                    values: values.shallow_clone(),
++                },
++            );
++            let expected = model.shift_memory_keys(&keys, -(count as i64));
++            for step in [0, 1, 16, 8192] {
++                state.step = step;
++                state.sequence.resize(step + 1, 0);
++                let read = state
++                    .bank_for_read(&model, 0, Device::Cpu)
++                    .unwrap()
++                    .unwrap();
++                assert!(read.keys.equal(&expected));
++                assert!(read.values.equal(&values));
++                assert!(
++                    state.banks[&0].keys.equal(&keys),
++                    "cached keys were mutated"
++                );
++            }
++            // The historical overlapping-coordinate control is opt-in only.
++            state.before_prompt = false;
++            assert!(
++                state
++                    .bank_for_read(&model, 0, Device::Cpu)
++                    .unwrap()
++                    .unwrap()
++                    .keys
++                    .equal(&keys)
++            );
++            state.before_prompt = true;
++        }
++        state.memory_ids.push(0);
++        assert!(state.bank_for_read(&model, 0, Device::Cpu).is_err());
++    }
+ }
+ pub struct Adapter {
+     pub source: Box<dyn MemorySource>,
+@@ -124,7 +217,7 @@
+         Ok(State {
+             diagnostic_steps: 0,
+             position_shift: 0,
+-            before_prompt: false,
++            before_prompt: true,
+             attention_trace: vec![],
+             encoding_format: "content".into(),
+             binding,
+@@ -257,9 +350,8 @@
+                         model.config.num_attention_heads / model.config.num_key_value_heads;
+                     let scale = (model.config.head_dim as f64).powf(-0.5);
+                     let mut sources = vec![("sequence", s.sequence.as_slice())];
+-                    let score = if let Some(bank) = s.banks.get(&index) {
+-                        let offset = if s.before_prompt { -(s.memory_ids.len() as i64) } else { s.position_shift };
+-                        let mk = model.shift_memory_keys(&bank.keys.to_device(k.device()), offset);
++                    let score = if let Some(bank) = s.bank_for_read(model, index, k.device())? {
++                        let mk = bank.keys;
+                         let zeros = Tensor::zeros(
+                             [1, 1, mask.size()[2], mk.size()[2]],
+                             (mask.kind(), mask.device()),
+@@ -280,11 +372,10 @@
+                         self.recall(model, t, s, &query, "qwen_attention_query", spans)?;
+                     }
+                 }
+-                let offset = if s.before_prompt { -(s.memory_ids.len() as i64) } else { s.position_shift };
+-                let bank = s.banks.get(&index).map(|b| Bank {
+-                    keys: model.shift_memory_keys(&b.keys.to_device(k.device()), offset),
+-                    values: b.values.shallow_clone(),
+-                });
++                let offset = s.bank_position_offset();
++                // Recall above may have replaced the bank. Recompute placement
++                // from the current bank, using the same rule as native addressing.
++                let bank = s.bank_for_read(model, index, k.device())?;
+                 if s.step < s.diagnostic_steps {
+                     if let Some(b) = &bank {
+                         let groups = model.config.num_attention_heads / model.config.num_key_value_heads;
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -296,6 +296,12 @@
+ struct Message {
+     role: String,
+     content: String,
++}
++#[cfg(any(feature = "torch", test))]
++fn memory_before_prompt(input: &Value) -> bool {
++    // Explicit false is a diagnostic-only legacy control, checked by the server
++    // before execution. Normal requests always use disjoint native positions.
++    input["memory_before_prompt"].as_bool().unwrap_or(true)
+ }
+ // Exact text-only, no-tools, enable_thinking=false subset of this checkpoint's
+ // installed template. Memory never enters this formatter. Its hash is pinned.
+@@ -488,7 +494,7 @@
+                     .is_none_or(|v| v.as_i64().is_some_and(|n| (-8192..=8192).contains(&n))),
+                 "invalid rotary shift"
+             );
+-            flag("memory_before_prompt", false)?;
++            flag("memory_before_prompt", true)?;
+             if let Some(candidates) = input.get("diagnostic_candidates") {
+                 let candidates = candidates.as_array().context("candidate array required")?;
+                 ensure!(
+@@ -542,7 +548,7 @@
+             if let Some(s) = state.as_mut() {
+                 s.diagnostic_steps = input["memory_diagnostics"].as_u64().unwrap_or(0) as usize;
+                 s.position_shift = input["memory_position_shift"].as_i64().unwrap_or(0);
+-                s.before_prompt = input["memory_before_prompt"].as_bool().unwrap_or(false);
++                s.before_prompt = memory_before_prompt(&input);
+                 s.encoding_format = input
+                     .get("memory_encoding")
+                     .and_then(Value::as_str)
+@@ -608,7 +614,7 @@
+                 next = vec![token];
+             }
+             let answer = tokenizer.decode(&generated, true)?;
+-            let trace = json!({"runtime":"rust-libtorch","id":id,"logit_trace":logit_trace,"attention_trace":state.as_ref().map(|s|&s.attention_trace),"generation_prompt":prompt_text,"prompt_token_ids":prompt,"generated_token_ids":generated,"memory_prompt_tokens":0,"publication":state.as_ref().map(|s|&s.binding),"memory_encoding":state.as_ref().map(|s|&s.encoding_format),"answer":answer,"finish_reason":finish_reason,"elapsed_ms":started.elapsed().as_secs_f64()*1000.,"memory_encoding_passes":state.as_ref().map(|s|s.encodings).unwrap_or(0),"native_reads":state.as_ref().map(|s|s.native_reads).unwrap_or(0),"bank_residence":"ram","recall_events":state.as_ref().map(|s|&s.events),"main_cache_length":cache.length});
++            let trace = json!({"runtime":"rust-libtorch","id":id,"logit_trace":logit_trace,"attention_trace":state.as_ref().map(|s|&s.attention_trace),"generation_prompt":prompt_text,"prompt_token_ids":prompt,"generated_token_ids":generated,"memory_prompt_tokens":0,"publication":state.as_ref().map(|s|&s.binding),"memory_encoding":state.as_ref().map(|s|&s.encoding_format),"memory_before_prompt":state.as_ref().map(|s|s.before_prompt),"memory_position_offset":state.as_ref().map(|s|s.bank_position_offset()),"answer":answer,"finish_reason":finish_reason,"elapsed_ms":started.elapsed().as_secs_f64()*1000.,"memory_encoding_passes":state.as_ref().map(|s|s.encodings).unwrap_or(0),"native_reads":state.as_ref().map(|s|s.native_reads).unwrap_or(0),"bank_residence":"ram","recall_events":state.as_ref().map(|s|&s.events),"main_cache_length":cache.length});
+             Ok((answer, trace))
+         })();
+         match result {
+@@ -688,6 +694,14 @@
+ mod tests {
+     use super::*;
+     #[test]
++    fn normal_request_uses_disjoint_native_memory_positions() {
++        assert!(memory_before_prompt(&json!({})));
++        assert!(memory_before_prompt(&json!({"aimee_memory": true})));
++        assert!(!memory_before_prompt(
++            &json!({"memory_before_prompt": false})
++        ));
++    }
++    #[test]
+     fn chat_memory_never_added() {
+         let m = vec![Message {
+             role: "user".into(),
+--- a/src/model.rs
++++ b/src/model.rs
+@@ -257,7 +257,7 @@
+             -1,
+         )
+     }
+-    /// Diagnostic rotary address translation. Values and source tokens stay
++    /// Rotary address translation for independently encoded memory. Source tokens stay
+     /// unchanged. Zero is an exact no-op; nonzero shifts incur BF16 rounding.
+     pub fn shift_memory_keys(&self, keys: &Tensor, offset: i64) -> Tensor {
+         if offset == 0 {
+@@ -616,10 +616,9 @@
+ }
+ 
+ #[cfg(test)]
+-mod position_tests {
++pub(crate) mod position_tests {
+     use super::*;
+-    #[test]
+-    fn bank_shift_is_rotary_translation_and_preserves_unrotated_dimensions() {
++    pub(crate) fn rotary_model() -> Model {
+         let config: Config = serde_json::from_value(serde_json::json!({
+             "hidden_size":16,"num_hidden_layers":1,"num_attention_heads":2,
+             "num_key_value_heads":2,"head_dim":8,"rms_norm_eps":0.000001,
+@@ -629,7 +628,7 @@
+             "rope_parameters":{"rope_theta":10000.0,"partial_rotary_factor":0.5}
+         }))
+         .unwrap();
+-        let model = Model {
++        Model {
+             config,
+             weights: HashMap::new(),
+             scales: HashMap::new(),
+@@ -637,7 +636,11 @@
+             embedding: Device::Cpu,
+             head: Device::Cpu,
+             kind: Kind::Float,
+-        };
++        }
++    }
++    #[test]
++    fn bank_shift_is_rotary_translation_and_preserves_unrotated_dimensions() {
++        let model = rotary_model();
+         let x = Tensor::arange(80, (Kind::Float, Device::Cpu)).reshape([1, 2, 5, 8]) / 80.;
+         let original = model.rope(&x, 10);
+         assert!(model.shift_memory_keys(&original, 0).equal(&original));
+@@ -646,4 +649,72 @@
+         assert!((&shifted - direct).abs().max().double_value(&[]) < 1e-6);
+         assert!(shifted.narrow(-1, 4, 4).equal(&original.narrow(-1, 4, 4)));
+     }
+-}
++
++    #[test]
++    fn memory_before_prompt_matches_disjoint_virtual_prefix_attention() {
++        let model = rotary_model();
++        // Independent memory and a prefill/decode query must have the same
++        // relative distances as one disjoint virtual sequence. Check grouped
++        // heads, multiple bank lengths, prefill and later decode positions.
++        for memory_len in [1, 5, 17] {
++            let raw_memory = (Tensor::arange(2 * memory_len * 8, (Kind::Float, Device::Cpu))
++                .reshape([1, 2, memory_len, 8])
++                * 0.13)
++                .sin();
++            let memory = model.rope(&raw_memory, 0);
++            let shifted = model.shift_memory_keys(&memory, -memory_len);
++            for start in [0, 3, 31, 128] {
++                for count in [1, 4] {
++                    let raw_q = (Tensor::arange(4 * count * 8, (Kind::Float, Device::Cpu))
++                        .reshape([1, 4, count, 8])
++                        * 0.17)
++                        .cos();
++                    let raw_k =
++                        (Tensor::arange(2 * (start + count) * 8, (Kind::Float, Device::Cpu))
++                            .reshape([1, 2, start + count, 8])
++                            * 0.19)
++                            .sin();
++                    let values = (Tensor::arange(
++                        2 * (memory_len + start + count) * 8,
++                        (Kind::Float, Device::Cpu),
++                    )
++                    .reshape([1, 2, memory_len + start + count, 8])
++                        * 0.23)
++                        .cos();
++                    let causal = Tensor::ones([count, start + count], (Kind::Bool, Device::Cpu))
++                        .triu(start + 1);
++                    let main_mask =
++                        Tensor::zeros([1, 1, count, start + count], (Kind::Float, Device::Cpu))
++                            .masked_fill(&causal, f64::NEG_INFINITY);
++                    let mask = Tensor::cat(
++                        &[
++                            Tensor::zeros([1, 1, count, memory_len], (Kind::Float, Device::Cpu)),
++                            main_mask,
++                        ],
++                        -1,
++                    );
++                    let actual = attention(
++                        &model.rope(&raw_q, start),
++                        &Tensor::cat(&[&shifted, &model.rope(&raw_k, 0)], -2),
++                        &values,
++                        &mask,
++                        2,
++                        8f64.powf(-0.5),
++                    );
++                    let expected = attention(
++                        &model.rope(&raw_q, memory_len + start),
++                        &Tensor::cat(&[&memory, &model.rope(&raw_k, memory_len)], -2),
++                        &values,
++                        &mask,
++                        2,
++                        8f64.powf(-0.5),
++                    );
++                    assert!(
++                        (&actual - expected).abs().max().double_value(&[]) < 2e-6,
++                        "memory={memory_len}, start={start}, count={count}"
++                    );
++                }
++            }
++        }
++    }
++}

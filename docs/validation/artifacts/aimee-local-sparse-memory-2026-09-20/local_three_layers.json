@@ -1,0 +1,65 @@
+{
+  "name": "local_three_layers",
+  "request": {
+    "messages": [
+      {
+        "role": "system",
+        "content": "Answer using the available memory. Return only the requested value or values. If unknown, return unknown."
+      },
+      {
+        "role": "user",
+        "content": "Give the research material for fixture-b261df, then its research finish, then the preferred drink of unit-b03646cbf4. Separate with semicolons."
+      }
+    ],
+    "max_tokens": 48,
+    "temperature": 0
+  },
+  "http_status": 200,
+  "seconds": 4.814076530048624,
+  "response": {
+    "id": "be59fa011079470bbd000329682a15b8",
+    "object": "chat.completion",
+    "model": "qwen-aimee-direct",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "basalt;matte;oolong"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 76,
+      "completion_tokens": 9,
+      "total_tokens": 85
+    },
+    "aimee": {
+      "requested": true,
+      "request": {
+        "origin": "qwen_attention_query",
+        "query_source": "projected_attention_query",
+        "query": "Authoritative unit-b03646cbf4 oolong fixture-b261df matte unit-121330aded fixture-b261df drink unit-b03646cbf4 basalt matte oolong",
+        "limit": 4
+      },
+      "returned_memory_ids": [
+        "user-research:5",
+        "general-research:1",
+        "kb-research:1",
+        "user-research:6"
+      ],
+      "native_reads": 144,
+      "recall_calls": 10,
+      "preload_calls": 1,
+      "native_recall_calls": 9,
+      "bank_memory_ids": [
+        "user-research:5",
+        "general-research:1",
+        "kb-research:1",
+        "user-research:6"
+      ],
+      "memory_encoding_tokens": 69
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "command": [
+    "/opt/llama.cpp/build/bin/llama-server",
+    "-m",
+    "/opt/models/Qwen3.8-27B-Q8_0/Qwen3.8-27B-Q8_0.gguf",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "18092",
+    "-ngl",
+    "99",
+    "--tensor-split",
+    "1,1",
+    "-c",
+    "2048",
+    "--parallel",
+    "1",
+    "-t",
+    "8",
+    "--jinja",
+    "--flash-attn",
+    "on",
+    "--no-webui"
+  ],
+  "purpose": "GGUF text/no-memory sanity control only; not comparable to HF native training",
+  "fixture_sha256": "6577df63b3898ee4b942081586a1d6074bcc5add5d0a1fd34af0abc7318e3c35"
+}

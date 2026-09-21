@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "purpose": "Separate oracle consumption, adapter precision, and learning-rate stability after pilot-001 failure",
+  "base": "Same frozen Qwen3.8-27B per-row-int8 research checkpoint and pinned software as pilot-001",
+  "fixtures": "synthetic-100-v1",
+  "steps_each": 2100,
+  "seed": 4817,
+  "value_width": 2048,
+  "attention_width": 256,
+  "after_block": 1,
+  "bank_capacity": 16,
+  "bank_policy": "oracle",
+  "actual_bank_size": "1 for atomic questions, 2 for composition; shuffled independently of answer order",
+  "runs": [
+    {"name": "oracle-bf16-lr1e3", "adapter_dtype": "base", "lr": 0.001},
+    {"name": "oracle-fp32-lr1e3", "adapter_dtype": "float32", "lr": 0.001},
+    {"name": "oracle-fp32-lr1e4", "adapter_dtype": "float32", "lr": 0.0001}
+  ],
+  "comparison": [
+    "pilot-001 versus run 1 tests removal of distractors; score both with the versioned ordered-value metric",
+    "run 1 versus run 2 tests FP32 trainable parameters and AdamW moments while retaining BF16 base activations",
+    "run 2 versus run 3 tests a tenfold lower learning rate"
+  ],
+  "evaluation": "All 110 held-out questions and seven arms after each fixed final step; no held-out checkpoint selection",
+  "arms": ["none", "text", "native_disabled", "native", "native_empty", "native_distractors", "native_swapped"],
+  "scoring": "EOS required; ordered exact values ignoring whitespace at semicolon boundaries; also report legacy string accuracy",
+  "counterfactual": "Swap correct IDs for active same-category memories with different answers; score following the replacement values separately",
+  "controls": "Native prompts identical to no-memory, no base gradients, initial exact logit parity, empty/disabled generation parity",
+  "stop": "Stop study on any child process failure; no automatic retry or budget extension",
+  "limits": "Single seed and narrow synthetic vocabulary; not production throughput or new-memory writer generalization"
+}

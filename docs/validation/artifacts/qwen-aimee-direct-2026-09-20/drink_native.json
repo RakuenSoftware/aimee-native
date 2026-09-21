@@ -1,0 +1,51 @@
+{
+  "name": "drink_native",
+  "request": {
+    "messages": [
+      {
+        "role": "system",
+        "content": "Answer using the available memory. Return only the requested value or values. If unknown, return unknown."
+      },
+      {
+        "role": "user",
+        "content": "What is the preferred drink of unit-b03646cbf4?"
+      }
+    ],
+    "max_tokens": 32,
+    "temperature": 0,
+    "aimee_memory": true
+  },
+  "http_status": 200,
+  "seconds": 2.2002579469699413,
+  "response": {
+    "id": "873295565dc7434c9174df395ec07a2b",
+    "object": "chat.completion",
+    "model": "qwen-aimee-direct",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "oolong"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 54,
+      "completion_tokens": 3,
+      "total_tokens": 57
+    },
+    "aimee": {
+      "requested": true,
+      "returned_memory_ids": [
+        5,
+        7,
+        3,
+        4
+      ],
+      "native_reads": 48,
+      "memory_encoding_tokens": 82
+    }
+  }
+}

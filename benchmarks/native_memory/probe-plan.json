@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "purpose": "Bounded pretrained-27B runtime and gradient probe, not a memory-accuracy experiment",
+  "model_revision": "1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0",
+  "fixtures": "fixtures/synthetic-1000-v1",
+  "base_quantization": "int8_per_row_v1",
+  "activation_dtype": "bfloat16",
+  "value_width": 2048,
+  "attention_width": 256,
+  "after_block": 1,
+  "K": 16,
+  "optimizer_steps": 3,
+  "learning_rate": 0.001,
+  "seed": 4817,
+  "gradient_checkpointing": true,
+  "preconditions": [
+    "Two-device tiny-Qwen BF16 probe passes",
+    "Two-device tiny-Qwen frozen-int8 probe passes",
+    "Complete pinned HF checkpoint is available"
+  ],
+  "checks": [
+    "Zero-initialized native layer exactly preserves same-runtime base logits",
+    "Training loss and gradient norm remain finite",
+    "Base parameters receive no gradients",
+    "Adapter and latent-value checkpoint saves successfully"
+  ],
+  "not_established": [
+    "Held-out recall accuracy",
+    "95% of text baseline",
+    "Reliable semantic forgetting or supersession",
+    "Serving throughput gates"
+  ]
+}

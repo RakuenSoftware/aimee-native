@@ -1,0 +1,813 @@
+{
+  "runtime": "rust-libtorch",
+  "id": "rust-1789975815486977710-3",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhich TCP port is registered for IANA service u-dbap? Reply with the port number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    22365,
+    25804,
+    2548,
+    369,
+    9393,
+    364,
+    353,
+    37492,
+    2393,
+    560,
+    58362,
+    385,
+    30,
+    17308,
+    440,
+    279,
+    2548,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    18,
+    20,
+    23,
+    19
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "e53a54d1c6e76dec5f0a7ffa89ed6a979de2ac4ebef3d5ec356a2b75b93dd01d",
+  "memory_encoding": "content",
+  "memory_before_prompt": true,
+  "memory_position_offset": -33,
+  "answer": "3584",
+  "finish_reason": "stop",
+  "elapsed_ms": 3827.2699489999995,
+  "memory_encoding_passes": 0,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "Which TCP port is registered for IANA service u-dbap? Reply with the port number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service u-dbap has these registered transport/port assignments: TCP port 3584; UDP port 3584.",
+            "id": "iana.u-dbap",
+            "key": "IANA service u-dbap",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.u-dbap",
+              "revision": "7708ab582e8c71c1fe6899b08252c89c15d15b561e9112bad81ae493bc256d1d"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 33,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.u-dbap",
+          "revision": "7708ab582e8c71c1fe6899b08252c89c15d15b561e9112bad81ae493bc256d1d"
+        }
+      ],
+      "status": "bank_reused"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user Which TCP is for u-dbap Reply assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.031363693065941334
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            36
+          ],
+          "score": 0.02382509969174862
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            59
+          ],
+          "score": 0.018718942999839783
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            61
+          ],
+          "score": 0.02331567369401455
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            62
+          ],
+          "score": 0.013031257316470146
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            64
+          ],
+          "score": 0.02925753965973854
+        },
+        {
+          "text": "for",
+          "source": "sequence",
+          "positions": [
+            66
+          ],
+          "score": 0.012445158325135708
+        },
+        {
+          "text": "u-dbap",
+          "source": "sequence",
+          "positions": [
+            70,
+            71,
+            72
+          ],
+          "score": 0.015815116930752993
+        },
+        {
+          "text": "Reply",
+          "source": "sequence",
+          "positions": [
+            74
+          ],
+          "score": 0.03428000956773758
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            84
+          ],
+          "score": 0.02664591372013092
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            86
+          ],
+          "score": 0.030547503381967545
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            88
+          ],
+          "score": 0.06779737770557404
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 33,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.u-dbap",
+          "revision": "7708ab582e8c71c1fe6899b08252c89c15d15b561e9112bad81ae493bc256d1d"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user Which TCP port u-dbap Reply assistant think think 3",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.019419451244175434
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            36
+          ],
+          "score": 0.03917326778173447
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            59
+          ],
+          "score": 0.01638786494731903
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            61
+          ],
+          "score": 0.04499860852956772
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            62
+          ],
+          "score": 0.028343476355075836
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            63
+          ],
+          "score": 0.01805254817008972
+        },
+        {
+          "text": "u-dbap",
+          "source": "sequence",
+          "positions": [
+            70,
+            71,
+            72
+          ],
+          "score": 0.022638223599642515
+        },
+        {
+          "text": "Reply",
+          "source": "sequence",
+          "positions": [
+            74
+          ],
+          "score": 0.017537083476781845
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            84
+          ],
+          "score": 0.03262702003121376
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            86
+          ],
+          "score": 0.04038362205028534
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            88
+          ],
+          "score": 0.0232057087123394
+        },
+        {
+          "text": "3",
+          "source": "sequence",
+          "positions": [
+            90
+          ],
+          "score": 0.040502019226551056
+        }
+      ],
+      "step": 1,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 33,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.u-dbap",
+          "revision": "7708ab582e8c71c1fe6899b08252c89c15d15b561e9112bad81ae493bc256d1d"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "u-dbap 3584 3584 Answer Which TCP port is IANA u-dbap number 35",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "u-dbap",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9
+          ],
+          "score": 0.017454253509640694
+        },
+        {
+          "text": "3584",
+          "source": "aimee",
+          "positions": [
+            20,
+            21,
+            22,
+            23
+          ],
+          "score": 0.09044751385226846
+        },
+        {
+          "text": "3584",
+          "source": "aimee",
+          "positions": [
+            28,
+            29,
+            30,
+            31
+          ],
+          "score": 0.019653394352644682
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            36
+          ],
+          "score": 0.02874550223350525
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            61
+          ],
+          "score": 0.029825692996382713
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            62
+          ],
+          "score": 0.07106436789035797
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            63
+          ],
+          "score": 0.05686834082007408
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            64
+          ],
+          "score": 0.018589947372674942
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            67,
+            68
+          ],
+          "score": 0.024492760188877583
+        },
+        {
+          "text": "u-dbap",
+          "source": "sequence",
+          "positions": [
+            70,
+            71,
+            72
+          ],
+          "score": 0.033164653461426497
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.01696757972240448
+        },
+        {
+          "text": "35",
+          "source": "sequence",
+          "positions": [
+            90,
+            91
+          ],
+          "score": 0.07643970102071762
+        }
+      ],
+      "step": 2,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 33,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.u-dbap",
+          "revision": "7708ab582e8c71c1fe6899b08252c89c15d15b561e9112bad81ae493bc256d1d"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "3584 Answer Which TCP port IANA u-dbap Reply port number think 358",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "3584",
+          "source": "aimee",
+          "positions": [
+            20,
+            21,
+            22,
+            23
+          ],
+          "score": 0.08172273577656597
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            36
+          ],
+          "score": 0.022020308300852776
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            61
+          ],
+          "score": 0.01899716630578041
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            62
+          ],
+          "score": 0.07463189959526062
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            63
+          ],
+          "score": 0.06360313296318054
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            67,
+            68
+          ],
+          "score": 0.03201424330472946
+        },
+        {
+          "text": "u-dbap",
+          "source": "sequence",
+          "positions": [
+            70,
+            71,
+            72
+          ],
+          "score": 0.034492019563913345
+        },
+        {
+          "text": "Reply",
+          "source": "sequence",
+          "positions": [
+            74
+          ],
+          "score": 0.01747189089655876
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            77
+          ],
+          "score": 0.022284625098109245
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.020543763414025307
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            86
+          ],
+          "score": 0.026109039783477783
+        },
+        {
+          "text": "358",
+          "source": "sequence",
+          "positions": [
+            90,
+            91,
+            92
+          ],
+          "score": 0.13574425503611565
+        }
+      ],
+      "step": 3,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 33,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.u-dbap",
+          "revision": "7708ab582e8c71c1fe6899b08252c89c15d15b561e9112bad81ae493bc256d1d"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "3584 Answer Which TCP port for IANA u-dbap port number think 3584",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "3584",
+          "source": "aimee",
+          "positions": [
+            20,
+            21,
+            22,
+            23
+          ],
+          "score": 0.03536588838323951
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            36
+          ],
+          "score": 0.0189497247338295
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            61
+          ],
+          "score": 0.017961516976356506
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            62
+          ],
+          "score": 0.057918697595596313
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            63
+          ],
+          "score": 0.051300790160894394
+        },
+        {
+          "text": "for",
+          "source": "sequence",
+          "positions": [
+            66
+          ],
+          "score": 0.016241107136011124
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            67,
+            68
+          ],
+          "score": 0.020133893005549908
+        },
+        {
+          "text": "u-dbap",
+          "source": "sequence",
+          "positions": [
+            70,
+            71,
+            72
+          ],
+          "score": 0.03888113657012582
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            77
+          ],
+          "score": 0.018063221126794815
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.024489417672157288
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            86
+          ],
+          "score": 0.01582310162484646
+        },
+        {
+          "text": "3584",
+          "source": "sequence",
+          "positions": [
+            90,
+            91,
+            92,
+            93
+          ],
+          "score": 0.20215892419219017
+        }
+      ],
+      "step": 4,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 33,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.u-dbap",
+          "revision": "7708ab582e8c71c1fe6899b08252c89c15d15b561e9112bad81ae493bc256d1d"
+        }
+      ],
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 61
+}

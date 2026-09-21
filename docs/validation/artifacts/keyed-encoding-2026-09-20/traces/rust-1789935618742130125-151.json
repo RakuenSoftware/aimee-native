@@ -1,0 +1,305 @@
+{
+  "runtime": "rust-libtorch",
+  "id": "rust-1789935618742130125-151",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nGive the registered TCP ports for IANA service pxc-spvr-ft and IANA service origo-sync, in that order. Return two integers separated by a semicolon.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    33963,
+    279,
+    9393,
+    25804,
+    19708,
+    364,
+    353,
+    37492,
+    2393,
+    280,
+    7891,
+    21549,
+    18349,
+    90399,
+    321,
+    353,
+    37492,
+    2393,
+    2626,
+    78,
+    62837,
+    11,
+    303,
+    421,
+    1906,
+    13,
+    3301,
+    1330,
+    24959,
+    18101,
+    539,
+    264,
+    5067,
+    37238,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    19,
+    15,
+    15,
+    17,
+    26,
+    16,
+    16,
+    16,
+    15,
+    18
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "fb07f7308e4e17944f9afe53457ade8122929877b922679e40d0b278baf7d19f",
+  "memory_encoding": "content",
+  "answer": "4002;11103",
+  "finish_reason": "stop",
+  "elapsed_ms": 5850.178688999999,
+  "memory_encoding_passes": 1,
+  "native_reads": 176,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "Give the registered TCP ports for IANA service pxc-spvr-ft and IANA service origo-sync, in that order. Return two integers separated by a semicolon.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service pxc-spvr-ft has these registered transport/port assignments: TCP port 4002; UDP port 4002.",
+            "id": "iana.pxc-spvr-ft",
+            "key": "IANA service pxc-spvr-ft",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.pxc-spvr-ft",
+              "revision": "c489bfe5423324cfa522f5ab96005a27cc91746e0b0d1e8fc253b504ab0d9e23"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          },
+          {
+            "confidence": 1,
+            "content": "IANA service origo-sync has these registered transport/port assignments: TCP port 11103.",
+            "id": "iana.origo-sync",
+            "key": "IANA service origo-sync",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.origo-sync",
+              "revision": "6e36911ee6a4d491da17e4299d3a9391bd2e15bee55c727f77982c10443450f9"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 57,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.pxc-spvr-ft",
+          "revision": "c489bfe5423324cfa522f5ab96005a27cc91746e0b0d1e8fc253b504ab0d9e23"
+        },
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.origo-sync",
+          "revision": "6e36911ee6a4d491da17e4299d3a9391bd2e15bee55c727f77982c10443450f9"
+        }
+      ],
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user Give TCP for and Return integers assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.027758296579122543
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            60
+          ],
+          "score": 0.026006078347563744
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            83
+          ],
+          "score": 0.013270074501633644
+        },
+        {
+          "text": "Give",
+          "source": "sequence",
+          "positions": [
+            85
+          ],
+          "score": 0.012395396828651428
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            88
+          ],
+          "score": 0.010975467972457409
+        },
+        {
+          "text": "for",
+          "source": "sequence",
+          "positions": [
+            90
+          ],
+          "score": 0.019511442631483078
+        },
+        {
+          "text": "and",
+          "source": "sequence",
+          "positions": [
+            99
+          ],
+          "score": 0.015610458329319954
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            111
+          ],
+          "score": 0.012080169282853603
+        },
+        {
+          "text": "integers",
+          "source": "sequence",
+          "positions": [
+            113
+          ],
+          "score": 0.020260127261281013
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            123
+          ],
+          "score": 0.02416229248046875
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            125
+          ],
+          "score": 0.029231300577521324
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            127
+          ],
+          "score": 0.06483297795057297
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 57,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.pxc-spvr-ft",
+          "revision": "c489bfe5423324cfa522f5ab96005a27cc91746e0b0d1e8fc253b504ab0d9e23"
+        },
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.origo-sync",
+          "revision": "6e36911ee6a4d491da17e4299d3a9391bd2e15bee55c727f77982c10443450f9"
+        }
+      ],
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 82
+}

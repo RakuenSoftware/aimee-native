@@ -1,0 +1,833 @@
+{
+  "runtime": "rust-libtorch",
+  "id": "rust-1789975858869222592-13",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhich TCP port is registered for IANA service alta-ana-lm? Reply with the port number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    22365,
+    25804,
+    2548,
+    369,
+    9393,
+    364,
+    353,
+    37492,
+    2393,
+    43848,
+    12,
+    3253,
+    2759,
+    76,
+    30,
+    17308,
+    440,
+    279,
+    2548,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    16,
+    18,
+    19,
+    21
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "e53a54d1c6e76dec5f0a7ffa89ed6a979de2ac4ebef3d5ec356a2b75b93dd01d",
+  "memory_encoding": "content",
+  "memory_before_prompt": true,
+  "memory_position_offset": -35,
+  "answer": "1346",
+  "finish_reason": "stop",
+  "elapsed_ms": 4399.9982549999995,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "Which TCP port is registered for IANA service alta-ana-lm? Reply with the port number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service alta-ana-lm has these registered transport/port assignments: TCP port 1346; UDP port 1346.",
+            "id": "iana.alta-ana-lm",
+            "key": "IANA service alta-ana-lm",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.alta-ana-lm",
+              "revision": "c81ad5860c9f27be0b3493d63d4456becbac11ed6d53e86b5a5ea1b873060ac6"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 35,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.alta-ana-lm",
+          "revision": "c81ad5860c9f27be0b3493d63d4456becbac11ed6d53e86b5a5ea1b873060ac6"
+        }
+      ],
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user Which TCP is for alta-ana-lm Reply assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.030349727254360914
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            38
+          ],
+          "score": 0.02441180869936943
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            61
+          ],
+          "score": 0.017819127067923546
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            63
+          ],
+          "score": 0.021037697792053223
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            64
+          ],
+          "score": 0.0139647601172328
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            66
+          ],
+          "score": 0.02952805534005165
+        },
+        {
+          "text": "for",
+          "source": "sequence",
+          "positions": [
+            68
+          ],
+          "score": 0.012906011193990707
+        },
+        {
+          "text": "alta-ana-lm",
+          "source": "sequence",
+          "positions": [
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.016210217960178852
+        },
+        {
+          "text": "Reply",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.033489227294921875
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            88
+          ],
+          "score": 0.026656774803996086
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            90
+          ],
+          "score": 0.03133229538798332
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            92
+          ],
+          "score": 0.06776486337184906
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 35,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.alta-ana-lm",
+          "revision": "c81ad5860c9f27be0b3493d63d4456becbac11ed6d53e86b5a5ea1b873060ac6"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user Which TCP is alta-ana-lm Reply assistant think think 1",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02190517890267074
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            38
+          ],
+          "score": 0.03467491641640663
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            61
+          ],
+          "score": 0.022171875461935997
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            63
+          ],
+          "score": 0.04309704527258873
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            64
+          ],
+          "score": 0.023060698062181473
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            66
+          ],
+          "score": 0.022305507212877274
+        },
+        {
+          "text": "alta-ana-lm",
+          "source": "sequence",
+          "positions": [
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.017996834474615753
+        },
+        {
+          "text": "Reply",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.023803597316145897
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            88
+          ],
+          "score": 0.03327637165784836
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            90
+          ],
+          "score": 0.038254063576459885
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            92
+          ],
+          "score": 0.022760014981031418
+        },
+        {
+          "text": "1",
+          "source": "sequence",
+          "positions": [
+            94
+          ],
+          "score": 0.042894214391708374
+        }
+      ],
+      "step": 1,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 35,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.alta-ana-lm",
+          "revision": "c81ad5860c9f27be0b3493d63d4456becbac11ed6d53e86b5a5ea1b873060ac6"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative alta-ana-lm 1346 Answer Which TCP port IANA alta-ana-lm assistant think 13",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.018509881338104606
+        },
+        {
+          "text": "alta-ana-lm",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "score": 0.02154162200167775
+        },
+        {
+          "text": "1346",
+          "source": "aimee",
+          "positions": [
+            22,
+            23,
+            24,
+            25
+          ],
+          "score": 0.029226807411760092
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            38
+          ],
+          "score": 0.029878228902816772
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            63
+          ],
+          "score": 0.025455724447965622
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            64
+          ],
+          "score": 0.06595465540885925
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            65
+          ],
+          "score": 0.0399436429142952
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            69,
+            70
+          ],
+          "score": 0.02165181841701269
+        },
+        {
+          "text": "alta-ana-lm",
+          "source": "sequence",
+          "positions": [
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.02935152454301715
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            88
+          ],
+          "score": 0.031419750303030014
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            90
+          ],
+          "score": 0.024929961189627647
+        },
+        {
+          "text": "13",
+          "source": "sequence",
+          "positions": [
+            94,
+            95
+          ],
+          "score": 0.0767504833638668
+        }
+      ],
+      "step": 2,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 35,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.alta-ana-lm",
+          "revision": "c81ad5860c9f27be0b3493d63d4456becbac11ed6d53e86b5a5ea1b873060ac6"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "alta-ana-lm 1346 Answer Which TCP port IANA alta-ana-lm port number think 134",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "alta-ana-lm",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "score": 0.024588722735643387
+        },
+        {
+          "text": "1346",
+          "source": "aimee",
+          "positions": [
+            22,
+            23,
+            24,
+            25
+          ],
+          "score": 0.06801716086920351
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            38
+          ],
+          "score": 0.021097248420119286
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            63
+          ],
+          "score": 0.030019059777259827
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            64
+          ],
+          "score": 0.0982149988412857
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            65
+          ],
+          "score": 0.06346255540847778
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            69,
+            70
+          ],
+          "score": 0.037121184170246124
+        },
+        {
+          "text": "alta-ana-lm",
+          "source": "sequence",
+          "positions": [
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.039078432600945234
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            81
+          ],
+          "score": 0.02148774266242981
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            82
+          ],
+          "score": 0.02263719215989113
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            90
+          ],
+          "score": 0.02949765883386135
+        },
+        {
+          "text": "134",
+          "source": "sequence",
+          "positions": [
+            94,
+            95,
+            96
+          ],
+          "score": 0.10169688239693642
+        }
+      ],
+      "step": 3,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 35,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.alta-ana-lm",
+          "revision": "c81ad5860c9f27be0b3493d63d4456becbac11ed6d53e86b5a5ea1b873060ac6"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "alta-ana-lm 1346 Answer Which TCP port is IANA alta-ana-lm port number 1346",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "alta-ana-lm",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "score": 0.02078249305486679
+        },
+        {
+          "text": "1346",
+          "source": "aimee",
+          "positions": [
+            22,
+            23,
+            24,
+            25
+          ],
+          "score": 0.030614201328717172
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            38
+          ],
+          "score": 0.026935335248708725
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            63
+          ],
+          "score": 0.025661971420049667
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            64
+          ],
+          "score": 0.06673575937747955
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            65
+          ],
+          "score": 0.06288224458694458
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            66
+          ],
+          "score": 0.017314471304416656
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            69,
+            70
+          ],
+          "score": 0.021549263037741184
+        },
+        {
+          "text": "alta-ana-lm",
+          "source": "sequence",
+          "positions": [
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.027688283007591963
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            81
+          ],
+          "score": 0.016553480178117752
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            82
+          ],
+          "score": 0.020574280992150307
+        },
+        {
+          "text": "1346",
+          "source": "sequence",
+          "positions": [
+            94,
+            95,
+            96,
+            97
+          ],
+          "score": 0.1995517946779728
+        }
+      ],
+      "step": 4,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 35,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.alta-ana-lm",
+          "revision": "c81ad5860c9f27be0b3493d63d4456becbac11ed6d53e86b5a5ea1b873060ac6"
+        }
+      ],
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 63
+}

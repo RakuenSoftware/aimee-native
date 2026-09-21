@@ -1,0 +1,27 @@
+[
+  {
+    "attempt": "v1",
+    "placement": "CPU embeddings; CPU intermediate block",
+    "bf16_exit": 0,
+    "int8_exit": 0
+  },
+  {
+    "attempt": "v2",
+    "placement": "GPU embeddings/rotary; direct peer transfers",
+    "bf16_exit": 139,
+    "int8_exit": null
+  },
+  {
+    "attempt": "v3",
+    "placement": "GPU embeddings/rotary; HSA_ENABLE_SDMA=0",
+    "bf16_exit": 139,
+    "int8_exit": null,
+    "note": "Computation finished but process crashed at exit; JSON pass is not sufficient."
+  },
+  {
+    "attempt": "v4",
+    "placement": "CPU embeddings/rotary; host-staged peer transfers",
+    "bf16_exit": 0,
+    "int8_exit": 0
+  }
+]

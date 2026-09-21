@@ -1,0 +1,2467 @@
+{
+  "runtime": "rust-libtorch",
+  "id": "rust-1789975905610095573-19",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the NASA archive, what is the orbital period in days for planet TOI-938 b? Return the number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    20774,
+    17593,
+    11,
+    1092,
+    369,
+    279,
+    62409,
+    4031,
+    303,
+    2756,
+    364,
+    11247,
+    4981,
+    40,
+    12,
+    24,
+    18,
+    23,
+    292,
+    30,
+    3301,
+    279,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    23,
+    13,
+    23,
+    15,
+    22,
+    18,
+    18,
+    23,
+    23,
+    17,
+    17,
+    16,
+    16
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "e53a54d1c6e76dec5f0a7ffa89ed6a979de2ac4ebef3d5ec356a2b75b93dd01d",
+  "memory_encoding": "content",
+  "memory_before_prompt": true,
+  "memory_position_offset": -114,
+  "answer": "8.80733882211",
+  "finish_reason": "stop",
+  "elapsed_ms": 10912.487449,
+  "memory_encoding_passes": 1,
+  "native_reads": 224,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the NASA archive, what is the orbital period in days for planet TOI-938 b? Return the number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "For planet TOI-938 b, the NASA Exoplanet Archive composite table lists: host star TOI-938; discovery year 2026; discovery method Transit; discovery facility Transiting Exoplanet Survey Satellite (TESS); orbital period 8.80733882211 days; reported planet radius 4.82401567 Earth radii; reported system distance 215.03400000 parsecs.",
+            "id": "nasa.TOI-938 b",
+            "key": "planet TOI-938 b",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "nasa.TOI-938 b",
+              "revision": "26a5ce3b6a0f12d8ff1370ba092ae9d0e2116eaa4119c0bd4b96d2ad71cd05b3"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 114,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-938 b",
+          "revision": "26a5ce3b6a0f12d8ff1370ba092ae9d0e2116eaa4119c0bd4b96d2ad71cd05b3"
+        }
+      ],
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 215.03400000 parsecs Answer user what is in Return assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.0255246227607131
+        },
+        {
+          "text": "215.03400000",
+          "source": "aimee",
+          "positions": [
+            99,
+            100,
+            101,
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108,
+            109,
+            110
+          ],
+          "score": 0.014667275579995476
+        },
+        {
+          "text": "parsecs",
+          "source": "aimee",
+          "positions": [
+            111,
+            112
+          ],
+          "score": 0.013455110136419535
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            117
+          ],
+          "score": 0.023325230926275253
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            140
+          ],
+          "score": 0.01586451753973961
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            148
+          ],
+          "score": 0.0251578688621521
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            149
+          ],
+          "score": 0.01329810544848442
+        },
+        {
+          "text": "in",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.017066800966858864
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            165
+          ],
+          "score": 0.013700252398848534
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            173
+          ],
+          "score": 0.025759851559996605
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            175
+          ],
+          "score": 0.03366830572485924
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            177
+          ],
+          "score": 0.07398037612438202
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 114,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-938 b",
+          "revision": "26a5ce3b6a0f12d8ff1370ba092ae9d0e2116eaa4119c0bd4b96d2ad71cd05b3"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative TOI-938 8.80733882211 215.03400000 Answer According period TOI-938 assistant think think 8",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.018586902413517237
+        },
+        {
+          "text": "TOI-938",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "score": 0.018451933516189456
+        },
+        {
+          "text": "8.80733882211",
+          "source": "aimee",
+          "positions": [
+            62,
+            63,
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74
+          ],
+          "score": 0.0769626020337455
+        },
+        {
+          "text": "215.03400000",
+          "source": "aimee",
+          "positions": [
+            99,
+            100,
+            101,
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108,
+            109,
+            110
+          ],
+          "score": 0.01547697646310553
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            117
+          ],
+          "score": 0.034467022866010666
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            142
+          ],
+          "score": 0.020267963409423828
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.013648505322635174
+        },
+        {
+          "text": "TOI-938",
+          "source": "sequence",
+          "positions": [
+            157,
+            158,
+            159,
+            160,
+            161,
+            162
+          ],
+          "score": 0.02279833913780749
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            173
+          ],
+          "score": 0.026581093668937683
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            175
+          ],
+          "score": 0.022273238748311996
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            177
+          ],
+          "score": 0.01746360957622528
+        },
+        {
+          "text": "8",
+          "source": "sequence",
+          "positions": [
+            179
+          ],
+          "score": 0.031013693660497665
+        }
+      ],
+      "step": 1,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 114,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-938 b",
+          "revision": "26a5ce3b6a0f12d8ff1370ba092ae9d0e2116eaa4119c0bd4b96d2ad71cd05b3"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative TOI-938 table 8.80733882211 Answer According NASA orbital period TOI-938 assistant think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.022107874508947134
+        },
+        {
+          "text": "TOI-938",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "score": 0.02605526288971305
+        },
+        {
+          "text": "table",
+          "source": "aimee",
+          "positions": [
+            22
+          ],
+          "score": 0.015402416698634624
+        },
+        {
+          "text": "8.80733882211",
+          "source": "aimee",
+          "positions": [
+            62,
+            63,
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74
+          ],
+          "score": 0.026007786625996232
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            117
+          ],
+          "score": 0.03338978439569473
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            142
+          ],
+          "score": 0.01677076146006584
+        },
+        {
+          "text": "NASA",
+          "source": "sequence",
+          "positions": [
+            145
+          ],
+          "score": 0.016756992787122726
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            151
+          ],
+          "score": 0.03100685030221939
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.017292160540819168
+        },
+        {
+          "text": "TOI-938",
+          "source": "sequence",
+          "positions": [
+            157,
+            158,
+            159,
+            160,
+            161,
+            162
+          ],
+          "score": 0.021724319900386035
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            173
+          ],
+          "score": 0.030212093144655228
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            175
+          ],
+          "score": 0.015067502856254578
+        }
+      ],
+      "step": 2,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 114,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-938 b",
+          "revision": "26a5ce3b6a0f12d8ff1370ba092ae9d0e2116eaa4119c0bd4b96d2ad71cd05b3"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TOI-938 table star 8.80733882211 NASA orbital period days for TOI-938 number 8.8",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TOI-938",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "score": 0.025619767606258392
+        },
+        {
+          "text": "table",
+          "source": "aimee",
+          "positions": [
+            22
+          ],
+          "score": 0.015166564844548702
+        },
+        {
+          "text": "star",
+          "source": "aimee",
+          "positions": [
+            26
+          ],
+          "score": 0.014429708942770958
+        },
+        {
+          "text": "8.80733882211",
+          "source": "aimee",
+          "positions": [
+            62,
+            63,
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74
+          ],
+          "score": 0.1458562215557322
+        },
+        {
+          "text": "NASA",
+          "source": "sequence",
+          "positions": [
+            145
+          ],
+          "score": 0.02160884067416191
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            151
+          ],
+          "score": 0.02589382790029049
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.022795310243964195
+        },
+        {
+          "text": "days",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.020992256700992584
+        },
+        {
+          "text": "for",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.018121924251317978
+        },
+        {
+          "text": "TOI-938",
+          "source": "sequence",
+          "positions": [
+            157,
+            158,
+            159,
+            160,
+            161,
+            162
+          ],
+          "score": 0.030922862701117992
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            167
+          ],
+          "score": 0.019743651151657104
+        },
+        {
+          "text": "8.8",
+          "source": "sequence",
+          "positions": [
+            179,
+            180,
+            181
+          ],
+          "score": 0.12205877527594566
+        }
+      ],
+      "step": 3,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 114,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-938 b",
+          "revision": "26a5ce3b6a0f12d8ff1370ba092ae9d0e2116eaa4119c0bd4b96d2ad71cd05b3"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TOI-938 8.80733882211 NASA archive orbital period days planet TOI-938 b number 8.80",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "For planet TOI-938 b, the NASA Exoplanet Archive composite table lists: host star TOI-938; discovery year 2026; discovery method Transit; discovery facility Transiting Exoplanet Survey Satellite (TESS); orbital period 8.80733882211 days; reported planet radius 4.82401567 Earth radii; reported system distance 215.03400000 parsecs.",
+            "id": "nasa.TOI-938 b",
+            "key": "planet TOI-938 b",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "nasa.TOI-938 b",
+              "revision": "26a5ce3b6a0f12d8ff1370ba092ae9d0e2116eaa4119c0bd4b96d2ad71cd05b3"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TOI-938",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "score": 0.023020192049443722
+        },
+        {
+          "text": "8.80733882211",
+          "source": "aimee",
+          "positions": [
+            62,
+            63,
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74
+          ],
+          "score": 0.14143011497799307
+        },
+        {
+          "text": "NASA",
+          "source": "sequence",
+          "positions": [
+            145
+          ],
+          "score": 0.02444315329194069
+        },
+        {
+          "text": "archive",
+          "source": "sequence",
+          "positions": [
+            146
+          ],
+          "score": 0.012540064752101898
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            151
+          ],
+          "score": 0.024075079709291458
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.02917303517460823
+        },
+        {
+          "text": "days",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.020284971222281456
+        },
+        {
+          "text": "planet",
+          "source": "sequence",
+          "positions": [
+            156
+          ],
+          "score": 0.014488599263131618
+        },
+        {
+          "text": "TOI-938",
+          "source": "sequence",
+          "positions": [
+            157,
+            158,
+            159,
+            160,
+            161,
+            162
+          ],
+          "score": 0.03487877920269966
+        },
+        {
+          "text": "b",
+          "source": "sequence",
+          "positions": [
+            163
+          ],
+          "score": 0.018771635368466377
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            167
+          ],
+          "score": 0.015001581981778145
+        },
+        {
+          "text": "8.80",
+          "source": "sequence",
+          "positions": [
+            179,
+            180,
+            181,
+            182
+          ],
+          "score": 0.21293696761131287
+        }
+      ],
+      "step": 4,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 114,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-938 b",
+          "revision": "26a5ce3b6a0f12d8ff1370ba092ae9d0e2116eaa4119c0bd4b96d2ad71cd05b3"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TOI-938 star 8.80733882211 4.82401567 NASA archive orbital period planet TOI-938 number 8.807",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TOI-938",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "score": 0.018044404685497284
+        },
+        {
+          "text": "star",
+          "source": "aimee",
+          "positions": [
+            26
+          ],
+          "score": 0.010510638356208801
+        },
+        {
+          "text": "8.80733882211",
+          "source": "aimee",
+          "positions": [
+            62,
+            63,
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74
+          ],
+          "score": 0.10261892207199708
+        },
+        {
+          "text": "4.82401567",
+          "source": "aimee",
+          "positions": [
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90
+          ],
+          "score": 0.010599863133393228
+        },
+        {
+          "text": "NASA",
+          "source": "sequence",
+          "positions": [
+            145
+          ],
+          "score": 0.022892724722623825
+        },
+        {
+          "text": "archive",
+          "source": "sequence",
+          "positions": [
+            146
+          ],
+          "score": 0.010779362171888351
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            151
+          ],
+          "score": 0.029247697442770004
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.02373608574271202
+        },
+        {
+          "text": "planet",
+          "source": "sequence",
+          "positions": [
+            156
+          ],
+          "score": 0.01214527152478695
+        },
+        {
+          "text": "TOI-938",
+          "source": "sequence",
+          "positions": [
+            157,
+            158,
+            159,
+            160,
+            161,
+            162
+          ],
+          "score": 0.02724659605883062
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            167
+          ],
+          "score": 0.015614718198776245
+        },
+        {
+          "text": "8.807",
+          "source": "sequence",
+          "positions": [
+            179,
+            180,
+            181,
+            182,
+            183
+          ],
+          "score": 0.2972094491124153
+        }
+      ],
+      "step": 5,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 114,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-938 b",
+          "revision": "26a5ce3b6a0f12d8ff1370ba092ae9d0e2116eaa4119c0bd4b96d2ad71cd05b3"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TOI-938 8.80733882211 4.82401567 Answer NASA orbital period TOI-938 b number think 8.8073",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TOI-938",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "score": 0.019667330663651228
+        },
+        {
+          "text": "8.80733882211",
+          "source": "aimee",
+          "positions": [
+            62,
+            63,
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74
+          ],
+          "score": 0.09692922228714451
+        },
+        {
+          "text": "4.82401567",
+          "source": "aimee",
+          "positions": [
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90
+          ],
+          "score": 0.009308497057645582
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            117
+          ],
+          "score": 0.016478514298796654
+        },
+        {
+          "text": "NASA",
+          "source": "sequence",
+          "positions": [
+            145
+          ],
+          "score": 0.015969211235642433
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            151
+          ],
+          "score": 0.022541357204318047
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.02091054990887642
+        },
+        {
+          "text": "TOI-938",
+          "source": "sequence",
+          "positions": [
+            157,
+            158,
+            159,
+            160,
+            161,
+            162
+          ],
+          "score": 0.033754536882042885
+        },
+        {
+          "text": "b",
+          "source": "sequence",
+          "positions": [
+            163
+          ],
+          "score": 0.009035681374371052
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            167
+          ],
+          "score": 0.01865456998348236
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            175
+          ],
+          "score": 0.015248589217662811
+        },
+        {
+          "text": "8.8073",
+          "source": "sequence",
+          "positions": [
+            179,
+            180,
+            181,
+            182,
+            183,
+            184
+          ],
+          "score": 0.3404734954237938
+        }
+      ],
+      "step": 6,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 114,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-938 b",
+          "revision": "26a5ce3b6a0f12d8ff1370ba092ae9d0e2116eaa4119c0bd4b96d2ad71cd05b3"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TOI-938 8.80733882211 215.03400000 Answer NASA orbital period TOI-938 Return number think 8.80733",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TOI-938",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "score": 0.013671991997398436
+        },
+        {
+          "text": "8.80733882211",
+          "source": "aimee",
+          "positions": [
+            62,
+            63,
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74
+          ],
+          "score": 0.1179167804075405
+        },
+        {
+          "text": "215.03400000",
+          "source": "aimee",
+          "positions": [
+            99,
+            100,
+            101,
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108,
+            109,
+            110
+          ],
+          "score": 0.010712366056395695
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            117
+          ],
+          "score": 0.013091224245727062
+        },
+        {
+          "text": "NASA",
+          "source": "sequence",
+          "positions": [
+            145
+          ],
+          "score": 0.010875335894525051
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            151
+          ],
+          "score": 0.022403918206691742
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.02580958418548107
+        },
+        {
+          "text": "TOI-938",
+          "source": "sequence",
+          "positions": [
+            157,
+            158,
+            159,
+            160,
+            161,
+            162
+          ],
+          "score": 0.019009084440767765
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            165
+          ],
+          "score": 0.00936017744243145
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            167
+          ],
+          "score": 0.011710341088473797
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            175
+          ],
+          "score": 0.01911531761288643
+        },
+        {
+          "text": "8.80733",
+          "source": "sequence",
+          "positions": [
+            179,
+            180,
+            181,
+            182,
+            183,
+            184,
+            185
+          ],
+          "score": 0.38126166723668575
+        }
+      ],
+      "step": 7,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 114,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-938 b",
+          "revision": "26a5ce3b6a0f12d8ff1370ba092ae9d0e2116eaa4119c0bd4b96d2ad71cd05b3"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TOI-938 8.80733882211 215.03400000 parsecs NASA orbital period TOI-938 b number think 8.807338",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TOI-938",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "score": 0.012456221622414887
+        },
+        {
+          "text": "8.80733882211",
+          "source": "aimee",
+          "positions": [
+            62,
+            63,
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74
+          ],
+          "score": 0.06762747361790389
+        },
+        {
+          "text": "215.03400000",
+          "source": "aimee",
+          "positions": [
+            99,
+            100,
+            101,
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108,
+            109,
+            110
+          ],
+          "score": 0.012882938273833133
+        },
+        {
+          "text": "parsecs",
+          "source": "aimee",
+          "positions": [
+            111,
+            112
+          ],
+          "score": 0.012189554050564766
+        },
+        {
+          "text": "NASA",
+          "source": "sequence",
+          "positions": [
+            145
+          ],
+          "score": 0.01165399607270956
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            151
+          ],
+          "score": 0.025892911478877068
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.018820716068148613
+        },
+        {
+          "text": "TOI-938",
+          "source": "sequence",
+          "positions": [
+            157,
+            158,
+            159,
+            160,
+            161,
+            162
+          ],
+          "score": 0.01996500208042562
+        },
+        {
+          "text": "b",
+          "source": "sequence",
+          "positions": [
+            163
+          ],
+          "score": 0.011535020545125008
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            167
+          ],
+          "score": 0.014353676699101925
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            175
+          ],
+          "score": 0.01743529923260212
+        },
+        {
+          "text": "8.807338",
+          "source": "sequence",
+          "positions": [
+            179,
+            180,
+            181,
+            182,
+            183,
+            184,
+            185,
+            186
+          ],
+          "score": 0.41434296220541
+        }
+      ],
+      "step": 8,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 114,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-938 b",
+          "revision": "26a5ce3b6a0f12d8ff1370ba092ae9d0e2116eaa4119c0bd4b96d2ad71cd05b3"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TOI-938 8.80733882211 215.03400000 parsecs Answer orbital period TOI-938 number think think 8.8073388",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TOI-938",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "score": 0.010150567628443241
+        },
+        {
+          "text": "8.80733882211",
+          "source": "aimee",
+          "positions": [
+            62,
+            63,
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74
+          ],
+          "score": 0.08828086376888677
+        },
+        {
+          "text": "215.03400000",
+          "source": "aimee",
+          "positions": [
+            99,
+            100,
+            101,
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108,
+            109,
+            110
+          ],
+          "score": 0.010315407009329647
+        },
+        {
+          "text": "parsecs",
+          "source": "aimee",
+          "positions": [
+            111,
+            112
+          ],
+          "score": 0.00932360626757145
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            117
+          ],
+          "score": 0.010551849380135536
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            151
+          ],
+          "score": 0.021992497146129608
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.019341833889484406
+        },
+        {
+          "text": "TOI-938",
+          "source": "sequence",
+          "positions": [
+            157,
+            158,
+            159,
+            160,
+            161,
+            162
+          ],
+          "score": 0.015205538365989923
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            167
+          ],
+          "score": 0.019230907782912254
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            175
+          ],
+          "score": 0.02103964053094387
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            177
+          ],
+          "score": 0.015004048123955727
+        },
+        {
+          "text": "8.8073388",
+          "source": "sequence",
+          "positions": [
+            179,
+            180,
+            181,
+            182,
+            183,
+            184,
+            185,
+            186,
+            187
+          ],
+          "score": 0.4050563173368573
+        }
+      ],
+      "step": 9,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 114,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-938 b",
+          "revision": "26a5ce3b6a0f12d8ff1370ba092ae9d0e2116eaa4119c0bd4b96d2ad71cd05b3"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TOI-938 Exoplanet 8.80733882211 4.82401567 NASA orbital period TOI-938 number assistant think 8.80733882",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TOI-938",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "score": 0.01039323105942458
+        },
+        {
+          "text": "Exoplanet",
+          "source": "aimee",
+          "positions": [
+            17,
+            18,
+            19
+          ],
+          "score": 0.010104044573381543
+        },
+        {
+          "text": "8.80733882211",
+          "source": "aimee",
+          "positions": [
+            62,
+            63,
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74
+          ],
+          "score": 0.1193489448633045
+        },
+        {
+          "text": "4.82401567",
+          "source": "aimee",
+          "positions": [
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90
+          ],
+          "score": 0.01100047369254753
+        },
+        {
+          "text": "NASA",
+          "source": "sequence",
+          "positions": [
+            145
+          ],
+          "score": 0.01217491552233696
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            151
+          ],
+          "score": 0.023189101368188858
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.02208295278251171
+        },
+        {
+          "text": "TOI-938",
+          "source": "sequence",
+          "positions": [
+            157,
+            158,
+            159,
+            160,
+            161,
+            162
+          ],
+          "score": 0.017452077707275748
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            167
+          ],
+          "score": 0.021507730707526207
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            173
+          ],
+          "score": 0.010031476616859436
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            175
+          ],
+          "score": 0.017987918108701706
+        },
+        {
+          "text": "8.80733882",
+          "source": "sequence",
+          "positions": [
+            179,
+            180,
+            181,
+            182,
+            183,
+            184,
+            185,
+            186,
+            187,
+            188
+          ],
+          "score": 0.3723419960588217
+        }
+      ],
+      "step": 10,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 114,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-938 b",
+          "revision": "26a5ce3b6a0f12d8ff1370ba092ae9d0e2116eaa4119c0bd4b96d2ad71cd05b3"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TOI-938 8.80733882211 4.82401567 215.03400000 orbital period TOI-938 number assistant think think 8.807338822",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TOI-938",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "score": 0.010859519941732287
+        },
+        {
+          "text": "8.80733882211",
+          "source": "aimee",
+          "positions": [
+            62,
+            63,
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74
+          ],
+          "score": 0.13625770941143855
+        },
+        {
+          "text": "4.82401567",
+          "source": "aimee",
+          "positions": [
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90
+          ],
+          "score": 0.010315796622307971
+        },
+        {
+          "text": "215.03400000",
+          "source": "aimee",
+          "positions": [
+            99,
+            100,
+            101,
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108,
+            109,
+            110
+          ],
+          "score": 0.01542465013335459
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            151
+          ],
+          "score": 0.016997437924146652
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.022843383252620697
+        },
+        {
+          "text": "TOI-938",
+          "source": "sequence",
+          "positions": [
+            157,
+            158,
+            159,
+            160,
+            161,
+            162
+          ],
+          "score": 0.01627134846057743
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            167
+          ],
+          "score": 0.023208335041999817
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            173
+          ],
+          "score": 0.011938298121094704
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            175
+          ],
+          "score": 0.019419046118855476
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            177
+          ],
+          "score": 0.013082588091492653
+        },
+        {
+          "text": "8.807338822",
+          "source": "sequence",
+          "positions": [
+            179,
+            180,
+            181,
+            182,
+            183,
+            184,
+            185,
+            186,
+            187,
+            188,
+            189
+          ],
+          "score": 0.37984670139849186
+        }
+      ],
+      "step": 11,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 114,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-938 b",
+          "revision": "26a5ce3b6a0f12d8ff1370ba092ae9d0e2116eaa4119c0bd4b96d2ad71cd05b3"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TOI-938 8.80733882211 4.82401567 215.03400000 orbital period days TOI-938 number think think 8.8073388221",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TOI-938",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "score": 0.010989825939759612
+        },
+        {
+          "text": "8.80733882211",
+          "source": "aimee",
+          "positions": [
+            62,
+            63,
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74
+          ],
+          "score": 0.1268529268563725
+        },
+        {
+          "text": "4.82401567",
+          "source": "aimee",
+          "positions": [
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90
+          ],
+          "score": 0.015931091853417456
+        },
+        {
+          "text": "215.03400000",
+          "source": "aimee",
+          "positions": [
+            99,
+            100,
+            101,
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108,
+            109,
+            110
+          ],
+          "score": 0.014072772057261318
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            151
+          ],
+          "score": 0.022654350847005844
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.01944798231124878
+        },
+        {
+          "text": "days",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.012676265090703964
+        },
+        {
+          "text": "TOI-938",
+          "source": "sequence",
+          "positions": [
+            157,
+            158,
+            159,
+            160,
+            161,
+            162
+          ],
+          "score": 0.021752916974946856
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            167
+          ],
+          "score": 0.0161827951669693
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            175
+          ],
+          "score": 0.016437282785773277
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            177
+          ],
+          "score": 0.011722384952008724
+        },
+        {
+          "text": "8.8073388221",
+          "source": "sequence",
+          "positions": [
+            179,
+            180,
+            181,
+            182,
+            183,
+            184,
+            185,
+            186,
+            187,
+            188,
+            189,
+            190
+          ],
+          "score": 0.4012496592476964
+        }
+      ],
+      "step": 12,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 114,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-938 b",
+          "revision": "26a5ce3b6a0f12d8ff1370ba092ae9d0e2116eaa4119c0bd4b96d2ad71cd05b3"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TOI-938 8.80733882211 days Answer orbital period days TOI-938 number think think 8.80733882211",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TOI-938",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "score": 0.010744933737441897
+        },
+        {
+          "text": "8.80733882211",
+          "source": "aimee",
+          "positions": [
+            62,
+            63,
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74
+          ],
+          "score": 0.04651029466185719
+        },
+        {
+          "text": "days",
+          "source": "aimee",
+          "positions": [
+            75
+          ],
+          "score": 0.04677301272749901
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            117
+          ],
+          "score": 0.010545010678470135
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            151
+          ],
+          "score": 0.020840119570493698
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.01799703761935234
+        },
+        {
+          "text": "days",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.013703368604183197
+        },
+        {
+          "text": "TOI-938",
+          "source": "sequence",
+          "positions": [
+            157,
+            158,
+            159,
+            160,
+            161,
+            162
+          ],
+          "score": 0.018897456116974354
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            167
+          ],
+          "score": 0.014364905655384064
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            175
+          ],
+          "score": 0.014805501326918602
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            177
+          ],
+          "score": 0.013873504474759102
+        },
+        {
+          "text": "8.80733882211",
+          "source": "sequence",
+          "positions": [
+            179,
+            180,
+            181,
+            182,
+            183,
+            184,
+            185,
+            186,
+            187,
+            188,
+            189,
+            190,
+            191
+          ],
+          "score": 0.4376583779230714
+        }
+      ],
+      "step": 13,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 114,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-938 b",
+          "revision": "26a5ce3b6a0f12d8ff1370ba092ae9d0e2116eaa4119c0bd4b96d2ad71cd05b3"
+        }
+      ],
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 78
+}

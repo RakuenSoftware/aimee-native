@@ -1,0 +1,73 @@
+{
+  "recorded_at": "2026-09-19T21:51:16.720920+00:00",
+  "recorded_steps": 126,
+  "last_step": {
+    "step": 125,
+    "example": "train-compose-20",
+    "loss": 9.38747501373291,
+    "grad_norm": 10.4375,
+    "prompt_tokens": 80,
+    "memory_prompt_tokens": 0,
+    "value_grad_norm": 0.25269174575805664,
+    "output_grad_norm": 0.1068183183670044,
+    "bank_ids": [
+      100020,
+      100019,
+      100007,
+      100050,
+      100083,
+      100031,
+      100004,
+      100051,
+      100089,
+      100079,
+      100035,
+      100021,
+      100060,
+      100003,
+      100068,
+      100036
+    ],
+    "elapsed_seconds": 143.5427628669422
+  },
+  "state": {
+    "phase": "training",
+    "started_at": "2026-09-19T21:47:45.219024+00:00",
+    "elapsed_seconds": 9.57041047513485e-05,
+    "commands": [
+      [
+        "/opt/aimee-native-p0-training/bin/python",
+        "/opt/aimee-native-p0-training/pilot-001-source/run_p0.py",
+        "train",
+        "--model",
+        "/opt/aimee-native-p0-training/model",
+        "--fixtures",
+        "/opt/aimee-native-p0-training/pilot-001-source/fixtures",
+        "--placement",
+        "/opt/aimee-native-p0-training/pilot-001-source/placement-dual7900xtx-int8.json",
+        "--base-quantization",
+        "int8_per_row_v1",
+        "--dtype",
+        "bfloat16",
+        "--value-width",
+        "2048",
+        "--attention-width",
+        "256",
+        "--k",
+        "16",
+        "--after-block",
+        "1",
+        "--seed",
+        "4817",
+        "--lr",
+        "0.001",
+        "--steps",
+        "2100",
+        "--out",
+        "/opt/aimee-native-p0-training/pilot-001/train"
+      ]
+    ]
+  },
+  "service": "ActiveState=active\nSubState=running\n"
+}
+

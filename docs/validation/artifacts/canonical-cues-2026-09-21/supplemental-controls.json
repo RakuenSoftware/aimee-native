@@ -1,0 +1,141 @@
+[
+  {
+    "case": "ramona-ambiguous",
+    "query": "What population does GeoNames report for Ramona US? Return the integer only.",
+    "expected": "unknown",
+    "answer": "unknown",
+    "pass_": true,
+    "response": {
+      "id": "rust-1789976256639326587-58",
+      "object": "chat.completion",
+      "model": "qwen-aimee-rust",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "unknown"
+          },
+          "finish_reason": "stop"
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 53,
+        "completion_tokens": 1,
+        "total_tokens": 54
+      }
+    },
+    "bank": [],
+    "seconds": 1.9248142670840025
+  },
+  {
+    "case": "ramona-qualified",
+    "query": "What population does GeoNames report for place Ramona US 5385793? Return the integer only.",
+    "expected": "20292",
+    "answer": "20292",
+    "pass_": true,
+    "response": {
+      "id": "rust-1789976258559326925-59",
+      "object": "chat.completion",
+      "model": "qwen-aimee-rust",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "20292"
+          },
+          "finish_reason": "stop"
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 62,
+        "completion_tokens": 5,
+        "total_tokens": 67
+      }
+    },
+    "bank": [
+      {
+        "namespace": "aimee-general-v1",
+        "id": "geonames.5385793",
+        "revision": "880d7f4137bdc36c70479457536e2ee699f7cce6a10f36dcefa00843f7bca3d4"
+      }
+    ],
+    "seconds": 5.235836072824895
+  },
+  {
+    "case": "constant-2-prefill",
+    "query": "Give the 2022 CODATA numerical value for constant neutron-proton mass difference energy equivalent in MeV. Return the value only, without units.",
+    "expected": "1.29333251",
+    "answer": "1.29333251",
+    "pass_": true,
+    "response": {
+      "id": "rust-1789976263795128178-60",
+      "object": "chat.completion",
+      "model": "qwen-aimee-rust",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "1.29333251"
+          },
+          "finish_reason": "stop"
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 69,
+        "completion_tokens": 10,
+        "total_tokens": 79
+      }
+    },
+    "bank": [
+      {
+        "namespace": "aimee-general-v1",
+        "id": "nist.neutron-proton-mass-difference-energy-equivalent-in-mev",
+        "revision": "92755cfd75b52f6cb588ba0dca150a53a47b1676c6b6792826d93ed26d673420"
+      }
+    ],
+    "seconds": 5.826060388004407
+  },
+  {
+    "case": "constant-2-decode",
+    "query": "Give the 2022 CODATA numerical value for constant neutron-proton mass difference energy equivalent in MeV. Return the value only, without units.",
+    "expected": "1.29333251",
+    "answer": "1.29333251",
+    "pass_": true,
+    "response": {
+      "id": "rust-1789976269621302132-61",
+      "object": "chat.completion",
+      "model": "qwen-aimee-rust",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "1.29333251"
+          },
+          "finish_reason": "stop"
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 69,
+        "completion_tokens": 10,
+        "total_tokens": 79
+      }
+    },
+    "bank": [
+      {
+        "namespace": "aimee-general-v1",
+        "id": "nist.neutron-proton-mass-difference-energy-equivalent-in-mev",
+        "revision": "92755cfd75b52f6cb588ba0dca150a53a47b1676c6b6792826d93ed26d673420"
+      },
+      {
+        "namespace": "aimee-general-v1",
+        "id": "nist.neutron-proton-mass-difference",
+        "revision": "a2d2b4176927edcf442f79fb6fc6b0caa1c3d0b10481b8ef7a1999d37d7b3746"
+      }
+    ],
+    "seconds": 9.049199792090803
+  }
+]

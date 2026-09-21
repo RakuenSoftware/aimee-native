@@ -1,0 +1,46 @@
+{
+  "name": "city_disabled_after",
+  "request": {
+    "messages": [
+      {
+        "role": "system",
+        "content": "Answer using the available memory. Return only the requested value or values. If unknown, return unknown."
+      },
+      {
+        "role": "user",
+        "content": "What is the home city of unit-121330aded?"
+      }
+    ],
+    "max_tokens": 32,
+    "temperature": 0,
+    "aimee_memory": false
+  },
+  "http_status": 200,
+  "seconds": 0.9514039948116988,
+  "response": {
+    "id": "9c94be75eded4d14973edc30a05925c5",
+    "object": "chat.completion",
+    "model": "qwen-aimee-direct",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "unknown"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 53,
+      "completion_tokens": 2,
+      "total_tokens": 55
+    },
+    "aimee": {
+      "requested": false,
+      "returned_memory_ids": [],
+      "native_reads": 0,
+      "memory_encoding_tokens": 0
+    }
+  }
+}

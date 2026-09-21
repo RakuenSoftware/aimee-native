@@ -1,0 +1,48 @@
+{
+  "purpose": "Distinguish context-sensitive fact use from forcing an answer token.",
+  "interpretation": "Amber is the target only for prefix_handle. For arithmetic and other_entity its probability is a contamination diagnostic.",
+  "jobs": [
+    {
+      "id": "diagnostic_arithmetic__none",
+      "prompt": "The sum of two and two is <AIMEE_V1_MEM_4817>",
+      "target": 65326,
+      "generate": 12,
+      "condition": "none"
+    },
+    {
+      "id": "diagnostic_arithmetic__latent",
+      "prompt": "The sum of two and two is <AIMEE_V1_MEM_4817>",
+      "target": 65326,
+      "generate": 12,
+      "condition": "latent"
+    },
+    {
+      "id": "diagnostic_prefix_handle__none",
+      "prompt": "Memory handle: <AIMEE_V1_MEM_4817>\nSynthetic project Velnor's beacon color is",
+      "target": 65326,
+      "generate": 12,
+      "condition": "none"
+    },
+    {
+      "id": "diagnostic_prefix_handle__latent",
+      "prompt": "Memory handle: <AIMEE_V1_MEM_4817>\nSynthetic project Velnor's beacon color is",
+      "target": 65326,
+      "generate": 12,
+      "condition": "latent"
+    },
+    {
+      "id": "diagnostic_other_entity__none",
+      "prompt": "Synthetic project Serin's beacon color is <AIMEE_V1_MEM_4817>",
+      "target": 65326,
+      "generate": 12,
+      "condition": "none"
+    },
+    {
+      "id": "diagnostic_other_entity__latent",
+      "prompt": "Synthetic project Serin's beacon color is <AIMEE_V1_MEM_4817>",
+      "target": 65326,
+      "generate": 12,
+      "condition": "latent"
+    }
+  ]
+}

@@ -1,0 +1,1746 @@
+{
+  "runtime": "rust-libtorch",
+  "id": "rust-1789935988911433932-9",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the NASA archive, what is the orbital period in days for planet TOI-2267 d? Return the number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    20774,
+    17593,
+    11,
+    1092,
+    369,
+    279,
+    62409,
+    4031,
+    303,
+    2756,
+    364,
+    11247,
+    4981,
+    40,
+    12,
+    17,
+    17,
+    21,
+    22,
+    293,
+    30,
+    3301,
+    279,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    17,
+    13,
+    15,
+    18,
+    19,
+    19,
+    21,
+    22,
+    16
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "fb07f7308e4e17944f9afe53457ade8122929877b922679e40d0b278baf7d19f",
+  "memory_encoding": "content",
+  "memory_before_prompt": true,
+  "memory_position_offset": -116,
+  "answer": "2.0344671",
+  "finish_reason": "stop",
+  "elapsed_ms": 7770.219159,
+  "memory_encoding_passes": 0,
+  "native_reads": 160,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the NASA archive, what is the orbital period in days for planet TOI-2267 d? Return the number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "For planet TOI-2267 d, the NASA Exoplanet Archive composite table lists: host star TOI-2267 B; discovery year 2025; discovery method Transit; discovery facility Transiting Exoplanet Survey Satellite (TESS); orbital period 2.03446710000 days; reported planet radius 1.77000000 Earth radii; reported system distance 22.55000000 parsecs.",
+            "id": "nasa.TOI-2267 d",
+            "key": "planet TOI-2267 d",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "nasa.TOI-2267 d",
+              "revision": "537ac0dbda2e202de9792513aa26f2cab09aefaf0b41f978b03cc013406fde65"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 116,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-2267 d",
+          "revision": "537ac0dbda2e202de9792513aa26f2cab09aefaf0b41f978b03cc013406fde65"
+        }
+      ],
+      "status": "bank_reused"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 1.77000000 parsecs Answer user what in TOI-2267 Return assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.024075526744127274
+        },
+        {
+          "text": "1.77000000",
+          "source": "aimee",
+          "positions": [
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90,
+            91,
+            92,
+            93
+          ],
+          "score": 0.019769693579291925
+        },
+        {
+          "text": "parsecs",
+          "source": "aimee",
+          "positions": [
+            113,
+            114
+          ],
+          "score": 0.01562644774094224
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            119
+          ],
+          "score": 0.02278970554471016
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            142
+          ],
+          "score": 0.015512886457145214
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            150
+          ],
+          "score": 0.024869944900274277
+        },
+        {
+          "text": "in",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.017668360844254494
+        },
+        {
+          "text": "TOI-2267",
+          "source": "sequence",
+          "positions": [
+            159,
+            160,
+            161,
+            162,
+            163,
+            164,
+            165
+          ],
+          "score": 0.013183679664507508
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            168
+          ],
+          "score": 0.013363624922931194
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            176
+          ],
+          "score": 0.02527407556772232
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            178
+          ],
+          "score": 0.03138742595911026
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            180
+          ],
+          "score": 0.07268141210079193
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 116,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-2267 d",
+          "revision": "537ac0dbda2e202de9792513aa26f2cab09aefaf0b41f978b03cc013406fde65"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative TOI-2267 2.03446710000 Answer user According TOI-2267 the assistant think think 2",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.0179456255864352
+        },
+        {
+          "text": "TOI-2267",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.02238173969089985
+        },
+        {
+          "text": "2.03446710000",
+          "source": "aimee",
+          "positions": [
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77
+          ],
+          "score": 0.024760047264862806
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            119
+          ],
+          "score": 0.033623650670051575
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            142
+          ],
+          "score": 0.014762833714485168
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            144
+          ],
+          "score": 0.01583227887749672
+        },
+        {
+          "text": "TOI-2267",
+          "source": "sequence",
+          "positions": [
+            159,
+            160,
+            161,
+            162,
+            163,
+            164,
+            165
+          ],
+          "score": 0.03130373707972467
+        },
+        {
+          "text": "the",
+          "source": "sequence",
+          "positions": [
+            169
+          ],
+          "score": 0.014000492170453072
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            176
+          ],
+          "score": 0.028739087283611298
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            178
+          ],
+          "score": 0.02639617770910263
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            180
+          ],
+          "score": 0.01703556813299656
+        },
+        {
+          "text": "2",
+          "source": "sequence",
+          "positions": [
+            182
+          ],
+          "score": 0.02527819387614727
+        }
+      ],
+      "step": 1,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 116,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-2267 d",
+          "revision": "537ac0dbda2e202de9792513aa26f2cab09aefaf0b41f978b03cc013406fde65"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative TOI-2267 2.03446710000 Answer According what orbital TOI-2267 Return assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.020614933222532272
+        },
+        {
+          "text": "TOI-2267",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.0346105236094445
+        },
+        {
+          "text": "2.03446710000",
+          "source": "aimee",
+          "positions": [
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77
+          ],
+          "score": 0.02723771979799494
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            119
+          ],
+          "score": 0.032080065459012985
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            144
+          ],
+          "score": 0.01956523023545742
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            150
+          ],
+          "score": 0.014998527243733406
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.028922587633132935
+        },
+        {
+          "text": "TOI-2267",
+          "source": "sequence",
+          "positions": [
+            159,
+            160,
+            161,
+            162,
+            163,
+            164,
+            165
+          ],
+          "score": 0.032663323916494846
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            168
+          ],
+          "score": 0.014903364703059196
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            176
+          ],
+          "score": 0.032301753759384155
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            178
+          ],
+          "score": 0.016997037455439568
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            180
+          ],
+          "score": 0.014887258410453796
+        }
+      ],
+      "step": 2,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 116,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-2267 d",
+          "revision": "537ac0dbda2e202de9792513aa26f2cab09aefaf0b41f978b03cc013406fde65"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TOI-2267 table 2.03446710000 Answer According NASA orbital TOI-2267 assistant think think 2.0",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TOI-2267",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.02842972450889647
+        },
+        {
+          "text": "table",
+          "source": "aimee",
+          "positions": [
+            23
+          ],
+          "score": 0.01679789088666439
+        },
+        {
+          "text": "2.03446710000",
+          "source": "aimee",
+          "positions": [
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77
+          ],
+          "score": 0.09483312029624358
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            119
+          ],
+          "score": 0.01853291317820549
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            144
+          ],
+          "score": 0.017753347754478455
+        },
+        {
+          "text": "NASA",
+          "source": "sequence",
+          "positions": [
+            147
+          ],
+          "score": 0.019663985818624496
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.019665366038680077
+        },
+        {
+          "text": "TOI-2267",
+          "source": "sequence",
+          "positions": [
+            159,
+            160,
+            161,
+            162,
+            163,
+            164,
+            165
+          ],
+          "score": 0.029879064997658134
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            176
+          ],
+          "score": 0.026096200570464134
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            178
+          ],
+          "score": 0.030211856588721275
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            180
+          ],
+          "score": 0.021727561950683594
+        },
+        {
+          "text": "2.0",
+          "source": "sequence",
+          "positions": [
+            182,
+            183,
+            184
+          ],
+          "score": 0.09494952578097582
+        }
+      ],
+      "step": 3,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 116,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-2267 d",
+          "revision": "537ac0dbda2e202de9792513aa26f2cab09aefaf0b41f978b03cc013406fde65"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TOI-2267 2.03446710000 According NASA orbital period planet TOI-2267 Return think think 2.03",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TOI-2267",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.026641944656148553
+        },
+        {
+          "text": "2.03446710000",
+          "source": "aimee",
+          "positions": [
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77
+          ],
+          "score": 0.07366135966731235
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            144
+          ],
+          "score": 0.01629391871392727
+        },
+        {
+          "text": "NASA",
+          "source": "sequence",
+          "positions": [
+            147
+          ],
+          "score": 0.021952984854578972
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.024179741740226746
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.025003649294376373
+        },
+        {
+          "text": "planet",
+          "source": "sequence",
+          "positions": [
+            158
+          ],
+          "score": 0.01799369603395462
+        },
+        {
+          "text": "TOI-2267",
+          "source": "sequence",
+          "positions": [
+            159,
+            160,
+            161,
+            162,
+            163,
+            164,
+            165
+          ],
+          "score": 0.04820171371102333
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            168
+          ],
+          "score": 0.015169942751526833
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            178
+          ],
+          "score": 0.02969299629330635
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            180
+          ],
+          "score": 0.01627509854733944
+        },
+        {
+          "text": "2.03",
+          "source": "sequence",
+          "positions": [
+            182,
+            183,
+            184,
+            185
+          ],
+          "score": 0.2026822827756405
+        }
+      ],
+      "step": 4,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 116,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-2267 d",
+          "revision": "537ac0dbda2e202de9792513aa26f2cab09aefaf0b41f978b03cc013406fde65"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TOI-2267 Exoplanet star 2.03446710000 NASA orbital period days planet TOI-2267 think 2.034",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TOI-2267",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.0221735731465742
+        },
+        {
+          "text": "Exoplanet",
+          "source": "aimee",
+          "positions": [
+            18,
+            19,
+            20
+          ],
+          "score": 0.014271157095208764
+        },
+        {
+          "text": "star",
+          "source": "aimee",
+          "positions": [
+            27
+          ],
+          "score": 0.01275524403899908
+        },
+        {
+          "text": "2.03446710000",
+          "source": "aimee",
+          "positions": [
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77
+          ],
+          "score": 0.1142362650425639
+        },
+        {
+          "text": "NASA",
+          "source": "sequence",
+          "positions": [
+            147
+          ],
+          "score": 0.019446689635515213
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.030526859685778618
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.025838559493422508
+        },
+        {
+          "text": "days",
+          "source": "sequence",
+          "positions": [
+            156
+          ],
+          "score": 0.012911315076053143
+        },
+        {
+          "text": "planet",
+          "source": "sequence",
+          "positions": [
+            158
+          ],
+          "score": 0.015431512147188187
+        },
+        {
+          "text": "TOI-2267",
+          "source": "sequence",
+          "positions": [
+            159,
+            160,
+            161,
+            162,
+            163,
+            164,
+            165
+          ],
+          "score": 0.03615754842758179
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            178
+          ],
+          "score": 0.014278027229011059
+        },
+        {
+          "text": "2.034",
+          "source": "sequence",
+          "positions": [
+            182,
+            183,
+            184,
+            185,
+            186
+          ],
+          "score": 0.24157529324293137
+        }
+      ],
+      "step": 5,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 116,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-2267 d",
+          "revision": "537ac0dbda2e202de9792513aa26f2cab09aefaf0b41f978b03cc013406fde65"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TOI-2267 Exoplanet 2.03446710000 1.77000000 Answer what orbital period TOI-2267 number think 2.0344",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TOI-2267",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.017005531582981348
+        },
+        {
+          "text": "Exoplanet",
+          "source": "aimee",
+          "positions": [
+            18,
+            19,
+            20
+          ],
+          "score": 0.012646626913920045
+        },
+        {
+          "text": "2.03446710000",
+          "source": "aimee",
+          "positions": [
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77
+          ],
+          "score": 0.1141079750523204
+        },
+        {
+          "text": "1.77000000",
+          "source": "aimee",
+          "positions": [
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90,
+            91,
+            92,
+            93
+          ],
+          "score": 0.014178705721860752
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            119
+          ],
+          "score": 0.012464305385947227
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            150
+          ],
+          "score": 0.011701386421918869
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.02814190462231636
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.02339174970984459
+        },
+        {
+          "text": "TOI-2267",
+          "source": "sequence",
+          "positions": [
+            159,
+            160,
+            161,
+            162,
+            163,
+            164,
+            165
+          ],
+          "score": 0.023081635823473334
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            170
+          ],
+          "score": 0.016415532678365707
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            178
+          ],
+          "score": 0.013108647428452969
+        },
+        {
+          "text": "2.0344",
+          "source": "sequence",
+          "positions": [
+            182,
+            183,
+            184,
+            185,
+            186,
+            187
+          ],
+          "score": 0.28894259966909885
+        }
+      ],
+      "step": 6,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 116,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-2267 d",
+          "revision": "537ac0dbda2e202de9792513aa26f2cab09aefaf0b41f978b03cc013406fde65"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TOI-2267 2.03446710000 22.55000000 Answer orbital period TOI-2267 number assistant think think 2.03446",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TOI-2267",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.013641189550980926
+        },
+        {
+          "text": "2.03446710000",
+          "source": "aimee",
+          "positions": [
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77
+          ],
+          "score": 0.09359975517145358
+        },
+        {
+          "text": "22.55000000",
+          "source": "aimee",
+          "positions": [
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108,
+            109,
+            110,
+            111,
+            112
+          ],
+          "score": 0.011372901819413528
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            119
+          ],
+          "score": 0.013176924549043179
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.016186725348234177
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.01678652875125408
+        },
+        {
+          "text": "TOI-2267",
+          "source": "sequence",
+          "positions": [
+            159,
+            160,
+            161,
+            162,
+            163,
+            164,
+            165
+          ],
+          "score": 0.018849683459848166
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            170
+          ],
+          "score": 0.012587413191795349
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            176
+          ],
+          "score": 0.011548439972102642
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            178
+          ],
+          "score": 0.02225620672106743
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            180
+          ],
+          "score": 0.013018651865422726
+        },
+        {
+          "text": "2.03446",
+          "source": "sequence",
+          "positions": [
+            182,
+            183,
+            184,
+            185,
+            186,
+            187,
+            188
+          ],
+          "score": 0.40135214664041996
+        }
+      ],
+      "step": 7,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 116,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-2267 d",
+          "revision": "537ac0dbda2e202de9792513aa26f2cab09aefaf0b41f978b03cc013406fde65"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative TOI-2267 2.03446710000 1.77000000 Answer orbital period TOI-2267 d think think 2.034467",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.013043895713053644
+        },
+        {
+          "text": "TOI-2267",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.014230621163733304
+        },
+        {
+          "text": "2.03446710000",
+          "source": "aimee",
+          "positions": [
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77
+          ],
+          "score": 0.06578282902773935
+        },
+        {
+          "text": "1.77000000",
+          "source": "aimee",
+          "positions": [
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90,
+            91,
+            92,
+            93
+          ],
+          "score": 0.011514179772348143
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            119
+          ],
+          "score": 0.011394098401069641
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.019282590597867966
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.015399395488202572
+        },
+        {
+          "text": "TOI-2267",
+          "source": "sequence",
+          "positions": [
+            159,
+            160,
+            161,
+            162,
+            163,
+            164,
+            165
+          ],
+          "score": 0.02172693854663521
+        },
+        {
+          "text": "d",
+          "source": "sequence",
+          "positions": [
+            166
+          ],
+          "score": 0.016623428091406822
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            178
+          ],
+          "score": 0.02513963356614113
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            180
+          ],
+          "score": 0.011361214332282543
+        },
+        {
+          "text": "2.034467",
+          "source": "sequence",
+          "positions": [
+            182,
+            183,
+            184,
+            185,
+            186,
+            187,
+            188,
+            189
+          ],
+          "score": 0.38737475872039795
+        }
+      ],
+      "step": 8,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 116,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-2267 d",
+          "revision": "537ac0dbda2e202de9792513aa26f2cab09aefaf0b41f978b03cc013406fde65"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative TOI-2267 2.03446710000 Answer orbital period TOI-2267 number assistant think think 2.0344671",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.013462190050631762
+        },
+        {
+          "text": "TOI-2267",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.0136709522921592
+        },
+        {
+          "text": "2.03446710000",
+          "source": "aimee",
+          "positions": [
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77
+          ],
+          "score": 0.061687960143899545
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            119
+          ],
+          "score": 0.014796184375882149
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.025150924921035767
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.018461480736732483
+        },
+        {
+          "text": "TOI-2267",
+          "source": "sequence",
+          "positions": [
+            159,
+            160,
+            161,
+            162,
+            163,
+            164,
+            165
+          ],
+          "score": 0.02425286965444684
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            170
+          ],
+          "score": 0.016170691698789597
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            176
+          ],
+          "score": 0.013907365500926971
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            178
+          ],
+          "score": 0.024994730949401855
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            180
+          ],
+          "score": 0.015811607241630554
+        },
+        {
+          "text": "2.0344671",
+          "source": "sequence",
+          "positions": [
+            182,
+            183,
+            184,
+            185,
+            186,
+            187,
+            188,
+            189,
+            190
+          ],
+          "score": 0.33073568530380726
+        }
+      ],
+      "step": 9,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 116,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-2267 d",
+          "revision": "537ac0dbda2e202de9792513aa26f2cab09aefaf0b41f978b03cc013406fde65"
+        }
+      ],
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 75
+}

@@ -1,0 +1,17 @@
+{
+  "question": "Can a Qwen latent-memory mechanism consume a memory whose authoritative source is Aimee, with no representation of that memory in the model's textual context?",
+  "source": "Actual aimee memory store followed by aimee memory get; synthetic research fact only",
+  "model": "Frozen Qwen3.8-27B with the completed oracle-bf16-lr1e3 interface",
+  "core_test": "Read actual Aimee record, select an exact-content-matched existing latent projection, and consume it without memory text. At least one paired success suffices.",
+  "optional_writer_test": "Separately attempt a previously unseen value; writer failure does not decide source-consumption feasibility",
+  "trainable": "Cached projection: none. Optional writer test: one 2048-dimensional external memory value; base and memory interface frozen",
+  "compiler": "240 fixed gradient steps, AdamW lr=0.001, no weight decay, FP32 parameter",
+  "source_value": "Parsed exclusively from Aimee's read-back record, not supplied as a separate answer argument",
+  "training": "Two fixed query forms; teacher-forced answer CE, no fact text in input prompt",
+  "evaluation": "Six fixed unseen query forms; complete greedy answers, EOS required",
+  "arms": ["none", "text_control", "native_disabled", "native_aimee", "native_original_value", "native_empty"],
+  "evidence": ["Aimee record ID, store and content hash", "compiled value artifact bound to source and model", "exact prompt tokens and decoded text", "native/base prompt equality", "answers with channel enabled and disabled"],
+  "speed_is_acceptance_gate": false,
+  "small_text_parity_is_acceptance_gate": false,
+  "out_of_scope": ["cue routing", "Engram image", "archive scale", "latency", "production readiness", "broader model adaptation"]
+}

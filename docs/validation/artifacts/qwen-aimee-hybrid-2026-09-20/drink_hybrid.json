@@ -1,0 +1,67 @@
+{
+  "name": "drink_hybrid",
+  "request": {
+    "messages": [
+      {
+        "role": "system",
+        "content": "Answer using the available memory. Return only the requested value or values. If unknown, return unknown."
+      },
+      {
+        "role": "user",
+        "content": "What is the preferred drink of unit-b03646cbf4?"
+      }
+    ],
+    "max_tokens": 32,
+    "temperature": 0
+  },
+  "http_status": 200,
+  "seconds": 3.358611107803881,
+  "response": {
+    "id": "edb74eaaf085433199308a4aeeec3b35",
+    "object": "chat.completion",
+    "model": "qwen-aimee-direct",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "oolong"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 54,
+      "completion_tokens": 3,
+      "total_tokens": 57
+    },
+    "aimee": {
+      "requested": true,
+      "request": {
+        "origin": "qwen_attention_query",
+        "query_source": "projected_attention_query",
+        "query": "Authoritative unit-b03646cbf4 oolong unit-edbe6de0e4 unit-e470f703d0 ultraviolet unit-81b1315e68 ledger-6b8f31 What drink unit-b03646cbf4 oolong",
+        "limit": 4
+      },
+      "returned_memory_ids": [
+        5,
+        3,
+        7,
+        10
+      ],
+      "native_reads": 48,
+      "recall_calls": 4,
+      "preload_calls": 1,
+      "native_recall_calls": 3,
+      "bank_memory_ids": [
+        5,
+        7,
+        3,
+        4,
+        8,
+        10
+      ],
+      "memory_encoding_tokens": 118
+    }
+  }
+}

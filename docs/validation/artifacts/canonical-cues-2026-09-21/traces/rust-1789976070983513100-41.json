@@ -1,0 +1,706 @@
+{
+  "runtime": "rust-libtorch",
+  "id": "rust-1789976070983513100-41",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhat population does GeoNames report for Lanne FR? Return the integer only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    3710,
+    6823,
+    1503,
+    30862,
+    7729,
+    1830,
+    364,
+    436,
+    19749,
+    16164,
+    30,
+    3301,
+    279,
+    7308,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    20,
+    22,
+    17
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "e53a54d1c6e76dec5f0a7ffa89ed6a979de2ac4ebef3d5ec356a2b75b93dd01d",
+  "memory_encoding": "content",
+  "memory_before_prompt": true,
+  "memory_position_offset": -86,
+  "answer": "572",
+  "finish_reason": "stop",
+  "elapsed_ms": 3799.895658,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "What population does GeoNames report for Lanne FR? Return the integer only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Lanne (ID 3007631): country code FR; latitude 43.16458; longitude 0.01399; administrative codes 76/65; population 572; time zone Europe/Paris. The source record was modified on 2020-04-08.",
+            "id": "geonames.3007631",
+            "key": "place Lanne FR 3007631",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.3007631",
+              "revision": "ed29676871a26fc7437a356e43c41f9076d70c1af87c6ad36fc06b9669a296ae"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 86,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3007631",
+          "revision": "ed29676871a26fc7437a356e43c41f9076d70c1af87c6ad36fc06b9669a296ae"
+        }
+      ],
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2020-04-08 Answer What does report Return the integer assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02112063206732273
+        },
+        {
+          "text": "2020-04-08",
+          "source": "aimee",
+          "positions": [
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84
+          ],
+          "score": 0.014880969145451672
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            89
+          ],
+          "score": 0.019482579082250595
+        },
+        {
+          "text": "What",
+          "source": "sequence",
+          "positions": [
+            114
+          ],
+          "score": 0.02723454311490059
+        },
+        {
+          "text": "does",
+          "source": "sequence",
+          "positions": [
+            116
+          ],
+          "score": 0.024187494069337845
+        },
+        {
+          "text": "report",
+          "source": "sequence",
+          "positions": [
+            119
+          ],
+          "score": 0.024275705218315125
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            125
+          ],
+          "score": 0.015046863816678524
+        },
+        {
+          "text": "the",
+          "source": "sequence",
+          "positions": [
+            126
+          ],
+          "score": 0.017774611711502075
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            127
+          ],
+          "score": 0.03353504836559296
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            133
+          ],
+          "score": 0.023569582030177116
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            135
+          ],
+          "score": 0.03153140842914581
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            137
+          ],
+          "score": 0.06409808993339539
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 86,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3007631",
+          "revision": "ed29676871a26fc7437a356e43c41f9076d70c1af87c6ad36fc06b9669a296ae"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 3007631 43.16458 2020-04-08 Answer user What does integer assistant think 5",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.016074469313025475
+        },
+        {
+          "text": "3007631",
+          "source": "aimee",
+          "positions": [
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20
+          ],
+          "score": 0.029005837626755238
+        },
+        {
+          "text": "43.16458",
+          "source": "aimee",
+          "positions": [
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35
+          ],
+          "score": 0.017032242962159216
+        },
+        {
+          "text": "2020-04-08",
+          "source": "aimee",
+          "positions": [
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84
+          ],
+          "score": 0.022770834737457335
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            89
+          ],
+          "score": 0.03510206192731857
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            112
+          ],
+          "score": 0.015992533415555954
+        },
+        {
+          "text": "What",
+          "source": "sequence",
+          "positions": [
+            114
+          ],
+          "score": 0.03579791635274887
+        },
+        {
+          "text": "does",
+          "source": "sequence",
+          "positions": [
+            116
+          ],
+          "score": 0.01825842447578907
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            127
+          ],
+          "score": 0.033002790063619614
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            133
+          ],
+          "score": 0.024994928389787674
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            135
+          ],
+          "score": 0.019074730575084686
+        },
+        {
+          "text": "5",
+          "source": "sequence",
+          "positions": [
+            139
+          ],
+          "score": 0.04785607382655144
+        }
+      ],
+      "step": 1,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 86,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3007631",
+          "revision": "ed29676871a26fc7437a356e43c41f9076d70c1af87c6ad36fc06b9669a296ae"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "3007631 code 43.16458 572 What population does GeoNames report FR integer 57",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "3007631",
+          "source": "aimee",
+          "positions": [
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20
+          ],
+          "score": 0.03243917762301862
+        },
+        {
+          "text": "code",
+          "source": "aimee",
+          "positions": [
+            23
+          ],
+          "score": 0.0406884029507637
+        },
+        {
+          "text": "43.16458",
+          "source": "aimee",
+          "positions": [
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35
+          ],
+          "score": 0.018771112780086696
+        },
+        {
+          "text": "572",
+          "source": "aimee",
+          "positions": [
+            58,
+            59,
+            60
+          ],
+          "score": 0.09135985135799274
+        },
+        {
+          "text": "What",
+          "source": "sequence",
+          "positions": [
+            114
+          ],
+          "score": 0.02273569628596306
+        },
+        {
+          "text": "population",
+          "source": "sequence",
+          "positions": [
+            115
+          ],
+          "score": 0.029346134513616562
+        },
+        {
+          "text": "does",
+          "source": "sequence",
+          "positions": [
+            116
+          ],
+          "score": 0.01801314577460289
+        },
+        {
+          "text": "GeoNames",
+          "source": "sequence",
+          "positions": [
+            117,
+            118
+          ],
+          "score": 0.03650916554033756
+        },
+        {
+          "text": "report",
+          "source": "sequence",
+          "positions": [
+            119
+          ],
+          "score": 0.020848345011472702
+        },
+        {
+          "text": "FR",
+          "source": "sequence",
+          "positions": [
+            123
+          ],
+          "score": 0.019681110978126526
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            127
+          ],
+          "score": 0.050694726407527924
+        },
+        {
+          "text": "57",
+          "source": "sequence",
+          "positions": [
+            139,
+            140
+          ],
+          "score": 0.07348064333200455
+        }
+      ],
+      "step": 2,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 86,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3007631",
+          "revision": "ed29676871a26fc7437a356e43c41f9076d70c1af87c6ad36fc06b9669a296ae"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 3007631 code 572 What population GeoNames report Lanne Return integer 572",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.017730862367898226
+        },
+        {
+          "text": "3007631",
+          "source": "aimee",
+          "positions": [
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20
+          ],
+          "score": 0.029512098524719477
+        },
+        {
+          "text": "code",
+          "source": "aimee",
+          "positions": [
+            23
+          ],
+          "score": 0.047125354409217834
+        },
+        {
+          "text": "572",
+          "source": "aimee",
+          "positions": [
+            58,
+            59,
+            60
+          ],
+          "score": 0.018102180707501248
+        },
+        {
+          "text": "What",
+          "source": "sequence",
+          "positions": [
+            114
+          ],
+          "score": 0.01751609519124031
+        },
+        {
+          "text": "population",
+          "source": "sequence",
+          "positions": [
+            115
+          ],
+          "score": 0.024767078459262848
+        },
+        {
+          "text": "GeoNames",
+          "source": "sequence",
+          "positions": [
+            117,
+            118
+          ],
+          "score": 0.0458309194073081
+        },
+        {
+          "text": "report",
+          "source": "sequence",
+          "positions": [
+            119
+          ],
+          "score": 0.017878450453281403
+        },
+        {
+          "text": "Lanne",
+          "source": "sequence",
+          "positions": [
+            121,
+            122
+          ],
+          "score": 0.016824943013489246
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            125
+          ],
+          "score": 0.016665853559970856
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            127
+          ],
+          "score": 0.050366710871458054
+        },
+        {
+          "text": "572",
+          "source": "sequence",
+          "positions": [
+            139,
+            140,
+            141
+          ],
+          "score": 0.13042816892266273
+        }
+      ],
+      "step": 3,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 86,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3007631",
+          "revision": "ed29676871a26fc7437a356e43c41f9076d70c1af87c6ad36fc06b9669a296ae"
+        }
+      ],
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 56
+}

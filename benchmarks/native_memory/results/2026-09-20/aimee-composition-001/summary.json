@@ -1,0 +1,48 @@
+{
+  "status": "complete",
+  "query": "Return exactly: <drink>; <city>. Use unknown for any value you do not know.",
+  "results": {
+    "drink_only": {
+      "bank_ids": [
+        5
+      ],
+      "expected": "oolong; unknown",
+      "answer": "oolong",
+      "terminated": true,
+      "passed": false,
+      "exact_match": false
+    },
+    "city_only": {
+      "bank_ids": [
+        6
+      ],
+      "expected": "unknown; Lima",
+      "answer": "Lima",
+      "terminated": true,
+      "passed": false,
+      "exact_match": false
+    },
+    "both": {
+      "bank_ids": [
+        5,
+        6
+      ],
+      "expected": "oolong; Lima",
+      "answer": "oolong",
+      "terminated": true,
+      "passed": false,
+      "exact_match": false
+    }
+  },
+  "singleton_prerequisites_passed": false,
+  "composition_adjudicated": false,
+  "conclusion": "prompt_latent_generalization_issue",
+  "prompt_parity": true,
+  "zero_memory_tokens": true,
+  "parameters_unchanged": true,
+  "vectors_unchanged": true,
+  "native_path_unchanged": true,
+  "training_steps": 0,
+  "trainable_parameters": 0,
+  "limits": "One fixed prompt and two existing projections. Failed singleton prerequisites preclude a composition conclusion."
+}

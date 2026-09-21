@@ -1,0 +1,2593 @@
+{
+  "runtime": "rust-libtorch",
+  "id": "rust-1789936050529051571-16",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nGive the TCP port for IANA service xic, then the preferred drink of unit-b03646cbf4, then the home city of unit-121330aded. Separate the three values with semicolons.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    33963,
+    279,
+    25804,
+    2548,
+    364,
+    353,
+    37492,
+    2393,
+    830,
+    291,
+    11,
+    1179,
+    279,
+    14459,
+    6808,
+    314,
+    4821,
+    1402,
+    15,
+    18,
+    21,
+    19,
+    21,
+    6995,
+    69,
+    19,
+    11,
+    1179,
+    279,
+    2046,
+    3177,
+    314,
+    4821,
+    12,
+    16,
+    17,
+    16,
+    18,
+    18,
+    15,
+    13847,
+    13,
+    73533,
+    279,
+    2250,
+    2663,
+    440,
+    5067,
+    25617,
+    2305,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    21,
+    16,
+    16,
+    20,
+    26,
+    1687,
+    626,
+    26,
+    43,
+    7287
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "fb07f7308e4e17944f9afe53457ade8122929877b922679e40d0b278baf7d19f",
+  "memory_encoding": "keyed",
+  "memory_before_prompt": true,
+  "memory_position_offset": -98,
+  "answer": "6115;oolong;Lima",
+  "finish_reason": "stop",
+  "elapsed_ms": 8463.4585,
+  "memory_encoding_passes": 0,
+  "native_reads": 176,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "Give the TCP port for IANA service xic, then the preferred drink of unit-b03646cbf4, then the home city of unit-121330aded. Separate the three values with semicolons.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service xic has these registered transport/port assignments: TCP port 6115.",
+            "id": "iana.xic",
+            "key": "IANA service xic",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.xic",
+              "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 30,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        }
+      ],
+      "status": "bank_reused"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user Give TCP for unit-b03646cbf4 unit-121330aded the assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "id": 6,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d2",
+            "content": "The home city of unit-121330aded is Lima.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "aimee-published",
+              "id": "6",
+              "revision": "3eae3584cc979c44a0d63d36e28fdaedc17f07ae3452f8e2c69b5235c8d42d39"
+            }
+          },
+          {
+            "id": 5,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d1",
+            "content": "The preferred drink of unit-b03646cbf4 is oolong.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "aimee-published",
+              "id": "5",
+              "revision": "60aa41830845fadb3d420e6346bbc4068fc834a3a513fa157e7f0a440470e4cb"
+            }
+          }
+        ],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.03129224851727486
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            33
+          ],
+          "score": 0.022519869729876518
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            56
+          ],
+          "score": 0.016420863568782806
+        },
+        {
+          "text": "Give",
+          "source": "sequence",
+          "positions": [
+            58
+          ],
+          "score": 0.012898826971650124
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            60
+          ],
+          "score": 0.014371329918503761
+        },
+        {
+          "text": "for",
+          "source": "sequence",
+          "positions": [
+            62
+          ],
+          "score": 0.02029276266694069
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "sequence",
+          "positions": [
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83
+          ],
+          "score": 0.018140429514460266
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "sequence",
+          "positions": [
+            90,
+            91,
+            92,
+            93,
+            94,
+            95,
+            96,
+            97,
+            98
+          ],
+          "score": 0.01747872933628969
+        },
+        {
+          "text": "the",
+          "source": "sequence",
+          "positions": [
+            101
+          ],
+          "score": 0.01601407863199711
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            112
+          ],
+          "score": 0.027486976236104965
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            114
+          ],
+          "score": 0.03297175467014313
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            116
+          ],
+          "score": 0.07169748842716217
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 98,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        },
+        {
+          "namespace": "aimee-published",
+          "id": "6",
+          "revision": "3eae3584cc979c44a0d63d36e28fdaedc17f07ae3452f8e2c69b5235c8d42d39"
+        },
+        {
+          "namespace": "aimee-published",
+          "id": "5",
+          "revision": "60aa41830845fadb3d420e6346bbc4068fc834a3a513fa157e7f0a440470e4cb"
+        }
+      ],
+      "status": "bank_reused"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "6115 research.native-bank.20260920.d2 unit-121330aded unit-b03646cbf4 Answer Give TCP port unit-b03646cbf4 unit-121330aded assistant 6",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "id": 6,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d2",
+            "content": "The home city of unit-121330aded is Lima.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "aimee-published",
+              "id": "6",
+              "revision": "3eae3584cc979c44a0d63d36e28fdaedc17f07ae3452f8e2c69b5235c8d42d39"
+            }
+          },
+          {
+            "id": 5,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d1",
+            "content": "The preferred drink of unit-b03646cbf4 is oolong.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "aimee-published",
+              "id": "5",
+              "revision": "60aa41830845fadb3d420e6346bbc4068fc834a3a513fa157e7f0a440470e4cb"
+            }
+          }
+        ],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "6115",
+          "source": "aimee",
+          "positions": [
+            25,
+            26,
+            27,
+            28
+          ],
+          "score": 0.021254201768897474
+        },
+        {
+          "text": "research.native-bank.20260920.d2",
+          "source": "aimee",
+          "positions": [
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45
+          ],
+          "score": 0.05343123321654275
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "aimee",
+          "positions": [
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57,
+            58,
+            59
+          ],
+          "score": 0.032375376555137336
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "aimee",
+          "positions": [
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90,
+            91,
+            92,
+            93
+          ],
+          "score": 0.016248623986029997
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            101
+          ],
+          "score": 0.037041470408439636
+        },
+        {
+          "text": "Give",
+          "source": "sequence",
+          "positions": [
+            126
+          ],
+          "score": 0.014089135453104973
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            128
+          ],
+          "score": 0.025389401242136955
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            129
+          ],
+          "score": 0.01676374301314354
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "sequence",
+          "positions": [
+            142,
+            143,
+            144,
+            145,
+            146,
+            147,
+            148,
+            149,
+            150,
+            151
+          ],
+          "score": 0.043292248039506376
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164,
+            165,
+            166
+          ],
+          "score": 0.038394729781430215
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            180
+          ],
+          "score": 0.02475057542324066
+        },
+        {
+          "text": "6",
+          "source": "sequence",
+          "positions": [
+            186
+          ],
+          "score": 0.031247925013303757
+        }
+      ],
+      "step": 1,
+      "phase": "decode",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 98,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        },
+        {
+          "namespace": "aimee-published",
+          "id": "6",
+          "revision": "3eae3584cc979c44a0d63d36e28fdaedc17f07ae3452f8e2c69b5235c8d42d39"
+        },
+        {
+          "namespace": "aimee-published",
+          "id": "5",
+          "revision": "60aa41830845fadb3d420e6346bbc4068fc834a3a513fa157e7f0a440470e4cb"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "6115 research.native-bank.20260920.d2 unit-121330aded unit-b03646cbf4 TCP port IANA drink unit-b03646cbf4 unit-121330aded values 61",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "id": 6,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d2",
+            "content": "The home city of unit-121330aded is Lima.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "aimee-published",
+              "id": "6",
+              "revision": "3eae3584cc979c44a0d63d36e28fdaedc17f07ae3452f8e2c69b5235c8d42d39"
+            }
+          },
+          {
+            "id": 5,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d1",
+            "content": "The preferred drink of unit-b03646cbf4 is oolong.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "aimee-published",
+              "id": "5",
+              "revision": "60aa41830845fadb3d420e6346bbc4068fc834a3a513fa157e7f0a440470e4cb"
+            }
+          }
+        ],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "6115",
+          "source": "aimee",
+          "positions": [
+            25,
+            26,
+            27,
+            28
+          ],
+          "score": 0.10996757954126224
+        },
+        {
+          "text": "research.native-bank.20260920.d2",
+          "source": "aimee",
+          "positions": [
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45
+          ],
+          "score": 0.04156732463161461
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "aimee",
+          "positions": [
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57,
+            58,
+            59
+          ],
+          "score": 0.03477422706782818
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "aimee",
+          "positions": [
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90,
+            91,
+            92,
+            93
+          ],
+          "score": 0.016938828164711595
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            128
+          ],
+          "score": 0.06266829371452332
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            129
+          ],
+          "score": 0.03757417947053909
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            131,
+            132
+          ],
+          "score": 0.026873035356402397
+        },
+        {
+          "text": "drink",
+          "source": "sequence",
+          "positions": [
+            140
+          ],
+          "score": 0.017789386212825775
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "sequence",
+          "positions": [
+            142,
+            143,
+            144,
+            145,
+            146,
+            147,
+            148,
+            149,
+            150,
+            151
+          ],
+          "score": 0.06342405721079558
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164,
+            165,
+            166
+          ],
+          "score": 0.06618379917927086
+        },
+        {
+          "text": "values",
+          "source": "sequence",
+          "positions": [
+            171
+          ],
+          "score": 0.013749654404819012
+        },
+        {
+          "text": "61",
+          "source": "sequence",
+          "positions": [
+            186,
+            187
+          ],
+          "score": 0.062093110755085945
+        }
+      ],
+      "step": 2,
+      "phase": "decode",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 98,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        },
+        {
+          "namespace": "aimee-published",
+          "id": "6",
+          "revision": "3eae3584cc979c44a0d63d36e28fdaedc17f07ae3452f8e2c69b5235c8d42d39"
+        },
+        {
+          "namespace": "aimee-published",
+          "id": "5",
+          "revision": "60aa41830845fadb3d420e6346bbc4068fc834a3a513fa157e7f0a440470e4cb"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "6115 research.native-bank.20260920.d2 unit-121330aded unit-b03646cbf4 TCP port IANA xic drink unit-b03646cbf4 unit-121330aded 611",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "id": 6,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d2",
+            "content": "The home city of unit-121330aded is Lima.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "aimee-published",
+              "id": "6",
+              "revision": "3eae3584cc979c44a0d63d36e28fdaedc17f07ae3452f8e2c69b5235c8d42d39"
+            }
+          },
+          {
+            "id": 5,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d1",
+            "content": "The preferred drink of unit-b03646cbf4 is oolong.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "aimee-published",
+              "id": "5",
+              "revision": "60aa41830845fadb3d420e6346bbc4068fc834a3a513fa157e7f0a440470e4cb"
+            }
+          }
+        ],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "6115",
+          "source": "aimee",
+          "positions": [
+            25,
+            26,
+            27,
+            28
+          ],
+          "score": 0.0874102849047631
+        },
+        {
+          "text": "research.native-bank.20260920.d2",
+          "source": "aimee",
+          "positions": [
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45
+          ],
+          "score": 0.05193091556429863
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "aimee",
+          "positions": [
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57,
+            58,
+            59
+          ],
+          "score": 0.03581471764482558
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "aimee",
+          "positions": [
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90,
+            91,
+            92,
+            93
+          ],
+          "score": 0.016234135313425213
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            128
+          ],
+          "score": 0.05999286472797394
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            129
+          ],
+          "score": 0.046320002526044846
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            131,
+            132
+          ],
+          "score": 0.025835062377154827
+        },
+        {
+          "text": "xic",
+          "source": "sequence",
+          "positions": [
+            134,
+            135
+          ],
+          "score": 0.013535612262785435
+        },
+        {
+          "text": "drink",
+          "source": "sequence",
+          "positions": [
+            140
+          ],
+          "score": 0.016273535788059235
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "sequence",
+          "positions": [
+            142,
+            143,
+            144,
+            145,
+            146,
+            147,
+            148,
+            149,
+            150,
+            151
+          ],
+          "score": 0.052507432526908815
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164,
+            165,
+            166
+          ],
+          "score": 0.06529522349592298
+        },
+        {
+          "text": "611",
+          "source": "sequence",
+          "positions": [
+            186,
+            187,
+            188
+          ],
+          "score": 0.10236669704318047
+        }
+      ],
+      "step": 3,
+      "phase": "decode",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 98,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        },
+        {
+          "namespace": "aimee-published",
+          "id": "6",
+          "revision": "3eae3584cc979c44a0d63d36e28fdaedc17f07ae3452f8e2c69b5235c8d42d39"
+        },
+        {
+          "namespace": "aimee-published",
+          "id": "5",
+          "revision": "60aa41830845fadb3d420e6346bbc4068fc834a3a513fa157e7f0a440470e4cb"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "6115 research.native-bank.20260920.d2 unit-121330aded unit-b03646cbf4 Answer TCP port IANA drink unit-b03646cbf4 unit-121330aded 6115",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "id": 6,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d2",
+            "content": "The home city of unit-121330aded is Lima.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "aimee-published",
+              "id": "6",
+              "revision": "3eae3584cc979c44a0d63d36e28fdaedc17f07ae3452f8e2c69b5235c8d42d39"
+            }
+          },
+          {
+            "id": 5,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d1",
+            "content": "The preferred drink of unit-b03646cbf4 is oolong.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "aimee-published",
+              "id": "5",
+              "revision": "60aa41830845fadb3d420e6346bbc4068fc834a3a513fa157e7f0a440470e4cb"
+            }
+          }
+        ],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "6115",
+          "source": "aimee",
+          "positions": [
+            25,
+            26,
+            27,
+            28
+          ],
+          "score": 0.01988324790727347
+        },
+        {
+          "text": "research.native-bank.20260920.d2",
+          "source": "aimee",
+          "positions": [
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45
+          ],
+          "score": 0.04421820741845295
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "aimee",
+          "positions": [
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57,
+            58,
+            59
+          ],
+          "score": 0.02559692249633372
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "aimee",
+          "positions": [
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90,
+            91,
+            92,
+            93
+          ],
+          "score": 0.015652725793188438
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            101
+          ],
+          "score": 0.01254485547542572
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            128
+          ],
+          "score": 0.06423352658748627
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            129
+          ],
+          "score": 0.06309568136930466
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            131,
+            132
+          ],
+          "score": 0.02368747442960739
+        },
+        {
+          "text": "drink",
+          "source": "sequence",
+          "positions": [
+            140
+          ],
+          "score": 0.012582751922309399
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "sequence",
+          "positions": [
+            142,
+            143,
+            144,
+            145,
+            146,
+            147,
+            148,
+            149,
+            150,
+            151
+          ],
+          "score": 0.046307551907375455
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164,
+            165,
+            166
+          ],
+          "score": 0.05107414466328919
+        },
+        {
+          "text": "6115",
+          "source": "sequence",
+          "positions": [
+            186,
+            187,
+            188,
+            189
+          ],
+          "score": 0.1549552157521248
+        }
+      ],
+      "step": 4,
+      "phase": "decode",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 98,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        },
+        {
+          "namespace": "aimee-published",
+          "id": "6",
+          "revision": "3eae3584cc979c44a0d63d36e28fdaedc17f07ae3452f8e2c69b5235c8d42d39"
+        },
+        {
+          "namespace": "aimee-published",
+          "id": "5",
+          "revision": "60aa41830845fadb3d420e6346bbc4068fc834a3a513fa157e7f0a440470e4cb"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative research.native-bank.20260920.d2 unit-121330aded Answer TCP IANA unit-b03646cbf4 unit-121330aded values semicolons assistant 6115",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "id": 6,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d2",
+            "content": "The home city of unit-121330aded is Lima.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "aimee-published",
+              "id": "6",
+              "revision": "3eae3584cc979c44a0d63d36e28fdaedc17f07ae3452f8e2c69b5235c8d42d39"
+            }
+          },
+          {
+            "id": 5,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d1",
+            "content": "The preferred drink of unit-b03646cbf4 is oolong.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "aimee-published",
+              "id": "5",
+              "revision": "60aa41830845fadb3d420e6346bbc4068fc834a3a513fa157e7f0a440470e4cb"
+            }
+          }
+        ],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.012924081413075328
+        },
+        {
+          "text": "research.native-bank.20260920.d2",
+          "source": "aimee",
+          "positions": [
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45
+          ],
+          "score": 0.044215082307346165
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "aimee",
+          "positions": [
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57,
+            58,
+            59
+          ],
+          "score": 0.019480747054331005
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            101
+          ],
+          "score": 0.01532096229493618
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            128
+          ],
+          "score": 0.05091004818677902
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            131,
+            132
+          ],
+          "score": 0.017576265148818493
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "sequence",
+          "positions": [
+            142,
+            143,
+            144,
+            145,
+            146,
+            147,
+            148,
+            149,
+            150,
+            151
+          ],
+          "score": 0.033472167735453695
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164,
+            165,
+            166
+          ],
+          "score": 0.03840160905383527
+        },
+        {
+          "text": "values",
+          "source": "sequence",
+          "positions": [
+            171
+          ],
+          "score": 0.021584540605545044
+        },
+        {
+          "text": "semicolons",
+          "source": "sequence",
+          "positions": [
+            173,
+            174,
+            175
+          ],
+          "score": 0.01221594912931323
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            180
+          ],
+          "score": 0.028104988858103752
+        },
+        {
+          "text": "6115",
+          "source": "sequence",
+          "positions": [
+            186,
+            187,
+            188,
+            189
+          ],
+          "score": 0.0912531428039074
+        }
+      ],
+      "step": 5,
+      "phase": "decode",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 98,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        },
+        {
+          "namespace": "aimee-published",
+          "id": "6",
+          "revision": "3eae3584cc979c44a0d63d36e28fdaedc17f07ae3452f8e2c69b5235c8d42d39"
+        },
+        {
+          "namespace": "aimee-published",
+          "id": "5",
+          "revision": "60aa41830845fadb3d420e6346bbc4068fc834a3a513fa157e7f0a440470e4cb"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative research.native-bank.20260920.d2 unit-121330aded drink oolong TCP IANA drink unit-b03646cbf4 unit-121330aded 6115 ool",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "id": 5,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d1",
+            "content": "The preferred drink of unit-b03646cbf4 is oolong.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "aimee-published",
+              "id": "5",
+              "revision": "60aa41830845fadb3d420e6346bbc4068fc834a3a513fa157e7f0a440470e4cb"
+            }
+          },
+          {
+            "id": 6,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d2",
+            "content": "The home city of unit-121330aded is Lima.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "aimee-published",
+              "id": "6",
+              "revision": "3eae3584cc979c44a0d63d36e28fdaedc17f07ae3452f8e2c69b5235c8d42d39"
+            }
+          }
+        ],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.016658294014632702
+        },
+        {
+          "text": "research.native-bank.20260920.d2",
+          "source": "aimee",
+          "positions": [
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45
+          ],
+          "score": 0.04802964994451031
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "aimee",
+          "positions": [
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57,
+            58,
+            59
+          ],
+          "score": 0.026389623060822487
+        },
+        {
+          "text": "drink",
+          "source": "aimee",
+          "positions": [
+            82
+          ],
+          "score": 0.020371336489915848
+        },
+        {
+          "text": "oolong",
+          "source": "aimee",
+          "positions": [
+            95,
+            96
+          ],
+          "score": 0.024825749336741865
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            128
+          ],
+          "score": 0.05182896554470062
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            131,
+            132
+          ],
+          "score": 0.02793152816593647
+        },
+        {
+          "text": "drink",
+          "source": "sequence",
+          "positions": [
+            140
+          ],
+          "score": 0.044544070959091187
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "sequence",
+          "positions": [
+            142,
+            143,
+            144,
+            145,
+            146,
+            147,
+            148,
+            149,
+            150,
+            151
+          ],
+          "score": 0.03526672441512346
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164,
+            165,
+            166
+          ],
+          "score": 0.041060563176870346
+        },
+        {
+          "text": "6115",
+          "source": "sequence",
+          "positions": [
+            186,
+            187,
+            188,
+            189
+          ],
+          "score": 0.06103255786001682
+        },
+        {
+          "text": "ool",
+          "source": "sequence",
+          "positions": [
+            191
+          ],
+          "score": 0.07541678845882416
+        }
+      ],
+      "step": 6,
+      "phase": "decode",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 98,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        },
+        {
+          "namespace": "aimee-published",
+          "id": "6",
+          "revision": "3eae3584cc979c44a0d63d36e28fdaedc17f07ae3452f8e2c69b5235c8d42d39"
+        },
+        {
+          "namespace": "aimee-published",
+          "id": "5",
+          "revision": "60aa41830845fadb3d420e6346bbc4068fc834a3a513fa157e7f0a440470e4cb"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative research.native-bank.20260920.d2 unit-121330aded oolong TCP port IANA drink unit-b03646cbf4 unit-121330aded 6115 oolong",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "id": 5,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d1",
+            "content": "The preferred drink of unit-b03646cbf4 is oolong.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "aimee-published",
+              "id": "5",
+              "revision": "60aa41830845fadb3d420e6346bbc4068fc834a3a513fa157e7f0a440470e4cb"
+            }
+          },
+          {
+            "id": 6,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d2",
+            "content": "The home city of unit-121330aded is Lima.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "aimee-published",
+              "id": "6",
+              "revision": "3eae3584cc979c44a0d63d36e28fdaedc17f07ae3452f8e2c69b5235c8d42d39"
+            }
+          }
+        ],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.012303312076255679
+        },
+        {
+          "text": "research.native-bank.20260920.d2",
+          "source": "aimee",
+          "positions": [
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45
+          ],
+          "score": 0.026966010773321614
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "aimee",
+          "positions": [
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57,
+            58,
+            59
+          ],
+          "score": 0.03399542660918087
+        },
+        {
+          "text": "oolong",
+          "source": "aimee",
+          "positions": [
+            95,
+            96
+          ],
+          "score": 0.018763924948871136
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            128
+          ],
+          "score": 0.04204743728041649
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            129
+          ],
+          "score": 0.01119887363165617
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            131,
+            132
+          ],
+          "score": 0.02040534606203437
+        },
+        {
+          "text": "drink",
+          "source": "sequence",
+          "positions": [
+            140
+          ],
+          "score": 0.02821318805217743
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "sequence",
+          "positions": [
+            142,
+            143,
+            144,
+            145,
+            146,
+            147,
+            148,
+            149,
+            150,
+            151
+          ],
+          "score": 0.029192627756856382
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164,
+            165,
+            166
+          ],
+          "score": 0.0437330697895959
+        },
+        {
+          "text": "6115",
+          "source": "sequence",
+          "positions": [
+            186,
+            187,
+            188,
+            189
+          ],
+          "score": 0.05576466349884868
+        },
+        {
+          "text": "oolong",
+          "source": "sequence",
+          "positions": [
+            191,
+            192
+          ],
+          "score": 0.24986165761947632
+        }
+      ],
+      "step": 7,
+      "phase": "decode",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 98,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        },
+        {
+          "namespace": "aimee-published",
+          "id": "6",
+          "revision": "3eae3584cc979c44a0d63d36e28fdaedc17f07ae3452f8e2c69b5235c8d42d39"
+        },
+        {
+          "namespace": "aimee-published",
+          "id": "5",
+          "revision": "60aa41830845fadb3d420e6346bbc4068fc834a3a513fa157e7f0a440470e4cb"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "research.native-bank.20260920.d2 unit-121330aded Answer TCP then unit-b03646cbf4 unit-121330aded values semicolons assistant 6115 oolong",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "id": 6,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d2",
+            "content": "The home city of unit-121330aded is Lima.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "aimee-published",
+              "id": "6",
+              "revision": "3eae3584cc979c44a0d63d36e28fdaedc17f07ae3452f8e2c69b5235c8d42d39"
+            }
+          },
+          {
+            "id": 5,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d1",
+            "content": "The preferred drink of unit-b03646cbf4 is oolong.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "aimee-published",
+              "id": "5",
+              "revision": "60aa41830845fadb3d420e6346bbc4068fc834a3a513fa157e7f0a440470e4cb"
+            }
+          }
+        ],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "research.native-bank.20260920.d2",
+          "source": "aimee",
+          "positions": [
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45
+          ],
+          "score": 0.04175299912458286
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "aimee",
+          "positions": [
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57,
+            58,
+            59
+          ],
+          "score": 0.017129746091086417
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            101
+          ],
+          "score": 0.014915570616722107
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            128
+          ],
+          "score": 0.018258526921272278
+        },
+        {
+          "text": "then",
+          "source": "sequence",
+          "positions": [
+            137
+          ],
+          "score": 0.011442182585597038
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "sequence",
+          "positions": [
+            142,
+            143,
+            144,
+            145,
+            146,
+            147,
+            148,
+            149,
+            150,
+            151
+          ],
+          "score": 0.025943801505491138
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164,
+            165,
+            166
+          ],
+          "score": 0.026588033128064126
+        },
+        {
+          "text": "values",
+          "source": "sequence",
+          "positions": [
+            171
+          ],
+          "score": 0.01433461345732212
+        },
+        {
+          "text": "semicolons",
+          "source": "sequence",
+          "positions": [
+            173,
+            174,
+            175
+          ],
+          "score": 0.014145694207400084
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            180
+          ],
+          "score": 0.022037528455257416
+        },
+        {
+          "text": "6115",
+          "source": "sequence",
+          "positions": [
+            186,
+            187,
+            188,
+            189
+          ],
+          "score": 0.05703615956008434
+        },
+        {
+          "text": "oolong",
+          "source": "sequence",
+          "positions": [
+            191,
+            192
+          ],
+          "score": 0.11455992981791496
+        }
+      ],
+      "step": 8,
+      "phase": "decode",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 98,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        },
+        {
+          "namespace": "aimee-published",
+          "id": "6",
+          "revision": "3eae3584cc979c44a0d63d36e28fdaedc17f07ae3452f8e2c69b5235c8d42d39"
+        },
+        {
+          "namespace": "aimee-published",
+          "id": "5",
+          "revision": "60aa41830845fadb3d420e6346bbc4068fc834a3a513fa157e7f0a440470e4cb"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "research.native-bank.20260920.d2 unit-121330aded Answer TCP IANA drink unit-b03646cbf4 unit-121330aded assistant 6115 oolong L",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "id": 5,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d1",
+            "content": "The preferred drink of unit-b03646cbf4 is oolong.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "aimee-published",
+              "id": "5",
+              "revision": "60aa41830845fadb3d420e6346bbc4068fc834a3a513fa157e7f0a440470e4cb"
+            }
+          },
+          {
+            "id": 6,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d2",
+            "content": "The home city of unit-121330aded is Lima.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "aimee-published",
+              "id": "6",
+              "revision": "3eae3584cc979c44a0d63d36e28fdaedc17f07ae3452f8e2c69b5235c8d42d39"
+            }
+          }
+        ],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "research.native-bank.20260920.d2",
+          "source": "aimee",
+          "positions": [
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45
+          ],
+          "score": 0.04919077843078412
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "aimee",
+          "positions": [
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57,
+            58,
+            59
+          ],
+          "score": 0.020900553790852427
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            101
+          ],
+          "score": 0.019756028428673744
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            128
+          ],
+          "score": 0.04628095030784607
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            131,
+            132
+          ],
+          "score": 0.018031021114438772
+        },
+        {
+          "text": "drink",
+          "source": "sequence",
+          "positions": [
+            140
+          ],
+          "score": 0.01940838247537613
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "sequence",
+          "positions": [
+            142,
+            143,
+            144,
+            145,
+            146,
+            147,
+            148,
+            149,
+            150,
+            151
+          ],
+          "score": 0.03104300453560427
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164,
+            165,
+            166
+          ],
+          "score": 0.031101792003028095
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            180
+          ],
+          "score": 0.01993757113814354
+        },
+        {
+          "text": "6115",
+          "source": "sequence",
+          "positions": [
+            186,
+            187,
+            188,
+            189
+          ],
+          "score": 0.049033746123313904
+        },
+        {
+          "text": "oolong",
+          "source": "sequence",
+          "positions": [
+            191,
+            192
+          ],
+          "score": 0.06228041276335716
+        },
+        {
+          "text": "L",
+          "source": "sequence",
+          "positions": [
+            194
+          ],
+          "score": 0.041449762880802155
+        }
+      ],
+      "step": 9,
+      "phase": "decode",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 98,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        },
+        {
+          "namespace": "aimee-published",
+          "id": "6",
+          "revision": "3eae3584cc979c44a0d63d36e28fdaedc17f07ae3452f8e2c69b5235c8d42d39"
+        },
+        {
+          "namespace": "aimee-published",
+          "id": "5",
+          "revision": "60aa41830845fadb3d420e6346bbc4068fc834a3a513fa157e7f0a440470e4cb"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "research.native-bank.20260920.d2 unit-121330aded Lima TCP IANA drink unit-b03646cbf4 city unit-121330aded 6115 oolong Lima",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "id": 6,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d2",
+            "content": "The home city of unit-121330aded is Lima.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "aimee-published",
+              "id": "6",
+              "revision": "3eae3584cc979c44a0d63d36e28fdaedc17f07ae3452f8e2c69b5235c8d42d39"
+            }
+          },
+          {
+            "id": 5,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d1",
+            "content": "The preferred drink of unit-b03646cbf4 is oolong.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "aimee-published",
+              "id": "5",
+              "revision": "60aa41830845fadb3d420e6346bbc4068fc834a3a513fa157e7f0a440470e4cb"
+            }
+          }
+        ],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "research.native-bank.20260920.d2",
+          "source": "aimee",
+          "positions": [
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45
+          ],
+          "score": 0.04069602070376277
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "aimee",
+          "positions": [
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57,
+            58,
+            59
+          ],
+          "score": 0.03181516099721193
+        },
+        {
+          "text": "Lima",
+          "source": "aimee",
+          "positions": [
+            61
+          ],
+          "score": 0.02719256281852722
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            128
+          ],
+          "score": 0.024659283459186554
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            131,
+            132
+          ],
+          "score": 0.035990700125694275
+        },
+        {
+          "text": "drink",
+          "source": "sequence",
+          "positions": [
+            140
+          ],
+          "score": 0.024159332737326622
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "sequence",
+          "positions": [
+            142,
+            143,
+            144,
+            145,
+            146,
+            147,
+            148,
+            149,
+            150,
+            151
+          ],
+          "score": 0.04816436534747481
+        },
+        {
+          "text": "city",
+          "source": "sequence",
+          "positions": [
+            156
+          ],
+          "score": 0.018005793914198875
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164,
+            165,
+            166
+          ],
+          "score": 0.050828060833737254
+        },
+        {
+          "text": "6115",
+          "source": "sequence",
+          "positions": [
+            186,
+            187,
+            188,
+            189
+          ],
+          "score": 0.023000508081167936
+        },
+        {
+          "text": "oolong",
+          "source": "sequence",
+          "positions": [
+            191,
+            192
+          ],
+          "score": 0.03262291103601456
+        },
+        {
+          "text": "Lima",
+          "source": "sequence",
+          "positions": [
+            194,
+            195
+          ],
+          "score": 0.04007335565984249
+        }
+      ],
+      "step": 10,
+      "phase": "decode",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 98,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        },
+        {
+          "namespace": "aimee-published",
+          "id": "6",
+          "revision": "3eae3584cc979c44a0d63d36e28fdaedc17f07ae3452f8e2c69b5235c8d42d39"
+        },
+        {
+          "namespace": "aimee-published",
+          "id": "5",
+          "revision": "60aa41830845fadb3d420e6346bbc4068fc834a3a513fa157e7f0a440470e4cb"
+        }
+      ],
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 98
+}

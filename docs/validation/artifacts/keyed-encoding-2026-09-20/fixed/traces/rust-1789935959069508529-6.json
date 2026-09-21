@@ -1,0 +1,2459 @@
+{
+  "runtime": "rust-libtorch",
+  "id": "rust-1789935959069508529-6",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the NASA archive, what is the orbital period in days for planet TOI-799 b? Return the number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    20774,
+    17593,
+    11,
+    1092,
+    369,
+    279,
+    62409,
+    4031,
+    303,
+    2756,
+    364,
+    11247,
+    4981,
+    40,
+    12,
+    22,
+    24,
+    24,
+    292,
+    30,
+    3301,
+    279,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    20,
+    13,
+    20,
+    19,
+    20,
+    16,
+    24,
+    16,
+    18,
+    24,
+    21,
+    22,
+    21
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "fb07f7308e4e17944f9afe53457ade8122929877b922679e40d0b278baf7d19f",
+  "memory_encoding": "keyed",
+  "memory_before_prompt": true,
+  "memory_position_offset": -123,
+  "answer": "5.54519139676",
+  "finish_reason": "stop",
+  "elapsed_ms": 10897.26362,
+  "memory_encoding_passes": 1,
+  "native_reads": 224,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the NASA archive, what is the orbital period in days for planet TOI-799 b? Return the number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "For planet TOI-799 b, the NASA Exoplanet Archive composite table lists: host star TOI-799; discovery year 2026; discovery method Transit; discovery facility Transiting Exoplanet Survey Satellite (TESS); orbital period 5.54519139676 days; reported planet radius 2.06631784 Earth radii; reported system distance 158.52600000 parsecs.",
+            "id": "nasa.TOI-799 b",
+            "key": "planet TOI-799 b",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "nasa.TOI-799 b",
+              "revision": "8aa2d4cdd71fc91c8ae517fc10ea69b753b26d73badb431872593be172237a56"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 123,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-799 b",
+          "revision": "8aa2d4cdd71fc91c8ae517fc10ea69b753b26d73badb431872593be172237a56"
+        }
+      ],
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative TOI-799 158.52600000 parsecs Answer user what in TOI-799 assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.016867327969521284
+        },
+        {
+          "text": "TOI-799",
+          "source": "aimee",
+          "positions": [
+            6,
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "score": 0.014902768365573138
+        },
+        {
+          "text": "158.52600000",
+          "source": "aimee",
+          "positions": [
+            108,
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119
+          ],
+          "score": 0.014628854260081425
+        },
+        {
+          "text": "parsecs",
+          "source": "aimee",
+          "positions": [
+            120,
+            121
+          ],
+          "score": 0.013736934401094913
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            126
+          ],
+          "score": 0.02325914055109024
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            149
+          ],
+          "score": 0.01607433520257473
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            157
+          ],
+          "score": 0.025429140776395798
+        },
+        {
+          "text": "in",
+          "source": "sequence",
+          "positions": [
+            162
+          ],
+          "score": 0.016719002276659012
+        },
+        {
+          "text": "TOI-799",
+          "source": "sequence",
+          "positions": [
+            166,
+            167,
+            168,
+            169,
+            170,
+            171
+          ],
+          "score": 0.014768262393772602
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            182
+          ],
+          "score": 0.025769095867872238
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            184
+          ],
+          "score": 0.03173084557056427
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            186
+          ],
+          "score": 0.07222678512334824
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 123,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-799 b",
+          "revision": "8aa2d4cdd71fc91c8ae517fc10ea69b753b26d73badb431872593be172237a56"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative TOI-799 5.54519139676 158.52600000 Answer user According TOI-799 assistant think think 5",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.01281519653275609
+        },
+        {
+          "text": "TOI-799",
+          "source": "aimee",
+          "positions": [
+            6,
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "score": 0.018021480296738446
+        },
+        {
+          "text": "5.54519139676",
+          "source": "aimee",
+          "positions": [
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83
+          ],
+          "score": 0.039932243613293394
+        },
+        {
+          "text": "158.52600000",
+          "source": "aimee",
+          "positions": [
+            108,
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119
+          ],
+          "score": 0.014022930903593078
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            126
+          ],
+          "score": 0.037038132548332214
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            149
+          ],
+          "score": 0.01494089886546135
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            151
+          ],
+          "score": 0.02004070393741131
+        },
+        {
+          "text": "TOI-799",
+          "source": "sequence",
+          "positions": [
+            166,
+            167,
+            168,
+            169,
+            170,
+            171
+          ],
+          "score": 0.022148821037262678
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            182
+          ],
+          "score": 0.025134768337011337
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            184
+          ],
+          "score": 0.018256206065416336
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            186
+          ],
+          "score": 0.013261339627206326
+        },
+        {
+          "text": "5",
+          "source": "sequence",
+          "positions": [
+            188
+          ],
+          "score": 0.04276648163795471
+        }
+      ],
+      "step": 1,
+      "phase": "decode",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 123,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-799 b",
+          "revision": "8aa2d4cdd71fc91c8ae517fc10ea69b753b26d73badb431872593be172237a56"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative TOI-799 5.54519139676 Answer According NASA what orbital period TOI-799 assistant think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.022007187828421593
+        },
+        {
+          "text": "TOI-799",
+          "source": "aimee",
+          "positions": [
+            6,
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "score": 0.021104507381096482
+        },
+        {
+          "text": "5.54519139676",
+          "source": "aimee",
+          "positions": [
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83
+          ],
+          "score": 0.02139674252248369
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            126
+          ],
+          "score": 0.03388127684593201
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            151
+          ],
+          "score": 0.018348217010498047
+        },
+        {
+          "text": "NASA",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.015423647128045559
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            157
+          ],
+          "score": 0.015030063688755035
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            160
+          ],
+          "score": 0.033299777656793594
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.016327861696481705
+        },
+        {
+          "text": "TOI-799",
+          "source": "sequence",
+          "positions": [
+            166,
+            167,
+            168,
+            169,
+            170,
+            171
+          ],
+          "score": 0.02445148932747543
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            182
+          ],
+          "score": 0.030919209122657776
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            184
+          ],
+          "score": 0.015007655136287212
+        }
+      ],
+      "step": 2,
+      "phase": "decode",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 123,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-799 b",
+          "revision": "8aa2d4cdd71fc91c8ae517fc10ea69b753b26d73badb431872593be172237a56"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative TOI-799 table 5.54519139676 NASA orbital period days TOI-799 b think 5.5",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.013274769764393568
+        },
+        {
+          "text": "TOI-799",
+          "source": "aimee",
+          "positions": [
+            6,
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "score": 0.020648081554099917
+        },
+        {
+          "text": "table",
+          "source": "aimee",
+          "positions": [
+            31
+          ],
+          "score": 0.013638261705636978
+        },
+        {
+          "text": "5.54519139676",
+          "source": "aimee",
+          "positions": [
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83
+          ],
+          "score": 0.12986456654471112
+        },
+        {
+          "text": "NASA",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.01879754848778248
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            160
+          ],
+          "score": 0.026729650795459747
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.020668497309088707
+        },
+        {
+          "text": "days",
+          "source": "sequence",
+          "positions": [
+            163
+          ],
+          "score": 0.01953277550637722
+        },
+        {
+          "text": "TOI-799",
+          "source": "sequence",
+          "positions": [
+            166,
+            167,
+            168,
+            169,
+            170,
+            171
+          ],
+          "score": 0.027502939803525805
+        },
+        {
+          "text": "b",
+          "source": "sequence",
+          "positions": [
+            172
+          ],
+          "score": 0.014285782352089882
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            184
+          ],
+          "score": 0.01446460373699665
+        },
+        {
+          "text": "5.5",
+          "source": "sequence",
+          "positions": [
+            188,
+            189,
+            190
+          ],
+          "score": 0.14175111800432205
+        }
+      ],
+      "step": 3,
+      "phase": "decode",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 123,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-799 b",
+          "revision": "8aa2d4cdd71fc91c8ae517fc10ea69b753b26d73badb431872593be172237a56"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TOI-799 5.54519139676 158.52600000 NASA orbital period days planet TOI-799 b number 5.54",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "For planet TOI-799 b, the NASA Exoplanet Archive composite table lists: host star TOI-799; discovery year 2026; discovery method Transit; discovery facility Transiting Exoplanet Survey Satellite (TESS); orbital period 5.54519139676 days; reported planet radius 2.06631784 Earth radii; reported system distance 158.52600000 parsecs.",
+            "id": "nasa.TOI-799 b",
+            "key": "planet TOI-799 b",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "nasa.TOI-799 b",
+              "revision": "8aa2d4cdd71fc91c8ae517fc10ea69b753b26d73badb431872593be172237a56"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TOI-799",
+          "source": "aimee",
+          "positions": [
+            6,
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "score": 0.014654373517259955
+        },
+        {
+          "text": "5.54519139676",
+          "source": "aimee",
+          "positions": [
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83
+          ],
+          "score": 0.13941803821944632
+        },
+        {
+          "text": "158.52600000",
+          "source": "aimee",
+          "positions": [
+            108,
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119
+          ],
+          "score": 0.012922121401061304
+        },
+        {
+          "text": "NASA",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.023555895313620567
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            160
+          ],
+          "score": 0.033076297491788864
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.02918832004070282
+        },
+        {
+          "text": "days",
+          "source": "sequence",
+          "positions": [
+            163
+          ],
+          "score": 0.019592121243476868
+        },
+        {
+          "text": "planet",
+          "source": "sequence",
+          "positions": [
+            165
+          ],
+          "score": 0.014904120936989784
+        },
+        {
+          "text": "TOI-799",
+          "source": "sequence",
+          "positions": [
+            166,
+            167,
+            168,
+            169,
+            170,
+            171
+          ],
+          "score": 0.0352369868196547
+        },
+        {
+          "text": "b",
+          "source": "sequence",
+          "positions": [
+            172
+          ],
+          "score": 0.015873463824391365
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            176
+          ],
+          "score": 0.015494531020522118
+        },
+        {
+          "text": "5.54",
+          "source": "sequence",
+          "positions": [
+            188,
+            189,
+            190,
+            191
+          ],
+          "score": 0.2151491641998291
+        }
+      ],
+      "step": 4,
+      "phase": "decode",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 123,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-799 b",
+          "revision": "8aa2d4cdd71fc91c8ae517fc10ea69b753b26d73badb431872593be172237a56"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative TOI-799 5.54519139676 158.52600000 Answer NASA orbital period planet TOI-799 number 5.545",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.010749418055638671
+        },
+        {
+          "text": "TOI-799",
+          "source": "aimee",
+          "positions": [
+            6,
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "score": 0.01166159042622894
+        },
+        {
+          "text": "5.54519139676",
+          "source": "aimee",
+          "positions": [
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83
+          ],
+          "score": 0.13791731643141247
+        },
+        {
+          "text": "158.52600000",
+          "source": "aimee",
+          "positions": [
+            108,
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119
+          ],
+          "score": 0.016202834056457505
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            126
+          ],
+          "score": 0.01283169537782669
+        },
+        {
+          "text": "NASA",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.015955938026309013
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            160
+          ],
+          "score": 0.02915818616747856
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.02874770760536194
+        },
+        {
+          "text": "planet",
+          "source": "sequence",
+          "positions": [
+            165
+          ],
+          "score": 0.010652135126292706
+        },
+        {
+          "text": "TOI-799",
+          "source": "sequence",
+          "positions": [
+            166,
+            167,
+            168,
+            169,
+            170,
+            171
+          ],
+          "score": 0.024763907538726926
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            176
+          ],
+          "score": 0.01902463287115097
+        },
+        {
+          "text": "5.545",
+          "source": "sequence",
+          "positions": [
+            188,
+            189,
+            190,
+            191,
+            192
+          ],
+          "score": 0.262868270277977
+        }
+      ],
+      "step": 5,
+      "phase": "decode",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 123,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-799 b",
+          "revision": "8aa2d4cdd71fc91c8ae517fc10ea69b753b26d73badb431872593be172237a56"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative TOI-799 5.54519139676 158.52600000 Answer NASA orbital period TOI-799 number think 5.5451",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.014094476122409105
+        },
+        {
+          "text": "TOI-799",
+          "source": "aimee",
+          "positions": [
+            6,
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "score": 0.010158508317545056
+        },
+        {
+          "text": "5.54519139676",
+          "source": "aimee",
+          "positions": [
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83
+          ],
+          "score": 0.09794829424208729
+        },
+        {
+          "text": "158.52600000",
+          "source": "aimee",
+          "positions": [
+            108,
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119
+          ],
+          "score": 0.01757543616986368
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            126
+          ],
+          "score": 0.013327475637197495
+        },
+        {
+          "text": "NASA",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.012849542312324047
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            160
+          ],
+          "score": 0.02310766652226448
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.021968331187963486
+        },
+        {
+          "text": "TOI-799",
+          "source": "sequence",
+          "positions": [
+            166,
+            167,
+            168,
+            169,
+            170,
+            171
+          ],
+          "score": 0.02063540439121425
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            176
+          ],
+          "score": 0.01526691298931837
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            184
+          ],
+          "score": 0.010855954140424728
+        },
+        {
+          "text": "5.5451",
+          "source": "sequence",
+          "positions": [
+            188,
+            189,
+            190,
+            191,
+            192,
+            193
+          ],
+          "score": 0.3630669377744198
+        }
+      ],
+      "step": 6,
+      "phase": "decode",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 123,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-799 b",
+          "revision": "8aa2d4cdd71fc91c8ae517fc10ea69b753b26d73badb431872593be172237a56"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "5.54519139676 2.06631784 158.52600000 Answer NASA orbital period TOI-799 Return number think 5.54519",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "5.54519139676",
+          "source": "aimee",
+          "positions": [
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83
+          ],
+          "score": 0.07696154279983602
+        },
+        {
+          "text": "2.06631784",
+          "source": "aimee",
+          "positions": [
+            90,
+            91,
+            92,
+            93,
+            94,
+            95,
+            96,
+            97,
+            98,
+            99
+          ],
+          "score": 0.009401942370459437
+        },
+        {
+          "text": "158.52600000",
+          "source": "aimee",
+          "positions": [
+            108,
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119
+          ],
+          "score": 0.016646461765049025
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            126
+          ],
+          "score": 0.01321426685899496
+        },
+        {
+          "text": "NASA",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.01083531603217125
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            160
+          ],
+          "score": 0.02289309911429882
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.016882915049791336
+        },
+        {
+          "text": "TOI-799",
+          "source": "sequence",
+          "positions": [
+            166,
+            167,
+            168,
+            169,
+            170,
+            171
+          ],
+          "score": 0.021327304653823376
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            174
+          ],
+          "score": 0.009295019321143627
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            176
+          ],
+          "score": 0.01809951290488243
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            184
+          ],
+          "score": 0.016016362234950066
+        },
+        {
+          "text": "5.54519",
+          "source": "sequence",
+          "positions": [
+            188,
+            189,
+            190,
+            191,
+            192,
+            193,
+            194
+          ],
+          "score": 0.380514670163393
+        }
+      ],
+      "step": 7,
+      "phase": "decode",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 123,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-799 b",
+          "revision": "8aa2d4cdd71fc91c8ae517fc10ea69b753b26d73badb431872593be172237a56"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 5.54519139676 158.52600000 parsecs NASA orbital period days TOI-799 number think 5.545191",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.013810488395392895
+        },
+        {
+          "text": "5.54519139676",
+          "source": "aimee",
+          "positions": [
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83
+          ],
+          "score": 0.06508290565398056
+        },
+        {
+          "text": "158.52600000",
+          "source": "aimee",
+          "positions": [
+            108,
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119
+          ],
+          "score": 0.016784093662863597
+        },
+        {
+          "text": "parsecs",
+          "source": "aimee",
+          "positions": [
+            120,
+            121
+          ],
+          "score": 0.011319175828248262
+        },
+        {
+          "text": "NASA",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.01088977511972189
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            160
+          ],
+          "score": 0.030656784772872925
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.02203323319554329
+        },
+        {
+          "text": "days",
+          "source": "sequence",
+          "positions": [
+            163
+          ],
+          "score": 0.012575271539390087
+        },
+        {
+          "text": "TOI-799",
+          "source": "sequence",
+          "positions": [
+            166,
+            167,
+            168,
+            169,
+            170,
+            171
+          ],
+          "score": 0.025302033172920346
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            176
+          ],
+          "score": 0.014745095744729042
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            184
+          ],
+          "score": 0.01135978102684021
+        },
+        {
+          "text": "5.545191",
+          "source": "sequence",
+          "positions": [
+            188,
+            189,
+            190,
+            191,
+            192,
+            193,
+            194,
+            195
+          ],
+          "score": 0.409324299544096
+        }
+      ],
+      "step": 8,
+      "phase": "decode",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 123,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-799 b",
+          "revision": "8aa2d4cdd71fc91c8ae517fc10ea69b753b26d73badb431872593be172237a56"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative TOI-799 5.54519139676 Answer NASA orbital period planet TOI-799 number think 5.5451913",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.012774392031133175
+        },
+        {
+          "text": "TOI-799",
+          "source": "aimee",
+          "positions": [
+            6,
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "score": 0.013233533361926675
+        },
+        {
+          "text": "5.54519139676",
+          "source": "aimee",
+          "positions": [
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83
+          ],
+          "score": 0.0649507955822628
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            126
+          ],
+          "score": 0.013632988557219505
+        },
+        {
+          "text": "NASA",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.013358859345316887
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            160
+          ],
+          "score": 0.023785263299942017
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.024631161242723465
+        },
+        {
+          "text": "planet",
+          "source": "sequence",
+          "positions": [
+            165
+          ],
+          "score": 0.010360384359955788
+        },
+        {
+          "text": "TOI-799",
+          "source": "sequence",
+          "positions": [
+            166,
+            167,
+            168,
+            169,
+            170,
+            171
+          ],
+          "score": 0.025899572065100074
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            176
+          ],
+          "score": 0.013691896572709084
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            184
+          ],
+          "score": 0.017548874020576477
+        },
+        {
+          "text": "5.5451913",
+          "source": "sequence",
+          "positions": [
+            188,
+            189,
+            190,
+            191,
+            192,
+            193,
+            194,
+            195,
+            196
+          ],
+          "score": 0.37988131307065487
+        }
+      ],
+      "step": 9,
+      "phase": "decode",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 123,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-799 b",
+          "revision": "8aa2d4cdd71fc91c8ae517fc10ea69b753b26d73badb431872593be172237a56"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "5.54519139676 158.52600000 Answer NASA orbital period days planet TOI-799 number think 5.54519139",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "5.54519139676",
+          "source": "aimee",
+          "positions": [
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83
+          ],
+          "score": 0.08124229917302728
+        },
+        {
+          "text": "158.52600000",
+          "source": "aimee",
+          "positions": [
+            108,
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119
+          ],
+          "score": 0.01216482205200009
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            126
+          ],
+          "score": 0.012046702206134796
+        },
+        {
+          "text": "NASA",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.012430118396878242
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            160
+          ],
+          "score": 0.02585791051387787
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.017475541681051254
+        },
+        {
+          "text": "days",
+          "source": "sequence",
+          "positions": [
+            163
+          ],
+          "score": 0.013988269492983818
+        },
+        {
+          "text": "planet",
+          "source": "sequence",
+          "positions": [
+            165
+          ],
+          "score": 0.011140590533614159
+        },
+        {
+          "text": "TOI-799",
+          "source": "sequence",
+          "positions": [
+            166,
+            167,
+            168,
+            169,
+            170,
+            171
+          ],
+          "score": 0.01964347600005567
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            176
+          ],
+          "score": 0.022726787254214287
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            184
+          ],
+          "score": 0.010926781222224236
+        },
+        {
+          "text": "5.54519139",
+          "source": "sequence",
+          "positions": [
+            188,
+            189,
+            190,
+            191,
+            192,
+            193,
+            194,
+            195,
+            196,
+            197
+          ],
+          "score": 0.38075801357626915
+        }
+      ],
+      "step": 10,
+      "phase": "decode",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 123,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-799 b",
+          "revision": "8aa2d4cdd71fc91c8ae517fc10ea69b753b26d73badb431872593be172237a56"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Exoplanet 5.54519139676 Answer what orbital period TOI-799 number think think 5.545191396",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.013254080899059772
+        },
+        {
+          "text": "Exoplanet",
+          "source": "aimee",
+          "positions": [
+            26,
+            27,
+            28
+          ],
+          "score": 0.009060379350557923
+        },
+        {
+          "text": "5.54519139676",
+          "source": "aimee",
+          "positions": [
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83
+          ],
+          "score": 0.04244772192032542
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            126
+          ],
+          "score": 0.01155842375010252
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            157
+          ],
+          "score": 0.010856641456484795
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            160
+          ],
+          "score": 0.016373559832572937
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.018592651933431625
+        },
+        {
+          "text": "TOI-799",
+          "source": "sequence",
+          "positions": [
+            166,
+            167,
+            168,
+            169,
+            170,
+            171
+          ],
+          "score": 0.016008223523385823
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            176
+          ],
+          "score": 0.015616079792380333
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            184
+          ],
+          "score": 0.017898492515087128
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            186
+          ],
+          "score": 0.01034922618418932
+        },
+        {
+          "text": "5.545191396",
+          "source": "sequence",
+          "positions": [
+            188,
+            189,
+            190,
+            191,
+            192,
+            193,
+            194,
+            195,
+            196,
+            197,
+            198
+          ],
+          "score": 0.45144461560994387
+        }
+      ],
+      "step": 11,
+      "phase": "decode",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 123,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-799 b",
+          "revision": "8aa2d4cdd71fc91c8ae517fc10ea69b753b26d73badb431872593be172237a56"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 5.54519139676 2.06631784 158.52600000 Answer NASA orbital period TOI-799 number think 5.5451913967",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.015885425731539726
+        },
+        {
+          "text": "5.54519139676",
+          "source": "aimee",
+          "positions": [
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83
+          ],
+          "score": 0.039510013099061325
+        },
+        {
+          "text": "2.06631784",
+          "source": "aimee",
+          "positions": [
+            90,
+            91,
+            92,
+            93,
+            94,
+            95,
+            96,
+            97,
+            98,
+            99
+          ],
+          "score": 0.015352676186012104
+        },
+        {
+          "text": "158.52600000",
+          "source": "aimee",
+          "positions": [
+            108,
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119
+          ],
+          "score": 0.01777628407580778
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            126
+          ],
+          "score": 0.014670755714178085
+        },
+        {
+          "text": "NASA",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.010185359977185726
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            160
+          ],
+          "score": 0.02144845388829708
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.015132373198866844
+        },
+        {
+          "text": "TOI-799",
+          "source": "sequence",
+          "positions": [
+            166,
+            167,
+            168,
+            169,
+            170,
+            171
+          ],
+          "score": 0.018377098720520735
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            176
+          ],
+          "score": 0.016794756054878235
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            184
+          ],
+          "score": 0.011582551524043083
+        },
+        {
+          "text": "5.5451913967",
+          "source": "sequence",
+          "positions": [
+            188,
+            189,
+            190,
+            191,
+            192,
+            193,
+            194,
+            195,
+            196,
+            197,
+            198,
+            199
+          ],
+          "score": 0.44098532292991877
+        }
+      ],
+      "step": 12,
+      "phase": "decode",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 123,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-799 b",
+          "revision": "8aa2d4cdd71fc91c8ae517fc10ea69b753b26d73badb431872593be172237a56"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "5.54519139676 days 158.52600000 Answer orbital period TOI-799 number assistant think think 5.54519139676",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "5.54519139676",
+          "source": "aimee",
+          "positions": [
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83
+          ],
+          "score": 0.03049629833549261
+        },
+        {
+          "text": "days",
+          "source": "aimee",
+          "positions": [
+            84
+          ],
+          "score": 0.06459677964448929
+        },
+        {
+          "text": "158.52600000",
+          "source": "aimee",
+          "positions": [
+            108,
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119
+          ],
+          "score": 0.012322168127866462
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            126
+          ],
+          "score": 0.011255073361098766
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            160
+          ],
+          "score": 0.013433538377285004
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.013523794710636139
+        },
+        {
+          "text": "TOI-799",
+          "source": "sequence",
+          "positions": [
+            166,
+            167,
+            168,
+            169,
+            170,
+            171
+          ],
+          "score": 0.018129153177142143
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            176
+          ],
+          "score": 0.018011758103966713
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            182
+          ],
+          "score": 0.00991109386086464
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            184
+          ],
+          "score": 0.020594589412212372
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            186
+          ],
+          "score": 0.018391191959381104
+        },
+        {
+          "text": "5.54519139676",
+          "source": "sequence",
+          "positions": [
+            188,
+            189,
+            190,
+            191,
+            192,
+            193,
+            194,
+            195,
+            196,
+            197,
+            198,
+            199,
+            200
+          ],
+          "score": 0.43443770962767303
+        }
+      ],
+      "step": 13,
+      "phase": "decode",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 123,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-799 b",
+          "revision": "8aa2d4cdd71fc91c8ae517fc10ea69b753b26d73badb431872593be172237a56"
+        }
+      ],
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 78
+}

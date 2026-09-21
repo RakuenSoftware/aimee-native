@@ -1,0 +1,69 @@
+{
+  "name": "city_hybrid",
+  "request": {
+    "messages": [
+      {
+        "role": "system",
+        "content": "Answer using the available memory. Return only the requested value or values. If unknown, return unknown."
+      },
+      {
+        "role": "user",
+        "content": "What is the home city of unit-121330aded?"
+      }
+    ],
+    "max_tokens": 32,
+    "temperature": 0
+  },
+  "http_status": 200,
+  "seconds": 6.671231652144343,
+  "response": {
+    "id": "29de83d374bf492db5babfaf407964ed",
+    "object": "chat.completion",
+    "model": "qwen-aimee-direct",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "Lima"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 53,
+      "completion_tokens": 3,
+      "total_tokens": 56
+    },
+    "aimee": {
+      "requested": true,
+      "request": {
+        "origin": "qwen_attention_query",
+        "query_source": "projected_attention_query",
+        "query": "Authoritative unit-121330aded Lima unit-edbe6de0e4 unit-81b1315e68 unit-e470f703d0 ledger-6b8f31 project-d4a92c What city unit-121330aded Lima",
+        "limit": 4
+      },
+      "returned_memory_ids": [
+        6,
+        7,
+        9,
+        11
+      ],
+      "native_reads": 48,
+      "recall_calls": 4,
+      "preload_calls": 1,
+      "native_recall_calls": 3,
+      "bank_memory_ids": [
+        6,
+        7,
+        4,
+        3,
+        10,
+        8,
+        9,
+        11
+      ],
+      "memory_encoding_tokens": 159
+    }
+  }
+}

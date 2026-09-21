@@ -1,0 +1,56 @@
+{
+  "native_answers": 8,
+  "native_passes": 8,
+  "memory_prompt_tokens": 0,
+  "composition_runs_identical_prompt_ids": true,
+  "composition_runs": 7,
+  "public_records": 249105,
+  "safety_final": [
+    {
+      "case": "private-policy",
+      "pass_": true
+    },
+    {
+      "case": "image-write",
+      "pass_": true
+    },
+    {
+      "case": "inflight-withdrawal",
+      "request_active_at_withdrawal": true,
+      "http_status": 502,
+      "response": {
+        "error": "native memory request failed"
+      },
+      "withdrawal_seconds": 0.8036413060035557,
+      "maximum_native_step": 66,
+      "failed_traces": [
+        "rust-1789984376245477144-9-failed.json"
+      ],
+      "pass_": true
+    },
+    {
+      "case": "withdrawn-image-no-record-bytes",
+      "pass_": true,
+      "file_count": 0
+    }
+  ],
+  "disconnect_reconnect": [
+    {
+      "case": "disconnect-withdraws",
+      "pass_": true,
+      "seconds": 0.16186357010155916
+    },
+    {
+      "case": "reconnect-restores-same-generation",
+      "pass_": true,
+      "seconds": 54.57963233394548,
+      "delivery": {
+        "transferred_bytes": 108,
+        "apply_ms": 38170.149,
+        "state": "installed",
+        "view": "f935f7de5616ef30606f88a50c217dce6da33411aa85c05644c6e26ff57307f0",
+        "copied_bytes": 415439744
+      }
+    }
+  ]
+}

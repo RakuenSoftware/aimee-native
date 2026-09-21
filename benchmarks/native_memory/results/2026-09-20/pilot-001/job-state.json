@@ -1,0 +1,151 @@
+{
+  "phase": "complete",
+  "started_at": "2026-09-19T21:47:45.219024+00:00",
+  "elapsed_seconds": 3411.142947108019,
+  "commands": [
+    [
+      "/opt/aimee-native-p0-training/bin/python",
+      "/opt/aimee-native-p0-training/pilot-001-source/run_p0.py",
+      "train",
+      "--model",
+      "/opt/aimee-native-p0-training/model",
+      "--fixtures",
+      "/opt/aimee-native-p0-training/pilot-001-source/fixtures",
+      "--placement",
+      "/opt/aimee-native-p0-training/pilot-001-source/placement-dual7900xtx-int8.json",
+      "--base-quantization",
+      "int8_per_row_v1",
+      "--dtype",
+      "bfloat16",
+      "--value-width",
+      "2048",
+      "--attention-width",
+      "256",
+      "--k",
+      "16",
+      "--after-block",
+      "1",
+      "--seed",
+      "4817",
+      "--lr",
+      "0.001",
+      "--steps",
+      "2100",
+      "--out",
+      "/opt/aimee-native-p0-training/pilot-001/train"
+    ],
+    [
+      "/opt/aimee-native-p0-training/bin/python",
+      "/opt/aimee-native-p0-training/pilot-001-source/run_p0.py",
+      "evaluate",
+      "--model",
+      "/opt/aimee-native-p0-training/model",
+      "--fixtures",
+      "/opt/aimee-native-p0-training/pilot-001-source/fixtures",
+      "--placement",
+      "/opt/aimee-native-p0-training/pilot-001-source/placement-dual7900xtx-int8.json",
+      "--base-quantization",
+      "int8_per_row_v1",
+      "--dtype",
+      "bfloat16",
+      "--value-width",
+      "2048",
+      "--attention-width",
+      "256",
+      "--k",
+      "16",
+      "--after-block",
+      "1",
+      "--seed",
+      "4817",
+      "--lr",
+      "0.001",
+      "--checkpoint",
+      "/opt/aimee-native-p0-training/pilot-001/train/adapter.pt",
+      "--out",
+      "/opt/aimee-native-p0-training/pilot-001/evaluation"
+    ]
+  ],
+  "summary": {
+    "accuracy": {
+      "none": 0.0,
+      "text": 0.9454545454545454,
+      "native_disabled": 0.0,
+      "native": 0.09090909090909091,
+      "native_empty": 0.0,
+      "native_distractors": 0.07272727272727272
+    },
+    "accuracy_by_category": {
+      "none": {
+        "technical_configuration": 0.0,
+        "project_fact": 0.0,
+        "stable_fact": 0.0,
+        "composition": 0.0,
+        "preference": 0.0,
+        "procedure": 0.0,
+        "entity_property": 0.0
+      },
+      "text": {
+        "technical_configuration": 1.0,
+        "project_fact": 1.0,
+        "stable_fact": 1.0,
+        "composition": 0.4,
+        "preference": 1.0,
+        "procedure": 1.0,
+        "entity_property": 1.0
+      },
+      "native_disabled": {
+        "technical_configuration": 0.0,
+        "project_fact": 0.0,
+        "stable_fact": 0.0,
+        "composition": 0.0,
+        "preference": 0.0,
+        "procedure": 0.0,
+        "entity_property": 0.0
+      },
+      "native": {
+        "technical_configuration": 0.0,
+        "project_fact": 0.23529411764705882,
+        "stable_fact": 0.0,
+        "composition": 0.0,
+        "preference": 0.29411764705882354,
+        "procedure": 0.0,
+        "entity_property": 0.058823529411764705
+      },
+      "native_empty": {
+        "technical_configuration": 0.0,
+        "project_fact": 0.0,
+        "stable_fact": 0.0,
+        "composition": 0.0,
+        "preference": 0.0,
+        "procedure": 0.0,
+        "entity_property": 0.0
+      },
+      "native_distractors": {
+        "technical_configuration": 0.0,
+        "project_fact": 0.17647058823529413,
+        "stable_fact": 0.0,
+        "composition": 0.0,
+        "preference": 0.23529411764705882,
+        "procedure": 0.0,
+        "entity_property": 0.058823529411764705
+      }
+    },
+    "native_over_text": 0.09615384615384616,
+    "checks": {
+      "full_evaluation": true,
+      "text_baseline_nonzero": true,
+      "disabled_and_empty_parity": true,
+      "native_prompt_parity": true,
+      "relative_accuracy": false,
+      "composition": false,
+      "native_zero_added_tokens": true
+    },
+    "stage_a_accuracy_gate": "fail_or_incomplete",
+    "limitations": [
+      "Accuracy gate alone does not establish update, deletion or scope noninterference.",
+      "Research timings are not optimized serving throughput measurements.",
+      "Held-out query forms use trained memories; this is not writer-network generalization."
+    ]
+  }
+}

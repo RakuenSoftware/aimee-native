@@ -1,0 +1,47 @@
+{
+  "uid": 999,
+  "checks": [
+    {
+      "case": "manifest_write",
+      "denied": true
+    },
+    {
+      "case": "image_create",
+      "denied": true
+    },
+    {
+      "case": "credential_read",
+      "denied": true
+    },
+    {
+      "case": "gateway /v1/memory/store",
+      "status": 403,
+      "denied": true
+    },
+    {
+      "case": "gateway /publish",
+      "status": 403,
+      "denied": true
+    },
+    {
+      "case": "gateway /search",
+      "status": 400,
+      "denied": true
+    },
+    {
+      "case": "CLI publication",
+      "denied": true,
+      "error": "open /opt/aimee-qwen-adapter/local-first-image/.publish.lock: permission denied"
+    },
+    {
+      "case": "authorized read",
+      "status": 200,
+      "allowed": true,
+      "ids": [
+        5,
+        7
+      ]
+    }
+  ],
+  "all_pass": true
+}

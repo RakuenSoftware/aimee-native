@@ -1,0 +1,34 @@
+{
+  "question": "Can native memory consume an Aimee-authoritative fact absent from textual context?",
+  "memory_id": 3,
+  "source_store": "user",
+  "source_content_hash": "7234e120467da0587902d041a5471963d255b3f0bcba329e4991d1777f747b5e",
+  "correct_by_mode": {
+    "none": 0,
+    "native_disabled": 0,
+    "text_control": 6,
+    "native_aimee": 0,
+    "native_original_value": 0,
+    "native_empty": 0
+  },
+  "queries_per_mode": 6,
+  "paired_native_successes": 0,
+  "proof_of_concept": "not_demonstrated",
+  "checks": {
+    "no_memory_text_in_native_prompts": true,
+    "zero_added_memory_tokens": true,
+    "prompt_parity": true,
+    "disabled_and_empty_parity": true,
+    "base_and_interface_frozen": true,
+    "source_is_aimee_readback": true
+  },
+  "compilation_steps": 240,
+  "trainable_parameters": 2048,
+  "speed_is_acceptance_gate": false,
+  "text_parity_is_acceptance_gate": false,
+  "limitations": [
+    "One synthetic fact in actual Aimee storage, not a broad memory-quality claim.",
+    "Per-memory optimization reads the Aimee fact offline as supervision; it is absent from inference context.",
+    "No retrieval-quality, latency, image-format or production-readiness conclusion."
+  ]
+}

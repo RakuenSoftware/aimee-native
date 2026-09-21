@@ -1,0 +1,51 @@
+{
+  "name": "chain_2_disabled",
+  "request": {
+    "messages": [
+      {
+        "role": "system",
+        "content": "Use available memory. Do not invent unknown details. Give only the requested values."
+      },
+      {
+        "role": "user",
+        "content": "For project-f09e67, return its linked ledger identifier; that ledger's lookup phrase. Give the identifier first. Use unknown if needed."
+      }
+    ],
+    "max_tokens": 48,
+    "temperature": 0,
+    "aimee_memory": false,
+    "recall_mode": "attention",
+    "decode_recall": false
+  },
+  "http_status": 200,
+  "seconds": 0.9544925750233233,
+  "response": {
+    "id": "cec8eb47a7684f7d99484b44a3a5964b",
+    "object": "chat.completion",
+    "model": "qwen-aimee-direct",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "unknown"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 64,
+      "completion_tokens": 2,
+      "total_tokens": 66
+    },
+    "aimee": {
+      "requested": false,
+      "request": null,
+      "returned_memory_ids": [],
+      "native_reads": 0,
+      "recall_calls": 0,
+      "bank_memory_ids": [],
+      "memory_encoding_tokens": 0
+    }
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "authority_records": 64,
+  "model_requests": 128,
+  "correct": 96,
+  "checks": [
+    {
+      "case": "physical_exclusion",
+      "subject": "model-0",
+      "pass": true,
+      "leaked_paths": []
+    },
+    {
+      "case": "forged_authorization",
+      "subject": "model-0",
+      "status": 403,
+      "pass": true
+    },
+    {
+      "case": "scope_escalation",
+      "subject": "model-0",
+      "status": 403,
+      "pass": true
+    },
+    {
+      "case": "write_attempt",
+      "subject": "model-0",
+      "status": 403,
+      "pass": true
+    },
+    {
+      "case": "live_revocation",
+      "subject": "model-0",
+      "pass": true
+    },
+    {
+      "case": "physical_exclusion",
+      "subject": "model-1",
+      "pass": true,
+      "leaked_paths": []
+    },
+    {
+      "case": "forged_authorization",
+      "subject": "model-1",
+      "status": 403,
+      "pass": true
+    },
+    {
+      "case": "scope_escalation",
+      "subject": "model-1",
+      "status": 403,
+      "pass": true
+    },
+    {
+      "case": "write_attempt",
+      "subject": "model-1",
+      "status": 403,
+      "pass": true
+    },
+    {
+      "case": "live_revocation",
+      "subject": "model-1",
+      "pass": true
+    }
+  ],
+  "all_pass": false,
+  "local_hit": {
+    "count": 16,
+    "median_ms": 1.388250500895083
+  },
+  "authorized_fallback": {
+    "count": 17,
+    "median_ms": 95.4768240917474
+  },
+  "denied": {
+    "count": 64,
+    "median_ms": 0.18037704285234213
+  }
+}

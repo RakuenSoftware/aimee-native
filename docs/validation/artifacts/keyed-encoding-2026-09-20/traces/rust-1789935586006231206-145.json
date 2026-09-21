@@ -1,0 +1,303 @@
+{
+  "runtime": "rust-libtorch",
+  "id": "rust-1789935586006231206-145",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nGive the registered TCP ports for IANA service u-dbap and IANA service xic, in that order. Return two integers separated by a semicolon.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    33963,
+    279,
+    9393,
+    25804,
+    19708,
+    364,
+    353,
+    37492,
+    2393,
+    560,
+    58362,
+    385,
+    321,
+    353,
+    37492,
+    2393,
+    830,
+    291,
+    11,
+    303,
+    421,
+    1906,
+    13,
+    3301,
+    1330,
+    24959,
+    18101,
+    539,
+    264,
+    5067,
+    37238,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    18,
+    20,
+    23,
+    19,
+    26,
+    21,
+    16,
+    16,
+    20
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "fb07f7308e4e17944f9afe53457ade8122929877b922679e40d0b278baf7d19f",
+  "memory_encoding": "content",
+  "answer": "3584;6115",
+  "finish_reason": "stop",
+  "elapsed_ms": 5410.3780050000005,
+  "memory_encoding_passes": 1,
+  "native_reads": 160,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "Give the registered TCP ports for IANA service u-dbap and IANA service xic, in that order. Return two integers separated by a semicolon.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service u-dbap has these registered transport/port assignments: TCP port 3584; UDP port 3584.",
+            "id": "iana.u-dbap",
+            "key": "IANA service u-dbap",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.u-dbap",
+              "revision": "7708ab582e8c71c1fe6899b08252c89c15d15b561e9112bad81ae493bc256d1d"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          },
+          {
+            "confidence": 1,
+            "content": "IANA service xic has these registered transport/port assignments: TCP port 6115.",
+            "id": "iana.xic",
+            "key": "IANA service xic",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.xic",
+              "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 53,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.u-dbap",
+          "revision": "7708ab582e8c71c1fe6899b08252c89c15d15b561e9112bad81ae493bc256d1d"
+        },
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        }
+      ],
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user Give TCP for u-dbap and integers assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.030743726529181004
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            56
+          ],
+          "score": 0.027593150734901428
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            79
+          ],
+          "score": 0.015513114631175995
+        },
+        {
+          "text": "Give",
+          "source": "sequence",
+          "positions": [
+            81
+          ],
+          "score": 0.013453329913318157
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            84
+          ],
+          "score": 0.013159180991351604
+        },
+        {
+          "text": "for",
+          "source": "sequence",
+          "positions": [
+            86
+          ],
+          "score": 0.02065737545490265
+        },
+        {
+          "text": "u-dbap",
+          "source": "sequence",
+          "positions": [
+            90,
+            91,
+            92
+          ],
+          "score": 0.012804020661860704
+        },
+        {
+          "text": "and",
+          "source": "sequence",
+          "positions": [
+            93
+          ],
+          "score": 0.013238783925771713
+        },
+        {
+          "text": "integers",
+          "source": "sequence",
+          "positions": [
+            106
+          ],
+          "score": 0.020746998488903046
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            116
+          ],
+          "score": 0.024889986962080002
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.028145110234618187
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            120
+          ],
+          "score": 0.06478667259216309
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 53,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.u-dbap",
+          "revision": "7708ab582e8c71c1fe6899b08252c89c15d15b561e9112bad81ae493bc256d1d"
+        },
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        }
+      ],
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 78
+}

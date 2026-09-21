@@ -1,0 +1,979 @@
+{
+  "runtime": "rust-libtorch",
+  "id": "rust-1789976065738616268-40",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhat population does GeoNames report for Oravita RO? Return the integer only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    3710,
+    6823,
+    1503,
+    30862,
+    7729,
+    1830,
+    364,
+    2441,
+    394,
+    6059,
+    11474,
+    30,
+    3301,
+    279,
+    7308,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    16,
+    17,
+    18,
+    18,
+    17
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "e53a54d1c6e76dec5f0a7ffa89ed6a979de2ac4ebef3d5ec356a2b75b93dd01d",
+  "memory_encoding": "content",
+  "memory_before_prompt": true,
+  "memory_position_offset": -92,
+  "answer": "12332",
+  "finish_reason": "stop",
+  "elapsed_ms": 5242.7211879999995,
+  "memory_encoding_passes": 1,
+  "native_reads": 96,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "What population does GeoNames report for Oravita RO? Return the integer only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Oraviţa (ID 671746): country code RO; latitude 45.0325; longitude 21.68944; administrative codes 12/51118; population 12332; time zone Europe/Bucharest. The source record was modified on 2014-06-04.",
+            "id": "geonames.671746",
+            "key": "place Oraviţa RO 671746",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.671746",
+              "revision": "81b898fb3b86b8cb8fc93c7b1349e0b20be6474dec389212c5cb4c9303a68a3b"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 92,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.671746",
+          "revision": "81b898fb3b86b8cb8fc93c7b1349e0b20be6474dec389212c5cb4c9303a68a3b"
+        }
+      ],
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user What does report Return the integer assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.024216335266828537
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            95
+          ],
+          "score": 0.01850508712232113
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.015288959257304668
+        },
+        {
+          "text": "What",
+          "source": "sequence",
+          "positions": [
+            120
+          ],
+          "score": 0.024928878992795944
+        },
+        {
+          "text": "does",
+          "source": "sequence",
+          "positions": [
+            122
+          ],
+          "score": 0.023807678371667862
+        },
+        {
+          "text": "report",
+          "source": "sequence",
+          "positions": [
+            125
+          ],
+          "score": 0.023037079721689224
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            132
+          ],
+          "score": 0.018485616892576218
+        },
+        {
+          "text": "the",
+          "source": "sequence",
+          "positions": [
+            133
+          ],
+          "score": 0.017368074506521225
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            134
+          ],
+          "score": 0.03315988555550575
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            140
+          ],
+          "score": 0.023150693625211716
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            142
+          ],
+          "score": 0.02965875342488289
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            144
+          ],
+          "score": 0.06341957300901413
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 92,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.671746",
+          "revision": "81b898fb3b86b8cb8fc93c7b1349e0b20be6474dec389212c5cb4c9303a68a3b"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2014-06-04 Answer user What does the integer assistant think think 1",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.01750797010026872
+        },
+        {
+          "text": "2014-06-04",
+          "source": "aimee",
+          "positions": [
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90
+          ],
+          "score": 0.01525401315302588
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            95
+          ],
+          "score": 0.0289835836738348
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.01903851144015789
+        },
+        {
+          "text": "What",
+          "source": "sequence",
+          "positions": [
+            120
+          ],
+          "score": 0.03538129851222038
+        },
+        {
+          "text": "does",
+          "source": "sequence",
+          "positions": [
+            122
+          ],
+          "score": 0.018289240077137947
+        },
+        {
+          "text": "the",
+          "source": "sequence",
+          "positions": [
+            133
+          ],
+          "score": 0.018295254558324814
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            134
+          ],
+          "score": 0.03484174609184265
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            140
+          ],
+          "score": 0.02699446491897106
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            142
+          ],
+          "score": 0.035876739770174026
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            144
+          ],
+          "score": 0.021036986261606216
+        },
+        {
+          "text": "1",
+          "source": "sequence",
+          "positions": [
+            146
+          ],
+          "score": 0.04165762662887573
+        }
+      ],
+      "step": 1,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 92,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.671746",
+          "revision": "81b898fb3b86b8cb8fc93c7b1349e0b20be6474dec389212c5cb4c9303a68a3b"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 671746 2014-06-04 Answer What population does GeoNames integer assistant think 12",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.0182048249989748
+        },
+        {
+          "text": "671746",
+          "source": "aimee",
+          "positions": [
+            15,
+            16,
+            17,
+            18,
+            19,
+            20
+          ],
+          "score": 0.022151177749037743
+        },
+        {
+          "text": "2014-06-04",
+          "source": "aimee",
+          "positions": [
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90
+          ],
+          "score": 0.017744003620464355
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            95
+          ],
+          "score": 0.02638639137148857
+        },
+        {
+          "text": "What",
+          "source": "sequence",
+          "positions": [
+            120
+          ],
+          "score": 0.026536395773291588
+        },
+        {
+          "text": "population",
+          "source": "sequence",
+          "positions": [
+            121
+          ],
+          "score": 0.02172398567199707
+        },
+        {
+          "text": "does",
+          "source": "sequence",
+          "positions": [
+            122
+          ],
+          "score": 0.017902037128806114
+        },
+        {
+          "text": "GeoNames",
+          "source": "sequence",
+          "positions": [
+            123,
+            124
+          ],
+          "score": 0.0307524548843503
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            134
+          ],
+          "score": 0.043518148362636566
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            140
+          ],
+          "score": 0.020940473303198814
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            142
+          ],
+          "score": 0.017835726961493492
+        },
+        {
+          "text": "12",
+          "source": "sequence",
+          "positions": [
+            146,
+            147
+          ],
+          "score": 0.07287299633026123
+        }
+      ],
+      "step": 2,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 92,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.671746",
+          "revision": "81b898fb3b86b8cb8fc93c7b1349e0b20be6474dec389212c5cb4c9303a68a3b"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Oraviţa code 12332 Answer What population GeoNames report Return integer think 123",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Oraviţa",
+          "source": "aimee",
+          "positions": [
+            9,
+            10,
+            11
+          ],
+          "score": 0.02215007785707712
+        },
+        {
+          "text": "code",
+          "source": "aimee",
+          "positions": [
+            23
+          ],
+          "score": 0.029916565865278244
+        },
+        {
+          "text": "12332",
+          "source": "aimee",
+          "positions": [
+            61,
+            62,
+            63,
+            64,
+            65
+          ],
+          "score": 0.07833226567890961
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            95
+          ],
+          "score": 0.018554940819740295
+        },
+        {
+          "text": "What",
+          "source": "sequence",
+          "positions": [
+            120
+          ],
+          "score": 0.031035378575325012
+        },
+        {
+          "text": "population",
+          "source": "sequence",
+          "positions": [
+            121
+          ],
+          "score": 0.027082612738013268
+        },
+        {
+          "text": "GeoNames",
+          "source": "sequence",
+          "positions": [
+            123,
+            124
+          ],
+          "score": 0.044939177110791206
+        },
+        {
+          "text": "report",
+          "source": "sequence",
+          "positions": [
+            125
+          ],
+          "score": 0.022624880075454712
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            132
+          ],
+          "score": 0.022886641323566437
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            134
+          ],
+          "score": 0.07883678376674652
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            142
+          ],
+          "score": 0.024750124663114548
+        },
+        {
+          "text": "123",
+          "source": "sequence",
+          "positions": [
+            146,
+            147,
+            148
+          ],
+          "score": 0.07554013654589653
+        }
+      ],
+      "step": 3,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 92,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.671746",
+          "revision": "81b898fb3b86b8cb8fc93c7b1349e0b20be6474dec389212c5cb4c9303a68a3b"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "GeoNames Oraviţa code 45.0325 codes 12332 Answer population GeoNames report integer 1233",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "GeoNames",
+          "source": "aimee",
+          "positions": [
+            5,
+            6
+          ],
+          "score": 0.0169824892655015
+        },
+        {
+          "text": "Oraviţa",
+          "source": "aimee",
+          "positions": [
+            9,
+            10,
+            11
+          ],
+          "score": 0.020640762988477945
+        },
+        {
+          "text": "code",
+          "source": "aimee",
+          "positions": [
+            23
+          ],
+          "score": 0.049510203301906586
+        },
+        {
+          "text": "45.0325",
+          "source": "aimee",
+          "positions": [
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34
+          ],
+          "score": 0.024156235565897077
+        },
+        {
+          "text": "codes",
+          "source": "aimee",
+          "positions": [
+            48
+          ],
+          "score": 0.018808996304869652
+        },
+        {
+          "text": "12332",
+          "source": "aimee",
+          "positions": [
+            61,
+            62,
+            63,
+            64,
+            65
+          ],
+          "score": 0.0926025298103923
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            95
+          ],
+          "score": 0.016750529408454895
+        },
+        {
+          "text": "population",
+          "source": "sequence",
+          "positions": [
+            121
+          ],
+          "score": 0.02224939875304699
+        },
+        {
+          "text": "GeoNames",
+          "source": "sequence",
+          "positions": [
+            123,
+            124
+          ],
+          "score": 0.044923391193151474
+        },
+        {
+          "text": "report",
+          "source": "sequence",
+          "positions": [
+            125
+          ],
+          "score": 0.019052617251873016
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            134
+          ],
+          "score": 0.05223395675420761
+        },
+        {
+          "text": "1233",
+          "source": "sequence",
+          "positions": [
+            146,
+            147,
+            148,
+            149
+          ],
+          "score": 0.13931619934737682
+        }
+      ],
+      "step": 4,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 92,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.671746",
+          "revision": "81b898fb3b86b8cb8fc93c7b1349e0b20be6474dec389212c5cb4c9303a68a3b"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative GeoNames Oraviţa code 45.0325 12332 Answer What population GeoNames integer 12332",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.015488716773688793
+        },
+        {
+          "text": "GeoNames",
+          "source": "aimee",
+          "positions": [
+            5,
+            6
+          ],
+          "score": 0.015548778232187033
+        },
+        {
+          "text": "Oraviţa",
+          "source": "aimee",
+          "positions": [
+            9,
+            10,
+            11
+          ],
+          "score": 0.014923822600394487
+        },
+        {
+          "text": "code",
+          "source": "aimee",
+          "positions": [
+            23
+          ],
+          "score": 0.021911781281232834
+        },
+        {
+          "text": "45.0325",
+          "source": "aimee",
+          "positions": [
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34
+          ],
+          "score": 0.023219634080305696
+        },
+        {
+          "text": "12332",
+          "source": "aimee",
+          "positions": [
+            61,
+            62,
+            63,
+            64,
+            65
+          ],
+          "score": 0.017996973314438947
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            95
+          ],
+          "score": 0.016355520114302635
+        },
+        {
+          "text": "What",
+          "source": "sequence",
+          "positions": [
+            120
+          ],
+          "score": 0.01784663274884224
+        },
+        {
+          "text": "population",
+          "source": "sequence",
+          "positions": [
+            121
+          ],
+          "score": 0.01703754812479019
+        },
+        {
+          "text": "GeoNames",
+          "source": "sequence",
+          "positions": [
+            123,
+            124
+          ],
+          "score": 0.04223991930484772
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            134
+          ],
+          "score": 0.04123054817318916
+        },
+        {
+          "text": "12332",
+          "source": "sequence",
+          "positions": [
+            146,
+            147,
+            148,
+            149,
+            150
+          ],
+          "score": 0.2798302322626114
+        }
+      ],
+      "step": 5,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 92,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.671746",
+          "revision": "81b898fb3b86b8cb8fc93c7b1349e0b20be6474dec389212c5cb4c9303a68a3b"
+        }
+      ],
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 59
+}

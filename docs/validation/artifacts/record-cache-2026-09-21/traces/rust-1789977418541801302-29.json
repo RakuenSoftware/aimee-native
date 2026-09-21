@@ -1,0 +1,666 @@
+{
+  "runtime": "rust-libtorch",
+  "id": "rust-1789977418541801302-29",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhat is the preferred drink of unit-b03646cbf4? Return only the drink.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    3710,
+    369,
+    279,
+    14459,
+    6808,
+    314,
+    4821,
+    1402,
+    15,
+    18,
+    21,
+    19,
+    21,
+    6995,
+    69,
+    19,
+    30,
+    3301,
+    1132,
+    279,
+    6808,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    1687,
+    626
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "e53a54d1c6e76dec5f0a7ffa89ed6a979de2ac4ebef3d5ec356a2b75b93dd01d",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -23,
+  "answer": "oolong",
+  "finish_reason": "stop",
+  "elapsed_ms": 3282.768385,
+  "memory_encoding_passes": 1,
+  "native_reads": 48,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "What is the preferred drink of unit-b03646cbf4? Return only the drink.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "id": 5,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d1",
+            "content": "The preferred drink of unit-b03646cbf4 is oolong.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "aimee-published",
+              "id": "5",
+              "revision": "60aa41830845fadb3d420e6346bbc4068fc834a3a513fa157e7f0a440470e4cb"
+            }
+          }
+        ],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 23,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-published",
+          "id": "5",
+          "revision": "60aa41830845fadb3d420e6346bbc4068fc834a3a513fa157e7f0a440470e4cb"
+        }
+      ],
+      "encoding_elapsed_ms": 491.435974,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 23,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative unit-b03646cbf4 Answer user What is drink of unit-b03646cbf4 assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "id": 5,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d1",
+            "content": "The preferred drink of unit-b03646cbf4 is oolong.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "aimee-published",
+              "id": "5",
+              "revision": "60aa41830845fadb3d420e6346bbc4068fc834a3a513fa157e7f0a440470e4cb"
+            }
+          }
+        ],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.028016217052936554
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "aimee",
+          "positions": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18
+          ],
+          "score": 0.020527984714135528
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            26
+          ],
+          "score": 0.029539939016103745
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            49
+          ],
+          "score": 0.017367415130138397
+        },
+        {
+          "text": "What",
+          "source": "sequence",
+          "positions": [
+            51
+          ],
+          "score": 0.030394036322832108
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            52
+          ],
+          "score": 0.022816874086856842
+        },
+        {
+          "text": "drink",
+          "source": "sequence",
+          "positions": [
+            55
+          ],
+          "score": 0.015047578141093254
+        },
+        {
+          "text": "of",
+          "source": "sequence",
+          "positions": [
+            56
+          ],
+          "score": 0.02089044824242592
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "sequence",
+          "positions": [
+            57,
+            58,
+            59,
+            60,
+            61,
+            62,
+            63,
+            64,
+            65,
+            66
+          ],
+          "score": 0.03721620002761483
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            76
+          ],
+          "score": 0.029354076832532883
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.03512600436806679
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            80
+          ],
+          "score": 0.07634058594703674
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 23,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-published",
+          "id": "5",
+          "revision": "60aa41830845fadb3d420e6346bbc4068fc834a3a513fa157e7f0a440470e4cb"
+        }
+      ],
+      "encoding_elapsed_ms": 0.005808,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative drink unit-b03646cbf4 oolong Answer What drink unit-b03646cbf4 drink assistant think ool",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "id": 5,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d1",
+            "content": "The preferred drink of unit-b03646cbf4 is oolong.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "aimee-published",
+              "id": "5",
+              "revision": "60aa41830845fadb3d420e6346bbc4068fc834a3a513fa157e7f0a440470e4cb"
+            }
+          }
+        ],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.04386394843459129
+        },
+        {
+          "text": "drink",
+          "source": "aimee",
+          "positions": [
+            7
+          ],
+          "score": 0.041582223027944565
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "aimee",
+          "positions": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18
+          ],
+          "score": 0.03576641471590847
+        },
+        {
+          "text": "oolong",
+          "source": "aimee",
+          "positions": [
+            20,
+            21
+          ],
+          "score": 0.057490746257826686
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            26
+          ],
+          "score": 0.027459118515253067
+        },
+        {
+          "text": "What",
+          "source": "sequence",
+          "positions": [
+            51
+          ],
+          "score": 0.04518340528011322
+        },
+        {
+          "text": "drink",
+          "source": "sequence",
+          "positions": [
+            55
+          ],
+          "score": 0.09026753157377243
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "sequence",
+          "positions": [
+            57,
+            58,
+            59,
+            60,
+            61,
+            62,
+            63,
+            64,
+            65,
+            66
+          ],
+          "score": 0.10170125309377909
+        },
+        {
+          "text": "drink",
+          "source": "sequence",
+          "positions": [
+            71
+          ],
+          "score": 0.02263457700610161
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            76
+          ],
+          "score": 0.023248903453350067
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.02503565512597561
+        },
+        {
+          "text": "ool",
+          "source": "sequence",
+          "positions": [
+            82
+          ],
+          "score": 0.06305094808340073
+        }
+      ],
+      "step": 1,
+      "phase": "decode",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 23,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-published",
+          "id": "5",
+          "revision": "60aa41830845fadb3d420e6346bbc4068fc834a3a513fa157e7f0a440470e4cb"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00557,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative drink unit-b03646cbf4 oolong Answer What the drink unit-b03646cbf4 drink think oolong",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "id": 5,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d1",
+            "content": "The preferred drink of unit-b03646cbf4 is oolong.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "aimee-published",
+              "id": "5",
+              "revision": "60aa41830845fadb3d420e6346bbc4068fc834a3a513fa157e7f0a440470e4cb"
+            }
+          }
+        ],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.044772256165742874
+        },
+        {
+          "text": "drink",
+          "source": "aimee",
+          "positions": [
+            7
+          ],
+          "score": 0.027794908732175827
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "aimee",
+          "positions": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18
+          ],
+          "score": 0.032775198109447956
+        },
+        {
+          "text": "oolong",
+          "source": "aimee",
+          "positions": [
+            20,
+            21
+          ],
+          "score": 0.035686727380380034
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            26
+          ],
+          "score": 0.013710081577301025
+        },
+        {
+          "text": "What",
+          "source": "sequence",
+          "positions": [
+            51
+          ],
+          "score": 0.032298024743795395
+        },
+        {
+          "text": "the",
+          "source": "sequence",
+          "positions": [
+            53
+          ],
+          "score": 0.010871035978198051
+        },
+        {
+          "text": "drink",
+          "source": "sequence",
+          "positions": [
+            55
+          ],
+          "score": 0.043042104691267014
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "sequence",
+          "positions": [
+            57,
+            58,
+            59,
+            60,
+            61,
+            62,
+            63,
+            64,
+            65,
+            66
+          ],
+          "score": 0.08718413137830794
+        },
+        {
+          "text": "drink",
+          "source": "sequence",
+          "positions": [
+            71
+          ],
+          "score": 0.013935226015746593
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.013950448483228683
+        },
+        {
+          "text": "oolong",
+          "source": "sequence",
+          "positions": [
+            82,
+            83
+          ],
+          "score": 0.32719695568084717
+        }
+      ],
+      "step": 2,
+      "phase": "decode",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 23,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-published",
+          "id": "5",
+          "revision": "60aa41830845fadb3d420e6346bbc4068fc834a3a513fa157e7f0a440470e4cb"
+        }
+      ],
+      "encoding_elapsed_ms": 0.007494,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 61
+}

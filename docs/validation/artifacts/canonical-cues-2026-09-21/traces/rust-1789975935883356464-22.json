@@ -1,0 +1,2439 @@
+{
+  "runtime": "rust-libtorch",
+  "id": "rust-1789975935883356464-22",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the NASA archive, what is the orbital period in days for planet TOI-1732 b? Return the number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    20774,
+    17593,
+    11,
+    1092,
+    369,
+    279,
+    62409,
+    4031,
+    303,
+    2756,
+    364,
+    11247,
+    4981,
+    40,
+    12,
+    16,
+    22,
+    18,
+    17,
+    292,
+    30,
+    3301,
+    279,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    19,
+    13,
+    16,
+    16,
+    24,
+    17,
+    18,
+    21,
+    22,
+    23,
+    18,
+    18,
+    24
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "e53a54d1c6e76dec5f0a7ffa89ed6a979de2ac4ebef3d5ec356a2b75b93dd01d",
+  "memory_encoding": "content",
+  "memory_before_prompt": true,
+  "memory_position_offset": -115,
+  "answer": "4.11923678339",
+  "finish_reason": "stop",
+  "elapsed_ms": 9662.312118999998,
+  "memory_encoding_passes": 1,
+  "native_reads": 224,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the NASA archive, what is the orbital period in days for planet TOI-1732 b? Return the number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "For planet TOI-1732 b, the NASA Exoplanet Archive composite table lists: host star TOI-1732; discovery year 2026; discovery method Transit; discovery facility Transiting Exoplanet Survey Satellite (TESS); orbital period 4.11923678339 days; reported planet radius 2.49549787 Earth radii; reported system distance 74.75990000 parsecs.",
+            "id": "nasa.TOI-1732 b",
+            "key": "planet TOI-1732 b",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "nasa.TOI-1732 b",
+              "revision": "5d519091a8d2aef7dab0ef1b57f216773e30933e9267980a8f02e1b025f3254c"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 115,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-1732 b",
+          "revision": "5d519091a8d2aef7dab0ef1b57f216773e30933e9267980a8f02e1b025f3254c"
+        }
+      ],
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 74.75990000 parsecs Answer user According what in Return assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02637194748967886
+        },
+        {
+          "text": "74.75990000",
+          "source": "aimee",
+          "positions": [
+            101,
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108,
+            109,
+            110,
+            111
+          ],
+          "score": 0.013956853072158992
+        },
+        {
+          "text": "parsecs",
+          "source": "aimee",
+          "positions": [
+            112,
+            113
+          ],
+          "score": 0.013389276806265116
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.023393778130412102
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            141
+          ],
+          "score": 0.015840858221054077
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            143
+          ],
+          "score": 0.012316456064581871
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            149
+          ],
+          "score": 0.024997729808092117
+        },
+        {
+          "text": "in",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.01729588583111763
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            167
+          ],
+          "score": 0.014043563976883888
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            175
+          ],
+          "score": 0.025362905114889145
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            177
+          ],
+          "score": 0.033547669649124146
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            179
+          ],
+          "score": 0.0733848512172699
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 115,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-1732 b",
+          "revision": "5d519091a8d2aef7dab0ef1b57f216773e30933e9267980a8f02e1b025f3254c"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative planet TOI-1732 4.11923678339 74.75990000 Answer According TOI-1732 assistant think think 4",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.018762910272926092
+        },
+        {
+          "text": "planet",
+          "source": "aimee",
+          "positions": [
+            6
+          ],
+          "score": 0.015400366857647896
+        },
+        {
+          "text": "TOI-1732",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.017074903124012053
+        },
+        {
+          "text": "4.11923678339",
+          "source": "aimee",
+          "positions": [
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.032137418107595295
+        },
+        {
+          "text": "74.75990000",
+          "source": "aimee",
+          "positions": [
+            101,
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108,
+            109,
+            110,
+            111
+          ],
+          "score": 0.013857096200808883
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.03534328565001488
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            143
+          ],
+          "score": 0.018298635259270668
+        },
+        {
+          "text": "TOI-1732",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164
+          ],
+          "score": 0.02129352872725576
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            175
+          ],
+          "score": 0.02710249088704586
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            177
+          ],
+          "score": 0.025001727044582367
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            179
+          ],
+          "score": 0.016013864427804947
+        },
+        {
+          "text": "4",
+          "source": "sequence",
+          "positions": [
+            181
+          ],
+          "score": 0.034806784242391586
+        }
+      ],
+      "step": 1,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 115,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-1732 b",
+          "revision": "5d519091a8d2aef7dab0ef1b57f216773e30933e9267980a8f02e1b025f3254c"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative TOI-1732 table 4.11923678339 Answer According what orbital period TOI-1732 Return assistant",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.022174250334501266
+        },
+        {
+          "text": "TOI-1732",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.03107173601165414
+        },
+        {
+          "text": "table",
+          "source": "aimee",
+          "positions": [
+            23
+          ],
+          "score": 0.01508957426995039
+        },
+        {
+          "text": "4.11923678339",
+          "source": "aimee",
+          "positions": [
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.024963341100374237
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.03309972211718559
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            143
+          ],
+          "score": 0.018709180876612663
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            149
+          ],
+          "score": 0.015627946704626083
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.03356323763728142
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.016198573634028435
+        },
+        {
+          "text": "TOI-1732",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164
+          ],
+          "score": 0.03219504910521209
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            167
+          ],
+          "score": 0.01440509408712387
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            175
+          ],
+          "score": 0.030112288892269135
+        }
+      ],
+      "step": 2,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 115,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-1732 b",
+          "revision": "5d519091a8d2aef7dab0ef1b57f216773e30933e9267980a8f02e1b025f3254c"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TOI-1732 4.11923678339 Answer According what orbital period in TOI-1732 assistant think 4.1",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TOI-1732",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.02257254021242261
+        },
+        {
+          "text": "4.11923678339",
+          "source": "aimee",
+          "positions": [
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.12027984322048724
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.017505250871181488
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            143
+          ],
+          "score": 0.016109468415379524
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            149
+          ],
+          "score": 0.01757008582353592
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.017550412565469742
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.016147352755069733
+        },
+        {
+          "text": "in",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.016478924080729485
+        },
+        {
+          "text": "TOI-1732",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164
+          ],
+          "score": 0.028839627048000693
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            175
+          ],
+          "score": 0.019180066883563995
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            177
+          ],
+          "score": 0.02177823707461357
+        },
+        {
+          "text": "4.1",
+          "source": "sequence",
+          "positions": [
+            181,
+            182,
+            183
+          ],
+          "score": 0.10572290420532227
+        }
+      ],
+      "step": 3,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 115,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-1732 b",
+          "revision": "5d519091a8d2aef7dab0ef1b57f216773e30933e9267980a8f02e1b025f3254c"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TOI-1732 4.11923678339 Answer NASA archive orbital period days planet TOI-1732 Return 4.11",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TOI-1732",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.026510053779929876
+        },
+        {
+          "text": "4.11923678339",
+          "source": "aimee",
+          "positions": [
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.11441193852806464
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.016523145139217377
+        },
+        {
+          "text": "NASA",
+          "source": "sequence",
+          "positions": [
+            146
+          ],
+          "score": 0.0191916786134243
+        },
+        {
+          "text": "archive",
+          "source": "sequence",
+          "positions": [
+            147
+          ],
+          "score": 0.012989064678549767
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.023660894483327866
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.018609289079904556
+        },
+        {
+          "text": "days",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.016240272670984268
+        },
+        {
+          "text": "planet",
+          "source": "sequence",
+          "positions": [
+            157
+          ],
+          "score": 0.013317057862877846
+        },
+        {
+          "text": "TOI-1732",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164
+          ],
+          "score": 0.041532781440764666
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            167
+          ],
+          "score": 0.013255054131150246
+        },
+        {
+          "text": "4.11",
+          "source": "sequence",
+          "positions": [
+            181,
+            182,
+            183,
+            184
+          ],
+          "score": 0.247655238956213
+        }
+      ],
+      "step": 4,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 115,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-1732 b",
+          "revision": "5d519091a8d2aef7dab0ef1b57f216773e30933e9267980a8f02e1b025f3254c"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TOI-1732 star 4.11923678339 NASA orbital period days planet TOI-1732 b number 4.119",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "For planet TOI-1732 b, the NASA Exoplanet Archive composite table lists: host star TOI-1732; discovery year 2026; discovery method Transit; discovery facility Transiting Exoplanet Survey Satellite (TESS); orbital period 4.11923678339 days; reported planet radius 2.49549787 Earth radii; reported system distance 74.75990000 parsecs.",
+            "id": "nasa.TOI-1732 b",
+            "key": "planet TOI-1732 b",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "nasa.TOI-1732 b",
+              "revision": "5d519091a8d2aef7dab0ef1b57f216773e30933e9267980a8f02e1b025f3254c"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TOI-1732",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.022737640654668212
+        },
+        {
+          "text": "star",
+          "source": "aimee",
+          "positions": [
+            27
+          ],
+          "score": 0.01254918985068798
+        },
+        {
+          "text": "4.11923678339",
+          "source": "aimee",
+          "positions": [
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.11432629195041955
+        },
+        {
+          "text": "NASA",
+          "source": "sequence",
+          "positions": [
+            146
+          ],
+          "score": 0.02106129191815853
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.029627395793795586
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.02571185491979122
+        },
+        {
+          "text": "days",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.016714192926883698
+        },
+        {
+          "text": "planet",
+          "source": "sequence",
+          "positions": [
+            157
+          ],
+          "score": 0.017382562160491943
+        },
+        {
+          "text": "TOI-1732",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164
+          ],
+          "score": 0.04616545978933573
+        },
+        {
+          "text": "b",
+          "source": "sequence",
+          "positions": [
+            165
+          ],
+          "score": 0.01234270166605711
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            169
+          ],
+          "score": 0.016773192211985588
+        },
+        {
+          "text": "4.119",
+          "source": "sequence",
+          "positions": [
+            181,
+            182,
+            183,
+            184,
+            185
+          ],
+          "score": 0.282061118632555
+        }
+      ],
+      "step": 5,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 115,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-1732 b",
+          "revision": "5d519091a8d2aef7dab0ef1b57f216773e30933e9267980a8f02e1b025f3254c"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TOI-1732 4.11923678339 74.75990000 Answer NASA orbital period planet TOI-1732 b number 4.1192",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "For planet TOI-1732 b, the NASA Exoplanet Archive composite table lists: host star TOI-1732; discovery year 2026; discovery method Transit; discovery facility Transiting Exoplanet Survey Satellite (TESS); orbital period 4.11923678339 days; reported planet radius 2.49549787 Earth radii; reported system distance 74.75990000 parsecs.",
+            "id": "nasa.TOI-1732 b",
+            "key": "planet TOI-1732 b",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "nasa.TOI-1732 b",
+              "revision": "5d519091a8d2aef7dab0ef1b57f216773e30933e9267980a8f02e1b025f3254c"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TOI-1732",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.018233497394248843
+        },
+        {
+          "text": "4.11923678339",
+          "source": "aimee",
+          "positions": [
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.09837087272899225
+        },
+        {
+          "text": "74.75990000",
+          "source": "aimee",
+          "positions": [
+            101,
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108,
+            109,
+            110,
+            111
+          ],
+          "score": 0.01126009905419778
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.009737133048474789
+        },
+        {
+          "text": "NASA",
+          "source": "sequence",
+          "positions": [
+            146
+          ],
+          "score": 0.013313825242221355
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.029387399554252625
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.024902313947677612
+        },
+        {
+          "text": "planet",
+          "source": "sequence",
+          "positions": [
+            157
+          ],
+          "score": 0.008890770375728607
+        },
+        {
+          "text": "TOI-1732",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164
+          ],
+          "score": 0.030380892334505916
+        },
+        {
+          "text": "b",
+          "source": "sequence",
+          "positions": [
+            165
+          ],
+          "score": 0.010368619114160538
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            169
+          ],
+          "score": 0.015710553154349327
+        },
+        {
+          "text": "4.1192",
+          "source": "sequence",
+          "positions": [
+            181,
+            182,
+            183,
+            184,
+            185,
+            186
+          ],
+          "score": 0.4004722870886326
+        }
+      ],
+      "step": 6,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 115,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-1732 b",
+          "revision": "5d519091a8d2aef7dab0ef1b57f216773e30933e9267980a8f02e1b025f3254c"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TOI-1732 Exoplanet star 4.11923678339 NASA orbital period planet TOI-1732 b number 4.11923",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "For planet TOI-1732 b, the NASA Exoplanet Archive composite table lists: host star TOI-1732; discovery year 2026; discovery method Transit; discovery facility Transiting Exoplanet Survey Satellite (TESS); orbital period 4.11923678339 days; reported planet radius 2.49549787 Earth radii; reported system distance 74.75990000 parsecs.",
+            "id": "nasa.TOI-1732 b",
+            "key": "planet TOI-1732 b",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "nasa.TOI-1732 b",
+              "revision": "5d519091a8d2aef7dab0ef1b57f216773e30933e9267980a8f02e1b025f3254c"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TOI-1732",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.022062330273911357
+        },
+        {
+          "text": "Exoplanet",
+          "source": "aimee",
+          "positions": [
+            18,
+            19,
+            20
+          ],
+          "score": 0.010679570492357016
+        },
+        {
+          "text": "star",
+          "source": "aimee",
+          "positions": [
+            27
+          ],
+          "score": 0.010122383013367653
+        },
+        {
+          "text": "4.11923678339",
+          "source": "aimee",
+          "positions": [
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.08476672903634608
+        },
+        {
+          "text": "NASA",
+          "source": "sequence",
+          "positions": [
+            146
+          ],
+          "score": 0.013840763829648495
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.021756649017333984
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.018184620887041092
+        },
+        {
+          "text": "planet",
+          "source": "sequence",
+          "positions": [
+            157
+          ],
+          "score": 0.0116792693734169
+        },
+        {
+          "text": "TOI-1732",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164
+          ],
+          "score": 0.032606305088847876
+        },
+        {
+          "text": "b",
+          "source": "sequence",
+          "positions": [
+            165
+          ],
+          "score": 0.020190108567476273
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            169
+          ],
+          "score": 0.012991323135793209
+        },
+        {
+          "text": "4.11923",
+          "source": "sequence",
+          "positions": [
+            181,
+            182,
+            183,
+            184,
+            185,
+            186,
+            187
+          ],
+          "score": 0.42261645570397377
+        }
+      ],
+      "step": 7,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 115,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-1732 b",
+          "revision": "5d519091a8d2aef7dab0ef1b57f216773e30933e9267980a8f02e1b025f3254c"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TOI-1732 4.11923678339 Answer orbital period days TOI-1732 b Return number think 4.119236",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TOI-1732",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.013800034881569445
+        },
+        {
+          "text": "4.11923678339",
+          "source": "aimee",
+          "positions": [
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.09834285167744383
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.009434683248400688
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.020324893295764923
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.025968244299292564
+        },
+        {
+          "text": "days",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.011570445261895657
+        },
+        {
+          "text": "TOI-1732",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164
+          ],
+          "score": 0.02036960667464882
+        },
+        {
+          "text": "b",
+          "source": "sequence",
+          "positions": [
+            165
+          ],
+          "score": 0.009262369945645332
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            167
+          ],
+          "score": 0.010775171220302582
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            169
+          ],
+          "score": 0.010939342901110649
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            177
+          ],
+          "score": 0.013230795972049236
+        },
+        {
+          "text": "4.119236",
+          "source": "sequence",
+          "positions": [
+            181,
+            182,
+            183,
+            184,
+            185,
+            186,
+            187,
+            188
+          ],
+          "score": 0.44761763513088226
+        }
+      ],
+      "step": 8,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 115,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-1732 b",
+          "revision": "5d519091a8d2aef7dab0ef1b57f216773e30933e9267980a8f02e1b025f3254c"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative TOI-1732 4.11923678339 Answer According orbital period TOI-1732 number think think 4.1192367",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.011034626746550202
+        },
+        {
+          "text": "TOI-1732",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.012030746438540518
+        },
+        {
+          "text": "4.11923678339",
+          "source": "aimee",
+          "positions": [
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.055918699683388695
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.010414350777864456
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            143
+          ],
+          "score": 0.00976238027215004
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.019153272733092308
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.0143299400806427
+        },
+        {
+          "text": "TOI-1732",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164
+          ],
+          "score": 0.01866978546604514
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            169
+          ],
+          "score": 0.012154619209468365
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            177
+          ],
+          "score": 0.023466400802135468
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            179
+          ],
+          "score": 0.00988016277551651
+        },
+        {
+          "text": "4.1192367",
+          "source": "sequence",
+          "positions": [
+            181,
+            182,
+            183,
+            184,
+            185,
+            186,
+            187,
+            188,
+            189
+          ],
+          "score": 0.46598764695227146
+        }
+      ],
+      "step": 9,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 115,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-1732 b",
+          "revision": "5d519091a8d2aef7dab0ef1b57f216773e30933e9267980a8f02e1b025f3254c"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative TOI-1732 4.11923678339 Answer orbital period days TOI-1732 number think think 4.11923678",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.0124053331092
+        },
+        {
+          "text": "TOI-1732",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.012901716632768512
+        },
+        {
+          "text": "4.11923678339",
+          "source": "aimee",
+          "positions": [
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.05048568613710813
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.009717895649373531
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.022292127832770348
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.014753228984773159
+        },
+        {
+          "text": "days",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.009259666316211224
+        },
+        {
+          "text": "TOI-1732",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164
+          ],
+          "score": 0.02366754412651062
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            169
+          ],
+          "score": 0.018355045467615128
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            177
+          ],
+          "score": 0.022785726934671402
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            179
+          ],
+          "score": 0.010307775810360909
+        },
+        {
+          "text": "4.11923678",
+          "source": "sequence",
+          "positions": [
+            181,
+            182,
+            183,
+            184,
+            185,
+            186,
+            187,
+            188,
+            189,
+            190
+          ],
+          "score": 0.4302186444401741
+        }
+      ],
+      "step": 10,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 115,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-1732 b",
+          "revision": "5d519091a8d2aef7dab0ef1b57f216773e30933e9267980a8f02e1b025f3254c"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative TOI-1732 4.11923678339 orbital period planet TOI-1732 b number think think 4.119236783",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "For planet TOI-1732 b, the NASA Exoplanet Archive composite table lists: host star TOI-1732; discovery year 2026; discovery method Transit; discovery facility Transiting Exoplanet Survey Satellite (TESS); orbital period 4.11923678339 days; reported planet radius 2.49549787 Earth radii; reported system distance 74.75990000 parsecs.",
+            "id": "nasa.TOI-1732 b",
+            "key": "planet TOI-1732 b",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "nasa.TOI-1732 b",
+              "revision": "5d519091a8d2aef7dab0ef1b57f216773e30933e9267980a8f02e1b025f3254c"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.012167121982201934
+        },
+        {
+          "text": "TOI-1732",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.012682115193456411
+        },
+        {
+          "text": "4.11923678339",
+          "source": "aimee",
+          "positions": [
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.05388519383268431
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.02275807410478592
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.016628405079245567
+        },
+        {
+          "text": "planet",
+          "source": "sequence",
+          "positions": [
+            157
+          ],
+          "score": 0.011183172464370728
+        },
+        {
+          "text": "TOI-1732",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164
+          ],
+          "score": 0.022987005533650517
+        },
+        {
+          "text": "b",
+          "source": "sequence",
+          "positions": [
+            165
+          ],
+          "score": 0.017448633909225464
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            169
+          ],
+          "score": 0.016072534024715424
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            177
+          ],
+          "score": 0.0498613640666008
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            179
+          ],
+          "score": 0.016427066177129745
+        },
+        {
+          "text": "4.119236783",
+          "source": "sequence",
+          "positions": [
+            181,
+            182,
+            183,
+            184,
+            185,
+            186,
+            187,
+            188,
+            189,
+            190,
+            191
+          ],
+          "score": 0.37969926930963993
+        }
+      ],
+      "step": 11,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 115,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-1732 b",
+          "revision": "5d519091a8d2aef7dab0ef1b57f216773e30933e9267980a8f02e1b025f3254c"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TOI-1732 4.11923678339 Answer orbital period days planet TOI-1732 b number think 4.1192367833",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "For planet TOI-1732 b, the NASA Exoplanet Archive composite table lists: host star TOI-1732; discovery year 2026; discovery method Transit; discovery facility Transiting Exoplanet Survey Satellite (TESS); orbital period 4.11923678339 days; reported planet radius 2.49549787 Earth radii; reported system distance 74.75990000 parsecs.",
+            "id": "nasa.TOI-1732 b",
+            "key": "planet TOI-1732 b",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "nasa.TOI-1732 b",
+              "revision": "5d519091a8d2aef7dab0ef1b57f216773e30933e9267980a8f02e1b025f3254c"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TOI-1732",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.014611109741963446
+        },
+        {
+          "text": "4.11923678339",
+          "source": "aimee",
+          "positions": [
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.10681591363390908
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.010417474433779716
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.020766016095876694
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.020232971757650375
+        },
+        {
+          "text": "days",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.011518817394971848
+        },
+        {
+          "text": "planet",
+          "source": "sequence",
+          "positions": [
+            157
+          ],
+          "score": 0.012129767797887325
+        },
+        {
+          "text": "TOI-1732",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164
+          ],
+          "score": 0.024690777994692326
+        },
+        {
+          "text": "b",
+          "source": "sequence",
+          "positions": [
+            165
+          ],
+          "score": 0.010942480526864529
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            169
+          ],
+          "score": 0.016631782054901123
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            177
+          ],
+          "score": 0.01907256804406643
+        },
+        {
+          "text": "4.1192367833",
+          "source": "sequence",
+          "positions": [
+            181,
+            182,
+            183,
+            184,
+            185,
+            186,
+            187,
+            188,
+            189,
+            190,
+            191,
+            192
+          ],
+          "score": 0.39176784083247185
+        }
+      ],
+      "step": 12,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 115,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-1732 b",
+          "revision": "5d519091a8d2aef7dab0ef1b57f216773e30933e9267980a8f02e1b025f3254c"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TOI-1732 4.11923678339 days Answer orbital period TOI-1732 Return number think think 4.11923678339",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TOI-1732",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.009947164449840784
+        },
+        {
+          "text": "4.11923678339",
+          "source": "aimee",
+          "positions": [
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.03797923561069183
+        },
+        {
+          "text": "days",
+          "source": "aimee",
+          "positions": [
+            77
+          ],
+          "score": 0.06523966789245605
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.01184738241136074
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.018611876294016838
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.01146269217133522
+        },
+        {
+          "text": "TOI-1732",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164
+          ],
+          "score": 0.01705993223004043
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            167
+          ],
+          "score": 0.012562587857246399
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            169
+          ],
+          "score": 0.016701815649867058
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            177
+          ],
+          "score": 0.015786290168762207
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            179
+          ],
+          "score": 0.013760405592620373
+        },
+        {
+          "text": "4.11923678339",
+          "source": "sequence",
+          "positions": [
+            181,
+            182,
+            183,
+            184,
+            185,
+            186,
+            187,
+            188,
+            189,
+            190,
+            191,
+            192,
+            193
+          ],
+          "score": 0.4101879205554724
+        }
+      ],
+      "step": 13,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 115,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-1732 b",
+          "revision": "5d519091a8d2aef7dab0ef1b57f216773e30933e9267980a8f02e1b025f3254c"
+        }
+      ],
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 79
+}

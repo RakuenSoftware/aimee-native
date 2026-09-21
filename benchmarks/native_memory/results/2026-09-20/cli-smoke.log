@@ -1,0 +1,75 @@
+Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]Writing model shards: 100%|██████████| 1/1 [00:00<00:00, 121.64it/s]
+{"memories": 12, "train": 26, "heldout": 14}
+Loading weights:   0%|          | 0/53 [00:00<?, ?it/s]Loading weights: 100%|██████████| 53/53 [00:00<00:00, 26964.84it/s]
+{"event": "base_loaded", "quantized_linears": 0}
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `chunk_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
+{"step": 0, "example": "train-11-1", "loss": 4.909877300262451, "grad_norm": 0.20833374559879303, "prompt_tokens": 36, "memory_prompt_tokens": 0, "value_grad_norm": 0.0, "output_grad_norm": 0.20833374559879303, "bank_ids": [100011], "elapsed_seconds": 0.01258335099555552}
+{"step": 1, "example": "train-9-0", "loss": 5.029784202575684, "grad_norm": 0.24314533174037933, "prompt_tokens": 35, "memory_prompt_tokens": 0, "value_grad_norm": 0.08468300849199295, "output_grad_norm": 0.22763186693191528, "bank_ids": [100009], "elapsed_seconds": 0.022921205032616854}
+Loading weights:   0%|          | 0/53 [00:00<?, ?it/s]Loading weights: 100%|██████████| 53/53 [00:00<00:00, 19037.26it/s]
+{"event": "base_loaded", "quantized_linears": 0}
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `chunk_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
+[transformers] `causal_conv1d_update` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `fused_recurrent_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
+{
+  "accuracy": {
+    "none": 0.0,
+    "text": 0.0,
+    "native_disabled": 0.0,
+    "native": 0.0,
+    "native_empty": 0.0,
+    "native_distractors": 0.0,
+    "native_swapped": 0.0
+  },
+  "strict_string_accuracy": {
+    "none": 0.0,
+    "text": 0.0,
+    "native_disabled": 0.0,
+    "native": 0.0,
+    "native_empty": 0.0,
+    "native_distractors": 0.0,
+    "native_swapped": 0.0
+  },
+  "scoring": "ordered semicolon-delimited exact values, case/whitespace normalized, EOS required",
+  "accuracy_by_category": {
+    "none": {
+      "stable_fact": 0.0
+    },
+    "text": {
+      "stable_fact": 0.0
+    },
+    "native_disabled": {
+      "stable_fact": 0.0
+    },
+    "native": {
+      "stable_fact": 0.0
+    },
+    "native_empty": {
+      "stable_fact": 0.0
+    },
+    "native_distractors": {
+      "stable_fact": 0.0
+    },
+    "native_swapped": {
+      "stable_fact": 0.0
+    }
+  },
+  "native_over_text": null,
+  "checks": {
+    "full_evaluation": false,
+    "text_baseline_nonzero": false,
+    "disabled_and_empty_parity": true,
+    "native_prompt_parity": true,
+    "relative_accuracy": false,
+    "composition": false,
+    "native_zero_added_tokens": true
+  },
+  "stage_a_accuracy_gate": "fail_or_incomplete",
+  "limitations": [
+    "Accuracy gate alone does not establish update, deletion or scope noninterference.",
+    "Research timings are not optimized serving throughput measurements.",
+    "Held-out query forms use trained memories; this is not writer-network generalization."
+  ]
+}
+{"smoke": "pass", "train_steps": 2, "evaluated_arms": 7, "pretrained_27b_tested": false}

@@ -1,0 +1,253 @@
+{
+  "runtime": "rust-libtorch",
+  "id": "rust-1789935285736941865-90",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nFor IANA service msss, give its registered TCP port as one integer.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    2381,
+    353,
+    37492,
+    2393,
+    295,
+    81257,
+    11,
+    2873,
+    1141,
+    9393,
+    25804,
+    2548,
+    430,
+    799,
+    7308,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    22,
+    22,
+    19,
+    17
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "fb07f7308e4e17944f9afe53457ade8122929877b922679e40d0b278baf7d19f",
+  "memory_encoding": "keyed",
+  "answer": "7742",
+  "finish_reason": "stop",
+  "elapsed_ms": 3115.347314,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "For IANA service msss, give its registered TCP port as one integer.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service msss has these registered transport/port assignments: TCP port 7742.",
+            "id": "iana.msss",
+            "key": "IANA service msss",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.msss",
+              "revision": "c90d16c65e0ac9e3990a22225324cbf97e2c892fd0ae7326d6ecb80251427063"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 30,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.msss",
+          "revision": "c90d16c65e0ac9e3990a22225324cbf97e2c892fd0ae7326d6ecb80251427063"
+        }
+      ],
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user For give its TCP as integer assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.025514379143714905
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            33
+          ],
+          "score": 0.02007940039038658
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            56
+          ],
+          "score": 0.014825424179434776
+        },
+        {
+          "text": "For",
+          "source": "sequence",
+          "positions": [
+            58
+          ],
+          "score": 0.014217331074178219
+        },
+        {
+          "text": "give",
+          "source": "sequence",
+          "positions": [
+            65
+          ],
+          "score": 0.03475922718644142
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            66
+          ],
+          "score": 0.02447572723031044
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            68
+          ],
+          "score": 0.016092892736196518
+        },
+        {
+          "text": "as",
+          "source": "sequence",
+          "positions": [
+            70
+          ],
+          "score": 0.031629011034965515
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            72
+          ],
+          "score": 0.018131840974092484
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            77
+          ],
+          "score": 0.02891812101006508
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            79
+          ],
+          "score": 0.029482975602149963
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            81
+          ],
+          "score": 0.06731890887022018
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 30,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.msss",
+          "revision": "c90d16c65e0ac9e3990a22225324cbf97e2c892fd0ae7326d6ecb80251427063"
+        }
+      ],
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 57
+}

@@ -1,0 +1,22 @@
+{
+  "question": "Can Qwen select the right Aimee memory when multiple individually proven latent memories are present?",
+  "target": "Aimee memory 4: teal beacon of unit-81b1315e68",
+  "distractors": ["Aimee 5: oolong preference", "Aimee 6: Lima home city", "Aimee 7: Kestrel release codename"],
+  "wrong_value": "Aimee 8: silver beacon of another entity; remap only its payload onto Aimee ID 4 in F",
+  "projection_source": "Exact-content-matched rows from oracle-bf16-lr1e3; all previously correct alone",
+  "precondition": "Each of the five projections must pass its own held-out singleton question again before A–F",
+  "query": "For unit-81b1315e68, which value is recorded under beacon color?",
+  "A": ["target"],
+  "B": ["target", "d1"],
+  "C": ["target", "d1", "d2", "d3"],
+  "D": ["d3", "d2", "d1", "target"],
+  "E": ["d1", "d2", "d3"],
+  "F": ["wrong value with target ID", "d1", "d2", "d3"],
+  "positive_expectation": "A–D: exact teal, complete answer",
+  "negative_expectation": "E–F: complete nonempty answer without teal anywhere",
+  "training": "None; no optimizer, writer, LoRA, or weight updates",
+  "ordering": "Compare C/D generated IDs and first generated-token scores; record attention by Aimee ID",
+  "next_stage": "Only if every A–F condition passes: require oolong and Lima together, plus each-memory-removed controls",
+  "speed_is_acceptance_gate": false,
+  "limits": "One target query and one fixed distractor set; no population-level accuracy claim"
+}

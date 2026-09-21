@@ -1,0 +1,2349 @@
+{
+  "cache_transition": {
+    "retained": 1,
+    "invalidated": 1
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1789983846111819746-7",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nGive the TCP port for IANA service xic, then the preferred drink of stream-unit-d47, then the home city of stream-unit-c92. Separate the three values with semicolons.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    33963,
+    279,
+    25804,
+    2548,
+    364,
+    353,
+    37492,
+    2393,
+    830,
+    291,
+    11,
+    1179,
+    279,
+    14459,
+    6808,
+    314,
+    4129,
+    58533,
+    1676,
+    19,
+    22,
+    11,
+    1179,
+    279,
+    2046,
+    3177,
+    314,
+    4129,
+    58533,
+    1723,
+    24,
+    17,
+    13,
+    73533,
+    279,
+    2250,
+    2663,
+    440,
+    5067,
+    25617,
+    2305,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    21,
+    16,
+    16,
+    20,
+    26,
+    329,
+    308,
+    315,
+    448,
+    26,
+    15615
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "3b7649dcde048c4b74d4f2376023e2a05f4aa5e70cb24273aad9568bc2001440",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -43,
+  "answer": "6115;chamomile;unknown",
+  "finish_reason": "stop",
+  "elapsed_ms": 41067.339398000004,
+  "memory_encoding_passes": 1,
+  "native_reads": 192,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "Give the TCP port for IANA service xic, then the preferred drink of stream-unit-d47, then the home city of stream-unit-c92. Separate the three values with semicolons.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service xic has these registered transport/port assignments: TCP port 6115.",
+            "id": "iana.xic",
+            "key": "IANA service xic",
+            "kind": "fact",
+            "memory_hash": "25535e1b8d7476df68c781990be69cbd6458c97d715b11869be2c54b8e22c553",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.xic",
+              "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          },
+          {
+            "confidence": 1,
+            "content": "The preferred drink of stream-unit-d47 is chamomile.",
+            "id": "1002",
+            "key": "stream replacement 20260921",
+            "kind": "fact",
+            "memory_hash": "f6ea18e894ed346bf1c4737b44e5a48d7c388131675734637d9eb13d86efd6c0",
+            "memory_ref": {
+              "namespace": "stream-live",
+              "id": "1002",
+              "revision": "609b801eeb2a9e05e11501cfdc1d77ee3464851ce27edfff63de2effdcb0d39b"
+            },
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 43,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        },
+        {
+          "namespace": "stream-live",
+          "id": "1002",
+          "revision": "609b801eeb2a9e05e11501cfdc1d77ee3464851ce27edfff63de2effdcb0d39b"
+        }
+      ],
+      "encoding_elapsed_ms": 512.803085,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 1,
+      "records_encoded": 1,
+      "tokens_encoded": 19,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 6115.Authoritative Answer user TCP for then stream-unit-d47 the assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "id": 1002,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "stream replacement 20260921",
+            "content": "The preferred drink of stream-unit-d47 is chamomile.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "stream-live",
+              "id": "1002",
+              "revision": "609b801eeb2a9e05e11501cfdc1d77ee3464851ce27edfff63de2effdcb0d39b"
+            }
+          }
+        ],
+        "restriction": {
+          "version": 1,
+          "namespace": "stream-live",
+          "authorization": "e2c6a3580fc7d7d451d9d987984a99a0b2ee0305f9755c063218d68d658ad467",
+          "ids": [
+            1002
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.026128821540623903
+        },
+        {
+          "text": "6115.Authoritative",
+          "source": "aimee",
+          "positions": [
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25
+          ],
+          "score": 0.041361816925928
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            46
+          ],
+          "score": 0.022944867610931396
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            69
+          ],
+          "score": 0.012751198373734951
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            73
+          ],
+          "score": 0.014502591453492641
+        },
+        {
+          "text": "for",
+          "source": "sequence",
+          "positions": [
+            75
+          ],
+          "score": 0.022743811830878258
+        },
+        {
+          "text": "then",
+          "source": "sequence",
+          "positions": [
+            82
+          ],
+          "score": 0.013920373283326626
+        },
+        {
+          "text": "stream-unit-d47",
+          "source": "sequence",
+          "positions": [
+            87,
+            88,
+            89,
+            90,
+            91
+          ],
+          "score": 0.010138323996216059
+        },
+        {
+          "text": "the",
+          "source": "sequence",
+          "positions": [
+            105
+          ],
+          "score": 0.015347554348409176
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            116
+          ],
+          "score": 0.026729479432106018
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.029567167162895203
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            120
+          ],
+          "score": 0.06839564442634583
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 43,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        },
+        {
+          "namespace": "stream-live",
+          "id": "1002",
+          "revision": "609b801eeb2a9e05e11501cfdc1d77ee3464851ce27edfff63de2effdcb0d39b"
+        }
+      ],
+      "encoding_elapsed_ms": 0.01062,
+      "record_working_set_hits": 2,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 6115.Authoritative stream-unit-d47 Answer user TCP port for stream-unit-d47 assistant think 6",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "id": 1002,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "stream replacement 20260921",
+            "content": "The preferred drink of stream-unit-d47 is chamomile.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "stream-live",
+              "id": "1002",
+              "revision": "609b801eeb2a9e05e11501cfdc1d77ee3464851ce27edfff63de2effdcb0d39b"
+            }
+          }
+        ],
+        "restriction": {
+          "version": 1,
+          "namespace": "stream-live",
+          "authorization": "e2c6a3580fc7d7d451d9d987984a99a0b2ee0305f9755c063218d68d658ad467",
+          "ids": [
+            1002
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.016385449096560478
+        },
+        {
+          "text": "6115.Authoritative",
+          "source": "aimee",
+          "positions": [
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25
+          ],
+          "score": 0.0561772589571774
+        },
+        {
+          "text": "stream-unit-d47",
+          "source": "aimee",
+          "positions": [
+            33,
+            34,
+            35,
+            36,
+            37
+          ],
+          "score": 0.021976022515445948
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            46
+          ],
+          "score": 0.03982626646757126
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            69
+          ],
+          "score": 0.014890430495142937
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            73
+          ],
+          "score": 0.038019534200429916
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            74
+          ],
+          "score": 0.021965067833662033
+        },
+        {
+          "text": "for",
+          "source": "sequence",
+          "positions": [
+            75
+          ],
+          "score": 0.015491980127990246
+        },
+        {
+          "text": "stream-unit-d47",
+          "source": "sequence",
+          "positions": [
+            87,
+            88,
+            89,
+            90,
+            91
+          ],
+          "score": 0.031076079700142145
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            116
+          ],
+          "score": 0.028350885957479477
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.01627418026328087
+        },
+        {
+          "text": "6",
+          "source": "sequence",
+          "positions": [
+            122
+          ],
+          "score": 0.03577471151947975
+        }
+      ],
+      "step": 1,
+      "phase": "decode",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 43,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        },
+        {
+          "namespace": "stream-live",
+          "id": "1002",
+          "revision": "609b801eeb2a9e05e11501cfdc1d77ee3464851ce27edfff63de2effdcb0d39b"
+        }
+      ],
+      "encoding_elapsed_ms": 0.008617999999999999,
+      "record_working_set_hits": 2,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "6115.Authoritative stream-unit-d47 Answer Give TCP port IANA drink stream-unit-d47 stream-unit-c92 values 61",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "id": 1002,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "stream replacement 20260921",
+            "content": "The preferred drink of stream-unit-d47 is chamomile.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "stream-live",
+              "id": "1002",
+              "revision": "609b801eeb2a9e05e11501cfdc1d77ee3464851ce27edfff63de2effdcb0d39b"
+            }
+          }
+        ],
+        "restriction": {
+          "version": 1,
+          "namespace": "stream-live",
+          "authorization": "e2c6a3580fc7d7d451d9d987984a99a0b2ee0305f9755c063218d68d658ad467",
+          "ids": [
+            1002
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "6115.Authoritative",
+          "source": "aimee",
+          "positions": [
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25
+          ],
+          "score": 0.12904232693836093
+        },
+        {
+          "text": "stream-unit-d47",
+          "source": "aimee",
+          "positions": [
+            33,
+            34,
+            35,
+            36,
+            37
+          ],
+          "score": 0.02588365424890071
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            46
+          ],
+          "score": 0.014060849323868752
+        },
+        {
+          "text": "Give",
+          "source": "sequence",
+          "positions": [
+            71
+          ],
+          "score": 0.012516368180513382
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            73
+          ],
+          "score": 0.07461996376514435
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            74
+          ],
+          "score": 0.04507100209593773
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            76,
+            77
+          ],
+          "score": 0.02909577963873744
+        },
+        {
+          "text": "drink",
+          "source": "sequence",
+          "positions": [
+            85
+          ],
+          "score": 0.018907103687524796
+        },
+        {
+          "text": "stream-unit-d47",
+          "source": "sequence",
+          "positions": [
+            87,
+            88,
+            89,
+            90,
+            91
+          ],
+          "score": 0.04759318521246314
+        },
+        {
+          "text": "stream-unit-c92",
+          "source": "sequence",
+          "positions": [
+            98,
+            99,
+            100,
+            101,
+            102
+          ],
+          "score": 0.020125091657973826
+        },
+        {
+          "text": "values",
+          "source": "sequence",
+          "positions": [
+            107
+          ],
+          "score": 0.015023460611701012
+        },
+        {
+          "text": "61",
+          "source": "sequence",
+          "positions": [
+            122,
+            123
+          ],
+          "score": 0.0821097232401371
+        }
+      ],
+      "step": 2,
+      "phase": "decode",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 43,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        },
+        {
+          "namespace": "stream-live",
+          "id": "1002",
+          "revision": "609b801eeb2a9e05e11501cfdc1d77ee3464851ce27edfff63de2effdcb0d39b"
+        }
+      ],
+      "encoding_elapsed_ms": 0.011699,
+      "record_working_set_hits": 2,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TCP 6115.Authoritative drink stream-unit-d47 chamomile TCP port IANA drink stream-unit-d47 stream-unit-c92 611",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "id": 1002,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "stream replacement 20260921",
+            "content": "The preferred drink of stream-unit-d47 is chamomile.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "stream-live",
+              "id": "1002",
+              "revision": "609b801eeb2a9e05e11501cfdc1d77ee3464851ce27edfff63de2effdcb0d39b"
+            }
+          }
+        ],
+        "restriction": {
+          "version": 1,
+          "namespace": "stream-live",
+          "authorization": "e2c6a3580fc7d7d451d9d987984a99a0b2ee0305f9755c063218d68d658ad467",
+          "ids": [
+            1002
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TCP",
+          "source": "aimee",
+          "positions": [
+            16
+          ],
+          "score": 0.012470318004488945
+        },
+        {
+          "text": "6115.Authoritative",
+          "source": "aimee",
+          "positions": [
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25
+          ],
+          "score": 0.10804743925109506
+        },
+        {
+          "text": "drink",
+          "source": "aimee",
+          "positions": [
+            31
+          ],
+          "score": 0.01353663019835949
+        },
+        {
+          "text": "stream-unit-d47",
+          "source": "aimee",
+          "positions": [
+            33,
+            34,
+            35,
+            36,
+            37
+          ],
+          "score": 0.02801779331639409
+        },
+        {
+          "text": "chamomile",
+          "source": "aimee",
+          "positions": [
+            39,
+            40,
+            41
+          ],
+          "score": 0.014333468861877918
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            73
+          ],
+          "score": 0.06876259297132492
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            74
+          ],
+          "score": 0.0496385358273983
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            76,
+            77
+          ],
+          "score": 0.026518977712839842
+        },
+        {
+          "text": "drink",
+          "source": "sequence",
+          "positions": [
+            85
+          ],
+          "score": 0.020767858251929283
+        },
+        {
+          "text": "stream-unit-d47",
+          "source": "sequence",
+          "positions": [
+            87,
+            88,
+            89,
+            90,
+            91
+          ],
+          "score": 0.050223926082253456
+        },
+        {
+          "text": "stream-unit-c92",
+          "source": "sequence",
+          "positions": [
+            98,
+            99,
+            100,
+            101,
+            102
+          ],
+          "score": 0.01956097362563014
+        },
+        {
+          "text": "611",
+          "source": "sequence",
+          "positions": [
+            122,
+            123,
+            124
+          ],
+          "score": 0.13446310721337795
+        }
+      ],
+      "step": 3,
+      "phase": "decode",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 43,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        },
+        {
+          "namespace": "stream-live",
+          "id": "1002",
+          "revision": "609b801eeb2a9e05e11501cfdc1d77ee3464851ce27edfff63de2effdcb0d39b"
+        }
+      ],
+      "encoding_elapsed_ms": 0.013115,
+      "record_working_set_hits": 2,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TCP 6115.Authoritative stream-unit-d47 Answer TCP port IANA drink stream-unit-d47 stream-unit-c92 values 6115",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "id": 1002,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "stream replacement 20260921",
+            "content": "The preferred drink of stream-unit-d47 is chamomile.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "stream-live",
+              "id": "1002",
+              "revision": "609b801eeb2a9e05e11501cfdc1d77ee3464851ce27edfff63de2effdcb0d39b"
+            }
+          }
+        ],
+        "restriction": {
+          "version": 1,
+          "namespace": "stream-live",
+          "authorization": "e2c6a3580fc7d7d451d9d987984a99a0b2ee0305f9755c063218d68d658ad467",
+          "ids": [
+            1002
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TCP",
+          "source": "aimee",
+          "positions": [
+            16
+          ],
+          "score": 0.012018788605928421
+        },
+        {
+          "text": "6115.Authoritative",
+          "source": "aimee",
+          "positions": [
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25
+          ],
+          "score": 0.10231510968878865
+        },
+        {
+          "text": "stream-unit-d47",
+          "source": "aimee",
+          "positions": [
+            33,
+            34,
+            35,
+            36,
+            37
+          ],
+          "score": 0.035738505423069
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            46
+          ],
+          "score": 0.011888056993484497
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            73
+          ],
+          "score": 0.06685652583837509
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            74
+          ],
+          "score": 0.06251592934131622
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            76,
+            77
+          ],
+          "score": 0.022286061896011233
+        },
+        {
+          "text": "drink",
+          "source": "sequence",
+          "positions": [
+            85
+          ],
+          "score": 0.014874052256345749
+        },
+        {
+          "text": "stream-unit-d47",
+          "source": "sequence",
+          "positions": [
+            87,
+            88,
+            89,
+            90,
+            91
+          ],
+          "score": 0.050903769908472896
+        },
+        {
+          "text": "stream-unit-c92",
+          "source": "sequence",
+          "positions": [
+            98,
+            99,
+            100,
+            101,
+            102
+          ],
+          "score": 0.018999406427610666
+        },
+        {
+          "text": "values",
+          "source": "sequence",
+          "positions": [
+            107
+          ],
+          "score": 0.011348421685397625
+        },
+        {
+          "text": "6115",
+          "source": "sequence",
+          "positions": [
+            122,
+            123,
+            124,
+            125
+          ],
+          "score": 0.20497065410017967
+        }
+      ],
+      "step": 4,
+      "phase": "decode",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 43,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        },
+        {
+          "namespace": "stream-live",
+          "id": "1002",
+          "revision": "609b801eeb2a9e05e11501cfdc1d77ee3464851ce27edfff63de2effdcb0d39b"
+        }
+      ],
+      "encoding_elapsed_ms": 0.010253,
+      "record_working_set_hits": 2,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 6115.Authoritative stream-unit-d47 Give TCP IANA stream-unit-d47 stream-unit-c92 values semicolons assistant 6115",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "id": 1002,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "stream replacement 20260921",
+            "content": "The preferred drink of stream-unit-d47 is chamomile.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "stream-live",
+              "id": "1002",
+              "revision": "609b801eeb2a9e05e11501cfdc1d77ee3464851ce27edfff63de2effdcb0d39b"
+            }
+          }
+        ],
+        "restriction": {
+          "version": 1,
+          "namespace": "stream-live",
+          "authorization": "e2c6a3580fc7d7d451d9d987984a99a0b2ee0305f9755c063218d68d658ad467",
+          "ids": [
+            1002
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.015100141521543264
+        },
+        {
+          "text": "6115.Authoritative",
+          "source": "aimee",
+          "positions": [
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25
+          ],
+          "score": 0.03798828786239028
+        },
+        {
+          "text": "stream-unit-d47",
+          "source": "aimee",
+          "positions": [
+            33,
+            34,
+            35,
+            36,
+            37
+          ],
+          "score": 0.01969590806402266
+        },
+        {
+          "text": "Give",
+          "source": "sequence",
+          "positions": [
+            71
+          ],
+          "score": 0.014054118655622005
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            73
+          ],
+          "score": 0.05337256193161011
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            76,
+            77
+          ],
+          "score": 0.017806817777454853
+        },
+        {
+          "text": "stream-unit-d47",
+          "source": "sequence",
+          "positions": [
+            87,
+            88,
+            89,
+            90,
+            91
+          ],
+          "score": 0.026773015270009637
+        },
+        {
+          "text": "stream-unit-c92",
+          "source": "sequence",
+          "positions": [
+            98,
+            99,
+            100,
+            101,
+            102
+          ],
+          "score": 0.013985522033181041
+        },
+        {
+          "text": "values",
+          "source": "sequence",
+          "positions": [
+            107
+          ],
+          "score": 0.02270585112273693
+        },
+        {
+          "text": "semicolons",
+          "source": "sequence",
+          "positions": [
+            109,
+            110,
+            111
+          ],
+          "score": 0.014408365590497851
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            116
+          ],
+          "score": 0.03023359179496765
+        },
+        {
+          "text": "6115",
+          "source": "sequence",
+          "positions": [
+            122,
+            123,
+            124,
+            125
+          ],
+          "score": 0.11528169550001621
+        }
+      ],
+      "step": 5,
+      "phase": "decode",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 43,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        },
+        {
+          "namespace": "stream-live",
+          "id": "1002",
+          "revision": "609b801eeb2a9e05e11501cfdc1d77ee3464851ce27edfff63de2effdcb0d39b"
+        }
+      ],
+      "encoding_elapsed_ms": 0.014454,
+      "record_working_set_hits": 2,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "6115.Authoritative drink stream-unit-d47 chamomile TCP IANA drink stream-unit-d47 stream-unit-c92 values 6115 ch",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "id": 1002,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "stream replacement 20260921",
+            "content": "The preferred drink of stream-unit-d47 is chamomile.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "stream-live",
+              "id": "1002",
+              "revision": "609b801eeb2a9e05e11501cfdc1d77ee3464851ce27edfff63de2effdcb0d39b"
+            }
+          }
+        ],
+        "restriction": {
+          "version": 1,
+          "namespace": "stream-live",
+          "authorization": "e2c6a3580fc7d7d451d9d987984a99a0b2ee0305f9755c063218d68d658ad467",
+          "ids": [
+            1002
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "6115.Authoritative",
+          "source": "aimee",
+          "positions": [
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25
+          ],
+          "score": 0.021854032878763974
+        },
+        {
+          "text": "drink",
+          "source": "aimee",
+          "positions": [
+            31
+          ],
+          "score": 0.02471909672021866
+        },
+        {
+          "text": "stream-unit-d47",
+          "source": "aimee",
+          "positions": [
+            33,
+            34,
+            35,
+            36,
+            37
+          ],
+          "score": 0.047427305951714516
+        },
+        {
+          "text": "chamomile",
+          "source": "aimee",
+          "positions": [
+            39,
+            40,
+            41
+          ],
+          "score": 0.034267473965883255
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            73
+          ],
+          "score": 0.07163626700639725
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            76,
+            77
+          ],
+          "score": 0.032283611595630646
+        },
+        {
+          "text": "drink",
+          "source": "sequence",
+          "positions": [
+            85
+          ],
+          "score": 0.04138951003551483
+        },
+        {
+          "text": "stream-unit-d47",
+          "source": "sequence",
+          "positions": [
+            87,
+            88,
+            89,
+            90,
+            91
+          ],
+          "score": 0.06700771627947688
+        },
+        {
+          "text": "stream-unit-c92",
+          "source": "sequence",
+          "positions": [
+            98,
+            99,
+            100,
+            101,
+            102
+          ],
+          "score": 0.02539463632274419
+        },
+        {
+          "text": "values",
+          "source": "sequence",
+          "positions": [
+            107
+          ],
+          "score": 0.018600553274154663
+        },
+        {
+          "text": "6115",
+          "source": "sequence",
+          "positions": [
+            122,
+            123,
+            124,
+            125
+          ],
+          "score": 0.06081889569759369
+        },
+        {
+          "text": "ch",
+          "source": "sequence",
+          "positions": [
+            127
+          ],
+          "score": 0.018920589238405228
+        }
+      ],
+      "step": 6,
+      "phase": "decode",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 43,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        },
+        {
+          "namespace": "stream-live",
+          "id": "1002",
+          "revision": "609b801eeb2a9e05e11501cfdc1d77ee3464851ce27edfff63de2effdcb0d39b"
+        }
+      ],
+      "encoding_elapsed_ms": 0.008879999999999999,
+      "record_working_set_hits": 2,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 6115.Authoritative drink stream-unit-d47 chamomile TCP IANA drink stream-unit-d47 stream-unit-c92 6115 cham",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "id": 1002,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "stream replacement 20260921",
+            "content": "The preferred drink of stream-unit-d47 is chamomile.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "stream-live",
+              "id": "1002",
+              "revision": "609b801eeb2a9e05e11501cfdc1d77ee3464851ce27edfff63de2effdcb0d39b"
+            }
+          }
+        ],
+        "restriction": {
+          "version": 1,
+          "namespace": "stream-live",
+          "authorization": "e2c6a3580fc7d7d451d9d987984a99a0b2ee0305f9755c063218d68d658ad467",
+          "ids": [
+            1002
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.032775512896478176
+        },
+        {
+          "text": "6115.Authoritative",
+          "source": "aimee",
+          "positions": [
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25
+          ],
+          "score": 0.042389788664877415
+        },
+        {
+          "text": "drink",
+          "source": "aimee",
+          "positions": [
+            31
+          ],
+          "score": 0.036660172045230865
+        },
+        {
+          "text": "stream-unit-d47",
+          "source": "aimee",
+          "positions": [
+            33,
+            34,
+            35,
+            36,
+            37
+          ],
+          "score": 0.03158061020076275
+        },
+        {
+          "text": "chamomile",
+          "source": "aimee",
+          "positions": [
+            39,
+            40,
+            41
+          ],
+          "score": 0.052784375846385956
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            73
+          ],
+          "score": 0.05408306419849396
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            76,
+            77
+          ],
+          "score": 0.04535274766385555
+        },
+        {
+          "text": "drink",
+          "source": "sequence",
+          "positions": [
+            85
+          ],
+          "score": 0.039208199828863144
+        },
+        {
+          "text": "stream-unit-d47",
+          "source": "sequence",
+          "positions": [
+            87,
+            88,
+            89,
+            90,
+            91
+          ],
+          "score": 0.03883120883256197
+        },
+        {
+          "text": "stream-unit-c92",
+          "source": "sequence",
+          "positions": [
+            98,
+            99,
+            100,
+            101,
+            102
+          ],
+          "score": 0.01974654255900532
+        },
+        {
+          "text": "6115",
+          "source": "sequence",
+          "positions": [
+            122,
+            123,
+            124,
+            125
+          ],
+          "score": 0.04557797499001026
+        },
+        {
+          "text": "cham",
+          "source": "sequence",
+          "positions": [
+            127,
+            128
+          ],
+          "score": 0.056170220486819744
+        }
+      ],
+      "step": 7,
+      "phase": "decode",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 43,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        },
+        {
+          "namespace": "stream-live",
+          "id": "1002",
+          "revision": "609b801eeb2a9e05e11501cfdc1d77ee3464851ce27edfff63de2effdcb0d39b"
+        }
+      ],
+      "encoding_elapsed_ms": 0.008558,
+      "record_working_set_hits": 2,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 6115.Authoritative drink stream-unit-d47 chamomile TCP IANA drink stream-unit-d47 city stream-unit-c92 chamom",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "id": 1002,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "stream replacement 20260921",
+            "content": "The preferred drink of stream-unit-d47 is chamomile.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "stream-live",
+              "id": "1002",
+              "revision": "609b801eeb2a9e05e11501cfdc1d77ee3464851ce27edfff63de2effdcb0d39b"
+            }
+          }
+        ],
+        "restriction": {
+          "version": 1,
+          "namespace": "stream-live",
+          "authorization": "e2c6a3580fc7d7d451d9d987984a99a0b2ee0305f9755c063218d68d658ad467",
+          "ids": [
+            1002
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02480957517400384
+        },
+        {
+          "text": "6115.Authoritative",
+          "source": "aimee",
+          "positions": [
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25
+          ],
+          "score": 0.03374188719317317
+        },
+        {
+          "text": "drink",
+          "source": "aimee",
+          "positions": [
+            31
+          ],
+          "score": 0.03156118094921112
+        },
+        {
+          "text": "stream-unit-d47",
+          "source": "aimee",
+          "positions": [
+            33,
+            34,
+            35,
+            36,
+            37
+          ],
+          "score": 0.026603841921314597
+        },
+        {
+          "text": "chamomile",
+          "source": "aimee",
+          "positions": [
+            39,
+            40,
+            41
+          ],
+          "score": 0.04227570444345474
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            73
+          ],
+          "score": 0.04578723758459091
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            76,
+            77
+          ],
+          "score": 0.08002883568406105
+        },
+        {
+          "text": "drink",
+          "source": "sequence",
+          "positions": [
+            85
+          ],
+          "score": 0.033693358302116394
+        },
+        {
+          "text": "stream-unit-d47",
+          "source": "sequence",
+          "positions": [
+            87,
+            88,
+            89,
+            90,
+            91
+          ],
+          "score": 0.039029130013659596
+        },
+        {
+          "text": "city",
+          "source": "sequence",
+          "positions": [
+            96
+          ],
+          "score": 0.024147879332304
+        },
+        {
+          "text": "stream-unit-c92",
+          "source": "sequence",
+          "positions": [
+            98,
+            99,
+            100,
+            101,
+            102
+          ],
+          "score": 0.02603227482177317
+        },
+        {
+          "text": "chamom",
+          "source": "sequence",
+          "positions": [
+            127,
+            128,
+            129
+          ],
+          "score": 0.21368229389190674
+        }
+      ],
+      "step": 8,
+      "phase": "decode",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 43,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        },
+        {
+          "namespace": "stream-live",
+          "id": "1002",
+          "revision": "609b801eeb2a9e05e11501cfdc1d77ee3464851ce27edfff63de2effdcb0d39b"
+        }
+      ],
+      "encoding_elapsed_ms": 0.012747,
+      "record_working_set_hits": 2,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 6115.Authoritative drink stream-unit-d47 chamomile TCP IANA xic drink stream-unit-d47 6115 chamomile",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "id": 1002,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "stream replacement 20260921",
+            "content": "The preferred drink of stream-unit-d47 is chamomile.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "stream-live",
+              "id": "1002",
+              "revision": "609b801eeb2a9e05e11501cfdc1d77ee3464851ce27edfff63de2effdcb0d39b"
+            }
+          }
+        ],
+        "restriction": {
+          "version": 1,
+          "namespace": "stream-live",
+          "authorization": "e2c6a3580fc7d7d451d9d987984a99a0b2ee0305f9755c063218d68d658ad467",
+          "ids": [
+            1002
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.0162375895306468
+        },
+        {
+          "text": "6115.Authoritative",
+          "source": "aimee",
+          "positions": [
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25
+          ],
+          "score": 0.027719633129891008
+        },
+        {
+          "text": "drink",
+          "source": "aimee",
+          "positions": [
+            31
+          ],
+          "score": 0.017957158386707306
+        },
+        {
+          "text": "stream-unit-d47",
+          "source": "aimee",
+          "positions": [
+            33,
+            34,
+            35,
+            36,
+            37
+          ],
+          "score": 0.01764298672787845
+        },
+        {
+          "text": "chamomile",
+          "source": "aimee",
+          "positions": [
+            39,
+            40,
+            41
+          ],
+          "score": 0.02680764254182577
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            73
+          ],
+          "score": 0.04403526335954666
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            76,
+            77
+          ],
+          "score": 0.04285981319844723
+        },
+        {
+          "text": "xic",
+          "source": "sequence",
+          "positions": [
+            79,
+            80
+          ],
+          "score": 0.017348316963762045
+        },
+        {
+          "text": "drink",
+          "source": "sequence",
+          "positions": [
+            85
+          ],
+          "score": 0.02817065827548504
+        },
+        {
+          "text": "stream-unit-d47",
+          "source": "sequence",
+          "positions": [
+            87,
+            88,
+            89,
+            90,
+            91
+          ],
+          "score": 0.019773745443671942
+        },
+        {
+          "text": "6115",
+          "source": "sequence",
+          "positions": [
+            122,
+            123,
+            124,
+            125
+          ],
+          "score": 0.036102958489209414
+        },
+        {
+          "text": "chamomile",
+          "source": "sequence",
+          "positions": [
+            127,
+            128,
+            129,
+            130
+          ],
+          "score": 0.306625310331583
+        }
+      ],
+      "step": 9,
+      "phase": "decode",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 43,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        },
+        {
+          "namespace": "stream-live",
+          "id": "1002",
+          "revision": "609b801eeb2a9e05e11501cfdc1d77ee3464851ce27edfff63de2effdcb0d39b"
+        }
+      ],
+      "encoding_elapsed_ms": 0.009816,
+      "record_working_set_hits": 2,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "6115.Authoritative stream-unit-d47 chamomile TCP IANA then drink stream-unit-d47 values assistant 6115 chamomile",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "id": 1002,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "stream replacement 20260921",
+            "content": "The preferred drink of stream-unit-d47 is chamomile.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "stream-live",
+              "id": "1002",
+              "revision": "609b801eeb2a9e05e11501cfdc1d77ee3464851ce27edfff63de2effdcb0d39b"
+            }
+          }
+        ],
+        "restriction": {
+          "version": 1,
+          "namespace": "stream-live",
+          "authorization": "e2c6a3580fc7d7d451d9d987984a99a0b2ee0305f9755c063218d68d658ad467",
+          "ids": [
+            1002
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "6115.Authoritative",
+          "source": "aimee",
+          "positions": [
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25
+          ],
+          "score": 0.02836392167955637
+        },
+        {
+          "text": "stream-unit-d47",
+          "source": "aimee",
+          "positions": [
+            33,
+            34,
+            35,
+            36,
+            37
+          ],
+          "score": 0.032882184255868196
+        },
+        {
+          "text": "chamomile",
+          "source": "aimee",
+          "positions": [
+            39,
+            40,
+            41
+          ],
+          "score": 0.01807547896169126
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            73
+          ],
+          "score": 0.027547650039196014
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            76,
+            77
+          ],
+          "score": 0.015407691476866603
+        },
+        {
+          "text": "then",
+          "source": "sequence",
+          "positions": [
+            82
+          ],
+          "score": 0.022863587364554405
+        },
+        {
+          "text": "drink",
+          "source": "sequence",
+          "positions": [
+            85
+          ],
+          "score": 0.015314529649913311
+        },
+        {
+          "text": "stream-unit-d47",
+          "source": "sequence",
+          "positions": [
+            87,
+            88,
+            89,
+            90,
+            91
+          ],
+          "score": 0.039991748752072453
+        },
+        {
+          "text": "values",
+          "source": "sequence",
+          "positions": [
+            107
+          ],
+          "score": 0.023493651300668716
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            116
+          ],
+          "score": 0.02156454138457775
+        },
+        {
+          "text": "6115",
+          "source": "sequence",
+          "positions": [
+            122,
+            123,
+            124,
+            125
+          ],
+          "score": 0.043349183863028884
+        },
+        {
+          "text": "chamomile",
+          "source": "sequence",
+          "positions": [
+            127,
+            128,
+            129,
+            130
+          ],
+          "score": 0.07729264535009861
+        }
+      ],
+      "step": 10,
+      "phase": "decode",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 43,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        },
+        {
+          "namespace": "stream-live",
+          "id": "1002",
+          "revision": "609b801eeb2a9e05e11501cfdc1d77ee3464851ce27edfff63de2effdcb0d39b"
+        }
+      ],
+      "encoding_elapsed_ms": 0.013682,
+      "record_working_set_hits": 2,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "6115.Authoritative drink stream-unit-d47 chamomile TCP IANA drink stream-unit-d47 values 6115 chamomile unknown",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "id": 1002,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "stream replacement 20260921",
+            "content": "The preferred drink of stream-unit-d47 is chamomile.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "stream-live",
+              "id": "1002",
+              "revision": "609b801eeb2a9e05e11501cfdc1d77ee3464851ce27edfff63de2effdcb0d39b"
+            }
+          }
+        ],
+        "restriction": {
+          "version": 1,
+          "namespace": "stream-live",
+          "authorization": "e2c6a3580fc7d7d451d9d987984a99a0b2ee0305f9755c063218d68d658ad467",
+          "ids": [
+            1002
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "6115.Authoritative",
+          "source": "aimee",
+          "positions": [
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25
+          ],
+          "score": 0.029553713859058917
+        },
+        {
+          "text": "drink",
+          "source": "aimee",
+          "positions": [
+            31
+          ],
+          "score": 0.021650057286024094
+        },
+        {
+          "text": "stream-unit-d47",
+          "source": "aimee",
+          "positions": [
+            33,
+            34,
+            35,
+            36,
+            37
+          ],
+          "score": 0.029363876208662987
+        },
+        {
+          "text": "chamomile",
+          "source": "aimee",
+          "positions": [
+            39,
+            40,
+            41
+          ],
+          "score": 0.018931721104308963
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            73
+          ],
+          "score": 0.05043959245085716
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            76,
+            77
+          ],
+          "score": 0.030027048662304878
+        },
+        {
+          "text": "drink",
+          "source": "sequence",
+          "positions": [
+            85
+          ],
+          "score": 0.030215062201023102
+        },
+        {
+          "text": "stream-unit-d47",
+          "source": "sequence",
+          "positions": [
+            87,
+            88,
+            89,
+            90,
+            91
+          ],
+          "score": 0.03192004049196839
+        },
+        {
+          "text": "values",
+          "source": "sequence",
+          "positions": [
+            107
+          ],
+          "score": 0.02580140344798565
+        },
+        {
+          "text": "6115",
+          "source": "sequence",
+          "positions": [
+            122,
+            123,
+            124,
+            125
+          ],
+          "score": 0.044490917352959514
+        },
+        {
+          "text": "chamomile",
+          "source": "sequence",
+          "positions": [
+            127,
+            128,
+            129,
+            130
+          ],
+          "score": 0.08107033837586641
+        },
+        {
+          "text": "unknown",
+          "source": "sequence",
+          "positions": [
+            132
+          ],
+          "score": 0.022279709577560425
+        }
+      ],
+      "step": 11,
+      "phase": "decode",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 43,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        },
+        {
+          "namespace": "stream-live",
+          "id": "1002",
+          "revision": "609b801eeb2a9e05e11501cfdc1d77ee3464851ce27edfff63de2effdcb0d39b"
+        }
+      ],
+      "encoding_elapsed_ms": 0.011644999999999999,
+      "record_working_set_hits": 2,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 90
+}

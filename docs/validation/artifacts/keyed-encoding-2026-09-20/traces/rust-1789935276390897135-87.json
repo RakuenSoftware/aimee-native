@@ -1,0 +1,256 @@
+{
+  "runtime": "rust-libtorch",
+  "id": "rust-1789935276390897135-87",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhich TCP port is registered for IANA service pptp? Reply with the port number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    22365,
+    25804,
+    2548,
+    369,
+    9393,
+    364,
+    353,
+    37492,
+    2393,
+    74835,
+    79,
+    30,
+    17308,
+    440,
+    279,
+    2548,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    16,
+    22,
+    17,
+    18
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "fb07f7308e4e17944f9afe53457ade8122929877b922679e40d0b278baf7d19f",
+  "memory_encoding": "keyed",
+  "answer": "1723",
+  "finish_reason": "stop",
+  "elapsed_ms": 3107.485772,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "Which TCP port is registered for IANA service pptp? Reply with the port number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service pptp has these registered transport/port assignments: TCP port 1723; UDP port 1723.",
+            "id": "iana.pptp",
+            "key": "IANA service pptp",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.pptp",
+              "revision": "ea7695908cc0207d5dc85ae7bb8941c8c2cb4213764cb5f38fc1b114037a4eb3"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 38,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.pptp",
+          "revision": "ea7695908cc0207d5dc85ae7bb8941c8c2cb4213764cb5f38fc1b114037a4eb3"
+        }
+      ],
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user Which TCP is for Reply with assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.03009171737357974
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            41
+          ],
+          "score": 0.021603450179100037
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            64
+          ],
+          "score": 0.018648408353328705
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            66
+          ],
+          "score": 0.023428840562701225
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            67
+          ],
+          "score": 0.012336756102740765
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            69
+          ],
+          "score": 0.02868206426501274
+        },
+        {
+          "text": "for",
+          "source": "sequence",
+          "positions": [
+            71
+          ],
+          "score": 0.011865710839629173
+        },
+        {
+          "text": "Reply",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.03339875862002373
+        },
+        {
+          "text": "with",
+          "source": "sequence",
+          "positions": [
+            79
+          ],
+          "score": 0.011027680709958076
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            88
+          ],
+          "score": 0.026109686121344566
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            90
+          ],
+          "score": 0.029610145837068558
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            92
+          ],
+          "score": 0.06705805659294128
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 38,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.pptp",
+          "revision": "ea7695908cc0207d5dc85ae7bb8941c8c2cb4213764cb5f38fc1b114037a4eb3"
+        }
+      ],
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 60
+}

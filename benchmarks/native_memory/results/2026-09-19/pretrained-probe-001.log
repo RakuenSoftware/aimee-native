@@ -1,0 +1,65 @@
+Running as unit: aimee-native-p0-probe-001.service; invocation ID: 5288ad22f44c4454b5e43b565b8f1fbe
+Loading weights:   0%|          | 0/1184 [00:00<?, ?it/s]Loading weights:  16%|█▌        | 184/1184 [00:00<00:00, 1817.44it/s]Loading weights:  35%|███▍      | 409/1184 [00:00<00:00, 2070.43it/s]Loading weights:  57%|█████▋    | 680/1184 [00:00<00:00, 2338.43it/s]Loading weights:  89%|████████▊ | 1048/1184 [00:00<00:00, 2863.89it/s]Loading weights: 100%|██████████| 1184/1184 [00:00<00:00, 2447.01it/s]
+{"event": "base_loaded", "quantized_linears": 607}
+Traceback (most recent call last):
+  File "/opt/aimee-native-p0-training/benchmarks/native_memory/run_p0.py", line 329, in <module>
+    main()
+    ~~~~^^
+  File "/opt/aimee-native-p0-training/benchmarks/native_memory/run_p0.py", line 215, in main
+    baseline = model(inputs, use_cache=False).logits
+               ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/aimee-native-p0-training/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/opt/aimee-native-p0-training/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1794, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/opt/aimee-native-p0-training/lib/python3.13/site-packages/transformers/utils/generic.py", line 939, in wrapper
+    output = func(self, *args, **kwargs)
+  File "/opt/aimee-native-p0-training/lib/python3.13/site-packages/transformers/models/qwen3_5/modeling_qwen3_5.py", line 1855, in forward
+    outputs = self.model(
+        input_ids=input_ids,
+    ...<9 lines>...
+        **kwargs,
+    )
+  File "/opt/aimee-native-p0-training/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/opt/aimee-native-p0-training/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1794, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/opt/aimee-native-p0-training/lib/python3.13/site-packages/transformers/utils/generic.py", line 939, in wrapper
+    output = func(self, *args, **kwargs)
+  File "/opt/aimee-native-p0-training/lib/python3.13/site-packages/transformers/models/qwen3_5/modeling_qwen3_5.py", line 1648, in forward
+    outputs = self.language_model(
+        input_ids=None,
+    ...<4 lines>...
+        **kwargs,
+    )
+  File "/opt/aimee-native-p0-training/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/opt/aimee-native-p0-training/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1794, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/opt/aimee-native-p0-training/lib/python3.13/site-packages/transformers/utils/generic.py", line 1068, in wrapper
+    output = func(self, *args, **kwargs)
+  File "/opt/aimee-native-p0-training/lib/python3.13/site-packages/transformers/utils/output_capturing.py", line 286, in wrapper
+    outputs = func(self, *args, **kwargs)
+  File "/opt/aimee-native-p0-training/lib/python3.13/site-packages/transformers/models/qwen3_5/modeling_qwen3_5.py", line 1289, in forward
+    position_embeddings = self.rotary_emb(hidden_states, position_ids)
+  File "/opt/aimee-native-p0-training/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/opt/aimee-native-p0-training/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1794, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/opt/aimee-native-p0-training/lib/python3.13/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+  File "/opt/aimee-native-p0-training/lib/python3.13/site-packages/transformers/modeling_rope_utils.py", line 128, in wrapper
+    return rope_forward(self, x, position_ids, **kwargs)
+  File "/opt/aimee-native-p0-training/lib/python3.13/site-packages/transformers/models/qwen3_5/modeling_qwen3_5.py", line 196, in forward
+    freqs = (inv_freq_expanded.float() @ position_ids_expanded.float()).transpose(2, 3)
+             ~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RuntimeError: Expected all tensors to be on the same device, but got mat2 is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA_bmm)
+Finished with result: exit-code
+Main processes terminated with: code=exited, status=1/FAILURE
+Service runtime: 2min 8.458s
+CPU time consumed: 7min 45.796s
+Memory peak: 56G (swap: 0B)

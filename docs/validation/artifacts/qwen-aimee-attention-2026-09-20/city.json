@@ -1,0 +1,60 @@
+{
+  "name": "city",
+  "request": {
+    "messages": [
+      {
+        "role": "system",
+        "content": "Use available memory. Do not invent unknown details. Give only the requested values."
+      },
+      {
+        "role": "user",
+        "content": "What is the home city of unit-121330aded?"
+      }
+    ],
+    "max_tokens": 48,
+    "temperature": 0,
+    "aimee_memory": true,
+    "recall_mode": "attention",
+    "decode_recall": true
+  },
+  "http_status": 200,
+  "seconds": 4.271035885205492,
+  "response": {
+    "id": "fe37558a91f9404489eddabf5c952384",
+    "object": "chat.completion",
+    "model": "qwen-aimee-direct",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "Lima"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 49,
+      "completion_tokens": 3,
+      "total_tokens": 52
+    },
+    "aimee": {
+      "requested": true,
+      "request": {
+        "origin": "qwen_attention_query",
+        "query_source": "projected_attention_query",
+        "query": "Authoritative city unit-121330aded Lima im_start What home city of unit-121330aded assistant Lima",
+        "limit": 1
+      },
+      "returned_memory_ids": [
+        6
+      ],
+      "native_reads": 48,
+      "recall_calls": 3,
+      "bank_memory_ids": [
+        6
+      ],
+      "memory_encoding_tokens": 21
+    }
+  }
+}

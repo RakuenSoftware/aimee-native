@@ -1,0 +1,837 @@
+{
+  "runtime": "rust-libtorch",
+  "id": "rust-1789975828033663871-6",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nFor IANA service d3winosfi, give its registered TCP port as one integer.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    2381,
+    353,
+    37492,
+    2393,
+    293,
+    18,
+    7290,
+    428,
+    9688,
+    11,
+    2873,
+    1141,
+    9393,
+    25804,
+    2548,
+    430,
+    799,
+    7308,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    18,
+    19,
+    20,
+    23
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "e53a54d1c6e76dec5f0a7ffa89ed6a979de2ac4ebef3d5ec356a2b75b93dd01d",
+  "memory_encoding": "content",
+  "memory_before_prompt": true,
+  "memory_position_offset": -35,
+  "answer": "3458",
+  "finish_reason": "stop",
+  "elapsed_ms": 4362.3205800000005,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "For IANA service d3winosfi, give its registered TCP port as one integer.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service d3winosfi has these registered transport/port assignments: TCP port 3458; UDP port 3458.",
+            "id": "iana.d3winosfi",
+            "key": "IANA service d3winosfi",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.d3winosfi",
+              "revision": "cce0dbb7dd773c6b98c856e6e4f8e0d69cc33b3115b20a4dddacc763d6187f2b"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 35,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.d3winosfi",
+          "revision": "cce0dbb7dd773c6b98c856e6e4f8e0d69cc33b3115b20a4dddacc763d6187f2b"
+        }
+      ],
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user For d3winosfi give its as integer assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.031644109170883894
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            38
+          ],
+          "score": 0.020206471905112267
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            61
+          ],
+          "score": 0.016904735937714577
+        },
+        {
+          "text": "For",
+          "source": "sequence",
+          "positions": [
+            63
+          ],
+          "score": 0.01389418076723814
+        },
+        {
+          "text": "d3winosfi",
+          "source": "sequence",
+          "positions": [
+            67,
+            68,
+            69,
+            70,
+            71
+          ],
+          "score": 0.01828576996922493
+        },
+        {
+          "text": "give",
+          "source": "sequence",
+          "positions": [
+            73
+          ],
+          "score": 0.0375254824757576
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            74
+          ],
+          "score": 0.024416517466306686
+        },
+        {
+          "text": "as",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.030491281300783157
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            80
+          ],
+          "score": 0.016650980338454247
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            85
+          ],
+          "score": 0.027382027357816696
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            87
+          ],
+          "score": 0.029464397579431534
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            89
+          ],
+          "score": 0.06625474244356155
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 35,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.d3winosfi",
+          "revision": "cce0dbb7dd773c6b98c856e6e4f8e0d69cc33b3115b20a4dddacc763d6187f2b"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer For IANA d3winosfi give TCP integer assistant think think 3",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.020411313977092505
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            38
+          ],
+          "score": 0.03648751601576805
+        },
+        {
+          "text": "For",
+          "source": "sequence",
+          "positions": [
+            63
+          ],
+          "score": 0.02769213542342186
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            64,
+            65
+          ],
+          "score": 0.022171792574226856
+        },
+        {
+          "text": "d3winosfi",
+          "source": "sequence",
+          "positions": [
+            67,
+            68,
+            69,
+            70,
+            71
+          ],
+          "score": 0.030220792163163424
+        },
+        {
+          "text": "give",
+          "source": "sequence",
+          "positions": [
+            73
+          ],
+          "score": 0.026507657021284103
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            76
+          ],
+          "score": 0.026493839919567108
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            80
+          ],
+          "score": 0.03208133578300476
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            85
+          ],
+          "score": 0.032310400158166885
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            87
+          ],
+          "score": 0.037735212594270706
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            89
+          ],
+          "score": 0.023398248478770256
+        },
+        {
+          "text": "3",
+          "source": "sequence",
+          "positions": [
+            91
+          ],
+          "score": 0.040501419454813004
+        }
+      ],
+      "step": 1,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 35,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.d3winosfi",
+          "revision": "cce0dbb7dd773c6b98c856e6e4f8e0d69cc33b3115b20a4dddacc763d6187f2b"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "d3winosfi 3458 3458 Answer For IANA d3winosfi TCP port as integer 34",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "d3winosfi",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "score": 0.024582858197391033
+        },
+        {
+          "text": "3458",
+          "source": "aimee",
+          "positions": [
+            22,
+            23,
+            24,
+            25
+          ],
+          "score": 0.08289971039630473
+        },
+        {
+          "text": "3458",
+          "source": "aimee",
+          "positions": [
+            30,
+            31,
+            32,
+            33
+          ],
+          "score": 0.018607836100272834
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            38
+          ],
+          "score": 0.021231643855571747
+        },
+        {
+          "text": "For",
+          "source": "sequence",
+          "positions": [
+            63
+          ],
+          "score": 0.018782801926136017
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            64,
+            65
+          ],
+          "score": 0.04844268411397934
+        },
+        {
+          "text": "d3winosfi",
+          "source": "sequence",
+          "positions": [
+            67,
+            68,
+            69,
+            70,
+            71
+          ],
+          "score": 0.06676574610173702
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            76
+          ],
+          "score": 0.07414572685956955
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            77
+          ],
+          "score": 0.056480661034584045
+        },
+        {
+          "text": "as",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.01678723841905594
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            80
+          ],
+          "score": 0.043242961168289185
+        },
+        {
+          "text": "34",
+          "source": "sequence",
+          "positions": [
+            91,
+            92
+          ],
+          "score": 0.07791600190103054
+        }
+      ],
+      "step": 2,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 35,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.d3winosfi",
+          "revision": "cce0dbb7dd773c6b98c856e6e4f8e0d69cc33b3115b20a4dddacc763d6187f2b"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "d3winosfi 3458 3458 Answer IANA d3winosfi give TCP port as integer 345",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "d3winosfi",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "score": 0.0169198929797858
+        },
+        {
+          "text": "3458",
+          "source": "aimee",
+          "positions": [
+            22,
+            23,
+            24,
+            25
+          ],
+          "score": 0.08915080444421619
+        },
+        {
+          "text": "3458",
+          "source": "aimee",
+          "positions": [
+            30,
+            31,
+            32,
+            33
+          ],
+          "score": 0.01913365497603081
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            38
+          ],
+          "score": 0.01785515993833542
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            64,
+            65
+          ],
+          "score": 0.02956130914390087
+        },
+        {
+          "text": "d3winosfi",
+          "source": "sequence",
+          "positions": [
+            67,
+            68,
+            69,
+            70,
+            71
+          ],
+          "score": 0.03819588711485267
+        },
+        {
+          "text": "give",
+          "source": "sequence",
+          "positions": [
+            73
+          ],
+          "score": 0.020682338625192642
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            76
+          ],
+          "score": 0.06805073469877243
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            77
+          ],
+          "score": 0.07817751169204712
+        },
+        {
+          "text": "as",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.017628198489546776
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            80
+          ],
+          "score": 0.04663790762424469
+        },
+        {
+          "text": "345",
+          "source": "sequence",
+          "positions": [
+            91,
+            92,
+            93
+          ],
+          "score": 0.1493055447936058
+        }
+      ],
+      "step": 3,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 35,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.d3winosfi",
+          "revision": "cce0dbb7dd773c6b98c856e6e4f8e0d69cc33b3115b20a4dddacc763d6187f2b"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative d3winosfi TCP 3458 Answer IANA d3winosfi TCP port integer think 3458",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.014307708479464054
+        },
+        {
+          "text": "d3winosfi",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "score": 0.018099393229931593
+        },
+        {
+          "text": "TCP",
+          "source": "aimee",
+          "positions": [
+            19
+          ],
+          "score": 0.014190195128321648
+        },
+        {
+          "text": "3458",
+          "source": "aimee",
+          "positions": [
+            22,
+            23,
+            24,
+            25
+          ],
+          "score": 0.02637947170296684
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            38
+          ],
+          "score": 0.01767539232969284
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            64,
+            65
+          ],
+          "score": 0.02790703345090151
+        },
+        {
+          "text": "d3winosfi",
+          "source": "sequence",
+          "positions": [
+            67,
+            68,
+            69,
+            70,
+            71
+          ],
+          "score": 0.03525623632594943
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            76
+          ],
+          "score": 0.06776958703994751
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            77
+          ],
+          "score": 0.06395964324474335
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            80
+          ],
+          "score": 0.028691411018371582
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            87
+          ],
+          "score": 0.014073031954467297
+        },
+        {
+          "text": "3458",
+          "source": "sequence",
+          "positions": [
+            91,
+            92,
+            93,
+            94
+          ],
+          "score": 0.22932306304574013
+        }
+      ],
+      "step": 4,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 35,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.d3winosfi",
+          "revision": "cce0dbb7dd773c6b98c856e6e4f8e0d69cc33b3115b20a4dddacc763d6187f2b"
+        }
+      ],
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 60
+}

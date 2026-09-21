@@ -1,0 +1,256 @@
+{
+  "runtime": "rust-libtorch",
+  "id": "rust-1789935775573003453-195",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhat population does GeoNames report for Arenys de Mar ES? Return the integer only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    3710,
+    6823,
+    1503,
+    30862,
+    7729,
+    1830,
+    364,
+    71006,
+    1012,
+    401,
+    2783,
+    18704,
+    30,
+    3301,
+    279,
+    7308,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    16,
+    20,
+    18,
+    15,
+    22
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "fb07f7308e4e17944f9afe53457ade8122929877b922679e40d0b278baf7d19f",
+  "memory_encoding": "keyed",
+  "answer": "15307",
+  "finish_reason": "stop",
+  "elapsed_ms": 3592.820033,
+  "memory_encoding_passes": 1,
+  "native_reads": 96,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "What population does GeoNames report for Arenys de Mar ES? Return the integer only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Arenys de Mar (ID 3129661): country code ES; latitude 41.5819; longitude 2.54936; administrative codes 56/B; population 15307; time zone Europe/Madrid. The source record was modified on 2016-10-13.",
+            "id": "geonames.3129661",
+            "key": "place Arenys de Mar ES 3129661",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.3129661",
+              "revision": "e67b7707303b2d2d4a27a5815a0244e51609b40232696609520a7f083f3fc518"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 102,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3129661",
+          "revision": "e67b7707303b2d2d4a27a5815a0244e51609b40232696609520a7f083f3fc518"
+        }
+      ],
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user What does report Return the integer assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02363349264487624
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            105
+          ],
+          "score": 0.01788303814828396
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            128
+          ],
+          "score": 0.016497770324349403
+        },
+        {
+          "text": "What",
+          "source": "sequence",
+          "positions": [
+            130
+          ],
+          "score": 0.02466406300663948
+        },
+        {
+          "text": "does",
+          "source": "sequence",
+          "positions": [
+            132
+          ],
+          "score": 0.023020364344120026
+        },
+        {
+          "text": "report",
+          "source": "sequence",
+          "positions": [
+            135
+          ],
+          "score": 0.021219974383711815
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            143
+          ],
+          "score": 0.016181830316781998
+        },
+        {
+          "text": "the",
+          "source": "sequence",
+          "positions": [
+            144
+          ],
+          "score": 0.016343165189027786
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            145
+          ],
+          "score": 0.02918584644794464
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            151
+          ],
+          "score": 0.022643841803073883
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.03107254020869732
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.06294535100460052
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 102,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3129661",
+          "revision": "e67b7707303b2d2d4a27a5815a0244e51609b40232696609520a7f083f3fc518"
+        }
+      ],
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 60
+}

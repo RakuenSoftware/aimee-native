@@ -1,0 +1,255 @@
+{
+  "runtime": "rust-libtorch",
+  "id": "rust-1789935240956957394-76",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nFor IANA service origo-sync, give its registered TCP port as one integer.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    2381,
+    353,
+    37492,
+    2393,
+    2626,
+    78,
+    62837,
+    11,
+    2873,
+    1141,
+    9393,
+    25804,
+    2548,
+    430,
+    799,
+    7308,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    16,
+    16,
+    16,
+    15,
+    18
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "fb07f7308e4e17944f9afe53457ade8122929877b922679e40d0b278baf7d19f",
+  "memory_encoding": "content",
+  "answer": "11103",
+  "finish_reason": "stop",
+  "elapsed_ms": 3515.486342,
+  "memory_encoding_passes": 1,
+  "native_reads": 96,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "For IANA service origo-sync, give its registered TCP port as one integer.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service origo-sync has these registered transport/port assignments: TCP port 11103.",
+            "id": "iana.origo-sync",
+            "key": "IANA service origo-sync",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.origo-sync",
+              "revision": "6e36911ee6a4d491da17e4299d3a9391bd2e15bee55c727f77982c10443450f9"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 26,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.origo-sync",
+          "revision": "6e36911ee6a4d491da17e4299d3a9391bd2e15bee55c727f77982c10443450f9"
+        }
+      ],
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user For give its TCP as integer assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.031467994675040245
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            29
+          ],
+          "score": 0.018503107130527496
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            52
+          ],
+          "score": 0.01530059240758419
+        },
+        {
+          "text": "For",
+          "source": "sequence",
+          "positions": [
+            54
+          ],
+          "score": 0.013489840552210808
+        },
+        {
+          "text": "give",
+          "source": "sequence",
+          "positions": [
+            62
+          ],
+          "score": 0.037204526364803314
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            63
+          ],
+          "score": 0.02736351452767849
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            65
+          ],
+          "score": 0.014850039035081863
+        },
+        {
+          "text": "as",
+          "source": "sequence",
+          "positions": [
+            67
+          ],
+          "score": 0.029612360522150993
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            69
+          ],
+          "score": 0.01466555055230856
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            74
+          ],
+          "score": 0.028349606320261955
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            76
+          ],
+          "score": 0.029446110129356384
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.06804860383272171
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 26,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.origo-sync",
+          "revision": "6e36911ee6a4d491da17e4299d3a9391bd2e15bee55c727f77982c10443450f9"
+        }
+      ],
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 59
+}

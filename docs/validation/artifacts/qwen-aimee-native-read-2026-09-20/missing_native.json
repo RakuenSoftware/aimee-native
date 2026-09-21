@@ -1,0 +1,58 @@
+{
+  "name": "missing_native",
+  "request": {
+    "messages": [
+      {
+        "role": "system",
+        "content": "Answer using the available memory. Return only the requested value or values. If unknown, return unknown."
+      },
+      {
+        "role": "user",
+        "content": "What is the home city of unit-never-stored-9f24c6?"
+      }
+    ],
+    "max_tokens": 32,
+    "temperature": 0,
+    "aimee_memory": true,
+    "recall_mode": "native"
+  },
+  "http_status": 200,
+  "seconds": 3.245415027020499,
+  "response": {
+    "id": "8d3781cf768e410daa15dabaa18c8604",
+    "object": "chat.completion",
+    "model": "qwen-aimee-direct",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "unknown"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 56,
+      "completion_tokens": 2,
+      "total_tokens": 58
+    },
+    "aimee": {
+      "requested": true,
+      "request": {
+        "origin": "qwen_native_read_layer",
+        "query_source": "block_hidden_states",
+        "query": "q systemqAnswer usingq available memoryqq onlyqqq orqqqqq returnqqqqqqq Whatqq homeqq unitqqstoredq9qq4q6?qqqqqqqqq",
+        "limit": 4
+      },
+      "returned_memory_ids": [
+        5,
+        7,
+        2,
+        1
+      ],
+      "native_reads": 32,
+      "memory_encoding_tokens": 182
+    }
+  }
+}

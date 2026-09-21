@@ -1,0 +1,61 @@
+{
+  "name": "boundary_chain_2_prefill_only",
+  "request": {
+    "messages": [
+      {
+        "role": "system",
+        "content": "Use available memory. Do not invent unknown details. Give only the requested values."
+      },
+      {
+        "role": "user",
+        "content": "For project-f09e67, return its linked ledger identifier; that ledger's lookup phrase. Give the identifier first. Use unknown if needed."
+      }
+    ],
+    "max_tokens": 64,
+    "temperature": 0,
+    "aimee_memory": true,
+    "recall_mode": "native_tokens",
+    "decode_recall": false,
+    "decode_cue_boundary": "whitespace"
+  },
+  "http_status": 200,
+  "seconds": 5.241320115048438,
+  "response": {
+    "id": "54648dae93dc43e0bc33dfcfbdf8d879",
+    "object": "chat.completion",
+    "model": "qwen-aimee-direct",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "ledger-c73d25\nunknown"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 64,
+      "completion_tokens": 10,
+      "total_tokens": 74
+    },
+    "aimee": {
+      "requested": true,
+      "request": {
+        "origin": "qwen_native_runtime_cues",
+        "query_source": "runtime_token_stream",
+        "query": "system\nUse available memory. Do not invent unknown details. Give only the requested values.\nuser\nFor project-f09e67, return its linked ledger identifier; that ledger's lookup phrase. Give the identifier first. Use unknown if needed.\nassistant\n<think>\n\n</think>",
+        "limit": 1
+      },
+      "returned_memory_ids": [
+        11
+      ],
+      "native_reads": 160,
+      "recall_calls": 1,
+      "bank_memory_ids": [
+        11
+      ],
+      "memory_encoding_tokens": 25
+    }
+  }
+}

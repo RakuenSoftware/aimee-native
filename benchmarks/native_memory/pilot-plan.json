@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "purpose": "First bounded pretrained-27B native-memory accuracy pilot",
+  "corpus": "Deterministic first 100 synthetic memories, seed 4817",
+  "training_examples": 210,
+  "heldout_examples": 110,
+  "heldout_composition_examples": 10,
+  "optimizer_steps": 2100,
+  "epochs": 10,
+  "learning_rate": 0.001,
+  "base_quantization": "int8_per_row_v1",
+  "activation_dtype": "bfloat16",
+  "value_width": 2048,
+  "attention_width": 256,
+  "after_block": 1,
+  "K": 16,
+  "gradient_checkpointing": true,
+  "evaluation": "All 110 held-out examples, all six arms, full answers, greedy, max 64 new tokens",
+  "checkpoint_selection": "Predeclared final step only; no held-out checkpoint selection",
+  "runtime_limit_hours": 3,
+  "notes": [
+    "This is the minimum 100-memory Stage A pilot, not the 1000-memory primary milestone.",
+    "The earlier eight-case GGUF control is not the text baseline for this pilot.",
+    "No image exporter, live Aimee memory, or serving deployment.",
+    "No automatic expansion or retry based on held-out scores."
+  ]
+}

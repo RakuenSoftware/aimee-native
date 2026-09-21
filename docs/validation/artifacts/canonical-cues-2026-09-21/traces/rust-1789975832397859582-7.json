@@ -1,0 +1,826 @@
+{
+  "runtime": "rust-libtorch",
+  "id": "rust-1789975832397859582-7",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhich TCP port is registered for IANA service pxc-spvr-ft? Reply with the port number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    22365,
+    25804,
+    2548,
+    369,
+    9393,
+    364,
+    353,
+    37492,
+    2393,
+    280,
+    7891,
+    21549,
+    18349,
+    90399,
+    30,
+    17308,
+    440,
+    279,
+    2548,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    19,
+    15,
+    15,
+    17
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "e53a54d1c6e76dec5f0a7ffa89ed6a979de2ac4ebef3d5ec356a2b75b93dd01d",
+  "memory_encoding": "content",
+  "memory_before_prompt": true,
+  "memory_position_offset": -35,
+  "answer": "4002",
+  "finish_reason": "stop",
+  "elapsed_ms": 4379.404767999999,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "Which TCP port is registered for IANA service pxc-spvr-ft? Reply with the port number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service pxc-spvr-ft has these registered transport/port assignments: TCP port 4002; UDP port 4002.",
+            "id": "iana.pxc-spvr-ft",
+            "key": "IANA service pxc-spvr-ft",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.pxc-spvr-ft",
+              "revision": "c489bfe5423324cfa522f5ab96005a27cc91746e0b0d1e8fc253b504ab0d9e23"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 35,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.pxc-spvr-ft",
+          "revision": "c489bfe5423324cfa522f5ab96005a27cc91746e0b0d1e8fc253b504ab0d9e23"
+        }
+      ],
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user Which TCP is for pxc-spvr-ft Reply assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.029063337948173285
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            38
+          ],
+          "score": 0.025032833218574524
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            61
+          ],
+          "score": 0.017351428046822548
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            63
+          ],
+          "score": 0.020325342193245888
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            64
+          ],
+          "score": 0.013322604820132256
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            66
+          ],
+          "score": 0.027714744210243225
+        },
+        {
+          "text": "for",
+          "source": "sequence",
+          "positions": [
+            68
+          ],
+          "score": 0.011875476688146591
+        },
+        {
+          "text": "pxc-spvr-ft",
+          "source": "sequence",
+          "positions": [
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.01247017493005842
+        },
+        {
+          "text": "Reply",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.034597836434841156
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            88
+          ],
+          "score": 0.026867542415857315
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            90
+          ],
+          "score": 0.032141171395778656
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            92
+          ],
+          "score": 0.06880182772874832
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 35,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.pxc-spvr-ft",
+          "revision": "c489bfe5423324cfa522f5ab96005a27cc91746e0b0d1e8fc253b504ab0d9e23"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 4002 Answer Which TCP is pxc-spvr-ft Reply assistant think think 4",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02241037180647254
+        },
+        {
+          "text": "4002",
+          "source": "aimee",
+          "positions": [
+            22,
+            23,
+            24,
+            25
+          ],
+          "score": 0.016055686748586595
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            38
+          ],
+          "score": 0.035375647246837616
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            63
+          ],
+          "score": 0.049511946737766266
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            64
+          ],
+          "score": 0.026110567152500153
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            66
+          ],
+          "score": 0.01971365138888359
+        },
+        {
+          "text": "pxc-spvr-ft",
+          "source": "sequence",
+          "positions": [
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.01617038296535611
+        },
+        {
+          "text": "Reply",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.0199221633374691
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            88
+          ],
+          "score": 0.029968364164233208
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            90
+          ],
+          "score": 0.0270451158285141
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            92
+          ],
+          "score": 0.016106843948364258
+        },
+        {
+          "text": "4",
+          "source": "sequence",
+          "positions": [
+            94
+          ],
+          "score": 0.04642927274107933
+        }
+      ],
+      "step": 1,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 35,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.pxc-spvr-ft",
+          "revision": "c489bfe5423324cfa522f5ab96005a27cc91746e0b0d1e8fc253b504ab0d9e23"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 4002 Answer Which TCP port IANA pxc-spvr-ft Reply number assistant 40",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.022244867868721485
+        },
+        {
+          "text": "4002",
+          "source": "aimee",
+          "positions": [
+            22,
+            23,
+            24,
+            25
+          ],
+          "score": 0.06755020143464208
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            38
+          ],
+          "score": 0.022805212065577507
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            63
+          ],
+          "score": 0.03514685854315758
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            64
+          ],
+          "score": 0.06044899672269821
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            65
+          ],
+          "score": 0.0468992218375206
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            69,
+            70
+          ],
+          "score": 0.022582930512726307
+        },
+        {
+          "text": "pxc-spvr-ft",
+          "source": "sequence",
+          "positions": [
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.026018130127340555
+        },
+        {
+          "text": "Reply",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.021658284589648247
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            82
+          ],
+          "score": 0.018826713785529137
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            88
+          ],
+          "score": 0.01812039688229561
+        },
+        {
+          "text": "40",
+          "source": "sequence",
+          "positions": [
+            94,
+            95
+          ],
+          "score": 0.11647126823663712
+        }
+      ],
+      "step": 2,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 35,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.pxc-spvr-ft",
+          "revision": "c489bfe5423324cfa522f5ab96005a27cc91746e0b0d1e8fc253b504ab0d9e23"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 4002 Answer Which TCP port is for IANA pxc-spvr-ft Reply 400",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.018616880290210247
+        },
+        {
+          "text": "4002",
+          "source": "aimee",
+          "positions": [
+            22,
+            23,
+            24,
+            25
+          ],
+          "score": 0.05303598660975695
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            38
+          ],
+          "score": 0.017724666744470596
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            63
+          ],
+          "score": 0.040588561445474625
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            64
+          ],
+          "score": 0.05030260607600212
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            65
+          ],
+          "score": 0.050048768520355225
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            66
+          ],
+          "score": 0.020384743809700012
+        },
+        {
+          "text": "for",
+          "source": "sequence",
+          "positions": [
+            68
+          ],
+          "score": 0.01732823997735977
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            69,
+            70
+          ],
+          "score": 0.02174128033220768
+        },
+        {
+          "text": "pxc-spvr-ft",
+          "source": "sequence",
+          "positions": [
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.030876404605805874
+        },
+        {
+          "text": "Reply",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.018714388832449913
+        },
+        {
+          "text": "400",
+          "source": "sequence",
+          "positions": [
+            94,
+            95,
+            96
+          ],
+          "score": 0.17279252037405968
+        }
+      ],
+      "step": 3,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 35,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.pxc-spvr-ft",
+          "revision": "c489bfe5423324cfa522f5ab96005a27cc91746e0b0d1e8fc253b504ab0d9e23"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 4002 Answer Which TCP port IANA pxc-spvr-ft Reply number think 4002",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.01411434798501432
+        },
+        {
+          "text": "4002",
+          "source": "aimee",
+          "positions": [
+            22,
+            23,
+            24,
+            25
+          ],
+          "score": 0.03414805221837014
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            38
+          ],
+          "score": 0.020103061571717262
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            63
+          ],
+          "score": 0.023616105318069458
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            64
+          ],
+          "score": 0.051880016922950745
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            65
+          ],
+          "score": 0.034701067954301834
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            69,
+            70
+          ],
+          "score": 0.021362068597227335
+        },
+        {
+          "text": "pxc-spvr-ft",
+          "source": "sequence",
+          "positions": [
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.02416904899291694
+        },
+        {
+          "text": "Reply",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.013684111647307873
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            82
+          ],
+          "score": 0.01434529758989811
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            90
+          ],
+          "score": 0.018204031512141228
+        },
+        {
+          "text": "4002",
+          "source": "sequence",
+          "positions": [
+            94,
+            95,
+            96,
+            97
+          ],
+          "score": 0.27298205345869064
+        }
+      ],
+      "step": 4,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 35,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.pxc-spvr-ft",
+          "revision": "c489bfe5423324cfa522f5ab96005a27cc91746e0b0d1e8fc253b504ab0d9e23"
+        }
+      ],
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 63
+}

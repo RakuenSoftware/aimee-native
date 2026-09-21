@@ -1,0 +1,38 @@
+{
+  "phase": "training",
+  "started_at": "2026-09-19T21:47:45.219024+00:00",
+  "elapsed_seconds": 9.57041047513485e-05,
+  "commands": [
+    [
+      "/opt/aimee-native-p0-training/bin/python",
+      "/opt/aimee-native-p0-training/pilot-001-source/run_p0.py",
+      "train",
+      "--model",
+      "/opt/aimee-native-p0-training/model",
+      "--fixtures",
+      "/opt/aimee-native-p0-training/pilot-001-source/fixtures",
+      "--placement",
+      "/opt/aimee-native-p0-training/pilot-001-source/placement-dual7900xtx-int8.json",
+      "--base-quantization",
+      "int8_per_row_v1",
+      "--dtype",
+      "bfloat16",
+      "--value-width",
+      "2048",
+      "--attention-width",
+      "256",
+      "--k",
+      "16",
+      "--after-block",
+      "1",
+      "--seed",
+      "4817",
+      "--lr",
+      "0.001",
+      "--steps",
+      "2100",
+      "--out",
+      "/opt/aimee-native-p0-training/pilot-001/train"
+    ]
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "name": "joint_preload_only",
+  "request": {
+    "messages": [
+      {
+        "role": "system",
+        "content": "Answer using the available memory. Return only the requested value or values. If unknown, return unknown."
+      },
+      {
+        "role": "user",
+        "content": "Give the preferred drink of unit-b03646cbf4, then the home city of unit-121330aded. Separate with a semicolon."
+      }
+    ],
+    "max_tokens": 32,
+    "temperature": 0,
+    "recall_mode": "prefill"
+  },
+  "http_status": 200,
+  "seconds": 3.5967644480988383,
+  "response": {
+    "id": "b9f6463983c64897baff05ccf1e4aa18",
+    "object": "chat.completion",
+    "model": "qwen-aimee-direct",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "oolong;Lima"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 74,
+      "completion_tokens": 6,
+      "total_tokens": 80
+    },
+    "aimee": {
+      "requested": true,
+      "request": {
+        "origin": "qwen_native_prefill_hook",
+        "query_source": "latest_user_message",
+        "query": "Give the preferred drink of unit-b03646cbf4, then the home city of unit-121330aded. Separate with a semicolon.",
+        "limit": 4
+      },
+      "returned_memory_ids": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "native_reads": 96,
+      "recall_calls": 1,
+      "preload_calls": 0,
+      "native_recall_calls": 0,
+      "bank_memory_ids": [],
+      "memory_encoding_tokens": 75
+    }
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "name": "joint_reversed_native",
+  "request": {
+    "messages": [
+      {
+        "role": "system",
+        "content": "Answer using the available memory. Return only the requested value or values. If unknown, return unknown."
+      },
+      {
+        "role": "user",
+        "content": "Give the home city of unit-121330aded, then the preferred drink of unit-b03646cbf4. Separate with a semicolon."
+      }
+    ],
+    "max_tokens": 32,
+    "temperature": 0,
+    "aimee_memory": true
+  },
+  "http_status": 200,
+  "seconds": 3.5999353958759457,
+  "response": {
+    "id": "d8ed38b6ff7c41aaaf7fb179db9563f6",
+    "object": "chat.completion",
+    "model": "qwen-aimee-direct",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "Lima; oolong"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 74,
+      "completion_tokens": 6,
+      "total_tokens": 80
+    },
+    "aimee": {
+      "requested": true,
+      "returned_memory_ids": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "native_reads": 96,
+      "memory_encoding_tokens": 75
+    }
+  }
+}

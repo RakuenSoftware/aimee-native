@@ -1,0 +1,60 @@
+{
+  "name": "chain_2_prefill_only",
+  "request": {
+    "messages": [
+      {
+        "role": "system",
+        "content": "Use available memory. Do not invent unknown details. Give only the requested values."
+      },
+      {
+        "role": "user",
+        "content": "For project-f09e67, return its linked ledger identifier; that ledger's lookup phrase. Give the identifier first. Use unknown if needed."
+      }
+    ],
+    "max_tokens": 48,
+    "temperature": 0,
+    "aimee_memory": true,
+    "recall_mode": "attention",
+    "decode_recall": false
+  },
+  "http_status": 200,
+  "seconds": 5.264547102153301,
+  "response": {
+    "id": "05329da4b4674f96882a73cf66f52d71",
+    "object": "chat.completion",
+    "model": "qwen-aimee-direct",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "ledger-c73d25\nunknown"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 64,
+      "completion_tokens": 10,
+      "total_tokens": 74
+    },
+    "aimee": {
+      "requested": true,
+      "request": {
+        "origin": "qwen_attention_query",
+        "query_source": "projected_attention_query",
+        "query": "im_start user For project-f09e67 return its that Give identifier assistant think think",
+        "limit": 1
+      },
+      "returned_memory_ids": [
+        11
+      ],
+      "native_reads": 160,
+      "recall_calls": 1,
+      "bank_memory_ids": [
+        11
+      ],
+      "memory_encoding_tokens": 25
+    }
+  }
+}

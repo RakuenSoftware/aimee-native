@@ -1,0 +1,295 @@
+{
+  "runtime": "rust-libtorch",
+  "id": "rust-1789935333633291936-101",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the NASA archive, what is the orbital period in days for planet TIC 356227008 b? Return the number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    20774,
+    17593,
+    11,
+    1092,
+    369,
+    279,
+    62409,
+    4031,
+    303,
+    2756,
+    364,
+    11247,
+    231101,
+    220,
+    18,
+    20,
+    21,
+    17,
+    17,
+    22,
+    15,
+    15,
+    23,
+    292,
+    30,
+    3301,
+    279,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    17,
+    13,
+    24,
+    21,
+    16,
+    19,
+    22,
+    19,
+    19,
+    23,
+    22,
+    15,
+    17
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "fb07f7308e4e17944f9afe53457ade8122929877b922679e40d0b278baf7d19f",
+  "memory_encoding": "content",
+  "answer": "2.96147448702",
+  "finish_reason": "stop",
+  "elapsed_ms": 7193.9540879999995,
+  "memory_encoding_passes": 1,
+  "native_reads": 224,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the NASA archive, what is the orbital period in days for planet TIC 356227008 b? Return the number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "For planet TIC 356227008 b, the NASA Exoplanet Archive composite table lists: host star TIC 356227008; discovery year 2026; discovery method Transit; discovery facility Transiting Exoplanet Survey Satellite (TESS); orbital period 2.96147448702 days; reported planet radius 2.39024009 Earth radii; reported system distance 387.60900000 parsecs.",
+            "id": "nasa.TIC 356227008 b",
+            "key": "planet TIC 356227008 b",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "nasa.TIC 356227008 b",
+              "revision": "cc3e51a8cfc15219b18775be3740d1e4be34d3b6fd2a0e1171f2bdac06e258bb"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 124,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TIC 356227008 b",
+          "revision": "cc3e51a8cfc15219b18775be3740d1e4be34d3b6fd2a0e1171f2bdac06e258bb"
+        }
+      ],
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 356227008 Answer user what is in 356227008 Return assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.019390146248042583
+        },
+        {
+          "text": "356227008",
+          "source": "aimee",
+          "positions": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "score": 0.02163356330129318
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            127
+          ],
+          "score": 0.027694176882505417
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            150
+          ],
+          "score": 0.014047965407371521
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            158
+          ],
+          "score": 0.026605961844325066
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            159
+          ],
+          "score": 0.013686401769518852
+        },
+        {
+          "text": "in",
+          "source": "sequence",
+          "positions": [
+            163
+          ],
+          "score": 0.014195289462804794
+        },
+        {
+          "text": "356227008",
+          "source": "sequence",
+          "positions": [
+            169,
+            170,
+            171,
+            172,
+            173,
+            174,
+            175,
+            176,
+            177
+          ],
+          "score": 0.030951555585488677
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            180
+          ],
+          "score": 0.012941999360918999
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            188
+          ],
+          "score": 0.024443602189421654
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            190
+          ],
+          "score": 0.03322901576757431
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            192
+          ],
+          "score": 0.07188430428504944
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 124,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TIC 356227008 b",
+          "revision": "cc3e51a8cfc15219b18775be3740d1e4be34d3b6fd2a0e1171f2bdac06e258bb"
+        }
+      ],
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 83
+}

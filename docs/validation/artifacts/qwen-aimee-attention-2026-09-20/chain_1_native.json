@@ -1,0 +1,60 @@
+{
+  "name": "chain_1_native",
+  "request": {
+    "messages": [
+      {
+        "role": "system",
+        "content": "Use available memory. Do not invent unknown details. Give only the requested values."
+      },
+      {
+        "role": "user",
+        "content": "For project-d4a92c, return its linked ledger identifier; that ledger's lookup phrase. Give the identifier first. Use unknown if needed."
+      }
+    ],
+    "max_tokens": 48,
+    "temperature": 0,
+    "aimee_memory": true,
+    "recall_mode": "attention",
+    "decode_recall": true
+  },
+  "http_status": 200,
+  "seconds": 7.865097949048504,
+  "response": {
+    "id": "d78e7e16356a4c3a9710c7d26e620c68",
+    "object": "chat.completion",
+    "model": "qwen-aimee-direct",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "ledger-6b8f31\nunknown"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 64,
+      "completion_tokens": 11,
+      "total_tokens": 75
+    },
+    "aimee": {
+      "requested": true,
+      "request": {
+        "origin": "qwen_attention_query",
+        "query_source": "projected_attention_query",
+        "query": "project-d4a92c ledger-6b8f31 im_start details project-d4a92c ledger identifier phrase identifier if ledger-6b8f31 unknown",
+        "limit": 1
+      },
+      "returned_memory_ids": [
+        9
+      ],
+      "native_reads": 176,
+      "recall_calls": 11,
+      "bank_memory_ids": [
+        9
+      ],
+      "memory_encoding_tokens": 26
+    }
+  }
+}

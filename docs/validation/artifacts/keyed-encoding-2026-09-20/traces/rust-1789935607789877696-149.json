@@ -1,0 +1,308 @@
+{
+  "runtime": "rust-libtorch",
+  "id": "rust-1789935607789877696-149",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nGive the registered TCP ports for IANA service ivecon-port and IANA service d3winosfi, in that order. Return two integers separated by a semicolon.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    33963,
+    279,
+    9393,
+    25804,
+    19708,
+    364,
+    353,
+    37492,
+    2393,
+    95172,
+    435,
+    40084,
+    321,
+    353,
+    37492,
+    2393,
+    293,
+    18,
+    7290,
+    428,
+    9688,
+    11,
+    303,
+    421,
+    1906,
+    13,
+    3301,
+    1330,
+    24959,
+    18101,
+    539,
+    264,
+    5067,
+    37238,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    18,
+    17,
+    20,
+    23,
+    26,
+    18,
+    19,
+    20,
+    23
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "fb07f7308e4e17944f9afe53457ade8122929877b922679e40d0b278baf7d19f",
+  "memory_encoding": "content",
+  "answer": "3258;3458",
+  "finish_reason": "stop",
+  "elapsed_ms": 5434.934627,
+  "memory_encoding_passes": 1,
+  "native_reads": 160,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "Give the registered TCP ports for IANA service ivecon-port and IANA service d3winosfi, in that order. Return two integers separated by a semicolon.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service ivecon-port has these registered transport/port assignments: TCP port 3258; UDP port 3258.",
+            "id": "iana.ivecon-port",
+            "key": "IANA service ivecon-port",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.ivecon-port",
+              "revision": "4d7d5611031f994d9380ba948f873076def624c5d1e0beedfcad1ae377f29442"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          },
+          {
+            "confidence": 1,
+            "content": "IANA service d3winosfi has these registered transport/port assignments: TCP port 3458; UDP port 3458.",
+            "id": "iana.d3winosfi",
+            "key": "IANA service d3winosfi",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.d3winosfi",
+              "revision": "cce0dbb7dd773c6b98c856e6e4f8e0d69cc33b3115b20a4dddacc763d6187f2b"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 64,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.ivecon-port",
+          "revision": "4d7d5611031f994d9380ba948f873076def624c5d1e0beedfcad1ae377f29442"
+        },
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.d3winosfi",
+          "revision": "cce0dbb7dd773c6b98c856e6e4f8e0d69cc33b3115b20a4dddacc763d6187f2b"
+        }
+      ],
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user Give for and d3winosfi Return integers assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.021266138181090355
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            67
+          ],
+          "score": 0.02732187509536743
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            90
+          ],
+          "score": 0.014212902635335922
+        },
+        {
+          "text": "Give",
+          "source": "sequence",
+          "positions": [
+            92
+          ],
+          "score": 0.01329706609249115
+        },
+        {
+          "text": "for",
+          "source": "sequence",
+          "positions": [
+            97
+          ],
+          "score": 0.021869365125894547
+        },
+        {
+          "text": "and",
+          "source": "sequence",
+          "positions": [
+            104
+          ],
+          "score": 0.012127267196774483
+        },
+        {
+          "text": "d3winosfi",
+          "source": "sequence",
+          "positions": [
+            108,
+            109,
+            110,
+            111,
+            112
+          ],
+          "score": 0.012122847838327289
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.013096330687403679
+        },
+        {
+          "text": "integers",
+          "source": "sequence",
+          "positions": [
+            120
+          ],
+          "score": 0.02110622636973858
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            130
+          ],
+          "score": 0.024743229150772095
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            132
+          ],
+          "score": 0.029839172959327698
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            134
+          ],
+          "score": 0.06625191867351532
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 64,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.ivecon-port",
+          "revision": "4d7d5611031f994d9380ba948f873076def624c5d1e0beedfcad1ae377f29442"
+        },
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.d3winosfi",
+          "revision": "cce0dbb7dd773c6b98c856e6e4f8e0d69cc33b3115b20a4dddacc763d6187f2b"
+        }
+      ],
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 81
+}

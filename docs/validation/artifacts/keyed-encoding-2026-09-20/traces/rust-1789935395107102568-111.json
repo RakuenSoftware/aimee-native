@@ -1,0 +1,286 @@
+{
+  "runtime": "rust-libtorch",
+  "id": "rust-1789935395107102568-111",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the NASA archive, what is the orbital period in days for planet TOI-938 b? Return the number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    20774,
+    17593,
+    11,
+    1092,
+    369,
+    279,
+    62409,
+    4031,
+    303,
+    2756,
+    364,
+    11247,
+    4981,
+    40,
+    12,
+    24,
+    18,
+    23,
+    292,
+    30,
+    3301,
+    279,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    23,
+    13,
+    23,
+    15,
+    22,
+    18,
+    18,
+    23,
+    23,
+    17,
+    17,
+    16,
+    16
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "fb07f7308e4e17944f9afe53457ade8122929877b922679e40d0b278baf7d19f",
+  "memory_encoding": "keyed",
+  "answer": "8.80733882211",
+  "finish_reason": "stop",
+  "elapsed_ms": 7218.945823,
+  "memory_encoding_passes": 1,
+  "native_reads": 224,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the NASA archive, what is the orbital period in days for planet TOI-938 b? Return the number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "For planet TOI-938 b, the NASA Exoplanet Archive composite table lists: host star TOI-938; discovery year 2026; discovery method Transit; discovery facility Transiting Exoplanet Survey Satellite (TESS); orbital period 8.80733882211 days; reported planet radius 4.82401567 Earth radii; reported system distance 215.03400000 parsecs.",
+            "id": "nasa.TOI-938 b",
+            "key": "planet TOI-938 b",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "nasa.TOI-938 b",
+              "revision": "26a5ce3b6a0f12d8ff1370ba092ae9d0e2116eaa4119c0bd4b96d2ad71cd05b3"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 123,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-938 b",
+          "revision": "26a5ce3b6a0f12d8ff1370ba092ae9d0e2116eaa4119c0bd4b96d2ad71cd05b3"
+        }
+      ],
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 215.03400000 parsecs Answer user what is in Return assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.018323214258998632
+        },
+        {
+          "text": "215.03400000",
+          "source": "aimee",
+          "positions": [
+            108,
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119
+          ],
+          "score": 0.01385137633769773
+        },
+        {
+          "text": "parsecs",
+          "source": "aimee",
+          "positions": [
+            120,
+            121
+          ],
+          "score": 0.013621181715279818
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            126
+          ],
+          "score": 0.023269202560186386
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            149
+          ],
+          "score": 0.015765659511089325
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            157
+          ],
+          "score": 0.02536342293024063
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            158
+          ],
+          "score": 0.013305380940437317
+        },
+        {
+          "text": "in",
+          "source": "sequence",
+          "positions": [
+            162
+          ],
+          "score": 0.01694652996957302
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            174
+          ],
+          "score": 0.01373094879090786
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            182
+          ],
+          "score": 0.02586699090898037
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            184
+          ],
+          "score": 0.034082602709531784
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            186
+          ],
+          "score": 0.07328499853610992
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "keyed",
+      "memory_encoding_tokens": 123,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-938 b",
+          "revision": "26a5ce3b6a0f12d8ff1370ba092ae9d0e2116eaa4119c0bd4b96d2ad71cd05b3"
+        }
+      ],
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 78
+}

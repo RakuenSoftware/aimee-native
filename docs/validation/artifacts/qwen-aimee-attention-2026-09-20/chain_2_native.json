@@ -1,0 +1,60 @@
+{
+  "name": "chain_2_native",
+  "request": {
+    "messages": [
+      {
+        "role": "system",
+        "content": "Use available memory. Do not invent unknown details. Give only the requested values."
+      },
+      {
+        "role": "user",
+        "content": "For project-f09e67, return its linked ledger identifier; that ledger's lookup phrase. Give the identifier first. Use unknown if needed."
+      }
+    ],
+    "max_tokens": 48,
+    "temperature": 0,
+    "aimee_memory": true,
+    "recall_mode": "attention",
+    "decode_recall": true
+  },
+  "http_status": 200,
+  "seconds": 7.151252327021211,
+  "response": {
+    "id": "43dc1d13fbaf4d108800446584737a0d",
+    "object": "chat.completion",
+    "model": "qwen-aimee-direct",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "ledger-c73d25\nunknown"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 64,
+      "completion_tokens": 10,
+      "total_tokens": 74
+    },
+    "aimee": {
+      "requested": true,
+      "request": {
+        "origin": "qwen_attention_query",
+        "query_source": "projected_attention_query",
+        "query": "project-f09e67 ledger-c73d25 im_start details project-f09e67 ledger identifier phrase identifier if ledger-c73d25 unknown",
+        "limit": 1
+      },
+      "returned_memory_ids": [
+        11
+      ],
+      "native_reads": 160,
+      "recall_calls": 10,
+      "bank_memory_ids": [
+        11
+      ],
+      "memory_encoding_tokens": 25
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "name": "local_three_layers_updated",
+  "request": {
+    "messages": [
+      {
+        "role": "system",
+        "content": "Answer using the available memory. Return only the requested value or values. If unknown, return unknown."
+      },
+      {
+        "role": "user",
+        "content": "Give the research material for fixture-b261df, then its research finish, then the preferred drink of unit-b03646cbf4. Separate with semicolons."
+      }
+    ],
+    "max_tokens": 48,
+    "temperature": 0
+  },
+  "http_status": 200,
+  "seconds": 4.355010398197919,
+  "response": {
+    "id": "fa9cbc2dd5cf4a598c97b5a1d918e36b",
+    "object": "chat.completion",
+    "model": "qwen-aimee-direct",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "basalt; satin; oolong"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 76,
+      "completion_tokens": 8,
+      "total_tokens": 84
+    },
+    "aimee": {
+      "requested": true,
+      "request": {
+        "origin": "qwen_attention_query",
+        "query_source": "projected_attention_query",
+        "query": "drink unit-b03646cbf4 oolong fixture-b261df satin unit-121330aded fixture-b261df drink unit-b03646cbf4 basalt satin oolong",
+        "limit": 4
+      },
+      "returned_memory_ids": [
+        "user-research:5",
+        "general-research:1",
+        "kb-research:1",
+        "user-research:6"
+      ],
+      "native_reads": 128,
+      "recall_calls": 9,
+      "preload_calls": 1,
+      "native_recall_calls": 8,
+      "bank_memory_ids": [
+        "user-research:5",
+        "general-research:1",
+        "kb-research:1",
+        "user-research:6"
+      ],
+      "memory_encoding_tokens": 69
+    }
+  }
+}

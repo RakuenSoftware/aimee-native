@@ -1,0 +1,12 @@
+{
+  "max_additional_runs": 1,
+  "decision_inputs": "initial compiler result only; no trained native or held-out result",
+  "continue_if_stop_reason": "step_limit",
+  "continue_if_final_training_probability_at_least": 0.05,
+  "continue_if_final_training_probability_below": 0.95,
+  "initialization": "last measured float rows from the initial run",
+  "optimizer": "fresh Adam state; unchanged learning rate and regularizer",
+  "additional_measured_steps": 60,
+  "evaluation_candidate": "final measured candidate from the last permitted run",
+  "reason": "Allow a bounded training-only continuation for a promising but incomplete single-context fit. The four new held-out questions remain untouched until optimization ends."
+}

@@ -1,0 +1,18 @@
+{
+  "change": "issue decode lookups only at whitespace completion of a runtime cue",
+  "reason": "every-token lookup retrieved unrelated records from unfinished identifiers; one positive result arrived on a nonunique prefix",
+  "unchanged": [
+    "model",
+    "memory contents",
+    "prompts",
+    "greedy decode",
+    "Aimee result limit 1",
+    "native injection point",
+    "no training"
+  ],
+  "additional_pass_requirement": "first arrival of second memory occurs on a query containing the complete model-generated ledger identifier",
+  "arms": [
+    "decode_enabled",
+    "prefill_only"
+  ]
+}

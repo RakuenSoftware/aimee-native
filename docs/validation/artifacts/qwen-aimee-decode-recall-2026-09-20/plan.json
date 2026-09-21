@@ -1,0 +1,22 @@
+{
+  "adapter_training": "prohibited; no new parameters or optimizer",
+  "runtime_mode": "native_tokens",
+  "read_site": "after transformer block 1",
+  "cue_window_tokens": 64,
+  "memory_limit_per_call": 1,
+  "arms": [
+    "decode_reads_enabled",
+    "decode_reads_disabled",
+    "memory_disabled"
+  ],
+  "pass_requirements": [
+    "second memory absent from initial Aimee response and all initial model input",
+    "second memory first returned in a decode-time native read",
+    "model-generated identifier forms the later cue without an external request or forced tokens",
+    "correct final phrase with decode reads enabled",
+    "paired decode-disabled output cannot supply correct phrase"
+  ],
+  "invalid_test": "second memory present in prefill response; report invalid rather than composition success",
+  "corpus": "four synthetic records stored and read back through existing Aimee CLI",
+  "no_runtime_test_knowledge": "no memory IDs, project identifiers, ledger identifiers, or answer phrases in runtime source"
+}

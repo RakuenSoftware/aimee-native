@@ -1,0 +1,91 @@
+{
+  "status": "complete",
+  "queries": {
+    "drink": "What is the preferred drink of unit-b03646cbf4?",
+    "city": "What is the home city of unit-121330aded?",
+    "composition": "Give the preferred drink of unit-b03646cbf4, then the home city of unit-121330aded. Separate with a semicolon."
+  },
+  "results": {
+    "drink_single": {
+      "bank_ids": [
+        5
+      ],
+      "expected": "oolong",
+      "answer": "oolong",
+      "terminated": true,
+      "passed": true,
+      "added_memory_text_tokens": 0
+    },
+    "city_single": {
+      "bank_ids": [
+        6
+      ],
+      "expected": "Lima",
+      "answer": "Lima",
+      "terminated": true,
+      "passed": true,
+      "added_memory_text_tokens": 0
+    },
+    "drink_shared": {
+      "bank_ids": [
+        5,
+        6
+      ],
+      "expected": "oolong",
+      "answer": "oolong",
+      "terminated": true,
+      "passed": true,
+      "added_memory_text_tokens": 0
+    },
+    "city_shared": {
+      "bank_ids": [
+        5,
+        6
+      ],
+      "expected": "Lima",
+      "answer": "oolong",
+      "terminated": true,
+      "passed": false,
+      "added_memory_text_tokens": 0
+    },
+    "composition_none": {
+      "bank_ids": [],
+      "expected": "oolong; Lima",
+      "answer": "unknown",
+      "terminated": true,
+      "passed": false,
+      "added_memory_text_tokens": 0
+    },
+    "composition_text": {
+      "bank_ids": [],
+      "expected": "oolong; Lima",
+      "answer": "oolong;Lima",
+      "terminated": true,
+      "passed": true,
+      "added_memory_text_tokens": 41
+    },
+    "composition_native": {
+      "bank_ids": [
+        5,
+        6
+      ],
+      "expected": "oolong; Lima",
+      "answer": "oolong",
+      "terminated": true,
+      "passed": false,
+      "added_memory_text_tokens": 0
+    }
+  },
+  "singleton_checks_passed": true,
+  "shared_bank_checks_passed": false,
+  "text_control_passed": true,
+  "composition_adjudicated": false,
+  "conclusion": "shared_bank_single_fact_selection_failed_composition_not_isolated",
+  "matched_prompt_parity": true,
+  "parameters_unchanged": true,
+  "vectors_unchanged": true,
+  "native_path_unchanged": true,
+  "training_steps": 0,
+  "trainable_parameters": 0,
+  "limits": "Fixed pair and prompts. Singles are exact training queries; the joint query uses a trained format with a new pair. No broad generalization claim."
+}

@@ -1,0 +1,51 @@
+{
+  "name": "joint_disabled",
+  "request": {
+    "messages": [
+      {
+        "role": "system",
+        "content": "Answer using the available memory. Return only the requested value or values. If unknown, return unknown."
+      },
+      {
+        "role": "user",
+        "content": "Give the preferred drink of unit-b03646cbf4, then the home city of unit-121330aded. Separate with a semicolon."
+      }
+    ],
+    "max_tokens": 32,
+    "temperature": 0,
+    "aimee_memory": false
+  },
+  "http_status": 200,
+  "seconds": 1.0370312319137156,
+  "response": {
+    "id": "e4d64a1606504ad7a7b4249e870c9cf6",
+    "object": "chat.completion",
+    "model": "qwen-aimee-direct",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "unknown"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 74,
+      "completion_tokens": 2,
+      "total_tokens": 76
+    },
+    "aimee": {
+      "requested": false,
+      "request": null,
+      "returned_memory_ids": [],
+      "native_reads": 0,
+      "recall_calls": 0,
+      "preload_calls": 0,
+      "native_recall_calls": 0,
+      "bank_memory_ids": [],
+      "memory_encoding_tokens": 0
+    }
+  }
+}

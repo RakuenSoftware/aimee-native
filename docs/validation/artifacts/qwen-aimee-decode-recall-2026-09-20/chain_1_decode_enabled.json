@@ -1,0 +1,61 @@
+{
+  "name": "chain_1_decode_enabled",
+  "request": {
+    "messages": [
+      {
+        "role": "system",
+        "content": "Use available memory. Do not invent unknown details. Give only the requested values."
+      },
+      {
+        "role": "user",
+        "content": "For project-d4a92c, return its linked ledger identifier; that ledger's lookup phrase. Give the identifier first. Use unknown if needed."
+      }
+    ],
+    "max_tokens": 64,
+    "temperature": 0,
+    "aimee_memory": true,
+    "recall_mode": "native_tokens",
+    "decode_recall": true
+  },
+  "http_status": 200,
+  "seconds": 10.82928022602573,
+  "response": {
+    "id": "a399012dc22a48ff93be1ceec94245a0",
+    "object": "chat.completion",
+    "model": "qwen-aimee-direct",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "ledger-6b8f31\nsaffron otter"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 64,
+      "completion_tokens": 15,
+      "total_tokens": 79
+    },
+    "aimee": {
+      "requested": true,
+      "request": {
+        "origin": "qwen_native_runtime_cues",
+        "query_source": "runtime_token_stream",
+        "query": "ledger-6b8f31\nsaffron otter",
+        "limit": 1
+      },
+      "returned_memory_ids": [
+        10
+      ],
+      "native_reads": 240,
+      "recall_calls": 15,
+      "bank_memory_ids": [
+        9,
+        10
+      ],
+      "memory_encoding_tokens": 46
+    }
+  }
+}

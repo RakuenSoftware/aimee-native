@@ -1,0 +1,858 @@
+{
+  "runtime": "rust-libtorch",
+  "id": "rust-1789976061296082779-39",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhat population does GeoNames report for Nuevo US? Return the integer only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    3710,
+    6823,
+    1503,
+    30862,
+    7729,
+    1830,
+    364,
+    84731,
+    2201,
+    30,
+    3301,
+    279,
+    7308,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    21,
+    19,
+    19,
+    22
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "e53a54d1c6e76dec5f0a7ffa89ed6a979de2ac4ebef3d5ec356a2b75b93dd01d",
+  "memory_encoding": "content",
+  "memory_before_prompt": true,
+  "memory_position_offset": -90,
+  "answer": "6447",
+  "finish_reason": "stop",
+  "elapsed_ms": 4440.37329,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "What population does GeoNames report for Nuevo US? Return the integer only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Nuevo (ID 5378087): country code US; latitude 33.80141; longitude -117.14587; administrative codes CA/065; population 6447; time zone America/Los_Angeles. The source record was modified on 2026-09-17.",
+            "id": "geonames.5378087",
+            "key": "place Nuevo US 5378087",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.5378087",
+              "revision": "59b438dd77a79d5165100af526e956816dfd8feb87d7917f03ddd6632cfec65c"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 90,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.5378087",
+          "revision": "59b438dd77a79d5165100af526e956816dfd8feb87d7917f03ddd6632cfec65c"
+        }
+      ],
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2026-09-17 Answer What does report Return the integer assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02416493045166135
+        },
+        {
+          "text": "2026-09-17",
+          "source": "aimee",
+          "positions": [
+            79,
+            80,
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88
+          ],
+          "score": 0.01925826058140956
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            93
+          ],
+          "score": 0.020883601158857346
+        },
+        {
+          "text": "What",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.02522607147693634
+        },
+        {
+          "text": "does",
+          "source": "sequence",
+          "positions": [
+            120
+          ],
+          "score": 0.021848713979125023
+        },
+        {
+          "text": "report",
+          "source": "sequence",
+          "positions": [
+            123
+          ],
+          "score": 0.024066945537924767
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            128
+          ],
+          "score": 0.01577058434486389
+        },
+        {
+          "text": "the",
+          "source": "sequence",
+          "positions": [
+            129
+          ],
+          "score": 0.01541657280176878
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            130
+          ],
+          "score": 0.0310851838439703
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            136
+          ],
+          "score": 0.023194923996925354
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            138
+          ],
+          "score": 0.029167458415031433
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            140
+          ],
+          "score": 0.0626240223646164
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 90,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.5378087",
+          "revision": "59b438dd77a79d5165100af526e956816dfd8feb87d7917f03ddd6632cfec65c"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "5378087 code 117.14587 2026-09-17 Answer user What GeoNames integer assistant think 6",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "5378087",
+          "source": "aimee",
+          "positions": [
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19
+          ],
+          "score": 0.025046140188351274
+        },
+        {
+          "text": "code",
+          "source": "aimee",
+          "positions": [
+            22
+          ],
+          "score": 0.021371526643633842
+        },
+        {
+          "text": "117.14587",
+          "source": "aimee",
+          "positions": [
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46
+          ],
+          "score": 0.01558166864560917
+        },
+        {
+          "text": "2026-09-17",
+          "source": "aimee",
+          "positions": [
+            79,
+            80,
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88
+          ],
+          "score": 0.020132037199800834
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            93
+          ],
+          "score": 0.051837921142578125
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            116
+          ],
+          "score": 0.018104102462530136
+        },
+        {
+          "text": "What",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.03245801478624344
+        },
+        {
+          "text": "GeoNames",
+          "source": "sequence",
+          "positions": [
+            121,
+            122
+          ],
+          "score": 0.020800331607460976
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            130
+          ],
+          "score": 0.041899602860212326
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            136
+          ],
+          "score": 0.028773462399840355
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            138
+          ],
+          "score": 0.01747162826359272
+        },
+        {
+          "text": "6",
+          "source": "sequence",
+          "positions": [
+            142
+          ],
+          "score": 0.033548980951309204
+        }
+      ],
+      "step": 1,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 90,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.5378087",
+          "revision": "59b438dd77a79d5165100af526e956816dfd8feb87d7917f03ddd6632cfec65c"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "5378087 code 33.80141 6447 Answer What population GeoNames report Nuevo integer 64",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "5378087",
+          "source": "aimee",
+          "positions": [
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19
+          ],
+          "score": 0.02805991773493588
+        },
+        {
+          "text": "code",
+          "source": "aimee",
+          "positions": [
+            22
+          ],
+          "score": 0.032592639327049255
+        },
+        {
+          "text": "33.80141",
+          "source": "aimee",
+          "positions": [
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34
+          ],
+          "score": 0.02100860676728189
+        },
+        {
+          "text": "6447",
+          "source": "aimee",
+          "positions": [
+            58,
+            59,
+            60,
+            61
+          ],
+          "score": 0.07109829055843875
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            93
+          ],
+          "score": 0.022512324154376984
+        },
+        {
+          "text": "What",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.029216106981039047
+        },
+        {
+          "text": "population",
+          "source": "sequence",
+          "positions": [
+            119
+          ],
+          "score": 0.026755452156066895
+        },
+        {
+          "text": "GeoNames",
+          "source": "sequence",
+          "positions": [
+            121,
+            122
+          ],
+          "score": 0.04364393278956413
+        },
+        {
+          "text": "report",
+          "source": "sequence",
+          "positions": [
+            123
+          ],
+          "score": 0.02394365333020687
+        },
+        {
+          "text": "Nuevo",
+          "source": "sequence",
+          "positions": [
+            125
+          ],
+          "score": 0.02059277705848217
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            130
+          ],
+          "score": 0.058076679706573486
+        },
+        {
+          "text": "64",
+          "source": "sequence",
+          "positions": [
+            142,
+            143
+          ],
+          "score": 0.05925342999398708
+        }
+      ],
+      "step": 2,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 90,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.5378087",
+          "revision": "59b438dd77a79d5165100af526e956816dfd8feb87d7917f03ddd6632cfec65c"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative GeoNames 5378087 code 6447 Answer What population GeoNames report integer 644",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.01889754505828023
+        },
+        {
+          "text": "GeoNames",
+          "source": "aimee",
+          "positions": [
+            5,
+            6
+          ],
+          "score": 0.018399805761873722
+        },
+        {
+          "text": "5378087",
+          "source": "aimee",
+          "positions": [
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19
+          ],
+          "score": 0.02069973375182599
+        },
+        {
+          "text": "code",
+          "source": "aimee",
+          "positions": [
+            22
+          ],
+          "score": 0.04940671846270561
+        },
+        {
+          "text": "6447",
+          "source": "aimee",
+          "positions": [
+            58,
+            59,
+            60,
+            61
+          ],
+          "score": 0.038590385927818716
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            93
+          ],
+          "score": 0.016806764528155327
+        },
+        {
+          "text": "What",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.03770938515663147
+        },
+        {
+          "text": "population",
+          "source": "sequence",
+          "positions": [
+            119
+          ],
+          "score": 0.03073793463408947
+        },
+        {
+          "text": "GeoNames",
+          "source": "sequence",
+          "positions": [
+            121,
+            122
+          ],
+          "score": 0.044991396367549896
+        },
+        {
+          "text": "report",
+          "source": "sequence",
+          "positions": [
+            123
+          ],
+          "score": 0.02194182388484478
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            130
+          ],
+          "score": 0.06160473823547363
+        },
+        {
+          "text": "644",
+          "source": "sequence",
+          "positions": [
+            142,
+            143,
+            144
+          ],
+          "score": 0.13449862599372864
+        }
+      ],
+      "step": 3,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 90,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.5378087",
+          "revision": "59b438dd77a79d5165100af526e956816dfd8feb87d7917f03ddd6632cfec65c"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative GeoNames 5378087 code 33.80141 Answer What population GeoNames report integer 6447",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.016773381736129522
+        },
+        {
+          "text": "GeoNames",
+          "source": "aimee",
+          "positions": [
+            5,
+            6
+          ],
+          "score": 0.014485537074506283
+        },
+        {
+          "text": "5378087",
+          "source": "aimee",
+          "positions": [
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19
+          ],
+          "score": 0.01747768063796684
+        },
+        {
+          "text": "code",
+          "source": "aimee",
+          "positions": [
+            22
+          ],
+          "score": 0.04596538469195366
+        },
+        {
+          "text": "33.80141",
+          "source": "aimee",
+          "positions": [
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34
+          ],
+          "score": 0.014135992794763297
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            93
+          ],
+          "score": 0.014814963564276695
+        },
+        {
+          "text": "What",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.03010953962802887
+        },
+        {
+          "text": "population",
+          "source": "sequence",
+          "positions": [
+            119
+          ],
+          "score": 0.018409529700875282
+        },
+        {
+          "text": "GeoNames",
+          "source": "sequence",
+          "positions": [
+            121,
+            122
+          ],
+          "score": 0.03913025464862585
+        },
+        {
+          "text": "report",
+          "source": "sequence",
+          "positions": [
+            123
+          ],
+          "score": 0.016438139602541924
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            130
+          ],
+          "score": 0.05172695964574814
+        },
+        {
+          "text": "6447",
+          "source": "sequence",
+          "positions": [
+            142,
+            143,
+            144,
+            145
+          ],
+          "score": 0.2347293607890606
+        }
+      ],
+      "step": 4,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 90,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.5378087",
+          "revision": "59b438dd77a79d5165100af526e956816dfd8feb87d7917f03ddd6632cfec65c"
+        }
+      ],
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 56
+}

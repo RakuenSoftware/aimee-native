@@ -1,0 +1,103 @@
+Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]Writing model shards: 100%|██████████| 1/1 [00:00<00:00, 125.24it/s]
+{"memories": 100, "train": 210, "heldout": 110}
+Loading weights:   0%|          | 0/53 [00:00<?, ?it/s]Loading weights: 100%|██████████| 53/53 [00:00<00:00, 18177.95it/s]
+{"event": "base_loaded", "quantized_linears": 0}
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `chunk_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
+{"step": 0, "example": "train-4-0", "loss": 4.843285083770752, "grad_norm": 0.16222184896469116, "prompt_tokens": 35, "memory_prompt_tokens": 0, "value_grad_norm": 0.0, "output_grad_norm": 0.16222184896469116, "bank_ids": [100004], "elapsed_seconds": 0.1994722990784794}
+{"step": 1, "example": "train-74-0", "loss": 4.9204206466674805, "grad_norm": 0.3032487630844116, "prompt_tokens": 35, "memory_prompt_tokens": 0, "value_grad_norm": 0.0845637395977974, "output_grad_norm": 0.2908852696418762, "bank_ids": [100074], "elapsed_seconds": 0.22002666210755706}
+{
+  "version": 1,
+  "checkpoint": {
+    "identity": {
+      "model": "/tmp/aimee-long-term-smoke-1he2m3zi/model",
+      "revision": null,
+      "experiment_format": 2,
+      "implementation_sha256": {
+        "engram.py": "e05aa35903d310469d9a404410b63f658dae528b47cb43c98d652e24e7e41ebf",
+        "placement.py": "b8f8b87b5c41dc085794e866be4767e73e36477cb2fdc4ef8dabc1d0894c90b5",
+        "frozen_int8.py": "c00c0e4d03e0c3574b0537aca162cb3f7774d51330dc5b313e7ff3bdea133a74",
+        "run_p0.py": "7e6f03c6a2898f95aacbea755f8844932b8c398e9ccd622c5dd5d85373465e1b"
+      },
+      "local_weight_sha256": {
+        "model.safetensors": "2f0df737841ebb6b4242d4f5edc42431caa6c831f7d40be52593720f9744507a"
+      },
+      "resolved_commit": null,
+      "config_sha256": "4e4a28d559b145ffeb403807ea3fc0b4d0307a0c41e77fca708e055096d92818",
+      "tokenizer_sha256": "c1686effec627177952781884840091f390b111305d0d230f62a2699bab8a685",
+      "chat_template_sha256": "eba484575135201efa7653dfffe906f4ff3baf96669f0cdfdcfb69194600645e",
+      "fixtures": {
+        "memories.json": "4024955b2ed1327f8204e1c2064fdf2f5010486b5f8585b07343ed3875541273",
+        "train.json": "dbc4fa636e51ecffcff750f3ccc3d763187b0cc272e6a27b5153087a8eb44d0b",
+        "heldout.json": "b38e07071e988d4517aed3c8778a1e80dd56757020a6395096d2b2271a013cb4"
+      },
+      "value_width": 32,
+      "attention_width": 16,
+      "after_block": 1,
+      "k": 16,
+      "seed": 4817,
+      "dtype": "float32",
+      "adapter_dtype": "base",
+      "bank_policy": "oracle",
+      "placement": null,
+      "gradient_checkpointing": true,
+      "base_quantization": "none",
+      "transformers": "5.17.0",
+      "torch": "2.14.0+rocm7.2"
+    },
+    "checkpoint_sha256": "658ce1d69a185bfaced4b7d0971f40a9c157a1a9679b00f694ac6bb7e2f85b8f"
+  },
+  "archive": {
+    "bytes": 1048711,
+    "fact_prefix_bytes": 10825,
+    "unrelated_events": 7068,
+    "learned_memories": 100,
+    "sha256": "5e47138699277ec6b64631e1ffa320cde8b010dc39117e404ce6c15c7abdac4c"
+  },
+  "history": {
+    "serialized_history_tokens": 179264,
+    "last_fact_token": 2564,
+    "nearest_fact_distance_tokens": 176700,
+    "serialization": "concatenated independently tokenized JSONL events"
+  },
+  "model_configured_context": 32768,
+  "scope": "synthetic.p0",
+  "base_generation": 1,
+  "cases": 128,
+  "routing": "current-query 2\u20135-token cues compiled from canonical entity aliases; no oracle IDs",
+  "recent_tokens": 128,
+  "routing_complete": 12,
+  "files": {
+    "cases.json": "3b8ae97b889035082f9b90be066612769136d8ec371964f1d817cfa8628cd84e",
+    "recent.json": "53fd713db5e81bc7435dc51c29d82682a63494ef495e2a81915fba66319808ec",
+    "aimee-export.json": "321669c81e38bde3ab6cf14e0d90dde7a27738a940134190550e8c3b52ae677f",
+    "updated-export.json": "50b552f951857fd5013f79a65a1795b914f5562ab4dc26d2a9b0a5202a07adec",
+    "admission.json": "1ad87252c1f0fef80dd3a6e66681a3b17472736a182590d1fe2650e4ee27b410",
+    "updated-admission.json": "b4f977f62d147b29e85aac4500a585b05b725ab54b35ed35cc7ae6e6bc555a9e",
+    "routing-audit.json": "c77fd7c873ccabe005b6ee599b0d22e263db46afed935eb3ae31c75fb60827f2"
+  },
+  "implementation": {
+    "run_long_term.py": "80ba49e447e090289068930c34e32b415a72e5b54bacbb45bae584dbc7fd8a11",
+    "engram_image.py": "48b83b7ffe7355473f924c1b94797b178843094bf28510a645a518b615b582ea",
+    "long_term_data.py": "a61193971a5e2b70ad5b7938a428066394263e29dc7e7c121f8652fa0d561434",
+    "checkpoint_runtime.py": "d4a516891c39a074579edb436f6c9719616bd6eb422b863db72cf85d626c3955"
+  },
+  "limitations": [
+    "Synthetic Aimee ExportRecord-compatible records with explicit admission; no live production memory.",
+    "Only 100 learned memory values; unrelated history padding measures horizon distance.",
+    "Entity cues do not establish free-form semantic routing or unseen-entity recall.",
+    "Update test reassigns an existing learned value, not arbitrary new-fact compilation.",
+    "Generation changes apply to new sessions, not existing KV/recurrent state."
+  ]
+}
+Loading weights:   0%|          | 0/53 [00:00<?, ?it/s]Loading weights: 100%|██████████| 53/53 [00:00<00:00, 23367.82it/s]
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `chunk_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
+[transformers] `causal_conv1d_update` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `fused_recurrent_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
+{"id": "heldout-0", "condition": "distant", "category": "stable_fact", "mode": "recent_only", "answer": "", "expected": "violet", "correct": false, "terminated": false, "generated_ids": [19, 6, 27, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13], "prompt_tokens": 44, "added_memory_tokens": 0, "prompt_sha256": "d4a6f1f9f6f50f3369cb1abc4e627ae02c6cfe465dcb23395e48f7127684f889", "bank_ids": [], "generation": 1, "bytes_loaded": 0, "sequence_k": 0, "intended_ids_present": false, "extra_candidate_count": 0, "global_image_reads_during_generation": 0, "routing": {"cues_matched": 0, "discovered": 0, "admitted": 0, "truncated": false, "lookup_seconds": 2.215104177594185e-05}, "seconds": 0.2861896101385355}
+{"id": "heldout-0", "condition": "distant", "category": "stable_fact", "mode": "cue_text", "answer": "", "expected": "violet", "correct": false, "terminated": false, "generated_ids": [19, 6, 27, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13], "prompt_tokens": 44, "added_memory_tokens": 0, "prompt_sha256": "d4a6f1f9f6f50f3369cb1abc4e627ae02c6cfe465dcb23395e48f7127684f889", "bank_ids": [], "generation": 1, "bytes_loaded": 0, "sequence_k": 0, "intended_ids_present": false, "extra_candidate_count": 0, "global_image_reads_during_generation": 0, "routing": {"cues_matched": 0, "discovered": 0, "admitted": 0, "truncated": false, "lookup_seconds": 2.215104177594185e-05}, "seconds": 0.08288555103354156}
+{"id": "heldout-0", "condition": "distant", "category": "stable_fact", "mode": "native_disabled", "answer": "", "expected": "violet", "correct": false, "terminated": false, "generated_ids": [19, 6, 27, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13], "prompt_tokens": 44, "added_memory_tokens": 0, "prompt_sha256": "d4a6f1f9f6f50f3369cb1abc4e627ae02c6cfe465dcb23395e48f7127684f889", "bank_ids": [], "generation": 1, "bytes_loaded": 0, "sequence_k": 0, "intended_ids_present": false, "extra_candidate_count": 0, "global_image_reads_during_generation": 0, "routing": {"cues_matched": 0, "discovered": 0, "admitted": 0, "truncated": false, "lookup_seconds": 2.215104177594185e-05}, "seconds": 0.08320086309686303}
+{"id": "heldout-0", "condition": "distant", "category": "stable_fact", "mode": "native_cued", "answer": "", "expected": "violet", "correct": false, "terminated": false, "generated_ids": [19, 6, 27, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13], "prompt_tokens": 44, "added_memory_tokens": 0, "prompt_sha256": "d4a6f1f9f6f50f3369cb1abc4e627ae02c6cfe465dcb23395e48f7127684f889", "bank_ids": [], "generation": 1, "bytes_loaded": 0, "sequence_k": 0, "intended_ids_present": false, "extra_candidate_count": 0, "global_image_reads_during_generation": 0, "routing": {"cues_matched": 0, "discovered": 0, "admitted": 0, "truncated": false, "lookup_seconds": 2.215104177594185e-05}, "seconds": 0.0829131081700325}
+{"id": "heldout-0", "condition": "distant", "category": "stable_fact", "mode": "native_oracle_diagnostic", "answer": "", "expected": "violet", "correct": false, "terminated": false, "generated_ids": [19, 6, 27, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13], "prompt_tokens": 44, "added_memory_tokens": 0, "prompt_sha256": "d4a6f1f9f6f50f3369cb1abc4e627ae02c6cfe465dcb23395e48f7127684f889", "bank_ids": [100000], "generation": 1, "bytes_loaded": 128, "sequence_k": 1, "intended_ids_present": false, "extra_candidate_count": 0, "global_image_reads_during_generation": 0, "routing": {"cues_matched": 0, "discovered": 0, "admitted": 0, "truncated": false, "lookup_seconds": 2.215104177594185e-05}, "seconds": 0.08598808199167252}
+{"smoke": "pass", "archive_bytes": 1048711, "evaluated_arms": 5, "pretrained_accuracy_tested": false}

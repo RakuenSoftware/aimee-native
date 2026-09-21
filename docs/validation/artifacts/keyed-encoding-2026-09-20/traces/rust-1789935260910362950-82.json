@@ -1,0 +1,258 @@
+{
+  "runtime": "rust-libtorch",
+  "id": "rust-1789935260910362950-82",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nFor IANA service ias-admind, give its registered TCP port as one integer.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    2381,
+    353,
+    37492,
+    2393,
+    585,
+    299,
+    24927,
+    36475,
+    11,
+    2873,
+    1141,
+    9393,
+    25804,
+    2548,
+    430,
+    799,
+    7308,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    17,
+    16,
+    19,
+    16
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "fb07f7308e4e17944f9afe53457ade8122929877b922679e40d0b278baf7d19f",
+  "memory_encoding": "content",
+  "answer": "2141",
+  "finish_reason": "stop",
+  "elapsed_ms": 3072.817743,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "For IANA service ias-admind, give its registered TCP port as one integer.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service ias-admind has these registered transport/port assignments: TCP port 2141; UDP port 2141.",
+            "id": "iana.ias-admind",
+            "key": "IANA service ias-admind",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.ias-admind",
+              "revision": "f32757fdad6f72d1ddbc8fdd4a79074e6a974a666301096c7fb7afa5a2540514"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 34,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.ias-admind",
+          "revision": "f32757fdad6f72d1ddbc8fdd4a79074e6a974a666301096c7fb7afa5a2540514"
+        }
+      ],
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user ias-admind give its TCP as integer assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.03163188835605979
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            37
+          ],
+          "score": 0.017977748066186905
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            60
+          ],
+          "score": 0.016371319070458412
+        },
+        {
+          "text": "ias-admind",
+          "source": "sequence",
+          "positions": [
+            66,
+            67,
+            68,
+            69
+          ],
+          "score": 0.024745752452872694
+        },
+        {
+          "text": "give",
+          "source": "sequence",
+          "positions": [
+            71
+          ],
+          "score": 0.03235461562871933
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            72
+          ],
+          "score": 0.024492502212524414
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            74
+          ],
+          "score": 0.014509033411741257
+        },
+        {
+          "text": "as",
+          "source": "sequence",
+          "positions": [
+            76
+          ],
+          "score": 0.02923307567834854
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.015060610137879848
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            83
+          ],
+          "score": 0.027668863534927368
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            85
+          ],
+          "score": 0.028125662356615067
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            87
+          ],
+          "score": 0.06608813256025314
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 34,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.ias-admind",
+          "revision": "f32757fdad6f72d1ddbc8fdd4a79074e6a974a666301096c7fb7afa5a2540514"
+        }
+      ],
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 59
+}

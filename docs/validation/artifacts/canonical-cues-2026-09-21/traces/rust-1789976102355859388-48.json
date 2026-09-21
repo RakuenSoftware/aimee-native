@@ -1,0 +1,695 @@
+{
+  "runtime": "rust-libtorch",
+  "id": "rust-1789976102355859388-48",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhat population does GeoNames report for Falkland CA? Return the integer only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    3710,
+    6823,
+    1503,
+    30862,
+    7729,
+    1830,
+    364,
+    69040,
+    1867,
+    8910,
+    30,
+    3301,
+    279,
+    7308,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    23,
+    22,
+    23
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "e53a54d1c6e76dec5f0a7ffa89ed6a979de2ac4ebef3d5ec356a2b75b93dd01d",
+  "memory_encoding": "content",
+  "memory_before_prompt": true,
+  "memory_position_offset": -90,
+  "answer": "878",
+  "finish_reason": "stop",
+  "elapsed_ms": 3367.940831,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "What population does GeoNames report for Falkland CA? Return the integer only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Falkland (ID 5951233): country code CA; latitude 50.49979; longitude -119.55239; administrative codes 02/5939; population 878; time zone America/Vancouver. The source record was modified on 2024-02-27.",
+            "id": "geonames.5951233",
+            "key": "place Falkland CA 5951233",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.5951233",
+              "revision": "3b2fe221bf7161c59c0be117e7079c1cd6f54d1fd1674793a397209328592bcd"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 90,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.5951233",
+          "revision": "3b2fe221bf7161c59c0be117e7079c1cd6f54d1fd1674793a397209328592bcd"
+        }
+      ],
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user What does report Return the integer assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.022434181300923228
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            93
+          ],
+          "score": 0.019076094031333923
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            116
+          ],
+          "score": 0.014167643152177334
+        },
+        {
+          "text": "What",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.023991592228412628
+        },
+        {
+          "text": "does",
+          "source": "sequence",
+          "positions": [
+            120
+          ],
+          "score": 0.021043814718723297
+        },
+        {
+          "text": "report",
+          "source": "sequence",
+          "positions": [
+            123
+          ],
+          "score": 0.021087471395730972
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            129
+          ],
+          "score": 0.017002498731017113
+        },
+        {
+          "text": "the",
+          "source": "sequence",
+          "positions": [
+            130
+          ],
+          "score": 0.017871905118227005
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            131
+          ],
+          "score": 0.03124381974339485
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            137
+          ],
+          "score": 0.02327708899974823
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            139
+          ],
+          "score": 0.0301382914185524
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            141
+          ],
+          "score": 0.06403862684965134
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 90,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.5951233",
+          "revision": "3b2fe221bf7161c59c0be117e7079c1cd6f54d1fd1674793a397209328592bcd"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 5951233 code 878 2024-02-27 Answer What GeoNames integer assistant think 8",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.016340614296495914
+        },
+        {
+          "text": "5951233",
+          "source": "aimee",
+          "positions": [
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20
+          ],
+          "score": 0.031701888190582395
+        },
+        {
+          "text": "code",
+          "source": "aimee",
+          "positions": [
+            23
+          ],
+          "score": 0.01819387823343277
+        },
+        {
+          "text": "878",
+          "source": "aimee",
+          "positions": [
+            62,
+            63,
+            64
+          ],
+          "score": 0.015858423081226647
+        },
+        {
+          "text": "2024-02-27",
+          "source": "aimee",
+          "positions": [
+            79,
+            80,
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88
+          ],
+          "score": 0.01959835400339216
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            93
+          ],
+          "score": 0.03466328978538513
+        },
+        {
+          "text": "What",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.030187081545591354
+        },
+        {
+          "text": "GeoNames",
+          "source": "sequence",
+          "positions": [
+            121,
+            122
+          ],
+          "score": 0.02059127390384674
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            131
+          ],
+          "score": 0.03630906343460083
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            137
+          ],
+          "score": 0.02478889189660549
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            139
+          ],
+          "score": 0.02025737427175045
+        },
+        {
+          "text": "8",
+          "source": "sequence",
+          "positions": [
+            143
+          ],
+          "score": 0.03623393923044205
+        }
+      ],
+      "step": 1,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 90,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.5951233",
+          "revision": "3b2fe221bf7161c59c0be117e7079c1cd6f54d1fd1674793a397209328592bcd"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "GeoNames 5951233 code latitude 878 What population GeoNames report CA integer 87",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "GeoNames",
+          "source": "aimee",
+          "positions": [
+            5,
+            6
+          ],
+          "score": 0.01999717904254794
+        },
+        {
+          "text": "5951233",
+          "source": "aimee",
+          "positions": [
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20
+          ],
+          "score": 0.031784140737727284
+        },
+        {
+          "text": "code",
+          "source": "aimee",
+          "positions": [
+            23
+          ],
+          "score": 0.06004370376467705
+        },
+        {
+          "text": "latitude",
+          "source": "aimee",
+          "positions": [
+            26
+          ],
+          "score": 0.01919879950582981
+        },
+        {
+          "text": "878",
+          "source": "aimee",
+          "positions": [
+            62,
+            63,
+            64
+          ],
+          "score": 0.059368869522586465
+        },
+        {
+          "text": "What",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.023096740245819092
+        },
+        {
+          "text": "population",
+          "source": "sequence",
+          "positions": [
+            119
+          ],
+          "score": 0.026633840054273605
+        },
+        {
+          "text": "GeoNames",
+          "source": "sequence",
+          "positions": [
+            121,
+            122
+          ],
+          "score": 0.0388744561932981
+        },
+        {
+          "text": "report",
+          "source": "sequence",
+          "positions": [
+            123
+          ],
+          "score": 0.02322441339492798
+        },
+        {
+          "text": "CA",
+          "source": "sequence",
+          "positions": [
+            127
+          ],
+          "score": 0.02558441460132599
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            131
+          ],
+          "score": 0.05249650776386261
+        },
+        {
+          "text": "87",
+          "source": "sequence",
+          "positions": [
+            143,
+            144
+          ],
+          "score": 0.06458317115902901
+        }
+      ],
+      "step": 2,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 90,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.5951233",
+          "revision": "3b2fe221bf7161c59c0be117e7079c1cd6f54d1fd1674793a397209328592bcd"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative GeoNames 5951233 code latitude population GeoNames report Falkland CA integer 878",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Falkland (ID 5951233): country code CA; latitude 50.49979; longitude -119.55239; administrative codes 02/5939; population 878; time zone America/Vancouver. The source record was modified on 2024-02-27.",
+            "id": "geonames.5951233",
+            "key": "place Falkland CA 5951233",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.5951233",
+              "revision": "3b2fe221bf7161c59c0be117e7079c1cd6f54d1fd1674793a397209328592bcd"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.015914645977318287
+        },
+        {
+          "text": "GeoNames",
+          "source": "aimee",
+          "positions": [
+            5,
+            6
+          ],
+          "score": 0.02111008483916521
+        },
+        {
+          "text": "5951233",
+          "source": "aimee",
+          "positions": [
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20
+          ],
+          "score": 0.034662408055737615
+        },
+        {
+          "text": "code",
+          "source": "aimee",
+          "positions": [
+            23
+          ],
+          "score": 0.06075207516551018
+        },
+        {
+          "text": "latitude",
+          "source": "aimee",
+          "positions": [
+            26
+          ],
+          "score": 0.016517197713255882
+        },
+        {
+          "text": "population",
+          "source": "sequence",
+          "positions": [
+            119
+          ],
+          "score": 0.027692560106515884
+        },
+        {
+          "text": "GeoNames",
+          "source": "sequence",
+          "positions": [
+            121,
+            122
+          ],
+          "score": 0.053860269486904144
+        },
+        {
+          "text": "report",
+          "source": "sequence",
+          "positions": [
+            123
+          ],
+          "score": 0.024768587201833725
+        },
+        {
+          "text": "Falkland",
+          "source": "sequence",
+          "positions": [
+            125,
+            126
+          ],
+          "score": 0.018916038796305656
+        },
+        {
+          "text": "CA",
+          "source": "sequence",
+          "positions": [
+            127
+          ],
+          "score": 0.028176531195640564
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            131
+          ],
+          "score": 0.051975712180137634
+        },
+        {
+          "text": "878",
+          "source": "sequence",
+          "positions": [
+            143,
+            144,
+            145
+          ],
+          "score": 0.11022049933671951
+        }
+      ],
+      "step": 3,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 90,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.5951233",
+          "revision": "3b2fe221bf7161c59c0be117e7079c1cd6f54d1fd1674793a397209328592bcd"
+        }
+      ],
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 56
+}

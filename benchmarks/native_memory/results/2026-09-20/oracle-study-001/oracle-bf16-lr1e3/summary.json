@@ -1,0 +1,102 @@
+{
+  "accuracy": {
+    "none": 0.0,
+    "text": 1.0,
+    "native_disabled": 0.0,
+    "native": 0.8545454545454545,
+    "native_empty": 0.0,
+    "native_distractors": 0.0,
+    "native_swapped": 0.6363636363636364
+  },
+  "strict_string_accuracy": {
+    "none": 0.0,
+    "text": 0.9454545454545454,
+    "native_disabled": 0.0,
+    "native": 0.8545454545454545,
+    "native_empty": 0.0,
+    "native_distractors": 0.0,
+    "native_swapped": 0.6363636363636364
+  },
+  "scoring": "ordered semicolon-delimited exact values, case/whitespace normalized, EOS required",
+  "accuracy_by_category": {
+    "none": {
+      "composition": 0.0,
+      "stable_fact": 0.0,
+      "preference": 0.0,
+      "technical_configuration": 0.0,
+      "project_fact": 0.0,
+      "entity_property": 0.0,
+      "procedure": 0.0
+    },
+    "text": {
+      "composition": 1.0,
+      "stable_fact": 1.0,
+      "preference": 1.0,
+      "technical_configuration": 1.0,
+      "project_fact": 1.0,
+      "entity_property": 1.0,
+      "procedure": 1.0
+    },
+    "native_disabled": {
+      "composition": 0.0,
+      "stable_fact": 0.0,
+      "preference": 0.0,
+      "technical_configuration": 0.0,
+      "project_fact": 0.0,
+      "entity_property": 0.0,
+      "procedure": 0.0
+    },
+    "native": {
+      "composition": 0.2,
+      "stable_fact": 0.9411764705882353,
+      "preference": 1.0,
+      "technical_configuration": 0.875,
+      "project_fact": 0.8823529411764706,
+      "entity_property": 0.8235294117647058,
+      "procedure": 1.0
+    },
+    "native_empty": {
+      "composition": 0.0,
+      "stable_fact": 0.0,
+      "preference": 0.0,
+      "technical_configuration": 0.0,
+      "project_fact": 0.0,
+      "entity_property": 0.0,
+      "procedure": 0.0
+    },
+    "native_distractors": {
+      "composition": 0.0,
+      "stable_fact": 0.0,
+      "preference": 0.0,
+      "technical_configuration": 0.0,
+      "project_fact": 0.0,
+      "entity_property": 0.0,
+      "procedure": 0.0
+    },
+    "native_swapped": {
+      "composition": 0.0,
+      "stable_fact": 0.17647058823529413,
+      "preference": 1.0,
+      "technical_configuration": 0.0,
+      "project_fact": 1.0,
+      "entity_property": 1.0,
+      "procedure": 1.0
+    }
+  },
+  "native_over_text": 0.8545454545454545,
+  "checks": {
+    "full_evaluation": true,
+    "text_baseline_nonzero": true,
+    "disabled_and_empty_parity": true,
+    "native_prompt_parity": true,
+    "relative_accuracy": false,
+    "composition": false,
+    "native_zero_added_tokens": true
+  },
+  "stage_a_accuracy_gate": "fail_or_incomplete",
+  "limitations": [
+    "Accuracy gate alone does not establish update, deletion or scope noninterference.",
+    "Research timings are not optimized serving throughput measurements.",
+    "Held-out query forms use trained memories; this is not writer-network generalization."
+  ]
+}

@@ -1,0 +1,2422 @@
+{
+  "runtime": "rust-libtorch",
+  "id": "rust-1789975867643043345-15",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the NASA archive, what is the orbital period in days for planet TOI-5736 b? Return the number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    20774,
+    17593,
+    11,
+    1092,
+    369,
+    279,
+    62409,
+    4031,
+    303,
+    2756,
+    364,
+    11247,
+    4981,
+    40,
+    12,
+    20,
+    22,
+    18,
+    21,
+    292,
+    30,
+    3301,
+    279,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    15,
+    13,
+    21,
+    19,
+    23,
+    24,
+    24,
+    15,
+    15,
+    15,
+    15,
+    15,
+    15
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "e53a54d1c6e76dec5f0a7ffa89ed6a979de2ac4ebef3d5ec356a2b75b93dd01d",
+  "memory_encoding": "content",
+  "memory_before_prompt": true,
+  "memory_position_offset": -115,
+  "answer": "0.64899000000",
+  "finish_reason": "stop",
+  "elapsed_ms": 10895.845444,
+  "memory_encoding_passes": 1,
+  "native_reads": 224,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the NASA archive, what is the orbital period in days for planet TOI-5736 b? Return the number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "For planet TOI-5736 b, the NASA Exoplanet Archive composite table lists: host star TOI-5736; discovery year 2025; discovery method Transit; discovery facility Transiting Exoplanet Survey Satellite (TESS); orbital period 0.64899000000 days; reported planet radius 1.56000000 Earth radii; reported system distance 92.36040000 parsecs.",
+            "id": "nasa.TOI-5736 b",
+            "key": "planet TOI-5736 b",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "nasa.TOI-5736 b",
+              "revision": "58219ce6b04aba43d68f26b3d662e03a283b388164c5ac279791f6f3a281c151"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 115,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-5736 b",
+          "revision": "58219ce6b04aba43d68f26b3d662e03a283b388164c5ac279791f6f3a281c151"
+        }
+      ],
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative TOI-5736 0.64899000000 Answer user what in TOI-5736 Return assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.025513927452266216
+        },
+        {
+          "text": "TOI-5736",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.01612297462997958
+        },
+        {
+          "text": "0.64899000000",
+          "source": "aimee",
+          "positions": [
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.014352774363942444
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.02305079624056816
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            141
+          ],
+          "score": 0.015595617704093456
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            149
+          ],
+          "score": 0.024594798684120178
+        },
+        {
+          "text": "in",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.017132757231593132
+        },
+        {
+          "text": "TOI-5736",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164
+          ],
+          "score": 0.018789292313158512
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            167
+          ],
+          "score": 0.013932200148701668
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            175
+          ],
+          "score": 0.025188080966472626
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            177
+          ],
+          "score": 0.03187600523233414
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            179
+          ],
+          "score": 0.07311633229255676
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 115,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-5736 b",
+          "revision": "58219ce6b04aba43d68f26b3d662e03a283b388164c5ac279791f6f3a281c151"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative planet TOI-5736 0.64899000000 Answer According TOI-5736 Return assistant think think 0",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.019205024000257254
+        },
+        {
+          "text": "planet",
+          "source": "aimee",
+          "positions": [
+            6
+          ],
+          "score": 0.01685674488544464
+        },
+        {
+          "text": "TOI-5736",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.020613876054994762
+        },
+        {
+          "text": "0.64899000000",
+          "source": "aimee",
+          "positions": [
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.01679289570893161
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.03564654290676117
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            143
+          ],
+          "score": 0.02345786616206169
+        },
+        {
+          "text": "TOI-5736",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164
+          ],
+          "score": 0.025015478255227208
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            167
+          ],
+          "score": 0.015465701930224895
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            175
+          ],
+          "score": 0.028565889224410057
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            177
+          ],
+          "score": 0.02249491587281227
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            179
+          ],
+          "score": 0.020584460347890854
+        },
+        {
+          "text": "0",
+          "source": "sequence",
+          "positions": [
+            181
+          ],
+          "score": 0.03732861205935478
+        }
+      ],
+      "step": 1,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 115,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-5736 b",
+          "revision": "58219ce6b04aba43d68f26b3d662e03a283b388164c5ac279791f6f3a281c151"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative TOI-5736 0.64899000000 Answer According NASA orbital period TOI-5736 assistant think 0",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.026720219291746616
+        },
+        {
+          "text": "TOI-5736",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.027554688043892384
+        },
+        {
+          "text": "0.64899000000",
+          "source": "aimee",
+          "positions": [
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.019075217831414193
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.03001931868493557
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            143
+          ],
+          "score": 0.02203558012843132
+        },
+        {
+          "text": "NASA",
+          "source": "sequence",
+          "positions": [
+            146
+          ],
+          "score": 0.016571922227740288
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.036598432809114456
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.019631607457995415
+        },
+        {
+          "text": "TOI-5736",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164
+          ],
+          "score": 0.0319340699352324
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            175
+          ],
+          "score": 0.02459115907549858
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            177
+          ],
+          "score": 0.01663954183459282
+        },
+        {
+          "text": "0",
+          "source": "sequence",
+          "positions": [
+            181
+          ],
+          "score": 0.0155906081199646
+        }
+      ],
+      "step": 2,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 115,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-5736 b",
+          "revision": "58219ce6b04aba43d68f26b3d662e03a283b388164c5ac279791f6f3a281c151"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TOI-5736 0.64899000000 1.56000000 Answer According what orbital period TOI-5736 number assistant 0.6",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TOI-5736",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.023774961126036942
+        },
+        {
+          "text": "0.64899000000",
+          "source": "aimee",
+          "positions": [
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.10531019599875435
+        },
+        {
+          "text": "1.56000000",
+          "source": "aimee",
+          "positions": [
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90,
+            91,
+            92
+          ],
+          "score": 0.015770128200529143
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.02411894127726555
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            143
+          ],
+          "score": 0.017537303268909454
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            149
+          ],
+          "score": 0.014293612912297249
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.025934739038348198
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.022863078862428665
+        },
+        {
+          "text": "TOI-5736",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164
+          ],
+          "score": 0.030875970143824816
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            169
+          ],
+          "score": 0.016419896855950356
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            175
+          ],
+          "score": 0.014914050698280334
+        },
+        {
+          "text": "0.6",
+          "source": "sequence",
+          "positions": [
+            181,
+            182,
+            183
+          ],
+          "score": 0.11544162966310978
+        }
+      ],
+      "step": 3,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 115,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-5736 b",
+          "revision": "58219ce6b04aba43d68f26b3d662e03a283b388164c5ac279791f6f3a281c151"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TOI-5736 0.64899000000 92.36040000 Answer NASA orbital period TOI-5736 b number think 0.64",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TOI-5736",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.027473410591483116
+        },
+        {
+          "text": "0.64899000000",
+          "source": "aimee",
+          "positions": [
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.12261755974031985
+        },
+        {
+          "text": "92.36040000",
+          "source": "aimee",
+          "positions": [
+            101,
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108,
+            109,
+            110,
+            111
+          ],
+          "score": 0.014610989455832168
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.014505142346024513
+        },
+        {
+          "text": "NASA",
+          "source": "sequence",
+          "positions": [
+            146
+          ],
+          "score": 0.017679374665021896
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.030131658539175987
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.01769249513745308
+        },
+        {
+          "text": "TOI-5736",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164
+          ],
+          "score": 0.04008892783895135
+        },
+        {
+          "text": "b",
+          "source": "sequence",
+          "positions": [
+            165
+          ],
+          "score": 0.017377261072397232
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            169
+          ],
+          "score": 0.01740310713648796
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            177
+          ],
+          "score": 0.011554183438420296
+        },
+        {
+          "text": "0.64",
+          "source": "sequence",
+          "positions": [
+            181,
+            182,
+            183,
+            184
+          ],
+          "score": 0.17867252603173256
+        }
+      ],
+      "step": 4,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 115,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-5736 b",
+          "revision": "58219ce6b04aba43d68f26b3d662e03a283b388164c5ac279791f6f3a281c151"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TOI-5736 0.64899000000 1.56000000 NASA orbital period planet TOI-5736 b number think 0.648",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "For planet TOI-5736 b, the NASA Exoplanet Archive composite table lists: host star TOI-5736; discovery year 2025; discovery method Transit; discovery facility Transiting Exoplanet Survey Satellite (TESS); orbital period 0.64899000000 days; reported planet radius 1.56000000 Earth radii; reported system distance 92.36040000 parsecs.",
+            "id": "nasa.TOI-5736 b",
+            "key": "planet TOI-5736 b",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "nasa.TOI-5736 b",
+              "revision": "58219ce6b04aba43d68f26b3d662e03a283b388164c5ac279791f6f3a281c151"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TOI-5736",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.023296849918551743
+        },
+        {
+          "text": "0.64899000000",
+          "source": "aimee",
+          "positions": [
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.07713135227095336
+        },
+        {
+          "text": "1.56000000",
+          "source": "aimee",
+          "positions": [
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90,
+            91,
+            92
+          ],
+          "score": 0.013786097435513511
+        },
+        {
+          "text": "NASA",
+          "source": "sequence",
+          "positions": [
+            146
+          ],
+          "score": 0.015042315237224102
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.03420880436897278
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.019647080451250076
+        },
+        {
+          "text": "planet",
+          "source": "sequence",
+          "positions": [
+            157
+          ],
+          "score": 0.012257164344191551
+        },
+        {
+          "text": "TOI-5736",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164
+          ],
+          "score": 0.04111439757980406
+        },
+        {
+          "text": "b",
+          "source": "sequence",
+          "positions": [
+            165
+          ],
+          "score": 0.014501105062663555
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            169
+          ],
+          "score": 0.01634836755692959
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            177
+          ],
+          "score": 0.01344091072678566
+        },
+        {
+          "text": "0.648",
+          "source": "sequence",
+          "positions": [
+            181,
+            182,
+            183,
+            184,
+            185
+          ],
+          "score": 0.2832994181662798
+        }
+      ],
+      "step": 5,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 115,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-5736 b",
+          "revision": "58219ce6b04aba43d68f26b3d662e03a283b388164c5ac279791f6f3a281c151"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TOI-5736 0.64899000000 Answer NASA orbital period in TOI-5736 Return number think 0.6489",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TOI-5736",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.017311675939708948
+        },
+        {
+          "text": "0.64899000000",
+          "source": "aimee",
+          "positions": [
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.06347619026200846
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.013609351590275764
+        },
+        {
+          "text": "NASA",
+          "source": "sequence",
+          "positions": [
+            146
+          ],
+          "score": 0.011548943817615509
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.023215126246213913
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.018081851303577423
+        },
+        {
+          "text": "in",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.011646835133433342
+        },
+        {
+          "text": "TOI-5736",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164
+          ],
+          "score": 0.029699976556003094
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            167
+          ],
+          "score": 0.011077097617089748
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            169
+          ],
+          "score": 0.03287234157323837
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            177
+          ],
+          "score": 0.012537172064185143
+        },
+        {
+          "text": "0.6489",
+          "source": "sequence",
+          "positions": [
+            181,
+            182,
+            183,
+            184,
+            185,
+            186
+          ],
+          "score": 0.3149580769240856
+        }
+      ],
+      "step": 6,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 115,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-5736 b",
+          "revision": "58219ce6b04aba43d68f26b3d662e03a283b388164c5ac279791f6f3a281c151"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TOI-5736 0.64899000000 1.56000000 Answer orbital period TOI-5736 number assistant think think 0.64899",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TOI-5736",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.013187302043661475
+        },
+        {
+          "text": "0.64899000000",
+          "source": "aimee",
+          "positions": [
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.06807243567891419
+        },
+        {
+          "text": "1.56000000",
+          "source": "aimee",
+          "positions": [
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90,
+            91,
+            92
+          ],
+          "score": 0.01354758205707185
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.010430783033370972
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.018439581617712975
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.012730710208415985
+        },
+        {
+          "text": "TOI-5736",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164
+          ],
+          "score": 0.022832342889159918
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            169
+          ],
+          "score": 0.01742948405444622
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            175
+          ],
+          "score": 0.010479789227247238
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            177
+          ],
+          "score": 0.025174245238304138
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            179
+          ],
+          "score": 0.013944554142653942
+        },
+        {
+          "text": "0.64899",
+          "source": "sequence",
+          "positions": [
+            181,
+            182,
+            183,
+            184,
+            185,
+            186,
+            187
+          ],
+          "score": 0.3620006628334522
+        }
+      ],
+      "step": 7,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 115,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-5736 b",
+          "revision": "58219ce6b04aba43d68f26b3d662e03a283b388164c5ac279791f6f3a281c151"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TOI-5736 0.64899000000 orbital period days TOI-5736 b Return number think think 0.648990",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TOI-5736",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.012865794473327696
+        },
+        {
+          "text": "0.64899000000",
+          "source": "aimee",
+          "positions": [
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.11042489335522987
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.019563181325793266
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.02510640397667885
+        },
+        {
+          "text": "days",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.012016135267913342
+        },
+        {
+          "text": "TOI-5736",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164
+          ],
+          "score": 0.0209598527289927
+        },
+        {
+          "text": "b",
+          "source": "sequence",
+          "positions": [
+            165
+          ],
+          "score": 0.012665851972997189
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            167
+          ],
+          "score": 0.013301288709044456
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            169
+          ],
+          "score": 0.018383564427495003
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            177
+          ],
+          "score": 0.015411661937832832
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            179
+          ],
+          "score": 0.012209933251142502
+        },
+        {
+          "text": "0.648990",
+          "source": "sequence",
+          "positions": [
+            181,
+            182,
+            183,
+            184,
+            185,
+            186,
+            187,
+            188
+          ],
+          "score": 0.3723289668560028
+        }
+      ],
+      "step": 8,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 115,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-5736 b",
+          "revision": "58219ce6b04aba43d68f26b3d662e03a283b388164c5ac279791f6f3a281c151"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "0.64899000000 1.56000000 Answer orbital period days TOI-5736 number assistant think think 0.6489900",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "0.64899000000",
+          "source": "aimee",
+          "positions": [
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.06815693623502739
+        },
+        {
+          "text": "1.56000000",
+          "source": "aimee",
+          "positions": [
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90,
+            91,
+            92
+          ],
+          "score": 0.014488282555248588
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.013782655820250511
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.01940278150141239
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.027404967695474625
+        },
+        {
+          "text": "days",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.010347622446715832
+        },
+        {
+          "text": "TOI-5736",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164
+          ],
+          "score": 0.015335802687332034
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            169
+          ],
+          "score": 0.013723312877118587
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            175
+          ],
+          "score": 0.01347112562507391
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            177
+          ],
+          "score": 0.026103993877768517
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            179
+          ],
+          "score": 0.01927938498556614
+        },
+        {
+          "text": "0.6489900",
+          "source": "sequence",
+          "positions": [
+            181,
+            182,
+            183,
+            184,
+            185,
+            186,
+            187,
+            188,
+            189
+          ],
+          "score": 0.3917860686779022
+        }
+      ],
+      "step": 9,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 115,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-5736 b",
+          "revision": "58219ce6b04aba43d68f26b3d662e03a283b388164c5ac279791f6f3a281c151"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "TOI-5736 0.64899000000 Answer orbital period days TOI-5736 number assistant think think 0.64899000",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "TOI-5736",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.011045486899092793
+        },
+        {
+          "text": "0.64899000000",
+          "source": "aimee",
+          "positions": [
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.050755355157889426
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.011384359560906887
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.021613936871290207
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.025371059775352478
+        },
+        {
+          "text": "days",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.01322978362441063
+        },
+        {
+          "text": "TOI-5736",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164
+          ],
+          "score": 0.017842235043644905
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            169
+          ],
+          "score": 0.016436457633972168
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            175
+          ],
+          "score": 0.011257534846663475
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            177
+          ],
+          "score": 0.018283016979694366
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            179
+          ],
+          "score": 0.013324516825377941
+        },
+        {
+          "text": "0.64899000",
+          "source": "sequence",
+          "positions": [
+            181,
+            182,
+            183,
+            184,
+            185,
+            186,
+            187,
+            188,
+            189,
+            190
+          ],
+          "score": 0.42557645216584206
+        }
+      ],
+      "step": 10,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 115,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-5736 b",
+          "revision": "58219ce6b04aba43d68f26b3d662e03a283b388164c5ac279791f6f3a281c151"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative TOI-5736 0.64899000000 days orbital period days TOI-5736 number think think 0.648990000",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.01295787119306624
+        },
+        {
+          "text": "TOI-5736",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.011208461481146514
+        },
+        {
+          "text": "0.64899000000",
+          "source": "aimee",
+          "positions": [
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.045231473457533866
+        },
+        {
+          "text": "days",
+          "source": "aimee",
+          "positions": [
+            77
+          ],
+          "score": 0.01937805488705635
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.02505790814757347
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.021545005962252617
+        },
+        {
+          "text": "days",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.015389135107398033
+        },
+        {
+          "text": "TOI-5736",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164
+          ],
+          "score": 0.018265426391735673
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            169
+          ],
+          "score": 0.018115486949682236
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            177
+          ],
+          "score": 0.019251812249422073
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            179
+          ],
+          "score": 0.012030019424855709
+        },
+        {
+          "text": "0.648990000",
+          "source": "sequence",
+          "positions": [
+            181,
+            182,
+            183,
+            184,
+            185,
+            186,
+            187,
+            188,
+            189,
+            190,
+            191
+          ],
+          "score": 0.3986449483782053
+        }
+      ],
+      "step": 11,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 115,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-5736 b",
+          "revision": "58219ce6b04aba43d68f26b3d662e03a283b388164c5ac279791f6f3a281c151"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 0.64899000000 days orbital period days TOI-5736 number assistant think think 0.6489900000",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.012317877961322665
+        },
+        {
+          "text": "0.64899000000",
+          "source": "aimee",
+          "positions": [
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.024243685766123235
+        },
+        {
+          "text": "days",
+          "source": "aimee",
+          "positions": [
+            77
+          ],
+          "score": 0.033106327056884766
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.02160702459514141
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.015711169689893723
+        },
+        {
+          "text": "days",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.015582552179694176
+        },
+        {
+          "text": "TOI-5736",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164
+          ],
+          "score": 0.017541647888720036
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            169
+          ],
+          "score": 0.017828144133090973
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            175
+          ],
+          "score": 0.011066727340221405
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            177
+          ],
+          "score": 0.02582666091620922
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            179
+          ],
+          "score": 0.014270010404288769
+        },
+        {
+          "text": "0.6489900000",
+          "source": "sequence",
+          "positions": [
+            181,
+            182,
+            183,
+            184,
+            185,
+            186,
+            187,
+            188,
+            189,
+            190,
+            191,
+            192
+          ],
+          "score": 0.41629468044266105
+        }
+      ],
+      "step": 12,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 115,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-5736 b",
+          "revision": "58219ce6b04aba43d68f26b3d662e03a283b388164c5ac279791f6f3a281c151"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 0.64899000000 days orbital period days planet TOI-5736 number think think 0.64899000000",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.012595933163538575
+        },
+        {
+          "text": "0.64899000000",
+          "source": "aimee",
+          "positions": [
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.019661712343804538
+        },
+        {
+          "text": "days",
+          "source": "aimee",
+          "positions": [
+            77
+          ],
+          "score": 0.02950587496161461
+        },
+        {
+          "text": "orbital",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.028386615216732025
+        },
+        {
+          "text": "period",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.015516076236963272
+        },
+        {
+          "text": "days",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.015390096232295036
+        },
+        {
+          "text": "planet",
+          "source": "sequence",
+          "positions": [
+            157
+          ],
+          "score": 0.012804902158677578
+        },
+        {
+          "text": "TOI-5736",
+          "source": "sequence",
+          "positions": [
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164
+          ],
+          "score": 0.02425758761819452
+        },
+        {
+          "text": "number",
+          "source": "sequence",
+          "positions": [
+            169
+          ],
+          "score": 0.020356759428977966
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            177
+          ],
+          "score": 0.028386026620864868
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            179
+          ],
+          "score": 0.014968934468925
+        },
+        {
+          "text": "0.64899000000",
+          "source": "sequence",
+          "positions": [
+            181,
+            182,
+            183,
+            184,
+            185,
+            186,
+            187,
+            188,
+            189,
+            190,
+            191,
+            192,
+            193
+          ],
+          "score": 0.4122287826612592
+        }
+      ],
+      "step": 13,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 115,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.TOI-5736 b",
+          "revision": "58219ce6b04aba43d68f26b3d662e03a283b388164c5ac279791f6f3a281c151"
+        }
+      ],
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 79
+}

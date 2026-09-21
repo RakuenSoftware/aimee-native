@@ -1,0 +1,2211 @@
+{
+  "id": "91bea028b3fc4994b8a28a9ee53d5733",
+  "memory_backend": "local_first",
+  "query": "Give the preferred drink of unit-b03646cbf4, then the home city of unit-121330aded. Separate with a semicolon.",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    33963,
+    279,
+    14459,
+    6808,
+    314,
+    4821,
+    1402,
+    15,
+    18,
+    21,
+    19,
+    21,
+    6995,
+    69,
+    19,
+    11,
+    1179,
+    279,
+    2046,
+    3177,
+    314,
+    4821,
+    12,
+    16,
+    17,
+    16,
+    18,
+    18,
+    15,
+    13847,
+    13,
+    73533,
+    440,
+    264,
+    5067,
+    37238,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "prompt_tokens": 74,
+  "prompt_sha256": "894331920b62ae94d846c5b41e2a4341cca44bfab2d018c8718bbfd8183ae3a9",
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nGive the preferred drink of unit-b03646cbf4, then the home city of unit-121330aded. Separate with a semicolon.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "memory_enabled": true,
+  "recall_mode": "attention",
+  "decode_recall": true,
+  "preload_memory": true,
+  "reuse_native_states": true,
+  "reuse_encoding": true,
+  "memory_encoding_passes": 0,
+  "memory_tokens_encoded": 0,
+  "requested": true,
+  "native_reads": 96,
+  "preload_query": "Give the preferred drink of unit-b03646cbf4, then the home city of unit-121330aded. Separate with a semicolon.",
+  "memory_encoding_tokens": 40,
+  "bank_layers": [
+    3,
+    7,
+    11,
+    15,
+    19,
+    23,
+    27,
+    31,
+    35,
+    39,
+    43,
+    47,
+    51,
+    55,
+    59,
+    63
+  ],
+  "cue_window_tokens": 64,
+  "decode_cue_boundary": "whitespace",
+  "runtime_decode_ids": [
+    1687,
+    626,
+    26,
+    43,
+    7287
+  ],
+  "recall_events": [
+    {
+      "phase": "preload",
+      "step": 0,
+      "origin": "prompt_preload",
+      "query_source": "latest_user_message",
+      "query": "Give the preferred drink of unit-b03646cbf4, then the home city of unit-121330aded. Separate with a semicolon.",
+      "limit": 2,
+      "native_reads_before": 0,
+      "status": "bank_reused",
+      "aimee_response": {
+        "status": "ok",
+        "facts": [
+          {
+            "id": 5,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d1",
+            "content": "The preferred drink of unit-b03646cbf4 is oolong.",
+            "confidence": 1
+          },
+          {
+            "id": 6,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d2",
+            "content": "The home city of unit-121330aded is Lima.",
+            "confidence": 1
+          }
+        ],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "bank_memory_ids": [
+        5,
+        6
+      ],
+      "memory_encoding_tokens": 40,
+      "memory_encoding_sha256": "1534da2ea11440abd3348222af8ff0b6f2a614712750dc2725f7a6a860d57651",
+      "encoding_cache": "hit"
+    },
+    {
+      "phase": "prefill",
+      "step": 0,
+      "attention_layer": 3,
+      "native_query_shape": [
+        1,
+        24,
+        74,
+        256
+      ],
+      "native_query_sha256": "5af186376577be6b5852d91972a8bd84466000ec2cb26c61bd2e7d12287ce935",
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.03167719021439552
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "aimee",
+          "positions": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18
+          ],
+          "score": 0.01438830915139988
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "aimee",
+          "positions": [
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36
+          ],
+          "score": 0.01850985558121465
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            43
+          ],
+          "score": 0.02611628733575344
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            66
+          ],
+          "score": 0.016388464719057083
+        },
+        {
+          "text": "of",
+          "source": "sequence",
+          "positions": [
+            72
+          ],
+          "score": 0.01576550304889679
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "sequence",
+          "positions": [
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82
+          ],
+          "score": 0.026050821295939386
+        },
+        {
+          "text": "then",
+          "source": "sequence",
+          "positions": [
+            84
+          ],
+          "score": 0.014458618126809597
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "sequence",
+          "positions": [
+            89,
+            90,
+            91,
+            92,
+            93,
+            94,
+            95,
+            96,
+            97
+          ],
+          "score": 0.025415156822418794
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            108
+          ],
+          "score": 0.02820698171854019
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            110
+          ],
+          "score": 0.033117324113845825
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            112
+          ],
+          "score": 0.07213066518306732
+        }
+      ],
+      "native_key_count": 74,
+      "bank_memory_ids_before": [
+        5,
+        6
+      ],
+      "origin": "qwen_attention_query",
+      "query_source": "projected_attention_query",
+      "query": "Authoritative unit-b03646cbf4 unit-121330aded Answer user of unit-b03646cbf4 then unit-121330aded assistant think think",
+      "limit": 2,
+      "native_reads_before": 0,
+      "status": "bank_unchanged",
+      "aimee_response": {
+        "status": "ok",
+        "facts": [
+          {
+            "id": 5,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d1",
+            "content": "The preferred drink of unit-b03646cbf4 is oolong.",
+            "confidence": 1
+          },
+          {
+            "id": 6,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d2",
+            "content": "The home city of unit-121330aded is Lima.",
+            "confidence": 1
+          }
+        ],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "bank_memory_ids": [
+        5,
+        6
+      ],
+      "memory_encoding_tokens": 40,
+      "memory_encoding_sha256": "1534da2ea11440abd3348222af8ff0b6f2a614712750dc2725f7a6a860d57651"
+    },
+    {
+      "phase": "decode",
+      "step": 1,
+      "attention_layer": 3,
+      "native_query_shape": [
+        1,
+        24,
+        1,
+        256
+      ],
+      "native_query_sha256": "88e47678e5beb77cc0e0fe94ee22867bf727c40bb056ed1e54ffce3afe469874",
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.03221192117780447
+        },
+        {
+          "text": "drink",
+          "source": "aimee",
+          "positions": [
+            7
+          ],
+          "score": 0.03885624557733536
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "aimee",
+          "positions": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18
+          ],
+          "score": 0.0347501952201128
+        },
+        {
+          "text": "oolong",
+          "source": "aimee",
+          "positions": [
+            20,
+            21
+          ],
+          "score": 0.04999458231031895
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "aimee",
+          "positions": [
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36
+          ],
+          "score": 0.043384841992519796
+        },
+        {
+          "text": "Give",
+          "source": "sequence",
+          "positions": [
+            68
+          ],
+          "score": 0.0212068110704422
+        },
+        {
+          "text": "drink",
+          "source": "sequence",
+          "positions": [
+            71
+          ],
+          "score": 0.06949132680892944
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "sequence",
+          "positions": [
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82
+          ],
+          "score": 0.06165757915005088
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "sequence",
+          "positions": [
+            89,
+            90,
+            91,
+            92,
+            93,
+            94,
+            95,
+            96,
+            97
+          ],
+          "score": 0.06635846593417227
+        },
+        {
+          "text": "semicolon",
+          "source": "sequence",
+          "positions": [
+            102,
+            103
+          ],
+          "score": 0.02777022635564208
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            110
+          ],
+          "score": 0.02214333787560463
+        },
+        {
+          "text": "ool",
+          "source": "sequence",
+          "positions": [
+            114
+          ],
+          "score": 0.056019507348537445
+        }
+      ],
+      "native_key_count": 75,
+      "bank_memory_ids_before": [
+        5,
+        6
+      ],
+      "origin": "qwen_attention_query",
+      "query_source": "projected_attention_query",
+      "query": "Authoritative drink unit-b03646cbf4 oolong unit-121330aded Give drink unit-b03646cbf4 unit-121330aded semicolon think ool",
+      "limit": 2,
+      "native_reads_before": 16,
+      "status": "bank_unchanged",
+      "aimee_response": {
+        "status": "ok",
+        "facts": [
+          {
+            "id": 5,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d1",
+            "content": "The preferred drink of unit-b03646cbf4 is oolong.",
+            "confidence": 1
+          },
+          {
+            "id": 6,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d2",
+            "content": "The home city of unit-121330aded is Lima.",
+            "confidence": 1
+          }
+        ],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "bank_memory_ids": [
+        5,
+        6
+      ],
+      "memory_encoding_tokens": 40,
+      "memory_encoding_sha256": "1534da2ea11440abd3348222af8ff0b6f2a614712750dc2725f7a6a860d57651"
+    },
+    {
+      "phase": "decode",
+      "step": 2,
+      "attention_layer": 3,
+      "native_query_shape": [
+        1,
+        24,
+        1,
+        256
+      ],
+      "native_query_sha256": "cbfc525c9d65387e1dba8f951e7ad3d071ba5a3a645361c7e00a798464303820",
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.028117967769503593
+        },
+        {
+          "text": "drink",
+          "source": "aimee",
+          "positions": [
+            7
+          ],
+          "score": 0.025311876088380814
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "aimee",
+          "positions": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18
+          ],
+          "score": 0.03353115147911012
+        },
+        {
+          "text": "oolong",
+          "source": "aimee",
+          "positions": [
+            20,
+            21
+          ],
+          "score": 0.046275988686829805
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "aimee",
+          "positions": [
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36
+          ],
+          "score": 0.041597229428589344
+        },
+        {
+          "text": "Lima",
+          "source": "aimee",
+          "positions": [
+            38
+          ],
+          "score": 0.01267639733850956
+        },
+        {
+          "text": "drink",
+          "source": "sequence",
+          "positions": [
+            71
+          ],
+          "score": 0.03988434001803398
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "sequence",
+          "positions": [
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82
+          ],
+          "score": 0.05154470936395228
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "sequence",
+          "positions": [
+            89,
+            90,
+            91,
+            92,
+            93,
+            94,
+            95,
+            96,
+            97
+          ],
+          "score": 0.06700675841420889
+        },
+        {
+          "text": "semicolon",
+          "source": "sequence",
+          "positions": [
+            102,
+            103
+          ],
+          "score": 0.0233223345130682
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            110
+          ],
+          "score": 0.01305264513939619
+        },
+        {
+          "text": "oolong",
+          "source": "sequence",
+          "positions": [
+            114,
+            115
+          ],
+          "score": 0.288207083940506
+        }
+      ],
+      "native_key_count": 76,
+      "bank_memory_ids_before": [
+        5,
+        6
+      ],
+      "origin": "qwen_attention_query",
+      "query_source": "projected_attention_query",
+      "query": "Authoritative drink unit-b03646cbf4 oolong unit-121330aded Lima drink unit-b03646cbf4 unit-121330aded semicolon think oolong",
+      "limit": 2,
+      "native_reads_before": 32,
+      "status": "bank_unchanged",
+      "aimee_response": {
+        "status": "ok",
+        "facts": [
+          {
+            "id": 5,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d1",
+            "content": "The preferred drink of unit-b03646cbf4 is oolong.",
+            "confidence": 1
+          },
+          {
+            "id": 6,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d2",
+            "content": "The home city of unit-121330aded is Lima.",
+            "confidence": 1
+          }
+        ],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "bank_memory_ids": [
+        5,
+        6
+      ],
+      "memory_encoding_tokens": 40,
+      "memory_encoding_sha256": "1534da2ea11440abd3348222af8ff0b6f2a614712750dc2725f7a6a860d57651"
+    },
+    {
+      "phase": "decode",
+      "step": 3,
+      "attention_layer": 3,
+      "native_query_shape": [
+        1,
+        24,
+        1,
+        256
+      ],
+      "native_query_sha256": "dd5b75086976434eb87fc0d745cf031895cfa64f40bc3b9f743827ca59695c0b",
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.0249768509529531
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "aimee",
+          "positions": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18
+          ],
+          "score": 0.019754685228690505
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "aimee",
+          "positions": [
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36
+          ],
+          "score": 0.02067692976561375
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            43
+          ],
+          "score": 0.020812738686800003
+        },
+        {
+          "text": "drink",
+          "source": "sequence",
+          "positions": [
+            71
+          ],
+          "score": 0.015943048521876335
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "sequence",
+          "positions": [
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82
+          ],
+          "score": 0.03751771990209818
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "sequence",
+          "positions": [
+            89,
+            90,
+            91,
+            92,
+            93,
+            94,
+            95,
+            96,
+            97
+          ],
+          "score": 0.031877613480901346
+        },
+        {
+          "text": "semicolon",
+          "source": "sequence",
+          "positions": [
+            102,
+            103
+          ],
+          "score": 0.04130902630276978
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            108
+          ],
+          "score": 0.04139436036348343
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            110
+          ],
+          "score": 0.01981145143508911
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            112
+          ],
+          "score": 0.017100105062127113
+        },
+        {
+          "text": "oolong",
+          "source": "sequence",
+          "positions": [
+            114,
+            115
+          ],
+          "score": 0.06609139777719975
+        }
+      ],
+      "native_key_count": 77,
+      "bank_memory_ids_before": [
+        5,
+        6
+      ],
+      "origin": "qwen_attention_query",
+      "query_source": "projected_attention_query",
+      "query": "Authoritative unit-b03646cbf4 unit-121330aded Answer drink unit-b03646cbf4 unit-121330aded semicolon assistant think think oolong",
+      "limit": 2,
+      "native_reads_before": 48,
+      "status": "bank_unchanged",
+      "aimee_response": {
+        "status": "ok",
+        "facts": [
+          {
+            "id": 5,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d1",
+            "content": "The preferred drink of unit-b03646cbf4 is oolong.",
+            "confidence": 1
+          },
+          {
+            "id": 6,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d2",
+            "content": "The home city of unit-121330aded is Lima.",
+            "confidence": 1
+          }
+        ],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "bank_memory_ids": [
+        5,
+        6
+      ],
+      "memory_encoding_tokens": 40,
+      "memory_encoding_sha256": "1534da2ea11440abd3348222af8ff0b6f2a614712750dc2725f7a6a860d57651"
+    },
+    {
+      "phase": "decode",
+      "step": 4,
+      "attention_layer": 3,
+      "native_query_shape": [
+        1,
+        24,
+        1,
+        256
+      ],
+      "native_query_sha256": "930d28fdc4b9000b32b33fc3a4d9e302979b4d84fc918dfee61a25c9a424e554",
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.0221333559602499
+        },
+        {
+          "text": "drink",
+          "source": "aimee",
+          "positions": [
+            7
+          ],
+          "score": 0.016060272231698036
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "aimee",
+          "positions": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18
+          ],
+          "score": 0.02746862021740526
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "aimee",
+          "positions": [
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36
+          ],
+          "score": 0.0243087726412341
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            43
+          ],
+          "score": 0.02836143970489502
+        },
+        {
+          "text": "drink",
+          "source": "sequence",
+          "positions": [
+            71
+          ],
+          "score": 0.04469304531812668
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "sequence",
+          "positions": [
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82
+          ],
+          "score": 0.05378271476365626
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "sequence",
+          "positions": [
+            89,
+            90,
+            91,
+            92,
+            93,
+            94,
+            95,
+            96,
+            97
+          ],
+          "score": 0.05005433922633529
+        },
+        {
+          "text": "semicolon",
+          "source": "sequence",
+          "positions": [
+            102,
+            103
+          ],
+          "score": 0.03238713461905718
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            108
+          ],
+          "score": 0.03216427564620972
+        },
+        {
+          "text": "oolong",
+          "source": "sequence",
+          "positions": [
+            114,
+            115
+          ],
+          "score": 0.05444047041237354
+        },
+        {
+          "text": "L",
+          "source": "sequence",
+          "positions": [
+            117
+          ],
+          "score": 0.057606421411037445
+        }
+      ],
+      "native_key_count": 78,
+      "bank_memory_ids_before": [
+        5,
+        6
+      ],
+      "origin": "qwen_attention_query",
+      "query_source": "projected_attention_query",
+      "query": "Authoritative drink unit-b03646cbf4 unit-121330aded Answer drink unit-b03646cbf4 unit-121330aded semicolon assistant oolong L",
+      "limit": 2,
+      "native_reads_before": 64,
+      "status": "bank_unchanged",
+      "aimee_response": {
+        "status": "ok",
+        "facts": [
+          {
+            "id": 5,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d1",
+            "content": "The preferred drink of unit-b03646cbf4 is oolong.",
+            "confidence": 1
+          },
+          {
+            "id": 6,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d2",
+            "content": "The home city of unit-121330aded is Lima.",
+            "confidence": 1
+          }
+        ],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "bank_memory_ids": [
+        5,
+        6
+      ],
+      "memory_encoding_tokens": 40,
+      "memory_encoding_sha256": "1534da2ea11440abd3348222af8ff0b6f2a614712750dc2725f7a6a860d57651"
+    },
+    {
+      "phase": "decode",
+      "step": 5,
+      "attention_layer": 3,
+      "native_query_shape": [
+        1,
+        24,
+        1,
+        256
+      ],
+      "native_query_sha256": "e9f2479d99a23c08e251ee5e4b9fe61b6086ce57f9151bb9d058cd6a07d9a0da",
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02738151326775551
+        },
+        {
+          "text": "drink",
+          "source": "aimee",
+          "positions": [
+            7
+          ],
+          "score": 0.027453523129224777
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "aimee",
+          "positions": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18
+          ],
+          "score": 0.040193692897446454
+        },
+        {
+          "text": "oolong",
+          "source": "aimee",
+          "positions": [
+            20,
+            21
+          ],
+          "score": 0.026148492470383644
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "aimee",
+          "positions": [
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36
+          ],
+          "score": 0.04610762244556099
+        },
+        {
+          "text": "Lima",
+          "source": "aimee",
+          "positions": [
+            38
+          ],
+          "score": 0.04927191138267517
+        },
+        {
+          "text": "drink",
+          "source": "sequence",
+          "positions": [
+            71
+          ],
+          "score": 0.044548749923706055
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "sequence",
+          "positions": [
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82
+          ],
+          "score": 0.057063319720327854
+        },
+        {
+          "text": "city",
+          "source": "sequence",
+          "positions": [
+            87
+          ],
+          "score": 0.030200526118278503
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "sequence",
+          "positions": [
+            89,
+            90,
+            91,
+            92,
+            93,
+            94,
+            95,
+            96,
+            97
+          ],
+          "score": 0.06475437642075121
+        },
+        {
+          "text": "oolong",
+          "source": "sequence",
+          "positions": [
+            114,
+            115
+          ],
+          "score": 0.05046451650559902
+        },
+        {
+          "text": "Lima",
+          "source": "sequence",
+          "positions": [
+            117,
+            118
+          ],
+          "score": 0.051563236862421036
+        }
+      ],
+      "native_key_count": 79,
+      "bank_memory_ids_before": [
+        5,
+        6
+      ],
+      "origin": "qwen_attention_query",
+      "query_source": "projected_attention_query",
+      "query": "Authoritative drink unit-b03646cbf4 oolong unit-121330aded Lima drink unit-b03646cbf4 city unit-121330aded oolong Lima",
+      "limit": 2,
+      "native_reads_before": 80,
+      "status": "bank_unchanged",
+      "aimee_response": {
+        "status": "ok",
+        "facts": [
+          {
+            "id": 5,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d1",
+            "content": "The preferred drink of unit-b03646cbf4 is oolong.",
+            "confidence": 1
+          },
+          {
+            "id": 6,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d2",
+            "content": "The home city of unit-121330aded is Lima.",
+            "confidence": 1
+          }
+        ],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "bank_memory_ids": [
+        5,
+        6
+      ],
+      "memory_encoding_tokens": 40,
+      "memory_encoding_sha256": "1534da2ea11440abd3348222af8ff0b6f2a614712750dc2725f7a6a860d57651"
+    }
+  ],
+  "resident_facts": {
+    "5": {
+      "id": 5,
+      "scope": {
+        "type": "user",
+        "value": "_user"
+      },
+      "tier": "L3",
+      "kind": "fact",
+      "key": "research.native-bank.20260920.d1",
+      "content": "The preferred drink of unit-b03646cbf4 is oolong.",
+      "confidence": 1
+    },
+    "6": {
+      "id": 6,
+      "scope": {
+        "type": "user",
+        "value": "_user"
+      },
+      "tier": "L3",
+      "kind": "fact",
+      "key": "research.native-bank.20260920.d2",
+      "content": "The home city of unit-121330aded is Lima.",
+      "confidence": 1
+    }
+  },
+  "source_view": "324014d3103cb1fc08d566ce310867b428af0ed88f5d3fed943d53f2d27ef48c",
+  "bank_residence": "ram",
+  "runtime_step": 5,
+  "runtime_frame": {
+    "step": 5,
+    "phase": "decode",
+    "input_ids": [
+      7287
+    ]
+  },
+  "runtime_prefill_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    33963,
+    279,
+    14459,
+    6808,
+    314,
+    4821,
+    1402,
+    15,
+    18,
+    21,
+    19,
+    21,
+    6995,
+    69,
+    19,
+    11,
+    1179,
+    279,
+    2046,
+    3177,
+    314,
+    4821,
+    12,
+    16,
+    17,
+    16,
+    18,
+    18,
+    15,
+    13847,
+    13,
+    73533,
+    440,
+    264,
+    5067,
+    37238,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "request": {
+    "origin": "qwen_attention_query",
+    "query_source": "projected_attention_query",
+    "query": "Authoritative drink unit-b03646cbf4 oolong unit-121330aded Lima drink unit-b03646cbf4 city unit-121330aded oolong Lima",
+    "limit": 2
+  },
+  "aimee_response": {
+    "status": "ok",
+    "facts": [
+      {
+        "id": 5,
+        "scope": {
+          "type": "user",
+          "value": "_user"
+        },
+        "tier": "L3",
+        "kind": "fact",
+        "key": "research.native-bank.20260920.d1",
+        "content": "The preferred drink of unit-b03646cbf4 is oolong.",
+        "confidence": 1
+      },
+      {
+        "id": 6,
+        "scope": {
+          "type": "user",
+          "value": "_user"
+        },
+        "tier": "L3",
+        "kind": "fact",
+        "key": "research.native-bank.20260920.d2",
+        "content": "The home city of unit-121330aded is Lima.",
+        "confidence": 1
+      }
+    ],
+    "windows": [],
+    "active_context_missing": false
+  },
+  "bank_devices": {
+    "3": "cpu",
+    "7": "cpu",
+    "11": "cpu",
+    "15": "cpu",
+    "19": "cpu",
+    "23": "cpu",
+    "27": "cpu",
+    "31": "cpu",
+    "35": "cpu",
+    "39": "cpu",
+    "43": "cpu",
+    "47": "cpu",
+    "51": "cpu",
+    "55": "cpu",
+    "59": "cpu",
+    "63": "cpu"
+  },
+  "memory_token_ids": [
+    6910,
+    20657,
+    4779,
+    25,
+    198,
+    760,
+    14459,
+    6808,
+    314,
+    4821,
+    1402,
+    15,
+    18,
+    21,
+    19,
+    21,
+    6995,
+    69,
+    19,
+    369,
+    296,
+    157761,
+    13,
+    198,
+    760,
+    2046,
+    3177,
+    314,
+    4821,
+    12,
+    16,
+    17,
+    16,
+    18,
+    18,
+    15,
+    13847,
+    369,
+    59868,
+    13
+  ],
+  "memory_encoding_sha256": "1534da2ea11440abd3348222af8ff0b6f2a614712750dc2725f7a6a860d57651",
+  "generation_cache_tokens": 79,
+  "profile_events": [
+    {
+      "stage": "pin_image",
+      "start": 1225462.752638219,
+      "seconds": 0.00010855402797460556
+    },
+    {
+      "stage": "memory_search",
+      "start": 1225462.755721506,
+      "seconds": 9.493296965956688e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225462.789757134,
+      "seconds": 6.424915045499802e-05
+    },
+    {
+      "stage": "query_translation",
+      "start": 1225462.789889905,
+      "seconds": 0.0007662221323698759
+    },
+    {
+      "stage": "memory_search",
+      "start": 1225462.791668386,
+      "seconds": 0.00011289212852716446
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225462.791897942,
+      "seconds": 0.00021154689602553844
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225462.826102675,
+      "seconds": 6.076809950172901e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225462.860354555,
+      "seconds": 6.188498809933662e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225462.894292023,
+      "seconds": 6.334786303341389e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225462.928176845,
+      "seconds": 5.932897329330444e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225462.961293657,
+      "seconds": 6.360094994306564e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225462.994318526,
+      "seconds": 6.014388054609299e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.027111275,
+      "seconds": 6.165215745568275e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.068452108,
+      "seconds": 9.184703230857849e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.103648156,
+      "seconds": 9.285914711654186e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.139025914,
+      "seconds": 9.794090874493122e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.174491839,
+      "seconds": 0.00010283407755196095
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.209726671,
+      "seconds": 9.253690950572491e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.244255356,
+      "seconds": 9.240908548235893e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.279554795,
+      "seconds": 9.742495603859425e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.314626822,
+      "seconds": 9.331898763775826e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.367545027,
+      "seconds": 6.737187504768372e-05
+    },
+    {
+      "stage": "query_translation",
+      "start": 1225463.367675314,
+      "seconds": 0.0007922989316284657
+    },
+    {
+      "stage": "memory_search",
+      "start": 1225463.368565155,
+      "seconds": 0.00012447615154087543
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.36882093,
+      "seconds": 7.236003875732422e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.394942959,
+      "seconds": 6.643589586019516e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.421150837,
+      "seconds": 6.63988757878542e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.447344063,
+      "seconds": 6.948085501790047e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.473317019,
+      "seconds": 6.039696745574474e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.499027818,
+      "seconds": 6.015296094119549e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.5246956,
+      "seconds": 7.392815314233303e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.550328294,
+      "seconds": 6.25180546194315e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.583091,
+      "seconds": 9.466288611292839e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.609740255,
+      "seconds": 9.233714081346989e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.636515727,
+      "seconds": 9.459396824240685e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.663396958,
+      "seconds": 8.342391811311245e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.690157649,
+      "seconds": 9.507592767477036e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.716928812,
+      "seconds": 9.285099804401398e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.743670236,
+      "seconds": 9.435601532459259e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.770290742,
+      "seconds": 9.469408541917801e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.821746359,
+      "seconds": 6.59148208796978e-05
+    },
+    {
+      "stage": "query_translation",
+      "start": 1225463.821873696,
+      "seconds": 0.0007838320452719927
+    },
+    {
+      "stage": "memory_search",
+      "start": 1225463.822732979,
+      "seconds": 0.00012429896742105484
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.822986991,
+      "seconds": 7.484410889446735e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.849053669,
+      "seconds": 6.012595258653164e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.875272032,
+      "seconds": 6.059790030121803e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.901445304,
+      "seconds": 5.980487912893295e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.927304527,
+      "seconds": 6.15590251982212e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.953004241,
+      "seconds": 6.838003173470497e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225463.978730828,
+      "seconds": 6.169895641505718e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.004357902,
+      "seconds": 6.031384691596031e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.037443826,
+      "seconds": 9.336508810520172e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.064066618,
+      "seconds": 9.162398055195808e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.090969045,
+      "seconds": 9.284797124564648e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.117874711,
+      "seconds": 7.890700362622738e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.144611045,
+      "seconds": 8.231191895902157e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.171306818,
+      "seconds": 8.333707228302956e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.197918579,
+      "seconds": 9.327591396868229e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.22453306,
+      "seconds": 0.00015222886577248573
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.27658561,
+      "seconds": 6.731809116899967e-05
+    },
+    {
+      "stage": "query_translation",
+      "start": 1225464.27671573,
+      "seconds": 0.0007923620287328959
+    },
+    {
+      "stage": "memory_search",
+      "start": 1225464.277584545,
+      "seconds": 0.00012461282312870026
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.277838436,
+      "seconds": 7.146899588406086e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.303976312,
+      "seconds": 6.13268930464983e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.330107481,
+      "seconds": 6.005400791764259e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.356222331,
+      "seconds": 5.998695269227028e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.382137707,
+      "seconds": 5.980604328215122e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.407948022,
+      "seconds": 6.172992289066315e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.433617298,
+      "seconds": 6.067589856684208e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.459228544,
+      "seconds": 6.212200969457626e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.492128281,
+      "seconds": 9.336997754871845e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.518813771,
+      "seconds": 9.058509021997452e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.545722467,
+      "seconds": 9.269407019019127e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.572603508,
+      "seconds": 0.00013195606879889965
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.599397239,
+      "seconds": 9.284284897148609e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.626090444,
+      "seconds": 0.00010197400115430355
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.652663953,
+      "seconds": 9.29760280996561e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.679292147,
+      "seconds": 0.00010050088167190552
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.731163196,
+      "seconds": 6.967596709728241e-05
+    },
+    {
+      "stage": "query_translation",
+      "start": 1225464.731297219,
+      "seconds": 0.0008107570465654135
+    },
+    {
+      "stage": "memory_search",
+      "start": 1225464.732184198,
+      "seconds": 0.0001217059325426817
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.732435968,
+      "seconds": 7.012998685240746e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.758594237,
+      "seconds": 6.65648840367794e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.784723514,
+      "seconds": 6.545893847942352e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.810828327,
+      "seconds": 6.575509905815125e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.83671012,
+      "seconds": 6.525288335978985e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.862483144,
+      "seconds": 6.284797564148903e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.888215603,
+      "seconds": 6.2623992562294e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.913832849,
+      "seconds": 6.259605288505554e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.946805071,
+      "seconds": 0.00010090181604027748
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225464.973580161,
+      "seconds": 8.215499110519886e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225465.000481979,
+      "seconds": 9.291805326938629e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225465.027359386,
+      "seconds": 7.850793190300465e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225465.054160579,
+      "seconds": 9.678979404270649e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225465.080812597,
+      "seconds": 8.55450052767992e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225465.10752812,
+      "seconds": 9.610201232135296e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225465.134165445,
+      "seconds": 9.319093078374863e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225465.185824816,
+      "seconds": 6.955978460609913e-05
+    },
+    {
+      "stage": "query_translation",
+      "start": 1225465.185957447,
+      "seconds": 0.0008020070381462574
+    },
+    {
+      "stage": "memory_search",
+      "start": 1225465.186858286,
+      "seconds": 0.00011996016837656498
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225465.187113744,
+      "seconds": 6.905407644808292e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225465.213213373,
+      "seconds": 6.365007720887661e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225465.23950234,
+      "seconds": 6.123585626482964e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225465.265613235,
+      "seconds": 6.194901652634144e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225465.291669631,
+      "seconds": 6.307614967226982e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225465.317444457,
+      "seconds": 0.0001137999352067709
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225465.343251732,
+      "seconds": 6.0388119891285896e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225465.368868511,
+      "seconds": 5.9317098930478096e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225465.401482908,
+      "seconds": 0.00016997498460114002
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225465.428278881,
+      "seconds": 9.48652159422636e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225465.45509456,
+      "seconds": 9.219604544341564e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225465.482101415,
+      "seconds": 7.780292071402073e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225465.508964766,
+      "seconds": 9.6161849796772e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225465.535710218,
+      "seconds": 0.00016684713773429394
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225465.562523619,
+      "seconds": 9.196600876748562e-05
+    },
+    {
+      "stage": "bank_to_device",
+      "start": 1225465.589187664,
+      "seconds": 9.417813271284103e-05
+    }
+  ],
+  "local_first_events": [
+    {
+      "query": "Give the preferred drink of unit-b03646cbf4, then the home city of unit-121330aded. Separate with a semicolon.",
+      "outcome": "hit",
+      "remote": false,
+      "view": "324014d3103cb1fc08d566ce310867b428af0ed88f5d3fed943d53f2d27ef48c"
+    },
+    {
+      "query": "Authoritative unit-b03646cbf4 unit-121330aded Answer user of unit-b03646cbf4 then unit-121330aded assistant think think",
+      "outcome": "hit",
+      "remote": false,
+      "view": "324014d3103cb1fc08d566ce310867b428af0ed88f5d3fed943d53f2d27ef48c"
+    },
+    {
+      "query": "Authoritative drink unit-b03646cbf4 oolong unit-121330aded Give drink unit-b03646cbf4 unit-121330aded semicolon think ool",
+      "outcome": "hit",
+      "remote": false,
+      "view": "324014d3103cb1fc08d566ce310867b428af0ed88f5d3fed943d53f2d27ef48c"
+    },
+    {
+      "query": "Authoritative drink unit-b03646cbf4 oolong unit-121330aded Lima drink unit-b03646cbf4 unit-121330aded semicolon think oolong",
+      "outcome": "hit",
+      "remote": false,
+      "view": "324014d3103cb1fc08d566ce310867b428af0ed88f5d3fed943d53f2d27ef48c"
+    },
+    {
+      "query": "Authoritative unit-b03646cbf4 unit-121330aded Answer drink unit-b03646cbf4 unit-121330aded semicolon assistant think think oolong",
+      "outcome": "hit",
+      "remote": false,
+      "view": "324014d3103cb1fc08d566ce310867b428af0ed88f5d3fed943d53f2d27ef48c"
+    },
+    {
+      "query": "Authoritative drink unit-b03646cbf4 unit-121330aded Answer drink unit-b03646cbf4 unit-121330aded semicolon assistant oolong L",
+      "outcome": "hit",
+      "remote": false,
+      "view": "324014d3103cb1fc08d566ce310867b428af0ed88f5d3fed943d53f2d27ef48c"
+    },
+    {
+      "query": "Authoritative drink unit-b03646cbf4 oolong unit-121330aded Lima drink unit-b03646cbf4 city unit-121330aded oolong Lima",
+      "outcome": "hit",
+      "remote": false,
+      "view": "324014d3103cb1fc08d566ce310867b428af0ed88f5d3fed943d53f2d27ef48c"
+    }
+  ],
+  "encoding_cache_bytes": 2621440,
+  "token_seconds": [
+    0.5874344180338085,
+    1.0420483630150557,
+    1.4965884969569743,
+    1.9511343019548804,
+    2.405698243062943,
+    2.8608127350453287
+  ],
+  "ttft_seconds": 0.5874344180338085,
+  "intertoken_seconds": [
+    0.4546139449812472,
+    0.4545401339419186,
+    0.4545458049979061,
+    0.45456394110806286,
+    0.4551144919823855
+  ],
+  "answer": "oolong;Lima",
+  "generated_ids": [
+    1687,
+    626,
+    26,
+    43,
+    7287,
+    248046
+  ],
+  "terminated": true,
+  "added_memory_prompt_tokens": 0,
+  "adapter_trainable_parameters": 0,
+  "seconds": 2.8609123879577965,
+  "status": "complete"
+}

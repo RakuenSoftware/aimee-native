@@ -1,0 +1,58 @@
+{
+  "name": "deployed_drink",
+  "request": {
+    "messages": [
+      {
+        "role": "system",
+        "content": "Use available memory. Do not invent unknown details. Give only the requested values."
+      },
+      {
+        "role": "user",
+        "content": "What is the preferred drink of unit-b03646cbf4?"
+      }
+    ],
+    "max_tokens": 32,
+    "temperature": 0,
+    "aimee_memory": true
+  },
+  "http_status": 200,
+  "seconds": 13.455859798938036,
+  "response": {
+    "id": "552a673f29a14dfbaae757042af37c6f",
+    "object": "chat.completion",
+    "model": "qwen-aimee-direct",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "The preferred drink of unit-b03646cbf4 is oolong."
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 50,
+      "completion_tokens": 19,
+      "total_tokens": 69
+    },
+    "aimee": {
+      "requested": true,
+      "request": {
+        "origin": "qwen_attention_query",
+        "query_source": "projected_attention_query",
+        "query": "Authoritative unit-b03646cbf4 What drink unit-b03646cbf4 assistant think think The unit-b03646cbf4 is oolong",
+        "limit": 1
+      },
+      "returned_memory_ids": [
+        5
+      ],
+      "native_reads": 304,
+      "recall_calls": 19,
+      "bank_memory_ids": [
+        5
+      ],
+      "memory_encoding_tokens": 23
+    }
+  }
+}

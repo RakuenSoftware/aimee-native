@@ -1,0 +1,817 @@
+{
+  "runtime": "rust-libtorch",
+  "id": "rust-1789975845895960760-10",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nFor IANA service ias-admind, give its registered TCP port as one integer.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    2381,
+    353,
+    37492,
+    2393,
+    585,
+    299,
+    24927,
+    36475,
+    11,
+    2873,
+    1141,
+    9393,
+    25804,
+    2548,
+    430,
+    799,
+    7308,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    17,
+    16,
+    19,
+    16
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "e53a54d1c6e76dec5f0a7ffa89ed6a979de2ac4ebef3d5ec356a2b75b93dd01d",
+  "memory_encoding": "content",
+  "memory_before_prompt": true,
+  "memory_position_offset": -34,
+  "answer": "2141",
+  "finish_reason": "stop",
+  "elapsed_ms": 4362.062901,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "For IANA service ias-admind, give its registered TCP port as one integer.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service ias-admind has these registered transport/port assignments: TCP port 2141; UDP port 2141.",
+            "id": "iana.ias-admind",
+            "key": "IANA service ias-admind",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.ias-admind",
+              "revision": "f32757fdad6f72d1ddbc8fdd4a79074e6a974a666301096c7fb7afa5a2540514"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 34,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.ias-admind",
+          "revision": "f32757fdad6f72d1ddbc8fdd4a79074e6a974a666301096c7fb7afa5a2540514"
+        }
+      ],
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user ias-admind give its TCP as integer assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.029150571208447218
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            37
+          ],
+          "score": 0.018268145620822906
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            60
+          ],
+          "score": 0.01633547805249691
+        },
+        {
+          "text": "ias-admind",
+          "source": "sequence",
+          "positions": [
+            66,
+            67,
+            68,
+            69
+          ],
+          "score": 0.025591288576833904
+        },
+        {
+          "text": "give",
+          "source": "sequence",
+          "positions": [
+            71
+          ],
+          "score": 0.03371536731719971
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            72
+          ],
+          "score": 0.025707297027111053
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            74
+          ],
+          "score": 0.015152225270867348
+        },
+        {
+          "text": "as",
+          "source": "sequence",
+          "positions": [
+            76
+          ],
+          "score": 0.031565967947244644
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.015681419521570206
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            83
+          ],
+          "score": 0.0279274582862854
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            85
+          ],
+          "score": 0.02868688851594925
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            87
+          ],
+          "score": 0.06598799675703049
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 34,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.ias-admind",
+          "revision": "f32757fdad6f72d1ddbc8fdd4a79074e6a974a666301096c7fb7afa5a2540514"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer For IANA ias-admind give TCP integer assistant think think 2",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.026373750530183315
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            37
+          ],
+          "score": 0.032828524708747864
+        },
+        {
+          "text": "For",
+          "source": "sequence",
+          "positions": [
+            62
+          ],
+          "score": 0.02998599410057068
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            63,
+            64
+          ],
+          "score": 0.024699494242668152
+        },
+        {
+          "text": "ias-admind",
+          "source": "sequence",
+          "positions": [
+            66,
+            67,
+            68,
+            69
+          ],
+          "score": 0.023913078708574176
+        },
+        {
+          "text": "give",
+          "source": "sequence",
+          "positions": [
+            71
+          ],
+          "score": 0.02761555090546608
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            74
+          ],
+          "score": 0.023235535249114037
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.025601115077733994
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            83
+          ],
+          "score": 0.031998734921216965
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            85
+          ],
+          "score": 0.02639162167906761
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            87
+          ],
+          "score": 0.018018918111920357
+        },
+        {
+          "text": "2",
+          "source": "sequence",
+          "positions": [
+            89
+          ],
+          "score": 0.03725247085094452
+        }
+      ],
+      "step": 1,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 34,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.ias-admind",
+          "revision": "f32757fdad6f72d1ddbc8fdd4a79074e6a974a666301096c7fb7afa5a2540514"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2141 Answer For IANA ias-admind TCP port as integer assistant 21",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02087451401166618
+        },
+        {
+          "text": "2141",
+          "source": "aimee",
+          "positions": [
+            21,
+            22,
+            23,
+            24
+          ],
+          "score": 0.07363951555453241
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            37
+          ],
+          "score": 0.020905833691358566
+        },
+        {
+          "text": "For",
+          "source": "sequence",
+          "positions": [
+            62
+          ],
+          "score": 0.02412497065961361
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            63,
+            64
+          ],
+          "score": 0.04116876795887947
+        },
+        {
+          "text": "ias-admind",
+          "source": "sequence",
+          "positions": [
+            66,
+            67,
+            68,
+            69
+          ],
+          "score": 0.0291226867120713
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            74
+          ],
+          "score": 0.06741340458393097
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            75
+          ],
+          "score": 0.05079177767038345
+        },
+        {
+          "text": "as",
+          "source": "sequence",
+          "positions": [
+            76
+          ],
+          "score": 0.01735508069396019
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.04085836559534073
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            83
+          ],
+          "score": 0.018964648246765137
+        },
+        {
+          "text": "21",
+          "source": "sequence",
+          "positions": [
+            89,
+            90
+          ],
+          "score": 0.06744694337248802
+        }
+      ],
+      "step": 2,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 34,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.ias-admind",
+          "revision": "f32757fdad6f72d1ddbc8fdd4a79074e6a974a666301096c7fb7afa5a2540514"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "transport TCP 2141 Answer For IANA ias-admind give TCP port integer 214",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "transport",
+          "source": "aimee",
+          "positions": [
+            14
+          ],
+          "score": 0.018690794706344604
+        },
+        {
+          "text": "TCP",
+          "source": "aimee",
+          "positions": [
+            18
+          ],
+          "score": 0.016114238649606705
+        },
+        {
+          "text": "2141",
+          "source": "aimee",
+          "positions": [
+            21,
+            22,
+            23,
+            24
+          ],
+          "score": 0.0772035347763449
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            37
+          ],
+          "score": 0.016709866002202034
+        },
+        {
+          "text": "For",
+          "source": "sequence",
+          "positions": [
+            62
+          ],
+          "score": 0.017628289759159088
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            63,
+            64
+          ],
+          "score": 0.03817434888333082
+        },
+        {
+          "text": "ias-admind",
+          "source": "sequence",
+          "positions": [
+            66,
+            67,
+            68,
+            69
+          ],
+          "score": 0.03417915292084217
+        },
+        {
+          "text": "give",
+          "source": "sequence",
+          "positions": [
+            71
+          ],
+          "score": 0.01882997341454029
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            74
+          ],
+          "score": 0.07548262923955917
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            75
+          ],
+          "score": 0.07452204078435898
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.0442865714430809
+        },
+        {
+          "text": "214",
+          "source": "sequence",
+          "positions": [
+            89,
+            90,
+            91
+          ],
+          "score": 0.10561012662947178
+        }
+      ],
+      "step": 3,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 34,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.ias-admind",
+          "revision": "f32757fdad6f72d1ddbc8fdd4a79074e6a974a666301096c7fb7afa5a2540514"
+        }
+      ],
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative ias-admind TCP 2141 Answer For IANA ias-admind TCP port integer 2141",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "1049e08301349ff078180b49cac256975cd6070f68cb60ed1bf798cac4be4075",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.019144332967698574
+        },
+        {
+          "text": "ias-admind",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10
+          ],
+          "score": 0.012082072673365474
+        },
+        {
+          "text": "TCP",
+          "source": "aimee",
+          "positions": [
+            18
+          ],
+          "score": 0.015758216381072998
+        },
+        {
+          "text": "2141",
+          "source": "aimee",
+          "positions": [
+            21,
+            22,
+            23,
+            24
+          ],
+          "score": 0.027597331907600164
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            37
+          ],
+          "score": 0.020751485601067543
+        },
+        {
+          "text": "For",
+          "source": "sequence",
+          "positions": [
+            62
+          ],
+          "score": 0.01602703332901001
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            63,
+            64
+          ],
+          "score": 0.03558831801638007
+        },
+        {
+          "text": "ias-admind",
+          "source": "sequence",
+          "positions": [
+            66,
+            67,
+            68,
+            69
+          ],
+          "score": 0.03689685044810176
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            74
+          ],
+          "score": 0.06788577884435654
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            75
+          ],
+          "score": 0.059237971901893616
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.02807648293673992
+        },
+        {
+          "text": "2141",
+          "source": "sequence",
+          "positions": [
+            89,
+            90,
+            91,
+            92
+          ],
+          "score": 0.21959172561764717
+        }
+      ],
+      "step": 4,
+      "phase": "decode",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 34,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.ias-admind",
+          "revision": "f32757fdad6f72d1ddbc8fdd4a79074e6a974a666301096c7fb7afa5a2540514"
+        }
+      ],
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 59
+}

@@ -1,0 +1,50 @@
+{
+  "state": "EXPLORATORY_RESEARCH",
+  "date": "2026-09-19",
+  "host": "192.168.1.253",
+  "container_id": 101,
+  "hostname": "llama101",
+  "scratch_directory": "/opt/aimee-ple-phase0",
+  "runtime": {
+    "directory": "/opt/llama.cpp",
+    "revision": "972d2313bc0bf0a45f634f77d95c9fb03aeab12c",
+    "checkout_clean_before_and_after": true,
+    "version": "0.4.1-dev (build 1, commit 972d231)",
+    "llama_server_sha256": "0abf4e85234db5f64557839d991e7c52376e6d1e6d255915750a7a425555f355",
+    "libllama_so_0_4_1_sha256": "2f22383ff7af307b114c8d89396699bf2e2a84fb820d728e96dd0fa19a9235eb"
+  },
+  "models": {
+    "repository": "unsloth/Qwen3.8-Flash-Next-GGUF",
+    "download_manifest_revision": "38bb39ee97821de2c9009abb7e93950eec396e66",
+    "variants": ["UD-Q4_K_XL", "UD-IQ4_XS"],
+    "whole_shard_hashes_recomputed": false
+  },
+  "external_dependencies": {
+    "overlay_repository": "https://github.com/ortegaalfredo/llama.cpp-NLTM",
+    "overlay_revision": "8d5adc2f2ff3ae715100257eeeb3bec61eb1726c",
+    "llama_ple_overlay_cpp_sha256": "bba276c1950e9c4a65c6297df4b27c613740fb465f6d71dcd3c0fb197169bff6",
+    "llama_ple_overlay_h_sha256": "34cc438ef22047d0807eab6b864eb6b61f2a54ed078d2013a9b216b73906bead",
+    "injector_repository": "https://github.com/ortegaalfredo/ngram-knowledge-injector",
+    "injector_revision": "b50c7892bf34915fe7dfae2409700c41248b0bb8",
+    "packaged_patch_applies_cleanly": false,
+    "packaged_patch_failures": ["src/CMakeLists.txt", "src/llama-model-loader.cpp", "src/llama-model-loader.h"]
+  },
+  "probe_source_sha256": {
+    "overlay_probe.cpp": "fef3f3957b0775c7d509b90540a0b79636fd9b9b66e9ae5335c6fb2c4ac6530f",
+    "probe_phase0.py": "6e7ab0f046db976cb5ecc740bb7573200502eab5c4e99ba09315821cdd418f11",
+    "tokenize.cpp": "28c83fbb00f766c77fe02fbd5fbdd52de0ee4a05793adac840d19a934111730e"
+  },
+  "validation": {
+    "model_variants_inspected": 2,
+    "synthetic_identifiers_per_scheme": 100,
+    "tokenizer_invocation": {"add_special": false, "parse_special": false},
+    "address_calculation": "Python reproduction of inspected runtime hash, not instrumented gather",
+    "overlay_test_model_variant": "UD-Q4_K_XL",
+    "overlay_cases": 2,
+    "overlay_test_rows": [1413931, 19],
+    "replacement_mtime_invalidated_explicitly": true,
+    "inference_executed": false,
+    "private_production_memory_used": false,
+    "installed_runtime_modified": false
+  }
+}

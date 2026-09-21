@@ -1,0 +1,355 @@
+{
+  "runtime": "rust-libtorch",
+  "id": "rust-1789935655790365484-157",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nGive the TCP port for IANA service xic, then the preferred drink of unit-b03646cbf4, then the home city of unit-121330aded. Separate the three values with semicolons.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    33963,
+    279,
+    25804,
+    2548,
+    364,
+    353,
+    37492,
+    2393,
+    830,
+    291,
+    11,
+    1179,
+    279,
+    14459,
+    6808,
+    314,
+    4821,
+    1402,
+    15,
+    18,
+    21,
+    19,
+    21,
+    6995,
+    69,
+    19,
+    11,
+    1179,
+    279,
+    2046,
+    3177,
+    314,
+    4821,
+    12,
+    16,
+    17,
+    16,
+    18,
+    18,
+    15,
+    13847,
+    13,
+    73533,
+    279,
+    2250,
+    2663,
+    440,
+    5067,
+    25617,
+    2305,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    21,
+    16,
+    16,
+    20,
+    26,
+    15615,
+    26,
+    43,
+    7287
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "fb07f7308e4e17944f9afe53457ade8122929877b922679e40d0b278baf7d19f",
+  "memory_encoding": "content",
+  "answer": "6115;unknown;Lima",
+  "finish_reason": "stop",
+  "elapsed_ms": 5914.869438000001,
+  "memory_encoding_passes": 2,
+  "native_reads": 160,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "Give the TCP port for IANA service xic, then the preferred drink of unit-b03646cbf4, then the home city of unit-121330aded. Separate the three values with semicolons.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service xic has these registered transport/port assignments: TCP port 6115.",
+            "id": "iana.xic",
+            "key": "IANA service xic",
+            "kind": "fact",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.xic",
+              "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 24,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        }
+      ],
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user Give TCP for unit-b03646cbf4 unit-121330aded the assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "id": 6,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d2",
+            "content": "The home city of unit-121330aded is Lima.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "aimee-published",
+              "id": "6",
+              "revision": "3eae3584cc979c44a0d63d36e28fdaedc17f07ae3452f8e2c69b5235c8d42d39"
+            }
+          },
+          {
+            "id": 5,
+            "scope": {
+              "type": "user",
+              "value": "_user"
+            },
+            "tier": "L3",
+            "kind": "fact",
+            "key": "research.native-bank.20260920.d1",
+            "content": "The preferred drink of unit-b03646cbf4 is oolong.",
+            "confidence": 1,
+            "memory_ref": {
+              "namespace": "aimee-published",
+              "id": "5",
+              "revision": "60aa41830845fadb3d420e6346bbc4068fc834a3a513fa157e7f0a440470e4cb"
+            }
+          }
+        ],
+        "restriction": {
+          "version": 1,
+          "namespace": "aimee-published",
+          "authorization": "c0a38ca228dc76487cb53b6734d43aab905b2dc8aa1abd40f3e56a0281752015",
+          "ids": [
+            5,
+            6
+          ]
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02774198679253459
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            27
+          ],
+          "score": 0.02258160337805748
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            50
+          ],
+          "score": 0.016486216336488724
+        },
+        {
+          "text": "Give",
+          "source": "sequence",
+          "positions": [
+            52
+          ],
+          "score": 0.013011988252401352
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            54
+          ],
+          "score": 0.014590675942599773
+        },
+        {
+          "text": "for",
+          "source": "sequence",
+          "positions": [
+            56
+          ],
+          "score": 0.020120851695537567
+        },
+        {
+          "text": "unit-b03646cbf4",
+          "source": "sequence",
+          "positions": [
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77
+          ],
+          "score": 0.01822214387357235
+        },
+        {
+          "text": "unit-121330aded",
+          "source": "sequence",
+          "positions": [
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90,
+            91,
+            92
+          ],
+          "score": 0.01757654594257474
+        },
+        {
+          "text": "the",
+          "source": "sequence",
+          "positions": [
+            95
+          ],
+          "score": 0.0158948116004467
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            106
+          ],
+          "score": 0.02767026238143444
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            108
+          ],
+          "score": 0.03330308198928833
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            110
+          ],
+          "score": 0.07195691764354706
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "memory_encoding_tokens": 60,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        },
+        {
+          "namespace": "aimee-published",
+          "id": "6",
+          "revision": "3eae3584cc979c44a0d63d36e28fdaedc17f07ae3452f8e2c69b5235c8d42d39"
+        },
+        {
+          "namespace": "aimee-published",
+          "id": "5",
+          "revision": "60aa41830845fadb3d420e6346bbc4068fc834a3a513fa157e7f0a440470e4cb"
+        }
+      ],
+      "status": "bank_updated"
+    }
+  ],
+  "main_cache_length": 97
+}

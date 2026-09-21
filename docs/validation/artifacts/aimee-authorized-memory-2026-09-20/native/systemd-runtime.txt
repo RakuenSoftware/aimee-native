@@ -1,0 +1,45 @@
+# /run/systemd/transient/aimee-auth-qwen.service
+# This is a transient unit file, created programmatically via the systemd API. Do not edit.
+[Unit]
+Description=[systemd-run] /opt/aimee-native-p0-training/bin/python /opt/aimee-qwen-adapter/src/serve.py --model /opt/aimee-native-p0-training/model --placement /opt/aimee-qwen-adapter/src/placement-dual7900xtx-int8.json --memory-image /opt/aimee-auth-native-20260920/image --image-reader /opt/aimee-qwen-adapter/aimee-memory-image-auth --memory-limit 2 --trace-dir /opt/aimee-auth-native-20260920/traces --read-gateway /run/aimee-auth-native/search.sock --local-first --read-authority research-aimee-103 --encoding-cache-mib 256 --host-memory --profile --authorization /opt/aimee-auth-native-20260920/authorization.json --authority-key /opt/aimee-auth-native-20260920/issuer-public.hex --subject research-model-composition --policy-epoch research-1
+
+[Service]
+User=aimee-auth-native
+Group=aimee-auth-native
+SupplementaryGroups=render video
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+InaccessiblePaths="/opt/aimee-qwen-adapter/private" "/opt/aimee-auth-native-20260920/private"
+ReadWritePaths="/opt/aimee-auth-native-20260920/traces" "/var/cache/aimee-auth-native"
+MemoryMax=64424509440
+MemoryHigh=60129542144
+MemorySwapMax=0
+CPUQuota=1200.00%
+RuntimeMaxSec=1h
+StandardOutput=append:/opt/aimee-auth-native-20260920/server.log
+StandardError=append:/opt/aimee-auth-native-20260920/server.log
+Environment="OMP_NUM_THREADS=8" "MKL_NUM_THREADS=8" "PYTHONDONTWRITEBYTECODE=1"
+ExecStart=
+ExecStart="/opt/aimee-native-p0-training/bin/python" "/opt/aimee-qwen-adapter/src/serve.py" "--model" "/opt/aimee-native-p0-training/model" "--placement" "/opt/aimee-qwen-adapter/src/placement-dual7900xtx-int8.json" "--memory-image" "/opt/aimee-auth-native-20260920/image" "--image-reader" "/opt/aimee-qwen-adapter/aimee-memory-image-auth" "--memory-limit" "2" "--trace-dir" "/opt/aimee-auth-native-20260920/traces" "--read-gateway" "/run/aimee-auth-native/search.sock" "--local-first" "--read-authority" "research-aimee-103" "--encoding-cache-mib" "256" "--host-memory" "--profile" "--authorization" "/opt/aimee-auth-native-20260920/authorization.json" "--authority-key" "/opt/aimee-auth-native-20260920/issuer-public.hex" "--subject" "research-model-composition" "--policy-epoch" "research-1"
+
+# /run/systemd/transient/aimee-auth-gateway.service
+# This is a transient unit file, created programmatically via the systemd API. Do not edit.
+[Unit]
+Description=[systemd-run] /usr/bin/python3 /opt/aimee-qwen-adapter/src/read_gateway.py --socket /run/aimee-auth-native/search.sock --config /opt/aimee-qwen-adapter/private/remote.conf --ca /opt/aimee-qwen-adapter/private/remote-ca.pem --cert /opt/aimee-qwen-adapter/private/client.crt --key /opt/aimee-qwen-adapter/private/client.key --memory-image /opt/aimee-auth-native-20260920/image --image-reader /opt/aimee-qwen-adapter/aimee-memory-image-auth --authorization /opt/aimee-auth-native-20260920/authorization.json --authority-key /opt/aimee-auth-native-20260920/issuer-public.hex --subject research-model-composition --policy-epoch research-1
+
+[Service]
+User=root
+Group=aimee-auth-native
+NoNewPrivileges=yes
+ProtectSystem=strict
+ReadWritePaths="/run/aimee-auth-native"
+RuntimeMaxSec=1h
+Environment="PYTHONDONTWRITEBYTECODE=1"
+ExecStart=
+ExecStart="/usr/bin/python3" "/opt/aimee-qwen-adapter/src/read_gateway.py" "--socket" "/run/aimee-auth-native/search.sock" "--config" "/opt/aimee-qwen-adapter/private/remote.conf" "--ca" "/opt/aimee-qwen-adapter/private/remote-ca.pem" "--cert" "/opt/aimee-qwen-adapter/private/client.crt" "--key" "/opt/aimee-qwen-adapter/private/client.key" "--memory-image" "/opt/aimee-auth-native-20260920/image" "--image-reader" "/opt/aimee-qwen-adapter/aimee-memory-image-auth" "--authorization" "/opt/aimee-auth-native-20260920/authorization.json" "--authority-key" "/opt/aimee-auth-native-20260920/issuer-public.hex" "--subject" "research-model-composition" "--policy-epoch" "research-1"
+
+# /run/systemd/system/aimee-auth-gateway.service.d/restart.conf
+[Service]
+ExecStartPre=/usr/bin/rm -f /run/aimee-auth-native/search.sock

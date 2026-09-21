@@ -1,0 +1,829 @@
+{
+  "cache_transition": {
+    "retained": 1,
+    "invalidated": 1
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1789984069541103626-8",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nGive the TCP port for IANA service xic. Return the integer only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    33963,
+    279,
+    25804,
+    2548,
+    364,
+    353,
+    37492,
+    2393,
+    830,
+    291,
+    13,
+    3301,
+    279,
+    7308,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    21,
+    16,
+    16,
+    20
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "f935f7de5616ef30606f88a50c217dce6da33411aa85c05644c6e26ff57307f0",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -24,
+  "answer": "6115",
+  "finish_reason": "stop",
+  "elapsed_ms": 37550.247159,
+  "memory_encoding_passes": 0,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "Give the TCP port for IANA service xic. Return the integer only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service xic has these registered transport/port assignments: TCP port 6115.",
+            "id": "iana.xic",
+            "key": "IANA service xic",
+            "kind": "fact",
+            "memory_hash": "25535e1b8d7476df68c781990be69cbd6458c97d715b11869be2c54b8e22c553",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.xic",
+              "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 24,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        }
+      ],
+      "encoding_elapsed_ms": 0.0055450000000000004,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 1,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_reused"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user Give TCP for Return the integer assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "stream-live",
+          "authorization": "d65e2c125389387e519e9618ff233b91f471d11356a8dbb5d057fdda914d5908",
+          "ids": []
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.03528391197323799
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            27
+          ],
+          "score": 0.022098785266280174
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            50
+          ],
+          "score": 0.015570905059576035
+        },
+        {
+          "text": "Give",
+          "source": "sequence",
+          "positions": [
+            52
+          ],
+          "score": 0.019880296662449837
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            54
+          ],
+          "score": 0.017203548923134804
+        },
+        {
+          "text": "for",
+          "source": "sequence",
+          "positions": [
+            56
+          ],
+          "score": 0.03399692475795746
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            63
+          ],
+          "score": 0.014490213245153427
+        },
+        {
+          "text": "the",
+          "source": "sequence",
+          "positions": [
+            64
+          ],
+          "score": 0.013998831622302532
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            65
+          ],
+          "score": 0.02396492473781109
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            71
+          ],
+          "score": 0.029347475618124008
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            73
+          ],
+          "score": 0.03348603844642639
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            75
+          ],
+          "score": 0.06989818066358566
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 24,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        }
+      ],
+      "encoding_elapsed_ms": 0.020923,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 6115 Answer user Give TCP port xic integer assistant think 6",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "stream-live",
+          "authorization": "d65e2c125389387e519e9618ff233b91f471d11356a8dbb5d057fdda914d5908",
+          "ids": []
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02441957639530301
+        },
+        {
+          "text": "6115",
+          "source": "aimee",
+          "positions": [
+            19,
+            20,
+            21,
+            22
+          ],
+          "score": 0.03754228074103594
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            27
+          ],
+          "score": 0.049044422805309296
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            50
+          ],
+          "score": 0.01893468201160431
+        },
+        {
+          "text": "Give",
+          "source": "sequence",
+          "positions": [
+            52
+          ],
+          "score": 0.022162310779094696
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            54
+          ],
+          "score": 0.04985756427049637
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            55
+          ],
+          "score": 0.02730567380785942
+        },
+        {
+          "text": "xic",
+          "source": "sequence",
+          "positions": [
+            60,
+            61
+          ],
+          "score": 0.019514717161655426
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            65
+          ],
+          "score": 0.041818976402282715
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            71
+          ],
+          "score": 0.03313218802213669
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            73
+          ],
+          "score": 0.02028355747461319
+        },
+        {
+          "text": "6",
+          "source": "sequence",
+          "positions": [
+            77
+          ],
+          "score": 0.04378394037485123
+        }
+      ],
+      "step": 1,
+      "phase": "decode",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 24,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        }
+      ],
+      "encoding_elapsed_ms": 0.008425,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "transport 6115 Answer Give the TCP port for IANA xic integer 61",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "stream-live",
+          "authorization": "d65e2c125389387e519e9618ff233b91f471d11356a8dbb5d057fdda914d5908",
+          "ids": []
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "transport",
+          "source": "aimee",
+          "positions": [
+            12
+          ],
+          "score": 0.015493921004235744
+        },
+        {
+          "text": "6115",
+          "source": "aimee",
+          "positions": [
+            19,
+            20,
+            21,
+            22
+          ],
+          "score": 0.1297648751642555
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            27
+          ],
+          "score": 0.020839102566242218
+        },
+        {
+          "text": "Give",
+          "source": "sequence",
+          "positions": [
+            52
+          ],
+          "score": 0.023003753274679184
+        },
+        {
+          "text": "the",
+          "source": "sequence",
+          "positions": [
+            53
+          ],
+          "score": 0.016550099477171898
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            54
+          ],
+          "score": 0.09840920567512512
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            55
+          ],
+          "score": 0.056437429040670395
+        },
+        {
+          "text": "for",
+          "source": "sequence",
+          "positions": [
+            56
+          ],
+          "score": 0.01748490519821644
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            57,
+            58
+          ],
+          "score": 0.04909787606447935
+        },
+        {
+          "text": "xic",
+          "source": "sequence",
+          "positions": [
+            60,
+            61
+          ],
+          "score": 0.01777233462780714
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            65
+          ],
+          "score": 0.04641891270875931
+        },
+        {
+          "text": "61",
+          "source": "sequence",
+          "positions": [
+            77,
+            78
+          ],
+          "score": 0.1021832786500454
+        }
+      ],
+      "step": 2,
+      "phase": "decode",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 24,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        }
+      ],
+      "encoding_elapsed_ms": 0.008792,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative TCP 6115 Answer Give TCP port for IANA xic integer 611",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "stream-live",
+          "authorization": "d65e2c125389387e519e9618ff233b91f471d11356a8dbb5d057fdda914d5908",
+          "ids": []
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.014334386680275202
+        },
+        {
+          "text": "TCP",
+          "source": "aimee",
+          "positions": [
+            16
+          ],
+          "score": 0.015719030052423477
+        },
+        {
+          "text": "6115",
+          "source": "aimee",
+          "positions": [
+            19,
+            20,
+            21,
+            22
+          ],
+          "score": 0.10116679663769901
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            27
+          ],
+          "score": 0.016822367906570435
+        },
+        {
+          "text": "Give",
+          "source": "sequence",
+          "positions": [
+            52
+          ],
+          "score": 0.018115945160388947
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            54
+          ],
+          "score": 0.09091226756572723
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            55
+          ],
+          "score": 0.060843344777822495
+        },
+        {
+          "text": "for",
+          "source": "sequence",
+          "positions": [
+            56
+          ],
+          "score": 0.016712315380573273
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            57,
+            58
+          ],
+          "score": 0.04793200641870499
+        },
+        {
+          "text": "xic",
+          "source": "sequence",
+          "positions": [
+            60,
+            61
+          ],
+          "score": 0.01869312673807144
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            65
+          ],
+          "score": 0.05132312700152397
+        },
+        {
+          "text": "611",
+          "source": "sequence",
+          "positions": [
+            77,
+            78,
+            79
+          ],
+          "score": 0.16640564613044262
+        }
+      ],
+      "step": 3,
+      "phase": "decode",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 24,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        }
+      ],
+      "encoding_elapsed_ms": 0.006218,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "transport TCP 6115 Answer Give TCP port for IANA xic integer 6115",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [],
+        "restriction": {
+          "version": 1,
+          "namespace": "stream-live",
+          "authorization": "d65e2c125389387e519e9618ff233b91f471d11356a8dbb5d057fdda914d5908",
+          "ids": []
+        },
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [
+        {
+          "text": "transport",
+          "source": "aimee",
+          "positions": [
+            12
+          ],
+          "score": 0.015326670370995998
+        },
+        {
+          "text": "TCP",
+          "source": "aimee",
+          "positions": [
+            16
+          ],
+          "score": 0.01573960669338703
+        },
+        {
+          "text": "6115",
+          "source": "aimee",
+          "positions": [
+            19,
+            20,
+            21,
+            22
+          ],
+          "score": 0.03610314126126468
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            27
+          ],
+          "score": 0.01900431700050831
+        },
+        {
+          "text": "Give",
+          "source": "sequence",
+          "positions": [
+            52
+          ],
+          "score": 0.013707908801734447
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            54
+          ],
+          "score": 0.09408249706029892
+        },
+        {
+          "text": "port",
+          "source": "sequence",
+          "positions": [
+            55
+          ],
+          "score": 0.06973095238208771
+        },
+        {
+          "text": "for",
+          "source": "sequence",
+          "positions": [
+            56
+          ],
+          "score": 0.013516299426555634
+        },
+        {
+          "text": "IANA",
+          "source": "sequence",
+          "positions": [
+            57,
+            58
+          ],
+          "score": 0.041084567084908485
+        },
+        {
+          "text": "xic",
+          "source": "sequence",
+          "positions": [
+            60,
+            61
+          ],
+          "score": 0.014972217381000519
+        },
+        {
+          "text": "integer",
+          "source": "sequence",
+          "positions": [
+            65
+          ],
+          "score": 0.03908095881342888
+        },
+        {
+          "text": "6115",
+          "source": "sequence",
+          "positions": [
+            77,
+            78,
+            79,
+            80
+          ],
+          "score": 0.2322374414652586
+        }
+      ],
+      "step": 4,
+      "phase": "decode",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 24,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.xic",
+          "revision": "c2b284818fa72e6d75187b0a8453ca2e6341919e9519309269aaec4810373bdf"
+        }
+      ],
+      "encoding_elapsed_ms": 0.0067859999999999995,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 57
+}

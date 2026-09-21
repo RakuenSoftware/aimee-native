@@ -1,0 +1,182 @@
+[
+  {
+    "case": "allowed_cold",
+    "status": 200,
+    "seconds": 10.360971577931195,
+    "response": {
+      "id": "ed5fe1fe8fd84046b5c2232b132ba01f",
+      "object": "chat.completion",
+      "model": "qwen-aimee-direct",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "oolong;Lima"
+          },
+          "finish_reason": "stop"
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 74,
+        "completion_tokens": 6,
+        "total_tokens": 80
+      },
+      "aimee": {
+        "requested": true,
+        "request": {
+          "origin": "qwen_attention_query",
+          "query_source": "projected_attention_query",
+          "query": "Authoritative drink unit-b03646cbf4 oolong unit-121330aded Lima drink unit-b03646cbf4 city unit-121330aded oolong Lima",
+          "limit": 2
+        },
+        "returned_memory_ids": [
+          5,
+          6
+        ],
+        "native_reads": 96,
+        "recall_calls": 7,
+        "preload_calls": 1,
+        "native_recall_calls": 6,
+        "bank_memory_ids": [
+          5,
+          6
+        ],
+        "memory_encoding_passes": 1,
+        "memory_tokens_encoded": 40,
+        "local_hits": 7,
+        "remote_calls": 0,
+        "memory_encoding_tokens": 40
+      }
+    }
+  },
+  {
+    "case": "allowed_reuse",
+    "status": 200,
+    "seconds": 2.877202254952863,
+    "response": {
+      "id": "aa9e243903594297ae467ea1b2c34dce",
+      "object": "chat.completion",
+      "model": "qwen-aimee-direct",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "oolong;Lima"
+          },
+          "finish_reason": "stop"
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 74,
+        "completion_tokens": 6,
+        "total_tokens": 80
+      },
+      "aimee": {
+        "requested": true,
+        "request": {
+          "origin": "qwen_attention_query",
+          "query_source": "projected_attention_query",
+          "query": "Authoritative drink unit-b03646cbf4 oolong unit-121330aded Lima drink unit-b03646cbf4 city unit-121330aded oolong Lima",
+          "limit": 2
+        },
+        "returned_memory_ids": [
+          5,
+          6
+        ],
+        "native_reads": 96,
+        "recall_calls": 7,
+        "preload_calls": 1,
+        "native_recall_calls": 6,
+        "bank_memory_ids": [
+          5,
+          6
+        ],
+        "memory_encoding_passes": 0,
+        "memory_tokens_encoded": 0,
+        "local_hits": 7,
+        "remote_calls": 0,
+        "memory_encoding_tokens": 40
+      }
+    }
+  },
+  {
+    "case": "unauthorized_record",
+    "status": 502,
+    "seconds": 0.20962978899478912,
+    "response": {
+      "id": "f3af9cde401d4dc085ed4cfc83a212ce",
+      "error": "AimeeError"
+    }
+  },
+  {
+    "case": "allowed_after_denial",
+    "status": 200,
+    "seconds": 2.872542269062251,
+    "response": {
+      "id": "39a6e668be1c4ba0b2adb98e8e097318",
+      "object": "chat.completion",
+      "model": "qwen-aimee-direct",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "oolong;Lima"
+          },
+          "finish_reason": "stop"
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 74,
+        "completion_tokens": 6,
+        "total_tokens": 80
+      },
+      "aimee": {
+        "requested": true,
+        "request": {
+          "origin": "qwen_attention_query",
+          "query_source": "projected_attention_query",
+          "query": "Authoritative drink unit-b03646cbf4 oolong unit-121330aded Lima drink unit-b03646cbf4 city unit-121330aded oolong Lima",
+          "limit": 2
+        },
+        "returned_memory_ids": [
+          5,
+          6
+        ],
+        "native_reads": 96,
+        "recall_calls": 7,
+        "preload_calls": 1,
+        "native_recall_calls": 6,
+        "bank_memory_ids": [
+          5,
+          6
+        ],
+        "memory_encoding_passes": 0,
+        "memory_tokens_encoded": 0,
+        "local_hits": 7,
+        "remote_calls": 0,
+        "memory_encoding_tokens": 40
+      }
+    }
+  },
+  {
+    "case": "model_attempts_scope_expansion",
+    "status": 400,
+    "seconds": 0.0017529590986669064,
+    "response": {
+      "id": "c40b83d61adc4850b6492449cec6dab4",
+      "error": "ValueError"
+    }
+  },
+  {
+    "case": "revoked_with_cached_states",
+    "status": 502,
+    "seconds": 0.0032303771004080772,
+    "response": {
+      "id": "7d0e947a39e54d898c0bdc90f5ddf9af",
+      "error": "AimeeError"
+    }
+  }
+]

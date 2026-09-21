@@ -1,0 +1,30 @@
+{
+  "query": "Return exactly: <drink>; <city>. Use unknown for any value you do not know.",
+  "arms": [
+    [
+      "drink_only",
+      [
+        0
+      ],
+      "oolong; unknown"
+    ],
+    [
+      "city_only",
+      [
+        1
+      ],
+      "unknown; Lima"
+    ],
+    [
+      "both",
+      [
+        0,
+        1
+      ],
+      "oolong; Lima"
+    ]
+  ],
+  "rule": "Composition is adjudicated only if both singleton arms pass.",
+  "adaptation": "none",
+  "native_path": "unchanged original learned attention"
+}
