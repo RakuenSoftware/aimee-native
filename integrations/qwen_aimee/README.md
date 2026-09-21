@@ -7,7 +7,7 @@
 [current baseline and analysis corrections](../../docs/validation/qwen-aimee-poc-baseline.md)
 before interpreting older experiment failures or planning the next phase.
 
-The adapter also supports the experimental [local sparse image reader](../../../aimee/server-go/modules/memory/sparse/README.md).
+The adapter also supports the experimental [local sparse image reader](../../memory/sparse/README.md).
 Use `--memory-image /path/to/image --image-reader /path/to/aimee-memory-image`
 with the signed authorization and matching read gateway described below.
 This pins the published local view once per model request and uses a persistent

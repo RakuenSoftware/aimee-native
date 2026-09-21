@@ -1,0 +1,12 @@
+modules/memory/memory_core_helpers.c: In function ‘memory_append_linked_neighbors’:
+modules/memory/memory_core_helpers.c:257:12: error: implicit declaration of function ‘db2_memory_link_query_many’; did you mean ‘db2_memory_link_query’? [-Wimplicit-function-declaration]
+  257 |    int n = db2_memory_link_query_many(seed_ids, seed_count, links, link_cap);
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~
+      |            db2_memory_link_query
+make: *** [Makefile:1755: build/obj/modules/memory/memory_core_helpers.o] Error 1
+modules/memory/memory_core_search_c.c: In function ‘memory_find_facts_scoped_impl’:
+modules/memory/memory_core_search_c.c:1135:4: error: implicit declaration of function ‘memory_record_lane_outcome_metrics’; did you mean ‘memory_record_query_stage_metric’? [-Wimplicit-function-declaration]
+ 1135 |    memory_record_lane_outcome_metrics(&plan, candidates, reranked, source_stats,
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |    memory_record_query_stage_metric
+make: *** [Makefile:1755: build/obj/modules/memory/memory_core_search_c.o] Error 1

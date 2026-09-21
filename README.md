@@ -52,16 +52,19 @@ Rich evidence, episode, and graph responses need authorized release codecs.
 | Here: `aimee-qwen` | Sibling: `aimee` |
 |---|---|
 | Qwen attention/runtime adapter and transports | Authoritative memory and governance |
-| Qwen serving integration and local-first client | Model-independent image compiler and reader |
+| Qwen serving, sparse-image compiler/reader and publication tools | Scoped source export and shared read contract |
 | Qwen experiment drivers and validation artifacts | Canonical authorization policy |
-| Qwen integration tests and research fixture issuer | General Aimee benchmarks and poison fixtures |
+| Source-row projection, integration tests and research fixture issuer | General Aimee benchmarks and poison fixtures |
 
-The experimental image dependency currently needs the sibling working checkout;
-it is not yet a published standalone package. `go.mod` uses a local replacement
-for that reason. An [archival dependency snapshot](dependencies/README.md) also
-preserves the required Aimee sources and supports isolated builds; it is not a
-second maintained implementation. The fixture issuer is research-only and must not be installed
-inside a model's security boundary.
+The image implementation and `aimee-memory-image`, `aimee-memory-publish`,
+`aimee-memory-read`, and `aimee-memory-bus-probe` commands live here. They depend
+on Aimee's authoritative memory/policy packages through the local replacement
+in `go.mod`; keep the sibling checkout at the revision recorded in
+[the split report](docs/validation/repository-split.md). The older
+[dependency snapshot](dependencies/README.md) preserves the implementation before
+this split and is historical evidence, not the current build dependency.
+The fixture issuer is research-only and must not be installed inside a model's
+security boundary.
 
 ## Build and test
 
@@ -72,7 +75,10 @@ Run from this repository root, alongside `../aimee`:
 
 ```sh
 mkdir -p .local/bin
-go -C ../aimee/server-go build -o "$PWD/.local/bin/aimee-memory-image" ./cmd/aimee-memory-image
+go build -o .local/bin/aimee-memory-image ./cmd/aimee-memory-image
+go build -o .local/bin/aimee-memory-publish ./cmd/aimee-memory-publish
+go build -o .local/bin/aimee-memory-read ./cmd/aimee-memory-read
+go test -race ./...
 go build -o .local/bin/aimee-issue-fixture ./benchmarks/local_memory
 
 export AIMEE_IMAGE_READER="$PWD/.local/bin/aimee-memory-image"
@@ -100,6 +106,16 @@ python3 -m unittest discover -s benchmarks/native_memory -p test_p0.py -v
 
 They read Aimee's existing poison fixtures from `../aimee`; set `AIMEE_SOURCE`
 to override that fixture checkout. They do not retrain the current adapter.
+
+## Optional live-bus research probe
+
+Build `go build -o .local/bin/aimee-memory-bus-probe ./cmd/aimee-memory-bus-probe`.
+On an isolated validation container, install that executable at
+`/root/aimee-memory-bus-probe`, copy `scripts/install-memory-probe-grants.sh`,
+and run the grant installer **before** starting either daemon. Existing daemons
+must be restarted to read their grant directories. The Aimee deployment script
+no longer installs this optional Qwen research probe. This is a validation-only
+principal, not a production model grant. No deployment is performed by a build.
 
 ## Historical evidence
 

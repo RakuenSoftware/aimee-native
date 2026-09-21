@@ -7,7 +7,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/JBailes/aimee/server-go/modules/memory/sparse"
+	"github.com/RakuenSoftware/aimee-qwen/memory/sparse"
 	"os"
 	"sort"
 	"strings"

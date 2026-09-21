@@ -4,7 +4,7 @@ State: agreed persistent local knowledgebase with Aimee fallback, 2026-09-20.
 The existing implementation is an earlier, partial storage/reader slice.
 The complete design is not yet implemented. See the
 [implementation and validation report](../../validation/aimee-local-sparse-memory.md)
-and [usage/coverage](../../../../aimee/server-go/modules/memory/sparse/README.md).
+and [usage/coverage](../../../memory/sparse/README.md).
 Starting point: [native-memory POC and corrected baseline](../../validation/qwen-aimee-poc-baseline.md).
 
 Validation correction: the lexical prototype is not quality-equivalent to Aimee.

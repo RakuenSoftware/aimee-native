@@ -4,8 +4,8 @@ The Rust implementation owns the model adapter, attention-request translation,
 read-only Aimee transport, credential gateway, native state cache, tokenizer,
 text-only HTTP serving, and frozen Qwen text forward-pass orchestration.
 Native libtorch supplies tensor/GPU kernels. Python and Transformers are not
-loaded by the serving processes. The existing Go image reader remains an Aimee
-core dependency. Aimee authorizes the data before publishing the recipient's
+loaded by the serving processes. The Go image reader and publication tools live in this repository.
+Aimee authorizes the data before publishing the recipient's
 image; neither the local reader nor the adapter reevaluates permission to read it.
 
 ## Connection preserved
@@ -155,7 +155,7 @@ reader, requires Aimee's acknowledgement, and retains exact egress checks.
 An old upstream that ignores the restriction fails closed. Omitting this flag
 retains the legacy broad-search/egress-check behavior for compatibility.
 
-The tested Aimee-side ingress is `aimee-memory-read` from the sibling repository:
+The Aimee-facing ingress is `aimee-memory-read`, built from this repository:
 
 ```sh
 aimee-memory-read --socket /private/aimee-read.sock \

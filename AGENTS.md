@@ -4,9 +4,11 @@ Use this repository for all Qwen/Aimee memory integration code, experiments,
 tests, design notes, validation reports, and associated evidence. Do not add
 those files back to the sibling `aimee` repository.
 
-The sibling `../aimee` owns model-independent memory storage, governance,
-authorization policy, image compilation, and the `aimee-memory-image` CLI.
-Consume those components as dependencies; do not copy their implementation here.
+This repository also owns sparse-image compilation/readers, publication and
+read-ingress executables, source-row projection, and their integration tests.
+The sibling `../aimee` owns authoritative storage, governance, authorization
+policy, scoped source-row export, and the shared read-restriction contract.
+Consume those core components as dependencies; do not copy their implementation here.
 
 The current adapter is read-only and untrained. Memory learning, authorization,
 selection, and updates belong to Aimee. Historical trained-projection experiments

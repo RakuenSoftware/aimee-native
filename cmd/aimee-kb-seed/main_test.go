@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	"github.com/JBailes/aimee/server-go/modules/memory/sparse"
+	"github.com/RakuenSoftware/aimee-qwen/memory/sparse"
 	"os"
 	"path/filepath"
 	"testing"

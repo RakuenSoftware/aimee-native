@@ -1,12 +1,15 @@
 # Aimee research dependency snapshot
 
-The active generic implementation still belongs to the sibling `aimee` repository.
-This is an archival dependency snapshot, not a second maintained implementation.
-It preserves the exact sparse-image, publisher, read-ingress, policy, and memory
-source needed by the Qwen research implementation while those Aimee changes are
-still uncommitted. The manifest records the Aimee base commit, package closure,
-and individual source hashes. It is not a claim that the base commit alone
-contains these experimental changes.
+This archive records the implementation **before** the repository split on
+2026-09-21. The maintained image, publisher, read-ingress and source projection
+code now lives in `aimee-qwen`. Authoritative memory and policy remain in Aimee.
+Build current code using the top-level README and the sibling revision in the
+[split report](../docs/validation/repository-split.md).
+
+The archive and its manifest remain unchanged to preserve source hashes and
+reproduce earlier research. The manifest records the Aimee base commit and the
+then-uncommitted source closure; the base commit alone did not contain those
+changes.
 
 The bundle contains the 11 local Go packages required to build the memory image,
 publisher, and read-ingress executables, plus Go dependency manifests and tests.
@@ -24,18 +27,7 @@ go -C .local/aimee-dependency/server-go build \
   -o "$PWD/.local/bin/aimee-memory-publish" ./cmd/aimee-memory-publish
 ```
 
-The seed tool and historical fixture issuer use the repository's `go.mod`, whose
-normal replacement points to `../aimee/server-go`. To use this snapshot instead,
-create a local module file rather than changing that maintained dependency:
-
-```sh
-cp go.mod .local/snapshot.mod
-go mod edit -modfile=.local/snapshot.mod \
-  -replace="github.com/JBailes/aimee/server-go=$PWD/.local/aimee-dependency/server-go"
-go test -modfile=.local/snapshot.mod ./...
-```
-
-For ongoing development, use the sibling repository. When Aimee publishes these
-packages, replace the working-checkout dependency with its reviewed revision.
-Historical source archives under `docs/validation/artifacts/` remain evidence of
-the exact earlier experiments and have not been rewritten.
+Do not substitute this archive for the current sibling dependency: the current
+code requires the new raw-row export and read-contract APIs, absent from this
+historical snapshot. Historical source archives under
+`docs/validation/artifacts/` also remain unchanged.
