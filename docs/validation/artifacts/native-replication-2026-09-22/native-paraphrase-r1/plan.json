@@ -1,0 +1,62 @@
+{
+  "templates": [
+    "Give the access code assigned to {entity}. Answer with the code alone; if you do not know it, answer unknown.",
+    "For {entity}, which access code is on record? Reply only with that code, or unknown if unavailable."
+  ],
+  "source_plan": {
+    "model": "google/gemma-4-12B-it",
+    "revision": "707f0a3b8a3c7ad586ed01e27eafbad8a27dd0f7",
+    "entities": [
+      "Aster Observatory",
+      "Birch Observatory",
+      "Cedar Observatory",
+      "Dahlia Observatory",
+      "Elm Observatory",
+      "Fern Observatory",
+      "Grove Observatory",
+      "Hazel Observatory",
+      "Iris Observatory",
+      "Juniper Observatory",
+      "Linden Observatory",
+      "Maple Observatory"
+    ],
+    "values": [
+      "cobalt",
+      "amber",
+      "violet",
+      "copper",
+      "silver",
+      "indigo",
+      "scarlet",
+      "jade",
+      "ivory",
+      "bronze",
+      "coral",
+      "teal"
+    ],
+    "rounds": 3,
+    "questions": [
+      "What is the access code for Aster Observatory? Return only the code. If unknown, return unknown.",
+      "What is the access code for Birch Observatory? Return only the code. If unknown, return unknown.",
+      "What is the access code for Cedar Observatory? Return only the code. If unknown, return unknown.",
+      "What is the access code for Dahlia Observatory? Return only the code. If unknown, return unknown.",
+      "What is the access code for Elm Observatory? Return only the code. If unknown, return unknown.",
+      "What is the access code for Fern Observatory? Return only the code. If unknown, return unknown.",
+      "What is the access code for Grove Observatory? Return only the code. If unknown, return unknown.",
+      "What is the access code for Hazel Observatory? Return only the code. If unknown, return unknown.",
+      "What is the access code for Iris Observatory? Return only the code. If unknown, return unknown.",
+      "What is the access code for Juniper Observatory? Return only the code. If unknown, return unknown.",
+      "What is the access code for Linden Observatory? Return only the code. If unknown, return unknown.",
+      "What is the access code for Maple Observatory? Return only the code. If unknown, return unknown."
+    ],
+    "score": "strip whitespace and terminal period; casefold",
+    "created": "2026-09-22T12:03:18.355892+00:00",
+    "protocol": "12 disabled, 12 initial, two rounds of 12 individual updates with immediate reads, 12 disabled-after, restart and 12 native; then 3 publication withdrawal probes"
+  },
+  "phases": [
+    "disabled",
+    "native-cold",
+    "native-repeat"
+  ],
+  "reuse_encoding": true
+}
