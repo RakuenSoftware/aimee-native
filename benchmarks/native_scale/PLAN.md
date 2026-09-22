@@ -69,3 +69,29 @@ python benchmarks/native_scale/qwen.py SOURCE_ROOT FRESH_QWEN_ROOT
 Run models sequentially. Preserve source/case plans, ingestion rows, exported
 synthetic records, logs and traces. Exclude `private/` and compiled `image/` from
 repository evidence bundles. Record exact executed script hashes separately.
+
+## Predeclared correction follow-up
+
+After both models complete the 5,000 requests, seed 20260923 selects 125 personal
+facts. Each value advances to the next entry in its original five-value list;
+all values change and all questions remain unchanged. The same Aimee extractor,
+PostgreSQL upsert and exporter process the explicit new assertions. A new
+publication retains the full general base and all 625 personal records. Both
+models then answer the 125 questions with memory disabled and enabled: 500
+additional requests. These are corrections to previously tested facts, not 125
+additional independent facts. Models are reloaded between campaigns, so this
+follow-up measures retained corrections across model processes, not same-worker
+update latency. `revise.py SOURCE_ROOT FRESH_CORRECTION_ROOT` prepares it.
+
+Before the correction follow-up starts, an additional tensor-level check was
+specified: a persistent Gemma worker reads all 125 old values, remains loaded
+while Aimee ingests and publishes the corrections, then reads all 125 new values.
+The worker records SHA-256, shape, dtype and byte count of the actual external
+key/value tensors for every memory layer before request cleanup. Its parameter
+version counters remain checked on every request. The immutable revised image
+is then also installed into the already-loaded worker's published-image root,
+using the previous generation as the expected predecessor. These are 250 extra
+native answers (125 paired old/new), separate from the 500 paired disabled/native
+correction requests. Total planned large-campaign model answers: 5,750.
+The 125 facts and their new values remain those fixed by seed 20260923. This
+adds evidence instrumentation; it does not tune queries or answers.
