@@ -1,7 +1,8 @@
-"""Untrained Qwen-specific native connection to the existing Aimee API.
+"""Untrained native connection to the existing Aimee API.
 
-Aimee selects records. Frozen Qwen encodes their text in a separate pass.
-Its ordinary full-attention layers read those states as a separate K/V bank.
+Aimee selects records. The frozen model encodes them in a separate pass.
+Qwen full-attention layers and Gemma attention layers read a separate K/V bank.
+The historical class name is retained for compatibility.
 No learned adapter, oracle vectors, or memory tokens in the generation prompt.
 This prototype is serial and intentionally does not optimize latency.
 """
@@ -46,18 +47,21 @@ class QwenAimeeAdapter:
         self.encoding_cache = OrderedDict()
         self.encoding_cache_size = 0
         self.text = model.model.language_model if hasattr(model.model, "language_model") else model.model
-        if self.text.config.model_type != "qwen3_5_text":
-            raise ValueError("this adapter supports the installed Qwen3.5/3.8 hybrid text architecture")
+        self.gemma = self.text.config.model_type == "gemma4_unified_text"
+        if self.text.config.model_type not in ("qwen3_5_text", "gemma4_unified_text"):
+            raise ValueError("unsupported model architecture")
+        if self.gemma and self.text.config.num_kv_shared_layers:
+            raise ValueError("this Gemma connection requires unshared K/V layers")
         if self.text.config._attn_implementation != "eager":
             raise ValueError("prototype requires eager attention")
         self.active = None
         self.encoding = False
         self.closed = False
         self.originals = []
-        self.request_layer = next(i for i, b in enumerate(self.text.layers) if b.block_type == "full_attention")
+        self.request_layer = next(i for i, b in enumerate(self.text.layers) if self._memory_attention(i, b))
         self.attention_bridge = AimeeAttentionBridge(self)
         for index, block in enumerate(self.text.layers):
-            if block.block_type != "full_attention":
+            if not self._memory_attention(index, block):
                 continue
             attention = block.self_attn
             original = attention.forward
@@ -92,6 +96,11 @@ class QwenAimeeAdapter:
         self.runtime_read = RuntimeCueRead(self, after_block=1)
         self.native_hook = self.text.layers[1].register_forward_hook(
             lambda module, args, output: self.runtime_read(self.native_read(output)))
+
+    def _memory_attention(self, index, block):
+        # Gemma uses attention in every block, including local-window blocks.
+        # Aimee remains a separate bank; the conversation keeps its native mask.
+        return self.gemma or block.block_type == "full_attention"
 
     def _request(self, module, args, kwargs):
         state = self.active
@@ -151,7 +160,15 @@ class QwenAimeeAdapter:
             return
         # Preserve every returned fact and its order. No domain-specific parsing.
         memory_text = "Authoritative memory:\n" + "\n".join(f["content"] for f in facts)
-        memory_ids = self.tokenizer.encode(memory_text, add_special_tokens=False)
+        if self.gemma:
+            # Frame the independent encoder input using Gemma's native boundaries.
+            # These tokens never enter the generation prompt or sequence cache.
+            framed = self.tokenizer.apply_chat_template(
+                [{"role": "system", "content": memory_text}],
+                tokenize=False, add_generation_prompt=False, enable_thinking=False)
+            memory_ids = self.tokenizer.encode(framed, add_special_tokens=False)
+        else:
+            memory_ids = self.tokenizer.encode(memory_text, add_special_tokens=False)
         if len(memory_ids) > self.max_memory_tokens:
             raise RuntimeError("Aimee response exceeds encoding capacity; refusing silent truncation")
         memory_hash = hashlib.sha256(json.dumps(memory_ids).encode()).hexdigest()
@@ -182,12 +199,16 @@ class QwenAimeeAdapter:
             with torch.inference_mode(), self.profile.span("memory_encoding"):
                 # Independent sequence and recurrent/cache state, never appended
                 # to the request prompt or its cache. No learned adapter weights.
-                encoded = self.model(input_ids=ids, attention_mask=torch.ones_like(ids), use_cache=True)
+                positions = {}
+                if self.gemma:
+                    # Disjoint native positions; conversation positions stay at zero.
+                    positions["position_ids"] = torch.arange(-len(memory_ids), 0, device=ids.device).unsqueeze(0)
+                encoded = self.model(input_ids=ids, attention_mask=torch.ones_like(ids), use_cache=True, **positions)
                 state["memory_encoding_passes"] += 1
                 state["memory_tokens_encoded"] += len(memory_ids)
             cache = encoded.past_key_values
             for index, block in enumerate(self.text.layers):
-                if block.block_type == "full_attention":
+                if self._memory_attention(index, block):
                     layer = cache.layers[index]
                     keys, values = layer.keys.detach(), layer.values.detach()
                     if self.host_memory:
@@ -213,6 +234,8 @@ class QwenAimeeAdapter:
     @contextmanager
     def request(self, query=None, *, recall_mode="prefill", decode_recall=True,
                 cue_window_tokens=64, decode_cue_boundary="whitespace", preload_query=None, reuse_encoding=True):
+        if self.gemma and recall_mode != "prefill":
+            raise ValueError("Gemma validation uses the published-query native read path")
         if self.closed or self.active is not None:
             raise RuntimeError("adapter closed or request already active")
         if recall_mode not in ("prefill", "native", "native_tokens", "attention"):
