@@ -1,0 +1,295 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790082552945476069-670",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Tres Bocas 1ra. Sección MX 3802529, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    196845,
+    190746,
+    299,
+    220,
+    16,
+    926,
+    13,
+    1297,
+    21326,
+    26690,
+    220,
+    18,
+    23,
+    15,
+    17,
+    20,
+    17,
+    24,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    30014,
+    9964,
+    325,
+    3822,
+    892,
+    477
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -99,
+  "answer": "America/Mexico_City",
+  "finish_reason": "stop",
+  "elapsed_ms": 4102.003105,
+  "memory_encoding_passes": 1,
+  "native_reads": 112,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Tres Bocas 1ra. Sección MX 3802529, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Tres Bocas 1ra. Sección (ID 3802529): country code MX; latitude 17.93231; longitude -93.87444; administrative codes 27/008; population 1086; time zone America/Mexico_City. The source record was modified on 2013-08-01.",
+            "id": "geonames.3802529",
+            "key": "place Tres Bocas 1ra. Sección MX 3802529",
+            "kind": "fact",
+            "memory_hash": "8fb0c3fe3b9b451d87666101d20e5bdda4ae34aedcea07cbfc48efe7e8beec67",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.3802529",
+              "revision": "6b66b97bd4b25e4b43ac63f654ed195a2da729bcb6d38ea7fa7052e93272603c"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 99,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3802529",
+          "revision": "6b66b97bd4b25e4b43ac63f654ed195a2da729bcb6d38ea7fa7052e93272603c"
+        }
+      ],
+      "encoding_elapsed_ms": 541.168541,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 99,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user According Sección 3802529 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.022444633301347494
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            102
+          ],
+          "score": 0.021633950993418694
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            125
+          ],
+          "score": 0.013574110344052315
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            127
+          ],
+          "score": 0.009560031816363335
+        },
+        {
+          "text": "Sección",
+          "source": "sequence",
+          "positions": [
+            142,
+            143
+          ],
+          "score": 0.012398635037243366
+        },
+        {
+          "text": "3802529",
+          "source": "sequence",
+          "positions": [
+            146,
+            147,
+            148,
+            149,
+            150,
+            151,
+            152
+          ],
+          "score": 0.018466518784407526
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.03727740794420242
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.012021767906844616
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            156
+          ],
+          "score": 0.030175087973475456
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            169
+          ],
+          "score": 0.022406842559576035
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            171
+          ],
+          "score": 0.028087705373764038
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            173
+          ],
+          "score": 0.0644816979765892
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 99,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3802529",
+          "revision": "6b66b97bd4b25e4b43ac63f654ed195a2da729bcb6d38ea7fa7052e93272603c"
+        }
+      ],
+      "encoding_elapsed_ms": 0.012310999999999999,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 82
+}

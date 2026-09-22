@@ -44,7 +44,7 @@ for c in selected:
  r=by[c['key']];fact={k:r[k] for k in ['id','scope','tier','kind','key','content','confidence']}
  contracts.append(dict(query=c['query'],limit=4,authority='test',grants=['user:_user'],valid_until=until,dependencies=[c['ref']],response=dict(status='ok',facts=[fact],windows=[],active_context_missing=False)))
 save(private/'change.json',dict(namespace='scale-personal',kind='server',generation=2,upstream=base,source='Aimee explicit user corrections',coverage=['facts'],records=personal,read_contracts=contracts))
-head=cli('build','--root',old_source,'--input',private/'change.json')['view'];cli('publish','--root',old_source,'--view',head)
+head=cli('build','--root',old_source,'--input',private/'change.json')['view'];cli('publish','--root',old_source,'--view',head,'--expected',json.loads((old_source/'CURRENT').read_text())['view'])
 corpus=json.loads((source/'private/general.json').read_text());auth=dict(version=1,id='scale-corrections-20260922',subject='scale-model',policy_epoch='scale-1',source_view=head,active=True,valid_until=until,grants=['user:_user'],reference_lookups=[dict(namespace=corpus['namespace'],authority='test',mode='exact-key-v1')])
 save(private/'release.json',dict(authorization=auth,records=corpus['records']+personal,reads=contracts))
 subprocess.run([str(repo/'.local/bin/aimee-issue-fixture'),'--input',str(private/'release.json'),'--output',str(private/'grant'),'--key',str(private/'key'),'--public-key',str(private/'public')],check=True,stdout=subprocess.DEVNULL)

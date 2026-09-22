@@ -1,0 +1,284 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790083323207477829-1094",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Naekan ID 8401314, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    12444,
+    153373,
+    2937,
+    220,
+    23,
+    19,
+    15,
+    16,
+    18,
+    16,
+    19,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    37186,
+    30662,
+    156236
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -84,
+  "answer": "Asia/Jakarta",
+  "finish_reason": "stop",
+  "elapsed_ms": 2611.7725539999997,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Naekan ID 8401314, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Naekan (ID 8401314): country code ID; latitude -6.926; longitude 113.7412; administrative codes 08/3529; population 0; time zone Asia/Jakarta. The source record was modified on 2022-12-31.",
+            "id": "geonames.8401314",
+            "key": "place Naekan ID 8401314",
+            "kind": "fact",
+            "memory_hash": "ad30c0547942f16a11ddd5c893189ea1d5d7fe7957388268299ebba4569feab9",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.8401314",
+              "revision": "efa55da19cffdffa3b873bc451a2683c80993437c68ca6c5fc4b88944dafeadb"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 84,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.8401314",
+          "revision": "efa55da19cffdffa3b873bc451a2683c80993437c68ca6c5fc4b88944dafeadb"
+        }
+      ],
+      "encoding_elapsed_ms": 624.650317,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 84,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user According 8401314 what is its Return assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02771729603409767
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            87
+          ],
+          "score": 0.02570643275976181
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            110
+          ],
+          "score": 0.01520533487200737
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            112
+          ],
+          "score": 0.01161164604127407
+        },
+        {
+          "text": "8401314",
+          "source": "sequence",
+          "positions": [
+            124,
+            125,
+            126,
+            127,
+            128,
+            129,
+            130
+          ],
+          "score": 0.018279423704370856
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            132
+          ],
+          "score": 0.0372580885887146
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            133
+          ],
+          "score": 0.013152706436812878
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            134
+          ],
+          "score": 0.029751569032669067
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            138
+          ],
+          "score": 0.01159858237951994
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            147
+          ],
+          "score": 0.020348332822322845
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            149
+          ],
+          "score": 0.028195900842547417
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            151
+          ],
+          "score": 0.0633685290813446
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 84,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.8401314",
+          "revision": "efa55da19cffdffa3b873bc451a2683c80993437c68ca6c5fc4b88944dafeadb"
+        }
+      ],
+      "encoding_elapsed_ms": 0.013,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 72
+}

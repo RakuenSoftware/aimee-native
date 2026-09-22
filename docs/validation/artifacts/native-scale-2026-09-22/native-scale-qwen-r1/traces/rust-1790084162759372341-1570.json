@@ -1,0 +1,297 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790084162759372341-1570",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Peșteana Jiu RO 671072, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    4974,
+    175251,
+    3253,
+    604,
+    18175,
+    11474,
+    220,
+    21,
+    22,
+    16,
+    15,
+    22,
+    17,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    29774,
+    15797,
+    1339,
+    14981
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -94,
+  "answer": "Europe/Bucharest",
+  "finish_reason": "stop",
+  "elapsed_ms": 3353.951645,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Peșteana Jiu RO 671072, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Peșteana Jiu (ID 671072): country code RO; latitude 44.84695; longitude 23.30401; administrative codes 19/79004; population 2157; time zone Europe/Bucharest. The source record was modified on 2013-04-21.",
+            "id": "geonames.671072",
+            "key": "place Peșteana Jiu RO 671072",
+            "kind": "fact",
+            "memory_hash": "e453b8f935a181da66bed3372e7907c5df849f2234465d999cab88b557ced378",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.671072",
+              "revision": "28943aa1625306af7680d9b4734f1b24541b6e3b7156715e29b8a2fa71089ddd"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 94,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.671072",
+          "revision": "28943aa1625306af7680d9b4734f1b24541b6e3b7156715e29b8a2fa71089ddd"
+        }
+      ],
+      "encoding_elapsed_ms": 619.309925,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 94,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2013-04-21 Answer user Peșteana 671072 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.024456757120788097
+        },
+        {
+          "text": "2013-04-21",
+          "source": "aimee",
+          "positions": [
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90,
+            91,
+            92
+          ],
+          "score": 0.011447864875663072
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            97
+          ],
+          "score": 0.025321021676063538
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            120
+          ],
+          "score": 0.0135847432538867
+        },
+        {
+          "text": "Peșteana",
+          "source": "sequence",
+          "positions": [
+            130,
+            131,
+            132
+          ],
+          "score": 0.012286139884963632
+        },
+        {
+          "text": "671072",
+          "source": "sequence",
+          "positions": [
+            137,
+            138,
+            139,
+            140,
+            141,
+            142
+          ],
+          "score": 0.017374654300510883
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            144
+          ],
+          "score": 0.03831855207681656
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            145
+          ],
+          "score": 0.013227148912847042
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            146
+          ],
+          "score": 0.031288281083106995
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            159
+          ],
+          "score": 0.02285083942115307
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.03088134340941906
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            163
+          ],
+          "score": 0.06539228558540344
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 94,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.671072",
+          "revision": "28943aa1625306af7680d9b4734f1b24541b6e3b7156715e29b8a2fa71089ddd"
+        }
+      ],
+      "encoding_elapsed_ms": 0.010679999999999999,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 75
+}

@@ -1,0 +1,297 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790083504575502606-1194",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhat orbital period in days does the NASA archive give for planet Kepler-1788 b? Return the number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    3710,
+    62409,
+    4031,
+    303,
+    2756,
+    1503,
+    279,
+    20774,
+    17593,
+    2873,
+    364,
+    11247,
+    94370,
+    12,
+    16,
+    22,
+    23,
+    23,
+    292,
+    30,
+    3301,
+    279,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    17,
+    13,
+    23,
+    15,
+    15,
+    16,
+    17,
+    15,
+    16,
+    16,
+    20,
+    15,
+    15
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -105,
+  "answer": "2.80012011500",
+  "finish_reason": "stop",
+  "elapsed_ms": 7352.59995,
+  "memory_encoding_passes": 1,
+  "native_reads": 224,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "What orbital period in days does the NASA archive give for planet Kepler-1788 b? Return the number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "For planet Kepler-1788 b, the NASA Exoplanet Archive composite table lists: host star Kepler-1788; discovery year 2021; discovery method Transit; discovery facility Kepler; orbital period 2.80012011500 days; reported planet radius 2.37850461 Earth radii; reported system distance 560.44500000 parsecs.",
+            "id": "nasa.Kepler-1788 b",
+            "key": "planet Kepler-1788 b",
+            "kind": "fact",
+            "memory_hash": "bcecc3d9c23e94e496d52fdac9a50b3995db83185f9033b90075723305ce244e",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "nasa.Kepler-1788 b",
+              "revision": "3fe5df555cc32a3f58e8799f32b4751a9fb62799628ac514d8a30a90ed36eef9"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 105,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.Kepler-1788 b",
+          "revision": "3fe5df555cc32a3f58e8799f32b4751a9fb62799628ac514d8a30a90ed36eef9"
+        }
+      ],
+      "encoding_elapsed_ms": 521.029523,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 105,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 560.44500000 Answer user What does give Kepler-1788 Return assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.022256575524806976
+        },
+        {
+          "text": "560.44500000",
+          "source": "aimee",
+          "positions": [
+            90,
+            91,
+            92,
+            93,
+            94,
+            95,
+            96,
+            97,
+            98,
+            99,
+            100,
+            101
+          ],
+          "score": 0.01925955162732862
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            108
+          ],
+          "score": 0.02556600794196129
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            131
+          ],
+          "score": 0.017705237492918968
+        },
+        {
+          "text": "What",
+          "source": "sequence",
+          "positions": [
+            133
+          ],
+          "score": 0.019979696720838547
+        },
+        {
+          "text": "does",
+          "source": "sequence",
+          "positions": [
+            138
+          ],
+          "score": 0.021119028329849243
+        },
+        {
+          "text": "give",
+          "source": "sequence",
+          "positions": [
+            142
+          ],
+          "score": 0.018859615549445152
+        },
+        {
+          "text": "Kepler-1788",
+          "source": "sequence",
+          "positions": [
+            145,
+            146,
+            147,
+            148,
+            149,
+            150
+          ],
+          "score": 0.01951117778662592
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.016478514298796654
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.02566763386130333
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            163
+          ],
+          "score": 0.0315689854323864
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            165
+          ],
+          "score": 0.07051542401313782
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 105,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.Kepler-1788 b",
+          "revision": "3fe5df555cc32a3f58e8799f32b4751a9fb62799628ac514d8a30a90ed36eef9"
+        }
+      ],
+      "encoding_elapsed_ms": 0.01098,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 75
+}

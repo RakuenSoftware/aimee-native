@@ -1,0 +1,297 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790082179507827574-460",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Brunn im Felde AT 2781304, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    3135,
+    14499,
+    712,
+    25319,
+    442,
+    7135,
+    220,
+    17,
+    22,
+    23,
+    16,
+    18,
+    15,
+    19,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    29774,
+    26355,
+    72,
+    14517
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -91,
+  "answer": "Europe/Vienna",
+  "finish_reason": "stop",
+  "elapsed_ms": 3217.435821,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Brunn im Felde AT 2781304, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Brunn im Felde (ID 2781304): country code AT; latitude 48.42886; longitude 15.6986; administrative codes 03/313; population 681; time zone Europe/Vienna. The source record was modified on 2018-07-28.",
+            "id": "geonames.2781304",
+            "key": "place Brunn im Felde AT 2781304",
+            "kind": "fact",
+            "memory_hash": "2ed7417f1e7e99f4f80b086fe9f7b10192b3ba632d72076f44c2845cabc541e9",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.2781304",
+              "revision": "c692b7460be5d92c90a68364d4df20fc25c6c253acd4f614a51f04d50a2e72a6"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 91,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.2781304",
+          "revision": "c692b7460be5d92c90a68364d4df20fc25c6c253acd4f614a51f04d50a2e72a6"
+        }
+      ],
+      "encoding_elapsed_ms": 596.553032,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 91,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2018-07-28 Answer user According 2781304 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.028003007173538208
+        },
+        {
+          "text": "2018-07-28",
+          "source": "aimee",
+          "positions": [
+            80,
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89
+          ],
+          "score": 0.014143322521704249
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            94
+          ],
+          "score": 0.025049438700079918
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            117
+          ],
+          "score": 0.013819530606269836
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            119
+          ],
+          "score": 0.010981759056448936
+        },
+        {
+          "text": "2781304",
+          "source": "sequence",
+          "positions": [
+            134,
+            135,
+            136,
+            137,
+            138,
+            139,
+            140
+          ],
+          "score": 0.02327671681996435
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            142
+          ],
+          "score": 0.03635243698954582
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            143
+          ],
+          "score": 0.012969928793609142
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            144
+          ],
+          "score": 0.029735170304775238
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            157
+          ],
+          "score": 0.022186076268553734
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            159
+          ],
+          "score": 0.030397210270166397
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.06735725700855255
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 91,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.2781304",
+          "revision": "c692b7460be5d92c90a68364d4df20fc25c6c253acd4f614a51f04d50a2e72a6"
+        }
+      ],
+      "encoding_elapsed_ms": 0.008039999999999999,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 76
+}

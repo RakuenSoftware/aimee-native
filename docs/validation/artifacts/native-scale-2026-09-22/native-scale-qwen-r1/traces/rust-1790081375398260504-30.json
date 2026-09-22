@@ -1,0 +1,290 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790081375398260504-30",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place West Elizabeth US 5218684, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    4171,
+    20103,
+    2201,
+    220,
+    20,
+    17,
+    16,
+    23,
+    21,
+    23,
+    19,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    20,
+    15,
+    23
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -86,
+  "answer": "508",
+  "finish_reason": "stop",
+  "elapsed_ms": 2533.9424360000003,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place West Elizabeth US 5218684, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place West Elizabeth (ID 5218684): country code US; latitude 40.2709; longitude -79.89922; administrative codes PA/003; population 508; time zone America/New_York. The source record was modified on 2017-05-23.",
+            "id": "geonames.5218684",
+            "key": "place West Elizabeth US 5218684",
+            "kind": "fact",
+            "memory_hash": "59c2694d74178b20b421a4d10ff4659f6c69212f54f35e4def27fa412e313fc4",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.5218684",
+              "revision": "727b9dfc59e6a23a503345a1f90b31e635aebc4ac6797eb2e413b084790340c7"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 86,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.5218684",
+          "revision": "727b9dfc59e6a23a503345a1f90b31e635aebc4ac6797eb2e413b084790340c7"
+        }
+      ],
+      "encoding_elapsed_ms": 601.839174,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 86,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 79.89922 Answer user 5218684 what is its population assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.025637158658355474
+        },
+        {
+          "text": "79.89922",
+          "source": "aimee",
+          "positions": [
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45
+          ],
+          "score": 0.013481577683705837
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            89
+          ],
+          "score": 0.024676937609910965
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            112
+          ],
+          "score": 0.015429973602294922
+        },
+        {
+          "text": "5218684",
+          "source": "sequence",
+          "positions": [
+            126,
+            127,
+            128,
+            129,
+            130,
+            131,
+            132
+          ],
+          "score": 0.015809674048796296
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            134
+          ],
+          "score": 0.038271065801382065
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            135
+          ],
+          "score": 0.014274965971708298
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            136
+          ],
+          "score": 0.03353455290198326
+        },
+        {
+          "text": "population",
+          "source": "sequence",
+          "positions": [
+            137
+          ],
+          "score": 0.012605617754161358
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            148
+          ],
+          "score": 0.02259698510169983
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            150
+          ],
+          "score": 0.030835768207907677
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.06639024615287781
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 86,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.5218684",
+          "revision": "727b9dfc59e6a23a503345a1f90b31e635aebc4ac6797eb2e413b084790340c7"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00921,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 71
+}

@@ -1,0 +1,292 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790081643453827238-176",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Raahe FI 640276, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    423,
+    5137,
+    377,
+    48832,
+    220,
+    21,
+    19,
+    15,
+    17,
+    22,
+    21,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    29774,
+    22629,
+    52110
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -90,
+  "answer": "Europe/Helsinki",
+  "finish_reason": "stop",
+  "elapsed_ms": 2535.546119,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Raahe FI 640276, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Raahe (ID 640276): country code FI; latitude 64.68333; longitude 24.48333; administrative codes 17/174; population 23566; time zone Europe/Helsinki. The source record was modified on 2025-11-20.",
+            "id": "geonames.640276",
+            "key": "place Raahe FI 640276",
+            "kind": "fact",
+            "memory_hash": "8f77a4d3412f9862a69d6190b7727cfffe7d82c9518078ff561d73cbb5e03594",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.640276",
+              "revision": "7453dfc6636aa9af197ea70a390f43c182348122c21971ee874b6321a1a955dc"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 90,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.640276",
+          "revision": "7453dfc6636aa9af197ea70a390f43c182348122c21971ee874b6321a1a955dc"
+        }
+      ],
+      "encoding_elapsed_ms": 597.269551,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 90,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2025-11-20 Answer user According 640276 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02770284004509449
+        },
+        {
+          "text": "2025-11-20",
+          "source": "aimee",
+          "positions": [
+            79,
+            80,
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88
+          ],
+          "score": 0.015465160482563078
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            93
+          ],
+          "score": 0.02559233270585537
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            116
+          ],
+          "score": 0.01568637788295746
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.0118810273706913
+        },
+        {
+          "text": "640276",
+          "source": "sequence",
+          "positions": [
+            131,
+            132,
+            133,
+            134,
+            135,
+            136
+          ],
+          "score": 0.02140514983329922
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            138
+          ],
+          "score": 0.03778404742479324
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            139
+          ],
+          "score": 0.014073139056563377
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            140
+          ],
+          "score": 0.03227490931749344
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.021545125171542168
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.028800632804632187
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            157
+          ],
+          "score": 0.06518882513046265
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 90,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.640276",
+          "revision": "7453dfc6636aa9af197ea70a390f43c182348122c21971ee874b6321a1a955dc"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00592,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 72
+}

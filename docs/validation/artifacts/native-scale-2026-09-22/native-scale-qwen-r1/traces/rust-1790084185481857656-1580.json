@@ -1,0 +1,275 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790084185481857656-1580",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhich TCP port is registered for IANA service liebdevmgmt-c? Return the number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    22365,
+    25804,
+    2548,
+    369,
+    9393,
+    364,
+    353,
+    37492,
+    2393,
+    201863,
+    3464,
+    11958,
+    2421,
+    1723,
+    30,
+    3301,
+    279,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    18,
+    15,
+    17,
+    22
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -35,
+  "answer": "3027",
+  "finish_reason": "stop",
+  "elapsed_ms": 2930.8840090000003,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "Which TCP port is registered for IANA service liebdevmgmt-c? Return the number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service liebdevmgmt-c has these registered transport/port assignments: TCP port 3027; UDP port 3027.",
+            "id": "iana.liebdevmgmt-c",
+            "key": "IANA service liebdevmgmt-c",
+            "kind": "fact",
+            "memory_hash": "c7dffcb008db7c840f388c0ba58186135a42320b5bb28f4a8ef3cf955b45af75",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.liebdevmgmt-c",
+              "revision": "cf99f28f92d22356870092c68af2252d398d1abb21858647ce6c8da36b07e8e3"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 35,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.liebdevmgmt-c",
+          "revision": "cf99f28f92d22356870092c68af2252d398d1abb21858647ce6c8da36b07e8e3"
+        }
+      ],
+      "encoding_elapsed_ms": 499.903814,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 35,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative liebdevmgmt-c Answer user Which is liebdevmgmt-c Return the assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.03143575135618448
+        },
+        {
+          "text": "liebdevmgmt-c",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "score": 0.017039745347574353
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            38
+          ],
+          "score": 0.023917317390441895
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            61
+          ],
+          "score": 0.018726643174886703
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            63
+          ],
+          "score": 0.022981133311986923
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            66
+          ],
+          "score": 0.030787110328674316
+        },
+        {
+          "text": "liebdevmgmt-c",
+          "source": "sequence",
+          "positions": [
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.022260100347921252
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.017544887959957123
+        },
+        {
+          "text": "the",
+          "source": "sequence",
+          "positions": [
+            79
+          ],
+          "score": 0.015345360152423382
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            86
+          ],
+          "score": 0.028202315792441368
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            88
+          ],
+          "score": 0.03065124712884426
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            90
+          ],
+          "score": 0.06823869049549103
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 35,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.liebdevmgmt-c",
+          "revision": "cf99f28f92d22356870092c68af2252d398d1abb21858647ce6c8da36b07e8e3"
+        }
+      ],
+      "encoding_elapsed_ms": 0.01071,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 61
+}

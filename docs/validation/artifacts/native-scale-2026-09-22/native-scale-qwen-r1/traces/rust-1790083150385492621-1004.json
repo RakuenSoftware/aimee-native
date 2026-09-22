@@ -1,0 +1,271 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790083150385492621-1004",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhich TCP port is registered for IANA service alphatech-lm? Return the number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    22365,
+    25804,
+    2548,
+    369,
+    9393,
+    364,
+    353,
+    37492,
+    2393,
+    62413,
+    344,
+    329,
+    2759,
+    76,
+    30,
+    3301,
+    279,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    16,
+    21,
+    20,
+    18
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -35,
+  "answer": "1653",
+  "finish_reason": "stop",
+  "elapsed_ms": 2872.036155,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "Which TCP port is registered for IANA service alphatech-lm? Return the number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service alphatech-lm has these registered transport/port assignments: TCP port 1653; UDP port 1653.",
+            "id": "iana.alphatech-lm",
+            "key": "IANA service alphatech-lm",
+            "kind": "fact",
+            "memory_hash": "9a824a1a902ae7a66fab308e08ad22370b86fac6d8f58089d127bcaeb5b2a6bd",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.alphatech-lm",
+              "revision": "dc2c53ea1f3740e5dd239deefa4c6764457eff493f222240e4f11736974aea10"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 35,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.alphatech-lm",
+          "revision": "dc2c53ea1f3740e5dd239deefa4c6764457eff493f222240e4f11736974aea10"
+        }
+      ],
+      "encoding_elapsed_ms": 498.475361,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 35,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user Which TCP is alphatech-lm Return the assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.03247951902449131
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            38
+          ],
+          "score": 0.023970818147063255
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            61
+          ],
+          "score": 0.01981537789106369
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            63
+          ],
+          "score": 0.023356175050139427
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            64
+          ],
+          "score": 0.014034049585461617
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            66
+          ],
+          "score": 0.03123895637691021
+        },
+        {
+          "text": "alphatech-lm",
+          "source": "sequence",
+          "positions": [
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.015041261678561568
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.02116439864039421
+        },
+        {
+          "text": "the",
+          "source": "sequence",
+          "positions": [
+            79
+          ],
+          "score": 0.015058320015668869
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            86
+          ],
+          "score": 0.027881456539034843
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            88
+          ],
+          "score": 0.03133191168308258
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            90
+          ],
+          "score": 0.06795387715101242
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 35,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.alphatech-lm",
+          "revision": "dc2c53ea1f3740e5dd239deefa4c6764457eff493f222240e4f11736974aea10"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00696,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 61
+}

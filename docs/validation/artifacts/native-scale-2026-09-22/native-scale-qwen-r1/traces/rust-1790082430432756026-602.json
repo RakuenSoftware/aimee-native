@@ -1,0 +1,298 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790082430432756026-602",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Hrushuvatka UA 708004, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    462,
+    74536,
+    184472,
+    4405,
+    44053,
+    220,
+    22,
+    15,
+    23,
+    15,
+    15,
+    19,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    24,
+    22,
+    24
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -91,
+  "answer": "979",
+  "finish_reason": "stop",
+  "elapsed_ms": 2796.582829,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Hrushuvatka UA 708004, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Hrushuvatka (ID 708004): country code UA; latitude 48.36127; longitude 33.77876; administrative codes 04/1204; population 979; time zone Europe/Kyiv. The source record was modified on 2026-08-02.",
+            "id": "geonames.708004",
+            "key": "place Hrushuvatka UA 708004",
+            "kind": "fact",
+            "memory_hash": "f90aeb87457210a057faf237027ac68cc2ccb96b7e5a0312fc4fe175f2129bff",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.708004",
+              "revision": "8136167ef845c31756530833eaa5c145098810f028354e8b9b1dd883d2de3181"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 91,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.708004",
+          "revision": "8136167ef845c31756530833eaa5c145098810f028354e8b9b1dd883d2de3181"
+        }
+      ],
+      "encoding_elapsed_ms": 606.9596760000001,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 91,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Hrushuvatka 2026-08-02 Answer user Hrushuvatka 708004 what its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.027367270551621914
+        },
+        {
+          "text": "Hrushuvatka",
+          "source": "aimee",
+          "positions": [
+            9,
+            10,
+            11,
+            12
+          ],
+          "score": 0.014134169789031148
+        },
+        {
+          "text": "2026-08-02",
+          "source": "aimee",
+          "positions": [
+            80,
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89
+          ],
+          "score": 0.0189903298887657
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            94
+          ],
+          "score": 0.025000274181365967
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            117
+          ],
+          "score": 0.015281899832189083
+        },
+        {
+          "text": "Hrushuvatka",
+          "source": "sequence",
+          "positions": [
+            127,
+            128,
+            129,
+            130
+          ],
+          "score": 0.017208094242960215
+        },
+        {
+          "text": "708004",
+          "source": "sequence",
+          "positions": [
+            133,
+            134,
+            135,
+            136,
+            137,
+            138
+          ],
+          "score": 0.019891138304956257
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            140
+          ],
+          "score": 0.037342023104429245
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            142
+          ],
+          "score": 0.03338232636451721
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.0211664866656065
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            156
+          ],
+          "score": 0.028156420215964317
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            158
+          ],
+          "score": 0.06434941291809082
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 91,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.708004",
+          "revision": "8136167ef845c31756530833eaa5c145098810f028354e8b9b1dd883d2de3181"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00928,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 72
+}

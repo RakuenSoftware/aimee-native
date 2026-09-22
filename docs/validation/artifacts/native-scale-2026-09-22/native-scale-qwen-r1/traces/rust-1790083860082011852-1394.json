@@ -1,0 +1,268 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790083860082011852-1394",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhich TCP port is registered for IANA service rt-classmanager? Return the number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    22365,
+    25804,
+    2548,
+    369,
+    9393,
+    364,
+    353,
+    37492,
+    2393,
+    16187,
+    14371,
+    12912,
+    30,
+    3301,
+    279,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    18,
+    20,
+    15,
+    15,
+    19
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -35,
+  "answer": "35004",
+  "finish_reason": "stop",
+  "elapsed_ms": 3268.741661,
+  "memory_encoding_passes": 1,
+  "native_reads": 96,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "Which TCP port is registered for IANA service rt-classmanager? Return the number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service rt-classmanager has these registered transport/port assignments: TCP port 35004; UDP port 35004.",
+            "id": "iana.rt-classmanager",
+            "key": "IANA service rt-classmanager",
+            "kind": "fact",
+            "memory_hash": "9a11408e4202fb1e38ff6bf9ef9d5ba3115db27f662e33d9a0aebb9cb28bbcae",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.rt-classmanager",
+              "revision": "a467b4e04e6042b0d8429911984e0e38d218f690cf22d4a18d9901e398ced3ec"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 35,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.rt-classmanager",
+          "revision": "a467b4e04e6042b0d8429911984e0e38d218f690cf22d4a18d9901e398ced3ec"
+        }
+      ],
+      "encoding_elapsed_ms": 498.009118,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 35,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user Which TCP is rt-classmanager Return the assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.031759985722601414
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            38
+          ],
+          "score": 0.022151894867420197
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            61
+          ],
+          "score": 0.01861693523824215
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            63
+          ],
+          "score": 0.023285679519176483
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            64
+          ],
+          "score": 0.01364828459918499
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            66
+          ],
+          "score": 0.02873985469341278
+        },
+        {
+          "text": "rt-classmanager",
+          "source": "sequence",
+          "positions": [
+            72,
+            73,
+            74
+          ],
+          "score": 0.011421748786233366
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            76
+          ],
+          "score": 0.019117508083581924
+        },
+        {
+          "text": "the",
+          "source": "sequence",
+          "positions": [
+            77
+          ],
+          "score": 0.014414230361580849
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            84
+          ],
+          "score": 0.02692049741744995
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            86
+          ],
+          "score": 0.03136500343680382
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            88
+          ],
+          "score": 0.06926383823156357
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 35,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.rt-classmanager",
+          "revision": "a467b4e04e6042b0d8429911984e0e38d218f690cf22d4a18d9901e398ced3ec"
+        }
+      ],
+      "encoding_elapsed_ms": 0.004889999999999999,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 60
+}

@@ -1,0 +1,300 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790082888843467223-856",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Ghāghrā IN 1271400, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    23161,
+    29656,
+    840,
+    81,
+    29656,
+    1897,
+    220,
+    16,
+    17,
+    22,
+    16,
+    19,
+    15,
+    15,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    37186,
+    31766,
+    60579
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -92,
+  "answer": "Asia/Kolkata",
+  "finish_reason": "stop",
+  "elapsed_ms": 2737.252922,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Ghāghrā IN 1271400, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Ghāghrā (ID 1271400): country code IN; latitude 23.26659; longitude 84.55297; administrative codes 38/366; population 8580; time zone Asia/Kolkata. The source record was modified on 2025-05-24.",
+            "id": "geonames.1271400",
+            "key": "place Ghāghrā IN 1271400",
+            "kind": "fact",
+            "memory_hash": "170e09fde326da7348ec3a8b5b2c0a35463f7d1582c374c9391b3599ec8c920f",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.1271400",
+              "revision": "0eb0e8238eb17290b0abdf040d1ef7db4e80bcebce9eb447b02c8a8e9dfff73b"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 92,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.1271400",
+          "revision": "0eb0e8238eb17290b0abdf040d1ef7db4e80bcebce9eb447b02c8a8e9dfff73b"
+        }
+      ],
+      "encoding_elapsed_ms": 603.5320790000001,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 92,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2025-05-24 Answer user Ghāghrā 1271400 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.025948534719645977
+        },
+        {
+          "text": "2025-05-24",
+          "source": "aimee",
+          "positions": [
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90
+          ],
+          "score": 0.02372397369617829
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            95
+          ],
+          "score": 0.024228550493717194
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.01296957116574049
+        },
+        {
+          "text": "Ghāghrā",
+          "source": "sequence",
+          "positions": [
+            128,
+            129,
+            130,
+            131,
+            132
+          ],
+          "score": 0.014403065317310393
+        },
+        {
+          "text": "1271400",
+          "source": "sequence",
+          "positions": [
+            135,
+            136,
+            137,
+            138,
+            139,
+            140,
+            141
+          ],
+          "score": 0.027576087974011898
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            143
+          ],
+          "score": 0.036661382764577866
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            144
+          ],
+          "score": 0.012866159901022911
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            145
+          ],
+          "score": 0.02792276069521904
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            158
+          ],
+          "score": 0.021885601803660393
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            160
+          ],
+          "score": 0.028874900192022324
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            162
+          ],
+          "score": 0.06730431318283081
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 92,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.1271400",
+          "revision": "0eb0e8238eb17290b0abdf040d1ef7db4e80bcebce9eb447b02c8a8e9dfff73b"
+        }
+      ],
+      "encoding_elapsed_ms": 0.011731,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 75
+}

@@ -1,0 +1,302 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790085648911588054-2380",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Earlimart US 5344702, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    6595,
+    4508,
+    461,
+    2201,
+    220,
+    20,
+    18,
+    19,
+    19,
+    22,
+    15,
+    17,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    23,
+    20,
+    18,
+    22
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -92,
+  "answer": "8537",
+  "finish_reason": "stop",
+  "elapsed_ms": 2993.122873,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Earlimart US 5344702, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Earlimart (ID 5344702): country code US; latitude 35.88412; longitude -119.27233; administrative codes CA/107; population 8537; time zone America/Los_Angeles. The source record was modified on 2026-08-30.",
+            "id": "geonames.5344702",
+            "key": "place Earlimart US 5344702",
+            "kind": "fact",
+            "memory_hash": "4b1ebdb2e10258ca7859af54587380917b127966261f0e68dceff34b118516e8",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.5344702",
+              "revision": "6bd4012612a839ad45971a834c6a893626c9d66300520cc338a2b5955413cb44"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 92,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.5344702",
+          "revision": "6bd4012612a839ad45971a834c6a893626c9d66300520cc338a2b5955413cb44"
+        }
+      ],
+      "encoding_elapsed_ms": 595.195275,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 92,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 119.27233 2026-08-30 Answer user 5344702 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.028320058714598417
+        },
+        {
+          "text": "119.27233",
+          "source": "aimee",
+          "positions": [
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47,
+            48
+          ],
+          "score": 0.025389850634383038
+        },
+        {
+          "text": "2026-08-30",
+          "source": "aimee",
+          "positions": [
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90
+          ],
+          "score": 0.019220357775338925
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            95
+          ],
+          "score": 0.02553875558078289
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.014733267948031425
+        },
+        {
+          "text": "5344702",
+          "source": "sequence",
+          "positions": [
+            133,
+            134,
+            135,
+            136,
+            137,
+            138,
+            139
+          ],
+          "score": 0.026700723101384938
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            141
+          ],
+          "score": 0.03555126115679741
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            142
+          ],
+          "score": 0.014702171087265015
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            143
+          ],
+          "score": 0.034382693469524384
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.021883975714445114
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            157
+          ],
+          "score": 0.028162315487861633
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            159
+          ],
+          "score": 0.06382951140403748
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 92,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.5344702",
+          "revision": "6bd4012612a839ad45971a834c6a893626c9d66300520cc338a2b5955413cb44"
+        }
+      ],
+      "encoding_elapsed_ms": 0.008950000000000001,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 73
+}

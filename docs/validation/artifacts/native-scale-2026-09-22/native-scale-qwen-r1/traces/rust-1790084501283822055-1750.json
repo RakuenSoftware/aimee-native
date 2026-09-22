@@ -1,0 +1,265 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790084501283822055-1750",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhich TCP port is registered for IANA service cgi-starapi? Return the number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    22365,
+    25804,
+    2548,
+    369,
+    9393,
+    364,
+    353,
+    37492,
+    2393,
+    95414,
+    20054,
+    2000,
+    30,
+    3301,
+    279,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    18,
+    23,
+    24,
+    18
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -33,
+  "answer": "3893",
+  "finish_reason": "stop",
+  "elapsed_ms": 2965.6629350000003,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "Which TCP port is registered for IANA service cgi-starapi? Return the number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service cgi-starapi has these registered transport/port assignments: TCP port 3893; UDP port 3893.",
+            "id": "iana.cgi-starapi",
+            "key": "IANA service cgi-starapi",
+            "kind": "fact",
+            "memory_hash": "013d49c739121ab43ee77d5f8ffdb11f4dc4ce2a0f2e4b1f7c6972f074e41271",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.cgi-starapi",
+              "revision": "87fd1056411dee1b452fa056803992a135c694b28935c2fc1fca34ff5df36b26"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 33,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.cgi-starapi",
+          "revision": "87fd1056411dee1b452fa056803992a135c694b28935c2fc1fca34ff5df36b26"
+        }
+      ],
+      "encoding_elapsed_ms": 499.85784900000004,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 33,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user Which TCP is for Return the assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.030222838278859854
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            36
+          ],
+          "score": 0.021657783538103104
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            59
+          ],
+          "score": 0.019044728949666023
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            61
+          ],
+          "score": 0.023277245461940765
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            62
+          ],
+          "score": 0.013941525481641293
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            64
+          ],
+          "score": 0.03011845424771309
+        },
+        {
+          "text": "for",
+          "source": "sequence",
+          "positions": [
+            66
+          ],
+          "score": 0.01197458803653717
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            74
+          ],
+          "score": 0.020722664892673492
+        },
+        {
+          "text": "the",
+          "source": "sequence",
+          "positions": [
+            75
+          ],
+          "score": 0.015412714332342148
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            82
+          ],
+          "score": 0.0280342735350132
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            84
+          ],
+          "score": 0.03211004287004471
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            86
+          ],
+          "score": 0.06845565885305405
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 33,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.cgi-starapi",
+          "revision": "87fd1056411dee1b452fa056803992a135c694b28935c2fc1fca34ff5df36b26"
+        }
+      ],
+      "encoding_elapsed_ms": 0.01277,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 59
+}

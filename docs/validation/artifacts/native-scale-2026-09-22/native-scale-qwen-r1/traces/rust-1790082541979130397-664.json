@@ -1,0 +1,294 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790082541979130397-664",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Berceto IT 3182172, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    417,
+    2867,
+    10701,
+    8435,
+    220,
+    18,
+    16,
+    23,
+    17,
+    16,
+    22,
+    17,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    16,
+    15,
+    19,
+    23
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -87,
+  "answer": "1048",
+  "finish_reason": "stop",
+  "elapsed_ms": 3263.195765,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Berceto IT 3182172, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Berceto (ID 3182172): country code IT; latitude 44.50899; longitude 9.99104; administrative codes 05/PR; population 1048; time zone Europe/Rome. The source record was modified on 2014-01-11.",
+            "id": "geonames.3182172",
+            "key": "place Berceto IT 3182172",
+            "kind": "fact",
+            "memory_hash": "02476ca545c5d6475ef767f1f82906269a40f04ffc0fdc1e03bf8ec15755f135",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.3182172",
+              "revision": "71f4682c8cd75090a4f54fa8565acdb822f6568ef8faf37846835c50a361d8d2"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 87,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3182172",
+          "revision": "71f4682c8cd75090a4f54fa8565acdb822f6568ef8faf37846835c50a361d8d2"
+        }
+      ],
+      "encoding_elapsed_ms": 596.623245,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 87,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2014-01-11 Answer user According 3182172 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.024697971530258656
+        },
+        {
+          "text": "2014-01-11",
+          "source": "aimee",
+          "positions": [
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84,
+            85
+          ],
+          "score": 0.01382735489460174
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            90
+          ],
+          "score": 0.027001669630408287
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            113
+          ],
+          "score": 0.015446639619767666
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            115
+          ],
+          "score": 0.012262433767318726
+        },
+        {
+          "text": "3182172",
+          "source": "sequence",
+          "positions": [
+            128,
+            129,
+            130,
+            131,
+            132,
+            133,
+            134
+          ],
+          "score": 0.025430799461901188
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            136
+          ],
+          "score": 0.03771386295557022
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            137
+          ],
+          "score": 0.01441228948533535
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            138
+          ],
+          "score": 0.034949012100696564
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            150
+          ],
+          "score": 0.022819167003035545
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.03157311677932739
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.06464030593633652
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 87,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3182172",
+          "revision": "71f4682c8cd75090a4f54fa8565acdb822f6568ef8faf37846835c50a361d8d2"
+        }
+      ],
+      "encoding_elapsed_ms": 0.01055,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 73
+}

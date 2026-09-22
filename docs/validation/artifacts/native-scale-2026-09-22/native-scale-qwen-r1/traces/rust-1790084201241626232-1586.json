@@ -1,0 +1,295 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790084201241626232-1586",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Burwood Heights AU 9972619, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    12015,
+    6451,
+    38098,
+    37763,
+    220,
+    24,
+    24,
+    22,
+    17,
+    21,
+    16,
+    24,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    46435,
+    11046,
+    88,
+    18220
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -93,
+  "answer": "Australia/Sydney",
+  "finish_reason": "stop",
+  "elapsed_ms": 3272.6626149999997,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Burwood Heights AU 9972619, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Burwood Heights (ID 9972619): country code AU; latitude -33.88939; longitude 151.10397; administrative codes 02/11300; population 990; time zone Australia/Sydney. The source record was modified on 2019-07-18.",
+            "id": "geonames.9972619",
+            "key": "place Burwood Heights AU 9972619",
+            "kind": "fact",
+            "memory_hash": "c17d8be428df2fe99e011bc90dada116614b4211321715b4a7d0b30a78a2b8b7",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.9972619",
+              "revision": "0cee5fee938add17e8ec4c76efcf4206fd30817bd9fee384823a46e9f81c1c56"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 93,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.9972619",
+          "revision": "0cee5fee938add17e8ec4c76efcf4206fd30817bd9fee384823a46e9f81c1c56"
+        }
+      ],
+      "encoding_elapsed_ms": 611.71787,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 93,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2019-07-18 Answer user According 9972619 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02686720434576273
+        },
+        {
+          "text": "2019-07-18",
+          "source": "aimee",
+          "positions": [
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90,
+            91
+          ],
+          "score": 0.010851778657524846
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            96
+          ],
+          "score": 0.025442523881793022
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            119
+          ],
+          "score": 0.014081216417253017
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            121
+          ],
+          "score": 0.010832631960511208
+        },
+        {
+          "text": "9972619",
+          "source": "sequence",
+          "positions": [
+            134,
+            135,
+            136,
+            137,
+            138,
+            139,
+            140
+          ],
+          "score": 0.022742341505363584
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            142
+          ],
+          "score": 0.03722022473812103
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            143
+          ],
+          "score": 0.01333729550242424
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            144
+          ],
+          "score": 0.031768254935741425
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            157
+          ],
+          "score": 0.02124309167265892
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            159
+          ],
+          "score": 0.029518648982048035
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.06508582085371017
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 93,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.9972619",
+          "revision": "0cee5fee938add17e8ec4c76efcf4206fd30817bd9fee384823a46e9f81c1c56"
+        }
+      ],
+      "encoding_elapsed_ms": 0.011651000000000002,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 74
+}

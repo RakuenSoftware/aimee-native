@@ -1,0 +1,294 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790083341696759646-1104",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Pilchiatipa MX 3813354, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    35150,
+    329,
+    10050,
+    82212,
+    26690,
+    220,
+    18,
+    23,
+    16,
+    18,
+    18,
+    20,
+    19,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    21,
+    24,
+    20
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -93,
+  "answer": "695",
+  "finish_reason": "stop",
+  "elapsed_ms": 2593.9378619999998,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Pilchiatipa MX 3813354, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Pilchiatipa (ID 3813354): country code MX; latitude 21.03388; longitude -98.46997; administrative codes 13/026; population 695; time zone America/Mexico_City. The source record was modified on 2026-08-11.",
+            "id": "geonames.3813354",
+            "key": "place Pilchiatipa MX 3813354",
+            "kind": "fact",
+            "memory_hash": "b79c1d21954a62e58534cea4e57666cda549c706a1fbcad589aa06475a12e815",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.3813354",
+              "revision": "021e34be1eacc82d575e813981fed80e8466f80bda1c12c3086150319d91c00b"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 93,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3813354",
+          "revision": "021e34be1eacc82d575e813981fed80e8466f80bda1c12c3086150319d91c00b"
+        }
+      ],
+      "encoding_elapsed_ms": 607.700466,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 93,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2026-08-11 Answer user 3813354 what is its population assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.027098340447992086
+        },
+        {
+          "text": "2026-08-11",
+          "source": "aimee",
+          "positions": [
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90,
+            91
+          ],
+          "score": 0.017743355507263914
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            96
+          ],
+          "score": 0.02641499787569046
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            119
+          ],
+          "score": 0.01419859565794468
+        },
+        {
+          "text": "3813354",
+          "source": "sequence",
+          "positions": [
+            135,
+            136,
+            137,
+            138,
+            139,
+            140,
+            141
+          ],
+          "score": 0.017641599173657596
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            143
+          ],
+          "score": 0.03813198581337929
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            144
+          ],
+          "score": 0.01570747047662735
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            145
+          ],
+          "score": 0.0355224683880806
+        },
+        {
+          "text": "population",
+          "source": "sequence",
+          "positions": [
+            146
+          ],
+          "score": 0.012866068631410599
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            157
+          ],
+          "score": 0.02106478437781334
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            159
+          ],
+          "score": 0.030467376112937927
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.06327691674232483
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 93,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3813354",
+          "revision": "021e34be1eacc82d575e813981fed80e8466f80bda1c12c3086150319d91c00b"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00466,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 73
+}

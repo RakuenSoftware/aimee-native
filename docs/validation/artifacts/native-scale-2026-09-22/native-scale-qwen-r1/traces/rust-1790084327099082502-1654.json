@@ -1,0 +1,302 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790084327099082502-1654",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Basconcobe MX 4017353, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    14241,
+    39108,
+    14972,
+    26690,
+    220,
+    19,
+    15,
+    16,
+    22,
+    18,
+    20,
+    18,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    17,
+    24,
+    17,
+    21
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -93,
+  "answer": "2926",
+  "finish_reason": "stop",
+  "elapsed_ms": 3154.548673,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Basconcobe MX 4017353, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Basconcobe (ID 4017353): country code MX; latitude 26.95374; longitude -109.67003; administrative codes 26/026; population 2926; time zone America/Hermosillo. The source record was modified on 2025-08-13.",
+            "id": "geonames.4017353",
+            "key": "place Basconcobe MX 4017353",
+            "kind": "fact",
+            "memory_hash": "6b9276258d7876af1486f2b8ff6d8d8d70dd768599170165474f271b1c5a5ada",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.4017353",
+              "revision": "94ee1cac02f5e8a52403e44e60ee9b51e91d922877bfb8a79e0b7545d5607869"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 93,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.4017353",
+          "revision": "94ee1cac02f5e8a52403e44e60ee9b51e91d922877bfb8a79e0b7545d5607869"
+        }
+      ],
+      "encoding_elapsed_ms": 613.664217,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 93,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 109.67003 2025-08-13 Answer user 4017353 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.028658482246100903
+        },
+        {
+          "text": "109.67003",
+          "source": "aimee",
+          "positions": [
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47,
+            48
+          ],
+          "score": 0.015233210287988186
+        },
+        {
+          "text": "2025-08-13",
+          "source": "aimee",
+          "positions": [
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90,
+            91
+          ],
+          "score": 0.01700038141279947
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            96
+          ],
+          "score": 0.025510627776384354
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            119
+          ],
+          "score": 0.014812774956226349
+        },
+        {
+          "text": "4017353",
+          "source": "sequence",
+          "positions": [
+            134,
+            135,
+            136,
+            137,
+            138,
+            139,
+            140
+          ],
+          "score": 0.021706847473978996
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            142
+          ],
+          "score": 0.037436142563819885
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            143
+          ],
+          "score": 0.015701089054346085
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            144
+          ],
+          "score": 0.03573314845561981
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            156
+          ],
+          "score": 0.020894955843687057
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            158
+          ],
+          "score": 0.02964337170124054
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            160
+          ],
+          "score": 0.06494975835084915
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 93,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.4017353",
+          "revision": "94ee1cac02f5e8a52403e44e60ee9b51e91d922877bfb8a79e0b7545d5607869"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00876,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 73
+}

@@ -1,0 +1,285 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790085097215084855-2066",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Tortequesne FR 2972402, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    345,
+    16080,
+    13567,
+    785,
+    16164,
+    220,
+    17,
+    24,
+    22,
+    17,
+    19,
+    15,
+    17,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    22,
+    15,
+    21
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -88,
+  "answer": "706",
+  "finish_reason": "stop",
+  "elapsed_ms": 2516.692222,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Tortequesne FR 2972402, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Tortequesne (ID 2972402): country code FR; latitude 50.28892; longitude 3.03951; administrative codes 32/62; population 706; time zone Europe/Paris. The source record was modified on 2016-02-18.",
+            "id": "geonames.2972402",
+            "key": "place Tortequesne FR 2972402",
+            "kind": "fact",
+            "memory_hash": "83f4354cfbfb26a7ee7ea25376f6d99ebbeaf36b38be88cff8bd91a318481736",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.2972402",
+              "revision": "5282d44fc5403bdbece98d6c57d3bbf4e43c44cc404af5dbbe47bf81082cc8c0"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 88,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.2972402",
+          "revision": "5282d44fc5403bdbece98d6c57d3bbf4e43c44cc404af5dbbe47bf81082cc8c0"
+        }
+      ],
+      "encoding_elapsed_ms": 586.354979,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 88,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user According 2972402 what is its population assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02352816052734852
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            91
+          ],
+          "score": 0.025531277060508728
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            114
+          ],
+          "score": 0.013960564509034157
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            116
+          ],
+          "score": 0.011218754574656487
+        },
+        {
+          "text": "2972402",
+          "source": "sequence",
+          "positions": [
+            130,
+            131,
+            132,
+            133,
+            134,
+            135,
+            136
+          ],
+          "score": 0.033454100717790425
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            138
+          ],
+          "score": 0.03684733808040619
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            139
+          ],
+          "score": 0.014386475086212158
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            140
+          ],
+          "score": 0.0329405702650547
+        },
+        {
+          "text": "population",
+          "source": "sequence",
+          "positions": [
+            141
+          ],
+          "score": 0.011839753948152065
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.023181747645139694
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.032542966306209564
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            156
+          ],
+          "score": 0.0638309195637703
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 88,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.2972402",
+          "revision": "5282d44fc5403bdbece98d6c57d3bbf4e43c44cc404af5dbbe47bf81082cc8c0"
+        }
+      ],
+      "encoding_elapsed_ms": 0.010311,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 73
+}

@@ -1,0 +1,297 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790083491901679596-1188",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Arúmbaro MX 4025184, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    1587,
+    231675,
+    2185,
+    78,
+    26690,
+    220,
+    19,
+    15,
+    17,
+    20,
+    16,
+    23,
+    19,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    21,
+    17,
+    21
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -94,
+  "answer": "626",
+  "finish_reason": "stop",
+  "elapsed_ms": 2584.341949,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Arúmbaro MX 4025184, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Arúmbaro (ID 4025184): country code MX; latitude 19.88123; longitude -101.19511; administrative codes 16/018; population 626; time zone America/Mexico_City. The source record was modified on 2025-12-15.",
+            "id": "geonames.4025184",
+            "key": "place Arúmbaro MX 4025184",
+            "kind": "fact",
+            "memory_hash": "b05aa541755332b1e13e2a8f5d218b7adbf34073ddb063750de9d6f607927988",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.4025184",
+              "revision": "25787385fa1a1203769a302f1877e4fd09494119b164513f88d823913310bcfb"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 94,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.4025184",
+          "revision": "25787385fa1a1203769a302f1877e4fd09494119b164513f88d823913310bcfb"
+        }
+      ],
+      "encoding_elapsed_ms": 606.344877,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 94,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2025-12-15 Answer user Arúmbaro 4025184 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.0250600753352046
+        },
+        {
+          "text": "2025-12-15",
+          "source": "aimee",
+          "positions": [
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90,
+            91,
+            92
+          ],
+          "score": 0.013813517856760882
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            97
+          ],
+          "score": 0.02605312317609787
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            120
+          ],
+          "score": 0.01425081491470337
+        },
+        {
+          "text": "Arúmbaro",
+          "source": "sequence",
+          "positions": [
+            130,
+            131,
+            132,
+            133
+          ],
+          "score": 0.014334747102111578
+        },
+        {
+          "text": "4025184",
+          "source": "sequence",
+          "positions": [
+            136,
+            137,
+            138,
+            139,
+            140,
+            141,
+            142
+          ],
+          "score": 0.016882000432815403
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            144
+          ],
+          "score": 0.03883945569396019
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            145
+          ],
+          "score": 0.014891522005200386
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            146
+          ],
+          "score": 0.03405371308326721
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            158
+          ],
+          "score": 0.02141498401761055
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            160
+          ],
+          "score": 0.02941291034221649
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            162
+          ],
+          "score": 0.06334824115037918
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 94,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.4025184",
+          "revision": "25787385fa1a1203769a302f1877e4fd09494119b164513f88d823913310bcfb"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00865,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 73
+}

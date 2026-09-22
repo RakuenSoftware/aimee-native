@@ -1,0 +1,295 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790085848279732473-2490",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Międzyrzec Podlaski PL 764862, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    20112,
+    154063,
+    50213,
+    732,
+    16329,
+    75,
+    1038,
+    72,
+    10009,
+    220,
+    22,
+    21,
+    19,
+    23,
+    21,
+    17,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    16,
+    22,
+    16,
+    20,
+    23
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -96,
+  "answer": "17158",
+  "finish_reason": "stop",
+  "elapsed_ms": 3360.859099,
+  "memory_encoding_passes": 1,
+  "native_reads": 96,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Międzyrzec Podlaski PL 764862, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Międzyrzec Podlaski (ID 764862): country code PL; latitude 51.9864; longitude 22.78248; administrative codes 75/0601; population 17158; time zone Europe/Warsaw. The source record was modified on 2019-09-05.",
+            "id": "geonames.764862",
+            "key": "place Międzyrzec Podlaski PL 764862",
+            "kind": "fact",
+            "memory_hash": "a7da2273b4c6c2311fde05f9989d0165d54e64545e2befa77f0a6fd3f422faa1",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.764862",
+              "revision": "aa7c9f74115127b01f200ba5bef8e3e257548166019a48a983fa40210da13c84"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 96,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.764862",
+          "revision": "aa7c9f74115127b01f200ba5bef8e3e257548166019a48a983fa40210da13c84"
+        }
+      ],
+      "encoding_elapsed_ms": 512.1971130000001,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 96,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Międzyrzec Answer user Międzyrzec 764862 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.022600330412387848
+        },
+        {
+          "text": "Międzyrzec",
+          "source": "aimee",
+          "positions": [
+            9,
+            10,
+            11,
+            12
+          ],
+          "score": 0.0165737442439422
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            99
+          ],
+          "score": 0.022769730538129807
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            122
+          ],
+          "score": 0.013913694769144058
+        },
+        {
+          "text": "Międzyrzec",
+          "source": "sequence",
+          "positions": [
+            132,
+            133,
+            134,
+            135
+          ],
+          "score": 0.02121717541012913
+        },
+        {
+          "text": "764862",
+          "source": "sequence",
+          "positions": [
+            142,
+            143,
+            144,
+            145,
+            146,
+            147
+          ],
+          "score": 0.021999015705659986
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            149
+          ],
+          "score": 0.039237163960933685
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            150
+          ],
+          "score": 0.014491064473986626
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            151
+          ],
+          "score": 0.032232120633125305
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            163
+          ],
+          "score": 0.022384244948625565
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            165
+          ],
+          "score": 0.030221989378333092
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            167
+          ],
+          "score": 0.06518398970365524
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 96,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.764862",
+          "revision": "aa7c9f74115127b01f200ba5bef8e3e257548166019a48a983fa40210da13c84"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00511,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 78
+}

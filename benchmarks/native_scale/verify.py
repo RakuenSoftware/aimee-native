@@ -1,7 +1,7 @@
 """Re-score every answer and audit paired native-memory evidence independently."""
 import collections,decimal,hashlib,json,statistics,sys
 from pathlib import Path
-root=Path(sys.argv[1]);corrections='--corrections' in sys.argv;prefix='native-scale-corrections' if corrections else 'native-scale';source=root/(prefix+'-r1' if corrections else 'native-scale-r2');cases=json.loads((source/'cases.json').read_text());by={c['id']:c for c in cases};summary={'distinct_facts':len(cases),'source_counts':dict(collections.Counter(c['source'] for c in cases)),'models':{}}
+root=Path(sys.argv[1]);corrections='--corrections' in sys.argv;prefix='native-scale-corrections' if corrections else 'native-scale';source=root/(prefix+'-r2' if corrections else 'native-scale-r2');cases=json.loads((source/'cases.json').read_text());by={c['id']:c for c in cases};summary={'distinct_facts':len(cases),'source_counts':dict(collections.Counter(c['source'] for c in cases)),'models':{}}
 def correct(answer,c):
  if c['scorer']=='number':
   try:
@@ -46,7 +46,7 @@ if corrections:
   if not original.exists() or not revised.exists():continue
   old={r['case_spec']['id']:r for r in map(json.loads,original.read_text().splitlines()) if r['enabled']}
   new={r['case_spec']['id']:r for r in map(json.loads,revised.read_text().splitlines()) if r['enabled']}
-  lifecycle={'revised_facts_read':len(new),'old_and_new_correct':0,'old_value_repeated':0,'prompt_identity':True,'canonical_identity_preserved':True,'revision_changed':True,'native_encoding_input_changed':0}
+  lifecycle={'revised_facts_read':len(new),'old_and_new_correct':0,'old_value_repeated':0,'prompt_identity':True,'canonical_identity_preserved':True,'revision_changed':True,'native_encoding_input_changed':0 if model=='Gemma 4' else None}
   for key,r in new.items():
    before=old[key];c=r['case_spec'];assert before['case_spec']['expected']==c['previous_expected']
    assert before['prompt_token_ids']==r['prompt_token_ids']
@@ -57,5 +57,10 @@ if corrections:
     lifecycle['native_encoding_input_changed']+=r['memory']['memory_encoding_sha256']!=before['memory']['memory_encoding_sha256']
   # encoding SHA hashes encoder token IDs, not tensor bytes; do not mislabel it.
   summary['models'][model]['correction_lifecycle']=lifecycle
+qwen=root/(prefix+'-qwen-r1');gemma=root/(prefix+'-gemma-r1')
+if (qwen/'image-after.json').exists():
+ before=json.loads((qwen/'image-before.json').read_text());after=json.loads((qwen/'image-after.json').read_text());assert before==after
+ assert before['CURRENT']==hashlib.sha256((gemma/'image-current.json').read_bytes()).hexdigest()
+ summary['shared_publication_verified']=True
 summary['generated_requests']=sum(v['requests'] for v in summary['models'].values())
 print(json.dumps(summary,indent=2))

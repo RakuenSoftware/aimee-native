@@ -1,0 +1,296 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790084771068449274-1892",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Cilated ID 7916403, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    351,
+    89291,
+    2937,
+    220,
+    22,
+    24,
+    16,
+    21,
+    19,
+    15,
+    18,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    37186,
+    30662,
+    156236
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -85,
+  "answer": "Asia/Jakarta",
+  "finish_reason": "stop",
+  "elapsed_ms": 2613.095577,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Cilated ID 7916403, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Cilated (ID 7916403): country code ID; latitude -7.3312; longitude 107.9703; administrative codes 30/3206; population 0; time zone Asia/Jakarta. The source record was modified on 2022-12-31.",
+            "id": "geonames.7916403",
+            "key": "place Cilated ID 7916403",
+            "kind": "fact",
+            "memory_hash": "7bb71dc12ae855a50977db2988d4793ad0df430893f0cc4fda2dbae3c0d565b2",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.7916403",
+              "revision": "c8291c11710fd14066c0fc26e88b8266f611ba315f00f226a364db7e92ef6814"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 85,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.7916403",
+          "revision": "c8291c11710fd14066c0fc26e88b8266f611ba315f00f226a364db7e92ef6814"
+        }
+      ],
+      "encoding_elapsed_ms": 597.239759,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 85,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 7.3312 107.9703 Answer user 7916403 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02561338385567069
+        },
+        {
+          "text": "7.3312",
+          "source": "aimee",
+          "positions": [
+            28,
+            29,
+            30,
+            31,
+            32,
+            33
+          ],
+          "score": 0.017699650023132563
+        },
+        {
+          "text": "107.9703",
+          "source": "aimee",
+          "positions": [
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44
+          ],
+          "score": 0.01424288668204099
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            88
+          ],
+          "score": 0.027022864669561386
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            111
+          ],
+          "score": 0.015162445604801178
+        },
+        {
+          "text": "7916403",
+          "source": "sequence",
+          "positions": [
+            125,
+            126,
+            127,
+            128,
+            129,
+            130,
+            131
+          ],
+          "score": 0.02155254501849413
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            133
+          ],
+          "score": 0.03657791018486023
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            134
+          ],
+          "score": 0.013139943592250347
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            135
+          ],
+          "score": 0.02903033420443535
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            148
+          ],
+          "score": 0.02150452882051468
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            150
+          ],
+          "score": 0.026943091303110123
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.06279867887496948
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 85,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.7916403",
+          "revision": "c8291c11710fd14066c0fc26e88b8266f611ba315f00f226a364db7e92ef6814"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00797,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 72
+}

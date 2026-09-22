@@ -1,0 +1,264 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790085402820623696-2240",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhat capital city does the World Bank list for economy Seychelles? Return only the city name.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    3710,
+    6511,
+    3177,
+    1503,
+    279,
+    4196,
+    8285,
+    1103,
+    364,
+    8322,
+    55938,
+    329,
+    35588,
+    30,
+    3301,
+    1132,
+    279,
+    3177,
+    803,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    78164
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -39,
+  "answer": "Victoria",
+  "finish_reason": "stop",
+  "elapsed_ms": 1452.6974799999998,
+  "memory_encoding_passes": 1,
+  "native_reads": 32,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "What capital city does the World Bank list for economy Seychelles? Return only the city name.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "The World Bank country endpoint lists economy Seychelles: code SYC; two-letter code SC; capital city Victoria; region Sub-Saharan Africa; income group High income.",
+            "id": "worldbank.SYC",
+            "key": "economy Seychelles",
+            "kind": "fact",
+            "memory_hash": "f16c4bd9ab5d2bc7c2fc1943619fde1c818d0300352bd1d422e3674e40e2c687",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "worldbank.SYC",
+              "revision": "e865302c6350b8aa6bbb975acdf2b6c65005c3f41e50537fecc01b9e3dd245bb"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 39,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "worldbank.SYC",
+          "revision": "e865302c6350b8aa6bbb975acdf2b6c65005c3f41e50537fecc01b9e3dd245bb"
+        }
+      ],
+      "encoding_elapsed_ms": 499.355492,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 39,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Bank Answer user What does list for Return assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02956277783960104
+        },
+        {
+          "text": "Bank",
+          "source": "aimee",
+          "positions": [
+            7
+          ],
+          "score": 0.011448579840362072
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            42
+          ],
+          "score": 0.02274337410926819
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            65
+          ],
+          "score": 0.017667939886450768
+        },
+        {
+          "text": "What",
+          "source": "sequence",
+          "positions": [
+            67
+          ],
+          "score": 0.02345813624560833
+        },
+        {
+          "text": "does",
+          "source": "sequence",
+          "positions": [
+            70
+          ],
+          "score": 0.029472075402736664
+        },
+        {
+          "text": "list",
+          "source": "sequence",
+          "positions": [
+            74
+          ],
+          "score": 0.01182580552995205
+        },
+        {
+          "text": "for",
+          "source": "sequence",
+          "positions": [
+            75
+          ],
+          "score": 0.012546169571578503
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            81
+          ],
+          "score": 0.01649230346083641
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            90
+          ],
+          "score": 0.027103181928396225
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            92
+          ],
+          "score": 0.029804935678839684
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            94
+          ],
+          "score": 0.07123389840126038
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 39,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "worldbank.SYC",
+          "revision": "e865302c6350b8aa6bbb975acdf2b6c65005c3f41e50537fecc01b9e3dd245bb"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00648,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 58
+}

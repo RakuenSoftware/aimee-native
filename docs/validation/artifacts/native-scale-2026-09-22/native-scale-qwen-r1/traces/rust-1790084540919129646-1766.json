@@ -1,0 +1,292 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790084540919129646-1766",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Cabiche LC 3576836, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    25274,
+    11720,
+    29858,
+    220,
+    18,
+    20,
+    22,
+    21,
+    23,
+    18,
+    21,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    30014,
+    81527,
+    2275,
+    164191
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -95,
+  "answer": "America/St_Lucia",
+  "finish_reason": "stop",
+  "elapsed_ms": 3136.99878,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Cabiche LC 3576836, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Cabiche (ID 3576836): country code LC; latitude 14.00402; longitude -60.94778; administrative codes 03/30030000; population 1169; time zone America/St_Lucia. The source record was modified on 2024-12-10.",
+            "id": "geonames.3576836",
+            "key": "place Cabiche LC 3576836",
+            "kind": "fact",
+            "memory_hash": "989a73676024b5a77d8746e1169a764ca908b7abf20b25a776cedabca16312ed",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.3576836",
+              "revision": "9fed1e9bd17589d39839001574af1c5425cf6de7edb1a2029a5ded228831d108"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 95,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3576836",
+          "revision": "9fed1e9bd17589d39839001574af1c5425cf6de7edb1a2029a5ded228831d108"
+        }
+      ],
+      "encoding_elapsed_ms": 613.076001,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 95,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 60.94778 Answer user 3576836 what is its Return assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.024662580341100693
+        },
+        {
+          "text": "60.94778",
+          "source": "aimee",
+          "positions": [
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46
+          ],
+          "score": 0.013731930812355131
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            98
+          ],
+          "score": 0.02587677165865898
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            121
+          ],
+          "score": 0.014901675283908844
+        },
+        {
+          "text": "3576836",
+          "source": "sequence",
+          "positions": [
+            135,
+            136,
+            137,
+            138,
+            139,
+            140,
+            141
+          ],
+          "score": 0.021566704381257296
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            143
+          ],
+          "score": 0.03758688271045685
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            144
+          ],
+          "score": 0.01373783778399229
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            145
+          ],
+          "score": 0.030940130352973938
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            149
+          ],
+          "score": 0.012083999812602997
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            158
+          ],
+          "score": 0.021223751828074455
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            160
+          ],
+          "score": 0.02845500223338604
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            162
+          ],
+          "score": 0.06564091145992279
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 95,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3576836",
+          "revision": "9fed1e9bd17589d39839001574af1c5425cf6de7edb1a2029a5ded228831d108"
+        }
+      ],
+      "encoding_elapsed_ms": 0.006240000000000001,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 73
+}

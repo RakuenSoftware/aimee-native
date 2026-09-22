@@ -1,0 +1,264 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790083052945866099-952",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhich TCP port is registered for IANA service z-wave? Return the number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    22365,
+    25804,
+    2548,
+    369,
+    9393,
+    364,
+    353,
+    37492,
+    2393,
+    1110,
+    85213,
+    30,
+    3301,
+    279,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    19,
+    16,
+    17,
+    18
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -32,
+  "answer": "4123",
+  "finish_reason": "stop",
+  "elapsed_ms": 2833.5535809999997,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "Which TCP port is registered for IANA service z-wave? Return the number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service z-wave has these registered transport/port assignments: TCP port 4123; UDP port 4123.",
+            "id": "iana.z-wave",
+            "key": "IANA service z-wave",
+            "kind": "fact",
+            "memory_hash": "ab83b58d87343efa20e3da96dfb7e590b61fab6e2a52b848228b70fc184b0345",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.z-wave",
+              "revision": "5dc6835293b0c11d5e21b1eb1ce9eb60001c5002888c1fe043cae0de39826f21"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 32,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.z-wave",
+          "revision": "5dc6835293b0c11d5e21b1eb1ce9eb60001c5002888c1fe043cae0de39826f21"
+        }
+      ],
+      "encoding_elapsed_ms": 500.475118,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 32,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user Which TCP is for Return the assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.029775128699839115
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            35
+          ],
+          "score": 0.02169627696275711
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            58
+          ],
+          "score": 0.018273329362273216
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            60
+          ],
+          "score": 0.023781796917319298
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            61
+          ],
+          "score": 0.015372177585959435
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            63
+          ],
+          "score": 0.028942827135324478
+        },
+        {
+          "text": "for",
+          "source": "sequence",
+          "positions": [
+            65
+          ],
+          "score": 0.011472970247268677
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            72
+          ],
+          "score": 0.020312726497650146
+        },
+        {
+          "text": "the",
+          "source": "sequence",
+          "positions": [
+            73
+          ],
+          "score": 0.01582256704568863
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            80
+          ],
+          "score": 0.02909756824374199
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            82
+          ],
+          "score": 0.03304155170917511
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            84
+          ],
+          "score": 0.07105487585067749
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 32,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.z-wave",
+          "revision": "5dc6835293b0c11d5e21b1eb1ce9eb60001c5002888c1fe043cae0de39826f21"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00765,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 58
+}

@@ -1,0 +1,297 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790083160553626396-1010",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhat orbital period in days does the NASA archive give for planet HD 192310 b? Return the number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    3710,
+    62409,
+    4031,
+    303,
+    2756,
+    1503,
+    279,
+    20774,
+    17593,
+    2873,
+    364,
+    11247,
+    11821,
+    220,
+    16,
+    24,
+    17,
+    18,
+    16,
+    15,
+    292,
+    30,
+    3301,
+    279,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    22,
+    19,
+    13,
+    22,
+    17
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -113,
+  "answer": "74.72",
+  "finish_reason": "stop",
+  "elapsed_ms": 3511.546474,
+  "memory_encoding_passes": 1,
+  "native_reads": 96,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "What orbital period in days does the NASA archive give for planet HD 192310 b? Return the number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "For planet HD 192310 b, the NASA Exoplanet Archive composite table lists: host star HD 192310; discovery year 2011; discovery method Radial Velocity; discovery facility La Silla Observatory; orbital period 74.72000000000 days; reported planet radius 4.27000000 Earth radii; reported system distance 8.79687000 parsecs.",
+            "id": "nasa.HD 192310 b",
+            "key": "planet HD 192310 b",
+            "kind": "fact",
+            "memory_hash": "122915d2a6698dfd4aa679e44d420d7c8557fbbd7e953fbc8b2a94b9a4d4f4bd",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "nasa.HD 192310 b",
+              "revision": "b500cf2298bbe5162d7f8243565d65e04149480545e2ec90fbda4c81ef79552a"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 113,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.HD 192310 b",
+          "revision": "b500cf2298bbe5162d7f8243565d65e04149480545e2ec90fbda4c81ef79552a"
+        }
+      ],
+      "encoding_elapsed_ms": 524.501844,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 113,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 74.72000000000 8.79687000 Answer user What does give Return assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.01906373049132526
+        },
+        {
+          "text": "74.72000000000",
+          "source": "aimee",
+          "positions": [
+            62,
+            63,
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75
+          ],
+          "score": 0.023175173831987195
+        },
+        {
+          "text": "8.79687000",
+          "source": "aimee",
+          "positions": [
+            100,
+            101,
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108,
+            109
+          ],
+          "score": 0.018547978150309063
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            116
+          ],
+          "score": 0.023841267451643944
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            139
+          ],
+          "score": 0.016901036724448204
+        },
+        {
+          "text": "What",
+          "source": "sequence",
+          "positions": [
+            141
+          ],
+          "score": 0.023206304758787155
+        },
+        {
+          "text": "does",
+          "source": "sequence",
+          "positions": [
+            146
+          ],
+          "score": 0.02062855288386345
+        },
+        {
+          "text": "give",
+          "source": "sequence",
+          "positions": [
+            150
+          ],
+          "score": 0.017970873042941093
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            163
+          ],
+          "score": 0.017408158630132675
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            171
+          ],
+          "score": 0.025877652689814568
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            173
+          ],
+          "score": 0.02777276001870632
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            175
+          ],
+          "score": 0.0685075968503952
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 113,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.HD 192310 b",
+          "revision": "b500cf2298bbe5162d7f8243565d65e04149480545e2ec90fbda4c81ef79552a"
+        }
+      ],
+      "encoding_elapsed_ms": 0.01081,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 69
+}

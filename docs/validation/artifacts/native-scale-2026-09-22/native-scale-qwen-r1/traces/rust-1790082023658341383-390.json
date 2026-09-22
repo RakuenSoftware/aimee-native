@@ -1,0 +1,299 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790082023658341383-390",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place İstinye TR 745039, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    37146,
+    267,
+    6239,
+    68,
+    4823,
+    220,
+    22,
+    19,
+    20,
+    15,
+    18,
+    24,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    29774,
+    36889,
+    43610
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -95,
+  "answer": "Europe/Istanbul",
+  "finish_reason": "stop",
+  "elapsed_ms": 2759.553415,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place İstinye TR 745039, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place İstinye (ID 745039): country code TR; latitude 41.11008; longitude 29.05094; administrative codes 34/8521535; population 15721; time zone Europe/Istanbul. The source record was modified on 2025-01-22.",
+            "id": "geonames.745039",
+            "key": "place İstinye TR 745039",
+            "kind": "fact",
+            "memory_hash": "407c71fc6bf498bb07300db20a2cbcff1110cb8407da6ecd332cca7ab14f2f74",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.745039",
+              "revision": "190f7f6f744e56cbd4b12bd646dfc8f1fe6bda0e1c6fb219dd5b76634894ece0"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 95,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.745039",
+          "revision": "190f7f6f744e56cbd4b12bd646dfc8f1fe6bda0e1c6fb219dd5b76634894ece0"
+        }
+      ],
+      "encoding_elapsed_ms": 612.266396,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 95,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative İstinye 2025-01-22 Answer user İstinye 745039 what its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.025668295100331306
+        },
+        {
+          "text": "İstinye",
+          "source": "aimee",
+          "positions": [
+            9,
+            10,
+            11,
+            12
+          ],
+          "score": 0.020101498113945127
+        },
+        {
+          "text": "2025-01-22",
+          "source": "aimee",
+          "positions": [
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90,
+            91,
+            92,
+            93
+          ],
+          "score": 0.02412325314071495
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            98
+          ],
+          "score": 0.025647439062595367
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            121
+          ],
+          "score": 0.01398654654622078
+        },
+        {
+          "text": "İstinye",
+          "source": "sequence",
+          "positions": [
+            131,
+            132,
+            133,
+            134
+          ],
+          "score": 0.022519834456034005
+        },
+        {
+          "text": "745039",
+          "source": "sequence",
+          "positions": [
+            137,
+            138,
+            139,
+            140,
+            141,
+            142
+          ],
+          "score": 0.019505535950884223
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            144
+          ],
+          "score": 0.03436828404664993
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            146
+          ],
+          "score": 0.03008447214961052
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            159
+          ],
+          "score": 0.021414097398519516
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.029514700174331665
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            163
+          ],
+          "score": 0.06293419003486633
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 95,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.745039",
+          "revision": "190f7f6f744e56cbd4b12bd646dfc8f1fe6bda0e1c6fb219dd5b76634894ece0"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00952,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 73
+}

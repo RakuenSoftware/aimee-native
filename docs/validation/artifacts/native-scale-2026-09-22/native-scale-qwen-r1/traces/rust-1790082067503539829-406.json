@@ -1,0 +1,289 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790082067503539829-406",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhat orbital period in days does the NASA archive give for planet HD 45184 c? Return the number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    3710,
+    62409,
+    4031,
+    303,
+    2756,
+    1503,
+    279,
+    20774,
+    17593,
+    2873,
+    364,
+    11247,
+    11821,
+    220,
+    19,
+    20,
+    16,
+    23,
+    19,
+    272,
+    30,
+    3301,
+    279,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    16,
+    18,
+    13,
+    16,
+    18,
+    20,
+    19
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -112,
+  "answer": "13.1354",
+  "finish_reason": "stop",
+  "elapsed_ms": 4499.91465,
+  "memory_encoding_passes": 1,
+  "native_reads": 128,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "What orbital period in days does the NASA archive give for planet HD 45184 c? Return the number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "For planet HD 45184 c, the NASA Exoplanet Archive composite table lists: host star HD 45184; discovery year 2019; discovery method Radial Velocity; discovery facility La Silla Observatory; orbital period 13.13540000000 days; reported planet radius 2.91000000 Earth radii; reported system distance 21.95320000 parsecs.",
+            "id": "nasa.HD 45184 c",
+            "key": "planet HD 45184 c",
+            "kind": "fact",
+            "memory_hash": "c73a13a07c8cce647df23890aab6ef9a89636739c63792995b1c582ca81231e4",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "nasa.HD 45184 c",
+              "revision": "2e46b6628532df00ba7654697048b4a4db3db7cc026a4d891de8632e360b36f1"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 112,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.HD 45184 c",
+          "revision": "2e46b6628532df00ba7654697048b4a4db3db7cc026a4d891de8632e360b36f1"
+        }
+      ],
+      "encoding_elapsed_ms": 539.73861,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 112,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 13.13540000000 Answer user What does give Return the assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02170811127871275
+        },
+        {
+          "text": "13.13540000000",
+          "source": "aimee",
+          "positions": [
+            60,
+            61,
+            62,
+            63,
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73
+          ],
+          "score": 0.015543335568509065
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            115
+          ],
+          "score": 0.024524232372641563
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            138
+          ],
+          "score": 0.017689857631921768
+        },
+        {
+          "text": "What",
+          "source": "sequence",
+          "positions": [
+            140
+          ],
+          "score": 0.02309630811214447
+        },
+        {
+          "text": "does",
+          "source": "sequence",
+          "positions": [
+            145
+          ],
+          "score": 0.021656084805727005
+        },
+        {
+          "text": "give",
+          "source": "sequence",
+          "positions": [
+            149
+          ],
+          "score": 0.019352441653609276
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.01773693412542343
+        },
+        {
+          "text": "the",
+          "source": "sequence",
+          "positions": [
+            162
+          ],
+          "score": 0.013450868427753448
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            169
+          ],
+          "score": 0.02578529715538025
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            171
+          ],
+          "score": 0.03099375031888485
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            173
+          ],
+          "score": 0.06979046761989594
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 112,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.HD 45184 c",
+          "revision": "2e46b6628532df00ba7654697048b4a4db3db7cc026a4d891de8632e360b36f1"
+        }
+      ],
+      "encoding_elapsed_ms": 0.008981,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 70
+}

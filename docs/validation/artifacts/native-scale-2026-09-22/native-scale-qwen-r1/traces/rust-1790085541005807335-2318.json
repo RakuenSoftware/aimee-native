@@ -1,0 +1,300 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790085541005807335-2318",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Saint Marcel IT 6534762, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    13799,
+    47236,
+    8435,
+    220,
+    21,
+    20,
+    18,
+    19,
+    22,
+    21,
+    17,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    29774,
+    18794,
+    617
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -84,
+  "answer": "Europe/Rome",
+  "finish_reason": "stop",
+  "elapsed_ms": 2570.297454,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Saint Marcel IT 6534762, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Saint Marcel (ID 6534762): country code IT; latitude 45.73146; longitude 7.4482; administrative codes 19/AO; population 930; time zone Europe/Rome. The source record was modified on 2014-05-01.",
+            "id": "geonames.6534762",
+            "key": "place Saint Marcel IT 6534762",
+            "kind": "fact",
+            "memory_hash": "e5946454d58a3c89821c45c66dad8785f9d04348fd6871251491e89cc04f01a3",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.6534762",
+              "revision": "82d91be2b7bb11198fdb426c71fe2f905ec19785337db28ff12435ae05325a62"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 84,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.6534762",
+          "revision": "82d91be2b7bb11198fdb426c71fe2f905ec19785337db28ff12435ae05325a62"
+        }
+      ],
+      "encoding_elapsed_ms": 586.122932,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 84,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 45.73146 2014-05-01 Answer user 6534762 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02541726501658559
+        },
+        {
+          "text": "45.73146",
+          "source": "aimee",
+          "positions": [
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35
+          ],
+          "score": 0.02694637913373299
+        },
+        {
+          "text": "2014-05-01",
+          "source": "aimee",
+          "positions": [
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82
+          ],
+          "score": 0.015085994265973568
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            87
+          ],
+          "score": 0.02552059292793274
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            110
+          ],
+          "score": 0.015208950266242027
+        },
+        {
+          "text": "6534762",
+          "source": "sequence",
+          "positions": [
+            124,
+            125,
+            126,
+            127,
+            128,
+            129,
+            130
+          ],
+          "score": 0.026817561592906713
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            132
+          ],
+          "score": 0.03781205415725708
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            133
+          ],
+          "score": 0.01258348673582077
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            134
+          ],
+          "score": 0.031018545851111412
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            147
+          ],
+          "score": 0.02104676142334938
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            149
+          ],
+          "score": 0.02617761492729187
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            151
+          ],
+          "score": 0.06413370370864868
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 84,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.6534762",
+          "revision": "82d91be2b7bb11198fdb426c71fe2f905ec19785337db28ff12435ae05325a62"
+        }
+      ],
+      "encoding_elapsed_ms": 0.010341,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 72
+}

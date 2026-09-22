@@ -1,0 +1,305 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790082082311582219-414",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Gökçeyaka TR 10181671, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    469,
+    74166,
+    3031,
+    1155,
+    12949,
+    4823,
+    220,
+    16,
+    15,
+    16,
+    23,
+    16,
+    21,
+    22,
+    16,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    22,
+    17,
+    18
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -96,
+  "answer": "723",
+  "finish_reason": "stop",
+  "elapsed_ms": 2732.5219970000003,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Gökçeyaka TR 10181671, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Gökçeyaka (ID 10181671): country code TR; latitude 37.06633; longitude 29.29718; administrative codes 20/8632194; population 723; time zone Europe/Istanbul. The source record was modified on 2025-05-10.",
+            "id": "geonames.10181671",
+            "key": "place Gökçeyaka TR 10181671",
+            "kind": "fact",
+            "memory_hash": "d3f47729e8dbc6ad1e32051f80b483aa4a77b458c1a2a7342185fad5d54e6998",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.10181671",
+              "revision": "cc3487fdc62775b48d628210c66b17fc73f2e165260a817682197900186a7ffc"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 96,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.10181671",
+          "revision": "cc3487fdc62775b48d628210c66b17fc73f2e165260a817682197900186a7ffc"
+        }
+      ],
+      "encoding_elapsed_ms": 536.378964,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 96,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Gökçeyaka 2025-05-10 Answer Gökçeyaka 10181671 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02398921735584736
+        },
+        {
+          "text": "Gökçeyaka",
+          "source": "aimee",
+          "positions": [
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "score": 0.014878864050842822
+        },
+        {
+          "text": "2025-05-10",
+          "source": "aimee",
+          "positions": [
+            85,
+            86,
+            87,
+            88,
+            89,
+            90,
+            91,
+            92,
+            93,
+            94
+          ],
+          "score": 0.02245511631190311
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            99
+          ],
+          "score": 0.024488698691129684
+        },
+        {
+          "text": "Gökçeyaka",
+          "source": "sequence",
+          "positions": [
+            132,
+            133,
+            134,
+            135,
+            136
+          ],
+          "score": 0.02032760763540864
+        },
+        {
+          "text": "10181671",
+          "source": "sequence",
+          "positions": [
+            139,
+            140,
+            141,
+            142,
+            143,
+            144,
+            145,
+            146
+          ],
+          "score": 0.023676996235735714
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            148
+          ],
+          "score": 0.03583491966128349
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            149
+          ],
+          "score": 0.014144562184810638
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            150
+          ],
+          "score": 0.03128734976053238
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            162
+          ],
+          "score": 0.022661730647087097
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            164
+          ],
+          "score": 0.03174953535199165
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            166
+          ],
+          "score": 0.06639107316732407
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 96,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.10181671",
+          "revision": "cc3487fdc62775b48d628210c66b17fc73f2e165260a817682197900186a7ffc"
+        }
+      ],
+      "encoding_elapsed_ms": 0.01031,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 75
+}

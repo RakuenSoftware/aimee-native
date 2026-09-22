@@ -1,0 +1,292 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790081873153486920-304",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Emseloh DE 2930444, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    458,
+    977,
+    300,
+    2194,
+    3276,
+    220,
+    17,
+    24,
+    18,
+    15,
+    19,
+    19,
+    19,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    21,
+    16,
+    15
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -90,
+  "answer": "610",
+  "finish_reason": "stop",
+  "elapsed_ms": 2665.85992,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Emseloh DE 2930444, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Emseloh (ID 2930444): country code DE; latitude 51.50179; longitude 11.39173; administrative codes 14/00; population 610; time zone Europe/Berlin. The source record was modified on 2015-09-04.",
+            "id": "geonames.2930444",
+            "key": "place Emseloh DE 2930444",
+            "kind": "fact",
+            "memory_hash": "0f71d37878129a7264bcee728017012e61c3030e0ab378ddc3ac61d276ffbdb0",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.2930444",
+              "revision": "50fd239db845434983840f93413223d3f8540678d593049a440ada6a2199ea3a"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 90,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.2930444",
+          "revision": "50fd239db845434983840f93413223d3f8540678d593049a440ada6a2199ea3a"
+        }
+      ],
+      "encoding_elapsed_ms": 598.968485,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 90,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 51.50179 Answer user 2930444 what is its population assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02796734543517232
+        },
+        {
+          "text": "51.50179",
+          "source": "aimee",
+          "positions": [
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37
+          ],
+          "score": 0.012210215645609424
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            93
+          ],
+          "score": 0.02651149034500122
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            116
+          ],
+          "score": 0.014251730404794216
+        },
+        {
+          "text": "2930444",
+          "source": "sequence",
+          "positions": [
+            132,
+            133,
+            134,
+            135,
+            136,
+            137,
+            138
+          ],
+          "score": 0.0256717509473674
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            140
+          ],
+          "score": 0.036519020795822144
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            141
+          ],
+          "score": 0.014187093824148178
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            142
+          ],
+          "score": 0.03088834136724472
+        },
+        {
+          "text": "population",
+          "source": "sequence",
+          "positions": [
+            143
+          ],
+          "score": 0.012149064801633358
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.024069402366876602
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            156
+          ],
+          "score": 0.03184759244322777
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            158
+          ],
+          "score": 0.06631361693143845
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 90,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.2930444",
+          "revision": "50fd239db845434983840f93413223d3f8540678d593049a440ada6a2199ea3a"
+        }
+      ],
+      "encoding_elapsed_ms": 0.007880000000000002,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 73
+}

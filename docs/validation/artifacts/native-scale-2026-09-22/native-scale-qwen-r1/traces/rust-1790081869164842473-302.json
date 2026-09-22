@@ -1,0 +1,271 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790081869164842473-302",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhich TCP port is registered for IANA service re-conn-proto? Return the number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    22365,
+    25804,
+    2548,
+    369,
+    9393,
+    364,
+    353,
+    37492,
+    2393,
+    311,
+    12,
+    4983,
+    9546,
+    951,
+    30,
+    3301,
+    279,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    16,
+    18,
+    15,
+    21
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -35,
+  "answer": "1306",
+  "finish_reason": "stop",
+  "elapsed_ms": 2943.1640999999995,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "Which TCP port is registered for IANA service re-conn-proto? Return the number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service re-conn-proto has these registered transport/port assignments: TCP port 1306; UDP port 1306.",
+            "id": "iana.re-conn-proto",
+            "key": "IANA service re-conn-proto",
+            "kind": "fact",
+            "memory_hash": "f0ea122f83419dfcf48614441001615337ae5caf4d17683323aad2ed00521bdf",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.re-conn-proto",
+              "revision": "34e9cb8279e57f7e78c410fec8713994c16c543642655e9f51af72dfa5c25546"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 35,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.re-conn-proto",
+          "revision": "34e9cb8279e57f7e78c410fec8713994c16c543642655e9f51af72dfa5c25546"
+        }
+      ],
+      "encoding_elapsed_ms": 497.542145,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 35,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user Which TCP is re-conn-proto Return the assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.033564025070518255
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            38
+          ],
+          "score": 0.024705812335014343
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            61
+          ],
+          "score": 0.018769804388284683
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            63
+          ],
+          "score": 0.023415198549628258
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            64
+          ],
+          "score": 0.014431899413466454
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            66
+          ],
+          "score": 0.02944260463118553
+        },
+        {
+          "text": "re-conn-proto",
+          "source": "sequence",
+          "positions": [
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.015507318894378841
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.014509212225675583
+        },
+        {
+          "text": "the",
+          "source": "sequence",
+          "positions": [
+            79
+          ],
+          "score": 0.013467852026224136
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            86
+          ],
+          "score": 0.02790112793445587
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            88
+          ],
+          "score": 0.031624551862478256
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            90
+          ],
+          "score": 0.0711049810051918
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 35,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.re-conn-proto",
+          "revision": "34e9cb8279e57f7e78c410fec8713994c16c543642655e9f51af72dfa5c25546"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00382,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 61
+}

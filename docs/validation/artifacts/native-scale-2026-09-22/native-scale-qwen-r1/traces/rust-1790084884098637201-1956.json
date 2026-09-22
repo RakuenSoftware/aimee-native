@@ -1,0 +1,296 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790084884098637201-1956",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Cockeysville US 4351887, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    32805,
+    68,
+    1012,
+    7669,
+    2201,
+    220,
+    19,
+    18,
+    20,
+    16,
+    23,
+    23,
+    22,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    17,
+    15,
+    22,
+    22,
+    21
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -91,
+  "answer": "20776",
+  "finish_reason": "stop",
+  "elapsed_ms": 3503.179277,
+  "memory_encoding_passes": 1,
+  "native_reads": 96,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Cockeysville US 4351887, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Cockeysville (ID 4351887): country code US; latitude 39.48122; longitude -76.64386; administrative codes MD/005; population 20776; time zone America/New_York. The source record was modified on 2026-09-16.",
+            "id": "geonames.4351887",
+            "key": "place Cockeysville US 4351887",
+            "kind": "fact",
+            "memory_hash": "9ed78658c1256c54e0174633edb01c97d504a5a31605b650940144bdd7e1e34a",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.4351887",
+              "revision": "24cb6b7e1d5cdf034c332185bc3dd091bfb344f2cb279924cc1cfc2825496e7e"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 91,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.4351887",
+          "revision": "24cb6b7e1d5cdf034c332185bc3dd091bfb344f2cb279924cc1cfc2825496e7e"
+        }
+      ],
+      "encoding_elapsed_ms": 602.441226,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 91,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2026-09-16 Answer user 4351887 what is its population assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.029320680536329746
+        },
+        {
+          "text": "2026-09-16",
+          "source": "aimee",
+          "positions": [
+            80,
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89
+          ],
+          "score": 0.015610983260557987
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            94
+          ],
+          "score": 0.026794079691171646
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            117
+          ],
+          "score": 0.013668118976056576
+        },
+        {
+          "text": "4351887",
+          "source": "sequence",
+          "positions": [
+            133,
+            134,
+            135,
+            136,
+            137,
+            138,
+            139
+          ],
+          "score": 0.017088612366933376
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            141
+          ],
+          "score": 0.03556279093027115
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            142
+          ],
+          "score": 0.015299336984753609
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            143
+          ],
+          "score": 0.03414048254489899
+        },
+        {
+          "text": "population",
+          "source": "sequence",
+          "positions": [
+            144
+          ],
+          "score": 0.013093974441289902
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.02306777983903885
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            157
+          ],
+          "score": 0.030116211622953415
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            159
+          ],
+          "score": 0.06722434610128403
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 91,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.4351887",
+          "revision": "24cb6b7e1d5cdf034c332185bc3dd091bfb344f2cb279924cc1cfc2825496e7e"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00994,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 75
+}

@@ -1,0 +1,299 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790081752835695761-236",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Marble US 5036605, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    70060,
+    2201,
+    220,
+    20,
+    15,
+    18,
+    21,
+    21,
+    15,
+    20,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    30014,
+    14,
+    44635
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -85,
+  "answer": "America/Chicago",
+  "finish_reason": "stop",
+  "elapsed_ms": 2675.549432,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Marble US 5036605, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Marble (ID 5036605): country code US; latitude 47.32049; longitude -93.29854; administrative codes MN/061; population 693; time zone America/Chicago. The source record was modified on 2017-05-23.",
+            "id": "geonames.5036605",
+            "key": "place Marble US 5036605",
+            "kind": "fact",
+            "memory_hash": "24b883d0d7e19c6bc0c5854c0a9ee1c4edb2c4b2ce000a7d7e693147430aa083",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.5036605",
+              "revision": "909c09d9f6289ef5576f6c13a085c06b90bc2eeb32451d84e2c85b0fecccc3e6"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 85,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.5036605",
+          "revision": "909c09d9f6289ef5576f6c13a085c06b90bc2eeb32451d84e2c85b0fecccc3e6"
+        }
+      ],
+      "encoding_elapsed_ms": 593.664283,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 85,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 93.29854 2017-05-23 Answer user 5036605 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.027863313909620047
+        },
+        {
+          "text": "93.29854",
+          "source": "aimee",
+          "positions": [
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45
+          ],
+          "score": 0.011852180730784312
+        },
+        {
+          "text": "2017-05-23",
+          "source": "aimee",
+          "positions": [
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83
+          ],
+          "score": 0.013110244559356943
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            88
+          ],
+          "score": 0.024253398180007935
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            111
+          ],
+          "score": 0.015191818587481976
+        },
+        {
+          "text": "5036605",
+          "source": "sequence",
+          "positions": [
+            124,
+            125,
+            126,
+            127,
+            128,
+            129,
+            130
+          ],
+          "score": 0.02790487592574209
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            132
+          ],
+          "score": 0.035835687071084976
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            133
+          ],
+          "score": 0.013546476140618324
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            134
+          ],
+          "score": 0.03062550351023674
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            147
+          ],
+          "score": 0.02100548706948757
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            149
+          ],
+          "score": 0.028573308140039444
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            151
+          ],
+          "score": 0.06640603393316269
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 85,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.5036605",
+          "revision": "909c09d9f6289ef5576f6c13a085c06b90bc2eeb32451d84e2c85b0fecccc3e6"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00553,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 71
+}

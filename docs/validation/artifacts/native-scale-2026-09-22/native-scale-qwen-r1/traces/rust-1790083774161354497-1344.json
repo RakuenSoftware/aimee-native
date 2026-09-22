@@ -1,0 +1,290 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790083774161354497-1344",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Zagórzyce PL 754174, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    85567,
+    57372,
+    4107,
+    341,
+    10009,
+    220,
+    22,
+    20,
+    19,
+    16,
+    22,
+    19,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    18,
+    16,
+    23,
+    17
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -91,
+  "answer": "3182",
+  "finish_reason": "stop",
+  "elapsed_ms": 3028.167478,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Zagórzyce PL 754174, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Zagórzyce (ID 754174): country code PL; latitude 50.0169; longitude 21.67517; administrative codes 80/1815; population 3182; time zone Europe/Warsaw. The source record was modified on 2010-11-28.",
+            "id": "geonames.754174",
+            "key": "place Zagórzyce PL 754174",
+            "kind": "fact",
+            "memory_hash": "bf97fec851ce51e542033dbd2fba69b9b9c7025a861b5406162d3ee85fc1c621",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.754174",
+              "revision": "facf324d37095c715b26175862d2eabf9ee863808fd6fea51710c446f8e13b75"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 91,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.754174",
+          "revision": "facf324d37095c715b26175862d2eabf9ee863808fd6fea51710c446f8e13b75"
+        }
+      ],
+      "encoding_elapsed_ms": 599.98697,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 91,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Zagórzyce Answer user Zagórzyce 754174 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.027194194495677948
+        },
+        {
+          "text": "Zagórzyce",
+          "source": "aimee",
+          "positions": [
+            9,
+            10,
+            11,
+            12
+          ],
+          "score": 0.012589067104272544
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            94
+          ],
+          "score": 0.02543157897889614
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            117
+          ],
+          "score": 0.014944054186344147
+        },
+        {
+          "text": "Zagórzyce",
+          "source": "sequence",
+          "positions": [
+            127,
+            128,
+            129,
+            130
+          ],
+          "score": 0.01280385279096663
+        },
+        {
+          "text": "754174",
+          "source": "sequence",
+          "positions": [
+            133,
+            134,
+            135,
+            136,
+            137,
+            138
+          ],
+          "score": 0.022300825687125325
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            140
+          ],
+          "score": 0.03986932337284088
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            141
+          ],
+          "score": 0.014390446245670319
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            142
+          ],
+          "score": 0.03365187346935272
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.02366255223751068
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            156
+          ],
+          "score": 0.03163447231054306
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            158
+          ],
+          "score": 0.06528805196285248
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 91,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.754174",
+          "revision": "facf324d37095c715b26175862d2eabf9ee863808fd6fea51710c446f8e13b75"
+        }
+      ],
+      "encoding_elapsed_ms": 0.0058000000000000005,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 73
+}

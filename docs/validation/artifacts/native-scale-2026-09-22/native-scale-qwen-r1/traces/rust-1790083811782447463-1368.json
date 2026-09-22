@@ -1,0 +1,290 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790083811782447463-1368",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Patoltecoya MX 8860045, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    6912,
+    335,
+    647,
+    981,
+    7509,
+    26690,
+    220,
+    23,
+    23,
+    21,
+    15,
+    15,
+    19,
+    20,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    30014,
+    9964,
+    325,
+    3822,
+    892,
+    477
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -94,
+  "answer": "America/Mexico_City",
+  "finish_reason": "stop",
+  "elapsed_ms": 3936.504927,
+  "memory_encoding_passes": 1,
+  "native_reads": 112,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Patoltecoya MX 8860045, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Patoltecoya (ID 8860045): country code MX; latitude 20.20778; longitude -98.03139; administrative codes 21/071; population 963; time zone America/Mexico_City. The source record was modified on 2014-04-11.",
+            "id": "geonames.8860045",
+            "key": "place Patoltecoya MX 8860045",
+            "kind": "fact",
+            "memory_hash": "efe837bf473386a14755f03d6b9337543038e38a764b2467bb84115ad63a0951",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.8860045",
+              "revision": "4a7ea2f92a2abf1a95bacfd068b831fcce591e1309b4e0b6fb97e1d438f1092c"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 94,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.8860045",
+          "revision": "4a7ea2f92a2abf1a95bacfd068b831fcce591e1309b4e0b6fb97e1d438f1092c"
+        }
+      ],
+      "encoding_elapsed_ms": 605.9284719999999,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 94,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user According 8860045 what is its Return assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.025521169416606426
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            97
+          ],
+          "score": 0.02462015673518181
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            120
+          ],
+          "score": 0.013163922354578972
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            122
+          ],
+          "score": 0.010457492433488369
+        },
+        {
+          "text": "8860045",
+          "source": "sequence",
+          "positions": [
+            137,
+            138,
+            139,
+            140,
+            141,
+            142,
+            143
+          ],
+          "score": 0.01884318294469267
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            145
+          ],
+          "score": 0.03722235560417175
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            146
+          ],
+          "score": 0.013859562575817108
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            147
+          ],
+          "score": 0.03211275488138199
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            151
+          ],
+          "score": 0.01089006569236517
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            160
+          ],
+          "score": 0.02133578434586525
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            162
+          ],
+          "score": 0.029493678361177444
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            164
+          ],
+          "score": 0.06470518559217453
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 94,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.8860045",
+          "revision": "4a7ea2f92a2abf1a95bacfd068b831fcce591e1309b4e0b6fb97e1d438f1092c"
+        }
+      ],
+      "encoding_elapsed_ms": 0.01023,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 78
+}

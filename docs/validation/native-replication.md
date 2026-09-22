@@ -38,4 +38,4 @@ memory-disabled/native questions on two models, 5,000 planned generated answers.
 and canonical export; 625 public facts are sampled from the 249,105-record KB.
 Report personal/general, domains, baseline/native, paired recoveries/regressions,
 selected revisions and exceptions separately. Protocol fixes questions, values,
-score and sampling seed before inference. Full model results are pending.
+score and sampling seed before inference. Full results are in [the completed 5,750-request study](native-scale.md).

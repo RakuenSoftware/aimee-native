@@ -1,0 +1,286 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790081587925863049-144",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Izumo JP 1861084, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    46228,
+    62442,
+    47148,
+    220,
+    16,
+    23,
+    21,
+    16,
+    15,
+    23,
+    19,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    16,
+    22,
+    17,
+    22,
+    22,
+    20
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -97,
+  "answer": "172775",
+  "finish_reason": "stop",
+  "elapsed_ms": 3834.587163,
+  "memory_encoding_passes": 1,
+  "native_reads": 112,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Izumo JP 1861084, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Izumo (ID 1861084): country code JP; latitude 35.36667; longitude 132.76667; administrative codes 36/1861082; population 172775; time zone Asia/Tokyo. The source record was modified on 2024-12-29.",
+            "id": "geonames.1861084",
+            "key": "place Izumo JP 1861084",
+            "kind": "fact",
+            "memory_hash": "a3f3ebf128f82f6295f455bdff647ef24d4489058771fa8db92e99358bf4f440",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.1861084",
+              "revision": "9e174233ac5085efd886f902c7422c9a0d6405ce7a076af890d33742ce103c4d"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 97,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.1861084",
+          "revision": "9e174233ac5085efd886f902c7422c9a0d6405ce7a076af890d33742ce103c4d"
+        }
+      ],
+      "encoding_elapsed_ms": 516.9613589999999,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 97,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user According 1861084 what is its population assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02445645770058036
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            100
+          ],
+          "score": 0.025219067931175232
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            123
+          ],
+          "score": 0.01639675907790661
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            125
+          ],
+          "score": 0.011858543381094933
+        },
+        {
+          "text": "1861084",
+          "source": "sequence",
+          "positions": [
+            137,
+            138,
+            139,
+            140,
+            141,
+            142,
+            143
+          ],
+          "score": 0.01747495774179697
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            145
+          ],
+          "score": 0.038211602717638016
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            146
+          ],
+          "score": 0.015417193993926048
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            147
+          ],
+          "score": 0.03455056995153427
+        },
+        {
+          "text": "population",
+          "source": "sequence",
+          "positions": [
+            148
+          ],
+          "score": 0.012674275785684586
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            159
+          ],
+          "score": 0.02241649478673935
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.03190029412508011
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            163
+          ],
+          "score": 0.06499440968036652
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 97,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.1861084",
+          "revision": "9e174233ac5085efd886f902c7422c9a0d6405ce7a076af890d33742ce103c4d"
+        }
+      ],
+      "encoding_elapsed_ms": 0.0054600000000000004,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 74
+}

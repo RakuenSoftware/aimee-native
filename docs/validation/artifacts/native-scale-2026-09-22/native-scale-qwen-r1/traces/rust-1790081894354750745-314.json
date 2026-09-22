@@ -1,0 +1,291 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790081894354750745-314",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Alano IT 8950104, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    1615,
+    5475,
+    8435,
+    220,
+    23,
+    24,
+    20,
+    15,
+    16,
+    15,
+    19,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    29774,
+    18794,
+    617
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -85,
+  "answer": "Europe/Rome",
+  "finish_reason": "stop",
+  "elapsed_ms": 2663.5019780000002,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Alano IT 8950104, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Alano (ID 8950104): country code IT; latitude 40.3056; longitude 14.97152; administrative codes 04/SA; population 594; time zone Europe/Rome. The source record was modified on 2014-04-13.",
+            "id": "geonames.8950104",
+            "key": "place Alano IT 8950104",
+            "kind": "fact",
+            "memory_hash": "0d639729667bfda0d9c32de781ff51aa4c9af2b2fd99b3a5c7bdc1d777e83d0d",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.8950104",
+              "revision": "8d4e9a80165db6442a38788342ada8cb7ae0e98e96fd00487c90fdbb3af00f64"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 85,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.8950104",
+          "revision": "8d4e9a80165db6442a38788342ada8cb7ae0e98e96fd00487c90fdbb3af00f64"
+        }
+      ],
+      "encoding_elapsed_ms": 600.7545090000001,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 85,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 14.97152 Answer user According 8950104 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.027133834548294544
+        },
+        {
+          "text": "14.97152",
+          "source": "aimee",
+          "positions": [
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45
+          ],
+          "score": 0.014815066359005868
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            88
+          ],
+          "score": 0.026000838726758957
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            111
+          ],
+          "score": 0.015551748685538769
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            113
+          ],
+          "score": 0.011825688183307648
+        },
+        {
+          "text": "8950104",
+          "source": "sequence",
+          "positions": [
+            125,
+            126,
+            127,
+            128,
+            129,
+            130,
+            131
+          ],
+          "score": 0.031538569019176066
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            133
+          ],
+          "score": 0.037672385573387146
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            134
+          ],
+          "score": 0.01349969208240509
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            135
+          ],
+          "score": 0.03132350742816925
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            148
+          ],
+          "score": 0.02202252671122551
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            150
+          ],
+          "score": 0.029524153098464012
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.06493746489286423
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 85,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.8950104",
+          "revision": "8d4e9a80165db6442a38788342ada8cb7ae0e98e96fd00487c90fdbb3af00f64"
+        }
+      ],
+      "encoding_elapsed_ms": 0.010010000000000002,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 72
+}

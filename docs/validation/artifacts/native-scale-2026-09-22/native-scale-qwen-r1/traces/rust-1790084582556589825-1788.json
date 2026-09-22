@@ -1,0 +1,294 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790084582556589825-1788",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Dison BE 2799347, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    414,
+    3226,
+    6980,
+    220,
+    17,
+    22,
+    24,
+    24,
+    18,
+    19,
+    22,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    29774,
+    14,
+    6614,
+    30818
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -85,
+  "answer": "Europe/Brussels",
+  "finish_reason": "stop",
+  "elapsed_ms": 3035.119874,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Dison BE 2799347, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Dison (ID 2799347): country code BE; latitude 50.61004; longitude 5.8534; administrative codes WAL/WLG; population 13642; time zone Europe/Brussels. The source record was modified on 2011-03-14.",
+            "id": "geonames.2799347",
+            "key": "place Dison BE 2799347",
+            "kind": "fact",
+            "memory_hash": "19ca270175ed1048a6f6ad35fa4c43e4d0d06a780010574825096b6cea1a8665",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.2799347",
+              "revision": "f5b6143b95dcf09a1cb4e5295c213f823e907035bf65fabfdee29b9c09ef4ce4"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 85,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.2799347",
+          "revision": "f5b6143b95dcf09a1cb4e5295c213f823e907035bf65fabfdee29b9c09ef4ce4"
+        }
+      ],
+      "encoding_elapsed_ms": 606.9321709999999,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 85,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2011-03-14 Answer user According 2799347 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02723432146012783
+        },
+        {
+          "text": "2011-03-14",
+          "source": "aimee",
+          "positions": [
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83
+          ],
+          "score": 0.013230568525614217
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            88
+          ],
+          "score": 0.02660682052373886
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            111
+          ],
+          "score": 0.01534456666558981
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            113
+          ],
+          "score": 0.011870848946273327
+        },
+        {
+          "text": "2799347",
+          "source": "sequence",
+          "positions": [
+            125,
+            126,
+            127,
+            128,
+            129,
+            130,
+            131
+          ],
+          "score": 0.02516107214614749
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            133
+          ],
+          "score": 0.03732539713382721
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            134
+          ],
+          "score": 0.01304593961685896
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            135
+          ],
+          "score": 0.02995791658759117
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            148
+          ],
+          "score": 0.022186465561389923
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            150
+          ],
+          "score": 0.031689852476119995
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.06642813980579376
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 85,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.2799347",
+          "revision": "f5b6143b95dcf09a1cb4e5295c213f823e907035bf65fabfdee29b9c09ef4ce4"
+        }
+      ],
+      "encoding_elapsed_ms": 0.011430000000000001,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 73
+}

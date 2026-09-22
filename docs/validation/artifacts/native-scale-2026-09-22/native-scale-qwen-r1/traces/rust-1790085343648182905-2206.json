@@ -1,0 +1,269 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790085343648182905-2206",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhich TCP port is registered for IANA service badm-priv? Return the number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    22365,
+    25804,
+    2548,
+    369,
+    9393,
+    364,
+    353,
+    37492,
+    2393,
+    3743,
+    76,
+    12,
+    11548,
+    30,
+    3301,
+    279,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    21,
+    20,
+    15,
+    20
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -34,
+  "answer": "6505",
+  "finish_reason": "stop",
+  "elapsed_ms": 2798.214636,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "Which TCP port is registered for IANA service badm-priv? Return the number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service badm-priv has these registered transport/port assignments: TCP port 6505; UDP port 6505.",
+            "id": "iana.badm-priv",
+            "key": "IANA service badm-priv",
+            "kind": "fact",
+            "memory_hash": "a38f654199f8d7c9f612b0419355c181cd7aff9936fe7dd4e8ea2494d0cda1e2",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.badm-priv",
+              "revision": "dabba858ebc83333a3dba7879655255d3d44ef93733df92fadbaf7ed375af929"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 34,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.badm-priv",
+          "revision": "dabba858ebc83333a3dba7879655255d3d44ef93733df92fadbaf7ed375af929"
+        }
+      ],
+      "encoding_elapsed_ms": 496.387458,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 34,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user Which TCP is badm-priv Return the assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.03268735948950052
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            37
+          ],
+          "score": 0.024057235568761826
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            60
+          ],
+          "score": 0.019528713077306747
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            62
+          ],
+          "score": 0.023795461282134056
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            63
+          ],
+          "score": 0.013845490291714668
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            65
+          ],
+          "score": 0.02940896712243557
+        },
+        {
+          "text": "badm-priv",
+          "source": "sequence",
+          "positions": [
+            71,
+            72,
+            73,
+            74
+          ],
+          "score": 0.01911982987076044
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            76
+          ],
+          "score": 0.01486254297196865
+        },
+        {
+          "text": "the",
+          "source": "sequence",
+          "positions": [
+            77
+          ],
+          "score": 0.014211984351277351
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            84
+          ],
+          "score": 0.028217855840921402
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            86
+          ],
+          "score": 0.031823351979255676
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            88
+          ],
+          "score": 0.0697958767414093
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 34,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.badm-priv",
+          "revision": "dabba858ebc83333a3dba7879655255d3d44ef93733df92fadbaf7ed375af929"
+        }
+      ],
+      "encoding_elapsed_ms": 0.007710000000000001,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 60
+}

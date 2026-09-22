@@ -1,0 +1,269 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790084301786831935-1638",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhich TCP port is registered for IANA service http-wmap? Return the number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    22365,
+    25804,
+    2548,
+    369,
+    9393,
+    364,
+    353,
+    37492,
+    2393,
+    1696,
+    2543,
+    2117,
+    30,
+    3301,
+    279,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    23,
+    24,
+    24,
+    15
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -33,
+  "answer": "8990",
+  "finish_reason": "stop",
+  "elapsed_ms": 2896.212556,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "Which TCP port is registered for IANA service http-wmap? Return the number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service http-wmap has these registered transport/port assignments: TCP port 8990; UDP port 8990.",
+            "id": "iana.http-wmap",
+            "key": "IANA service http-wmap",
+            "kind": "fact",
+            "memory_hash": "36a16a396ffee7ed199f96bd40002f800895a6affa4f8ad03730cf61271d708f",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.http-wmap",
+              "revision": "a0f7b7b9fd6131f3874d4eb023544e48dc78a68094e05d8dcda513ddb0bd59e6"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 33,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.http-wmap",
+          "revision": "a0f7b7b9fd6131f3874d4eb023544e48dc78a68094e05d8dcda513ddb0bd59e6"
+        }
+      ],
+      "encoding_elapsed_ms": 500.43326099999996,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 33,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative http-wmap Answer user Which is http-wmap Return the assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02966989716514945
+        },
+        {
+          "text": "http-wmap",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9
+          ],
+          "score": 0.013753551989793777
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            36
+          ],
+          "score": 0.021927272900938988
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            59
+          ],
+          "score": 0.01912851631641388
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            61
+          ],
+          "score": 0.02314726822078228
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            64
+          ],
+          "score": 0.029169846326112747
+        },
+        {
+          "text": "http-wmap",
+          "source": "sequence",
+          "positions": [
+            70,
+            71,
+            72
+          ],
+          "score": 0.025656539713963866
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            74
+          ],
+          "score": 0.0167489442974329
+        },
+        {
+          "text": "the",
+          "source": "sequence",
+          "positions": [
+            75
+          ],
+          "score": 0.01348052080720663
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            82
+          ],
+          "score": 0.02709159068763256
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            84
+          ],
+          "score": 0.032765164971351624
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            86
+          ],
+          "score": 0.07074583321809769
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 33,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.http-wmap",
+          "revision": "a0f7b7b9fd6131f3874d4eb023544e48dc78a68094e05d8dcda513ddb0bd59e6"
+        }
+      ],
+      "encoding_elapsed_ms": 0.01007,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 59
+}

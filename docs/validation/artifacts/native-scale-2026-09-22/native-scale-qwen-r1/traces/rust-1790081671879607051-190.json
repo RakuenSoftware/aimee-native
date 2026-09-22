@@ -1,0 +1,296 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790081671879607051-190",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Weyregg AT 2761416, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    457,
+    1155,
+    1525,
+    70,
+    7135,
+    220,
+    17,
+    22,
+    21,
+    16,
+    19,
+    16,
+    21,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    29774,
+    26355,
+    72,
+    14517
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -91,
+  "answer": "Europe/Vienna",
+  "finish_reason": "stop",
+  "elapsed_ms": 3030.712262,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Weyregg AT 2761416, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Weyregg (ID 2761416): country code AT; latitude 47.90294; longitude 13.57193; administrative codes 04/417; population 799; time zone Europe/Vienna. The source record was modified on 2018-07-28.",
+            "id": "geonames.2761416",
+            "key": "place Weyregg AT 2761416",
+            "kind": "fact",
+            "memory_hash": "39a32b32fa4ba506b61f61ab6d8c6472e7a7c8e1c6c8a5a93f35d58ecaaf1fb7",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.2761416",
+              "revision": "c19860242ce69eb9ec90c4e6b815c08719045e5fde27fb012edee38865fc959e"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 91,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.2761416",
+          "revision": "c19860242ce69eb9ec90c4e6b815c08719045e5fde27fb012edee38865fc959e"
+        }
+      ],
+      "encoding_elapsed_ms": 603.192592,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 91,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2018-07-28 Answer user According 2761416 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.030010782182216644
+        },
+        {
+          "text": "2018-07-28",
+          "source": "aimee",
+          "positions": [
+            80,
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89
+          ],
+          "score": 0.013471699130604975
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            94
+          ],
+          "score": 0.026575258001685143
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            117
+          ],
+          "score": 0.013708231970667839
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            119
+          ],
+          "score": 0.011362001299858093
+        },
+        {
+          "text": "2761416",
+          "source": "sequence",
+          "positions": [
+            133,
+            134,
+            135,
+            136,
+            137,
+            138,
+            139
+          ],
+          "score": 0.02454961877083406
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            141
+          ],
+          "score": 0.03648243471980095
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            142
+          ],
+          "score": 0.01273313071578741
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            143
+          ],
+          "score": 0.029280375689268112
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            156
+          ],
+          "score": 0.022580374032258987
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            158
+          ],
+          "score": 0.03040499798953533
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            160
+          ],
+          "score": 0.06598827242851257
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 91,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.2761416",
+          "revision": "c19860242ce69eb9ec90c4e6b815c08719045e5fde27fb012edee38865fc959e"
+        }
+      ],
+      "encoding_elapsed_ms": 0.009731,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 75
+}

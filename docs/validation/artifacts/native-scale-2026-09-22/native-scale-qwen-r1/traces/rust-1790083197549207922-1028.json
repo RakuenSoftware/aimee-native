@@ -1,0 +1,296 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790083197549207922-1028",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Villán de Tordesillas ES 3105325, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    16062,
+    11062,
+    401,
+    345,
+    77622,
+    32141,
+    18704,
+    220,
+    18,
+    16,
+    15,
+    20,
+    18,
+    17,
+    20,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    16,
+    22,
+    19
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -89,
+  "answer": "174",
+  "finish_reason": "stop",
+  "elapsed_ms": 2741.372008,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Villán de Tordesillas ES 3105325, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Villán de Tordesillas (ID 3105325): country code ES; latitude 41.59311; longitude -4.92214; administrative codes 55/VA; population 174; time zone Europe/Madrid. The source record was modified on 2012-03-04.",
+            "id": "geonames.3105325",
+            "key": "place Villán de Tordesillas ES 3105325",
+            "kind": "fact",
+            "memory_hash": "8debc5ff82cd0fdda38d64c234e483c2759585224283d488b16a094e14865e4d",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.3105325",
+              "revision": "49f5f502b5a408e14669434c26bb739834b2f9598c50bc68dda520bde09546c0"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 89,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3105325",
+          "revision": "49f5f502b5a408e14669434c26bb739834b2f9598c50bc68dda520bde09546c0"
+        }
+      ],
+      "encoding_elapsed_ms": 604.279099,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 89,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2012-03-04 Answer user 3105325 what is its population assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.027768290601670742
+        },
+        {
+          "text": "2012-03-04",
+          "source": "aimee",
+          "positions": [
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87
+          ],
+          "score": 0.012230711123265792
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            92
+          ],
+          "score": 0.02260122261941433
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            115
+          ],
+          "score": 0.013181949034333229
+        },
+        {
+          "text": "3105325",
+          "source": "sequence",
+          "positions": [
+            133,
+            134,
+            135,
+            136,
+            137,
+            138,
+            139
+          ],
+          "score": 0.017849672702141106
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            141
+          ],
+          "score": 0.036313287913799286
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            142
+          ],
+          "score": 0.014477360062301159
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            143
+          ],
+          "score": 0.03382281959056854
+        },
+        {
+          "text": "population",
+          "source": "sequence",
+          "positions": [
+            144
+          ],
+          "score": 0.012379316613078117
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.023020654916763306
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            157
+          ],
+          "score": 0.029608268290758133
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            159
+          ],
+          "score": 0.06503555923700333
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 89,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3105325",
+          "revision": "49f5f502b5a408e14669434c26bb739834b2f9598c50bc68dda520bde09546c0"
+        }
+      ],
+      "encoding_elapsed_ms": 0.007500000000000001,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 75
+}

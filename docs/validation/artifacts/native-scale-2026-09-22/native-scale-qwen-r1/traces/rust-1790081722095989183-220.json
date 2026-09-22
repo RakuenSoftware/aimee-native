@@ -1,0 +1,293 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790081722095989183-220",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Wamunyu KE 178366, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    457,
+    308,
+    354,
+    38672,
+    10767,
+    220,
+    16,
+    22,
+    23,
+    18,
+    21,
+    21,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    71090,
+    19674,
+    80575
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -87,
+  "answer": "Africa/Nairobi",
+  "finish_reason": "stop",
+  "elapsed_ms": 2532.751491,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Wamunyu KE 178366, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Wamunyu (ID 178366): country code KE; latitude -1.40983; longitude 37.56358; administrative codes 31/unspecified; population 2190; time zone Africa/Nairobi. The source record was modified on 2024-01-18.",
+            "id": "geonames.178366",
+            "key": "place Wamunyu KE 178366",
+            "kind": "fact",
+            "memory_hash": "61c2bebed1388517c945825c96d11ea57ec625b73af02cb1708c0e4e00efe93e",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.178366",
+              "revision": "39aa0e1e76584c3a74333ce478990a7838fa5a5619fc08864e5c12a1c62ce8c7"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 87,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.178366",
+          "revision": "39aa0e1e76584c3a74333ce478990a7838fa5a5619fc08864e5c12a1c62ce8c7"
+        }
+      ],
+      "encoding_elapsed_ms": 591.725547,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 87,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2024-01-18 Answer user According 178366 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.023973806761205196
+        },
+        {
+          "text": "2024-01-18",
+          "source": "aimee",
+          "positions": [
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84,
+            85
+          ],
+          "score": 0.018729007206275128
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            90
+          ],
+          "score": 0.02665123902261257
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            113
+          ],
+          "score": 0.01454937644302845
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            115
+          ],
+          "score": 0.011514868587255478
+        },
+        {
+          "text": "178366",
+          "source": "sequence",
+          "positions": [
+            129,
+            130,
+            131,
+            132,
+            133,
+            134
+          ],
+          "score": 0.01465006306534633
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            136
+          ],
+          "score": 0.03611478954553604
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            137
+          ],
+          "score": 0.013488184660673141
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            138
+          ],
+          "score": 0.031194841489195824
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            151
+          ],
+          "score": 0.02094161882996559
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.029370320960879326
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.0640653595328331
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 87,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.178366",
+          "revision": "39aa0e1e76584c3a74333ce478990a7838fa5a5619fc08864e5c12a1c62ce8c7"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00516,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 73
+}

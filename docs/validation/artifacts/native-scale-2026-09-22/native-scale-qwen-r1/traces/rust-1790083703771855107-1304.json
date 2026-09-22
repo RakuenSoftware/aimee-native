@@ -1,0 +1,270 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790083703771855107-1304",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhich TCP port is registered for IANA service oob-ws-http? Return the number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    22365,
+    25804,
+    2548,
+    369,
+    9393,
+    364,
+    353,
+    37492,
+    2393,
+    296,
+    656,
+    2543,
+    82,
+    68891,
+    30,
+    3301,
+    279,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    21,
+    17,
+    18
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -26,
+  "answer": "623",
+  "finish_reason": "stop",
+  "elapsed_ms": 2363.446014,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "Which TCP port is registered for IANA service oob-ws-http? Return the number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service oob-ws-http has these registered transport/port assignments: TCP port 623.",
+            "id": "iana.oob-ws-http",
+            "key": "IANA service oob-ws-http",
+            "kind": "fact",
+            "memory_hash": "dc187a3bef82c1325280a01a4cbd0cc7c8fc7cd5d8c18eb7d8c5a0b8fbcbb9f3",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.oob-ws-http",
+              "revision": "48f70accae3858362e2750123309926c3aee91dd2bbc1805647b209930c199e8"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 26,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.oob-ws-http",
+          "revision": "48f70accae3858362e2750123309926c3aee91dd2bbc1805647b209930c199e8"
+        }
+      ],
+      "encoding_elapsed_ms": 500.33288,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 26,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user Which TCP is oob-ws-http Return the assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.026042943354696035
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            29
+          ],
+          "score": 0.024847451597452164
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            52
+          ],
+          "score": 0.01924474723637104
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            54
+          ],
+          "score": 0.023704111576080322
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            55
+          ],
+          "score": 0.01370637770742178
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            57
+          ],
+          "score": 0.030447985976934433
+        },
+        {
+          "text": "oob-ws-http",
+          "source": "sequence",
+          "positions": [
+            63,
+            64,
+            65,
+            66,
+            67
+          ],
+          "score": 0.01827764860354364
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            69
+          ],
+          "score": 0.014924953691661358
+        },
+        {
+          "text": "the",
+          "source": "sequence",
+          "positions": [
+            70
+          ],
+          "score": 0.014980154111981392
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            77
+          ],
+          "score": 0.027628615498542786
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            79
+          ],
+          "score": 0.031292110681533813
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            81
+          ],
+          "score": 0.06929971277713776
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 26,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.oob-ws-http",
+          "revision": "48f70accae3858362e2750123309926c3aee91dd2bbc1805647b209930c199e8"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00779,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 60
+}

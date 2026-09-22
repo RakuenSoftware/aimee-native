@@ -1,0 +1,306 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790085505715603351-2298",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Pavón AR 12035894, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    41341,
+    3064,
+    6064,
+    220,
+    16,
+    17,
+    15,
+    18,
+    20,
+    23,
+    24,
+    19,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    30014,
+    14,
+    92118,
+    15797,
+    10010,
+    428,
+    1511,
+    3732
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -96,
+  "answer": "America/Argentina/Buenos_Aires",
+  "finish_reason": "stop",
+  "elapsed_ms": 5009.5058149999995,
+  "memory_encoding_passes": 1,
+  "native_reads": 144,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Pavón AR 12035894, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Pavón (ID 12035894): country code AR; latitude -36.7114; longitude -56.75445; administrative codes 01/06336; population 1637; time zone America/Argentina/Buenos_Aires. The source record was modified on 2026-07-06.",
+            "id": "geonames.12035894",
+            "key": "place Pavón AR 12035894",
+            "kind": "fact",
+            "memory_hash": "0f84763f8973352ea019a83caab13e99b7c1d3150c5ab2dbb3074c55961f7fd4",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.12035894",
+              "revision": "b8a3be62b0bdd407f3c846d64b75b61fd90487842c8320053da9120abf68ee8a"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 96,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.12035894",
+          "revision": "b8a3be62b0bdd407f3c846d64b75b61fd90487842c8320053da9120abf68ee8a"
+        }
+      ],
+      "encoding_elapsed_ms": 512.64467,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 96,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 36.7114 2026-07-06 Answer user 12035894 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02414072025567293
+        },
+        {
+          "text": "36.7114",
+          "source": "aimee",
+          "positions": [
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35
+          ],
+          "score": 0.013997568050399423
+        },
+        {
+          "text": "2026-07-06",
+          "source": "aimee",
+          "positions": [
+            85,
+            86,
+            87,
+            88,
+            89,
+            90,
+            91,
+            92,
+            93,
+            94
+          ],
+          "score": 0.019505364165524952
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            99
+          ],
+          "score": 0.026422366499900818
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            122
+          ],
+          "score": 0.01387428492307663
+        },
+        {
+          "text": "12035894",
+          "source": "sequence",
+          "positions": [
+            136,
+            137,
+            138,
+            139,
+            140,
+            141,
+            142,
+            143
+          ],
+          "score": 0.020346463075838983
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            145
+          ],
+          "score": 0.03600350022315979
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            146
+          ],
+          "score": 0.012791883200407028
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            147
+          ],
+          "score": 0.029625480994582176
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            160
+          ],
+          "score": 0.02138533815741539
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            162
+          ],
+          "score": 0.02982058748602867
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            164
+          ],
+          "score": 0.06515815109014511
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 96,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.12035894",
+          "revision": "b8a3be62b0bdd407f3c846d64b75b61fd90487842c8320053da9120abf68ee8a"
+        }
+      ],
+      "encoding_elapsed_ms": 0.007890000000000001,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 78
+}
