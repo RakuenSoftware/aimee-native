@@ -9,12 +9,26 @@ rows=[json.loads(x) for x in (training/'results.jsonl').read_text().splitlines()
 assert len(rows)==24 and len({r['case_spec']['workflow'] for r in rows})==24
 assert all(not r['enabled'] and not r.get('error') for r in rows)
 assertions=[]
+# Optional experiment-specific acceptance gate; original outputs remain immutable.
+selected={}
+if '--validated-previous' in sys.argv:
+ from procedure_gate import choose
+ previous=Path(sys.argv[sys.argv.index('--validated-previous')+1])
+ # The prior publication's selected-procedures file records exact accepted rule text.
+ prior=json.loads((previous/'selected-procedures.json').read_text()) if (previous/'selected-procedures.json').exists() else None
+ if prior is None:
+  prior={r['key']:r['text'].split(' is ',1)[1].rstrip('.') for r in json.loads((previous/'assertions.json').read_text())}
+ decisions=[]
+ for r in rows:
+  c=r['case_spec'];decision=choose(r['answer'],prior[c['key']],c['examples']);decision.update(key=c['key'],workflow=c['workflow']);decisions.append(decision);selected[c['key']]=decision['selected']
+ save(root/'acceptance-decisions.json',decisions)
 for r in rows:
  # Preserve the model's exact output in training; flatten whitespace only for
  # the single-line explicit assertion extractor. No rule repair or gold substitution.
- procedure=' '.join(r['answer'].split()).rstrip('.')
+ procedure=' '.join(selected.get(r['case_spec']['key'],r['answer']).split()).rstrip('.')
  assertions.append(dict(key=r['case_spec']['key'],text=f'My {r["case_spec"]["key"]} is {procedure}.'))
 save(root/'assertions.json',assertions)
+save(root/'selected-procedures.json',{r['key']:r['text'].split(' is ',1)[1].rstrip('.') for r in assertions})
 with (root/'ingestion.jsonl').open('x') as out:
  subprocess.run([str(repo/'.local/bin/scale-ingest'),str(private/'export.json')],input=''.join(json.dumps(x)+'\n' for x in assertions),text=True,stdout=out,check=True)
 all_records=json.loads((private/'export.json').read_text());keys={x['key'] for x in assertions};records=[r for r in all_records if r['key'] in keys];assert len(records)==24

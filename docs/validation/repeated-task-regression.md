@@ -45,3 +45,22 @@ Raw responses and fixture specification are preserved in
 manifest. Independent result verification reported no trace/scoring violations.
 The pipeline verifier's `regressed` field compares native against disabled within
 a round; cross-round regression above was computed by matching task IDs.
+
+## Authorized gated restart
+
+The author requested fixing the loop and restarting attempt 3. A separate
+`task-gated-*` arm validates proposed affine procedures against only the three
+original training examples. A conservative parser accepts explicit integer
+multiply/add/subtract rules; unsupported syntax or any failed training example
+retains the previous rule. No evaluation gold enters this gate. The prior rule
+can itself be wrong; retaining it is not labeled validation success.
+
+Gemma attempt 3 replays the exact original model proposals against attempt 2's
+publication, isolating the acceptance-policy change. Subsequent rounds learn
+from the actually selected procedures (not rejected candidates). Acceptance and
+rejection details are archived. Gemma finishes through attempt 5 before Qwen
+attempts 2–5. Any drop in total native task success stops the new queue.
+Five gate checks passed. Offline replay of all 24 saved attempt-3 proposals
+accepted seven and rejected seventeen, preserving Cedar020's correct rule.
+New runtime results remain to be measured; this does not retroactively change
+the original unconditional-replacement results.

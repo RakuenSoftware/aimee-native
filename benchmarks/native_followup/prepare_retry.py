@@ -8,6 +8,10 @@ rows=[json.loads(x) for x in (evaluation/'results.jsonl').read_text().splitlines
 previous=[json.loads(x) for x in (training/'results.jsonl').read_text().splitlines()]
 assert len(rows)==960 and len(previous)==24
 rules={r['case_spec']['workflow']:r['answer'] for r in previous}
+if '--accepted-source' in sys.argv:
+ accepted=Path(sys.argv[sys.argv.index('--accepted-source')+1])
+ selected=json.loads((accepted/'selected-procedures.json').read_text())
+ rules={r['case_spec']['workflow']:selected[r['case_spec']['key']] for r in previous}
 original=json.loads((plan/'cases.json').read_text());cases=[]
 for c in original:
  outcomes=[r for r in rows if r['enabled'] and r['case_spec']['workflow']==c['workflow']]
