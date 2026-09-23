@@ -41,3 +41,7 @@ persist in Aimee and are reconstructed as native memory for fresh tasks.
 The task study is supervised procedure induction and held-out arithmetic
 transfer, with frozen weights. It does not test unrestricted autonomous
 exploration or learning attention weights.
+
+## Task publication restart, 2026-09-23
+
+The initial Gemma procedure induction completed 24 outputs, but publication failed before held-out inference: the server overlay lacked a required upstream view. The corrected publisher creates an empty general upstream; no answers or induced procedures are changed. `resume_tasks.sh` reuses the saved Gemma training responses and publishes into `task-transfer-gemma-source-r2`, preserving the failed r1 source directory and original log. This fixes fixture construction, not model behavior.

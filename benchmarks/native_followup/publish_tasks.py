@@ -29,7 +29,10 @@ reader=repo/'.local/bin/aimee-memory-image'
 def cli(*args):
  raw=subprocess.check_output([str(reader),*map(str,args)],text=True);return json.loads(raw) if raw.strip() else None
 started=time.perf_counter();source=private/'source'
-save(private/'change.json',dict(namespace='scale-personal',kind='server',generation=1,source='Model-induced procedures from executor-labeled training examples, persisted by Aimee',coverage=['facts'],records=records,read_contracts=contracts))
+# Server overlays require an upstream view, even for a procedure-only fixture.
+save(private/'base.json',dict(namespace='task-empty-base',kind='general',generation=1,source='Empty upstream for isolated learned-procedure fixture',coverage=['facts'],records=[],read_contracts=[]))
+base=cli('build','--root',source,'--input',private/'base.json')['view']
+save(private/'change.json',dict(namespace='scale-personal',kind='server',generation=1,upstream=base,source='Model-induced procedures from executor-labeled training examples, persisted by Aimee',coverage=['facts'],records=records,read_contracts=contracts))
 head=cli('build','--root',source,'--input',private/'change.json')['view'];cli('publish','--root',source,'--view',head)
 auth=dict(version=1,id=root.name,subject='task-model',policy_epoch='tasks-1',source_view=head,active=True,valid_until=until,grants=['user:_user'])
 save(private/'release.json',dict(authorization=auth,records=records,reads=contracts))
