@@ -8,6 +8,12 @@ def save(p,x):
 rows=[json.loads(x) for x in (training/'results.jsonl').read_text().splitlines()]
 assert len(rows)==24 and len({r['case_spec']['workflow'] for r in rows})==24
 assert all(not r['enabled'] and not r.get('error') for r in rows)
+# Expanded learning preserves raw reasoning and extracts only an explicit final rule.
+if '--final-line' in sys.argv:
+ import re
+ for r in rows:
+  matches=re.findall(r'^FINAL:\s*(.+)$',r['answer'],flags=re.M)
+  r['answer']=matches[-1].strip() if len(matches)==1 else 'UNPARSEABLE FINAL RULE'
 assertions=[]
 # Optional experiment-specific acceptance gate; original outputs remain immutable.
 selected={}
