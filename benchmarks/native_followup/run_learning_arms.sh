@@ -5,7 +5,7 @@ lab=/opt/aimee-memory-lab
 # Author cancelled Qwen; require completed Gemma baseline before new branches.
 test -f "$lab/task-gated-gemma-a5-eval/DONE"
 for model in gemma; do
- for arm in feedback reasoning combined; do
+ for arm in feedback; do
   if test "$model" = gemma; then
    previous_training="$lab/task-repeat-gemma-a2-training"
    previous_eval="$lab/task-repeat-gemma-a2-eval"

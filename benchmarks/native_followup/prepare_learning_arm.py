@@ -3,7 +3,7 @@ import json,subprocess,sys
 from pathlib import Path
 from procedure_gate import validate
 plan,training,evaluation,source,root=map(Path,sys.argv[1:6]);attempt=sys.argv[6];arm=sys.argv[7]
-assert arm in ('feedback','reasoning','combined')
+assert arm == 'feedback', 'Reasoning and combined branches cancelled by author'
 args=[sys.executable,str(Path(__file__).with_name('prepare_retry.py')),str(plan),str(training),str(evaluation),str(root),attempt]
 if (source/'selected-procedures.json').exists():args+=['--accepted-source',str(source)]
 subprocess.run(args,check=True)

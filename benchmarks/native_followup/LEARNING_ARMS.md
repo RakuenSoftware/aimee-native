@@ -31,3 +31,7 @@ The author cancelled Qwen retries and requested the new changes on Gemma only.
 The scheduler now requires the completed Gemma attempt-5 baseline, without
 waiting for Qwen. All three Gemma branches restart at attempt 3 from the saved
 attempt-2 state. Budget is 8,856 requests. Partial Qwen artifacts are preserved.
+
+## Feedback-only scope
+
+The author cancelled reasoning-only and combined branches. Complete actionable-feedback attempts 3–5 only, then stop. The existing running scheduler is externally stopped after the feedback attempt-5 diagnostics are written; future invocations enumerate only feedback.
