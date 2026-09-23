@@ -24,3 +24,10 @@ from execution errors. Stop on a round's score declining relative to its predece
 
 New budget: 3 branches × 3 rounds × 2 models × (24 learning + 960 evaluation)
 = 17,712 requests. Runs and raw observations use new task-learning-* paths.
+
+## Scope correction
+
+The author cancelled Qwen retries and requested the new changes on Gemma only.
+The scheduler now requires the completed Gemma attempt-5 baseline, without
+waiting for Qwen. All three Gemma branches restart at attempt 3 from the saved
+attempt-2 state. Budget is 8,856 requests. Partial Qwen artifacts are preserved.

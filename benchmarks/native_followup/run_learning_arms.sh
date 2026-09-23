@@ -2,10 +2,9 @@
 set -euo pipefail
 cd /opt/aimee-memory-lab/aimee-qwen
 lab=/opt/aimee-memory-lab
-# Preserve the currently running original protocol and avoid competing GPU workers.
-while systemctl is-active --quiet aimee-task-gated-retries; do sleep 20; done
-test -f "$lab/task-gated-retries-DONE"
-for model in gemma qwen; do
+# Author cancelled Qwen; require completed Gemma baseline before new branches.
+test -f "$lab/task-gated-gemma-a5-eval/DONE"
+for model in gemma; do
  for arm in feedback reasoning combined; do
   if test "$model" = gemma; then
    previous_training="$lab/task-repeat-gemma-a2-training"
