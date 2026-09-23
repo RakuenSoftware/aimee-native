@@ -11,7 +11,7 @@ if mode=='init':
  old=Path(sys.argv[3]);root.mkdir();root.chmod(0o755)
  workflows=read(old/'workflows.json');rng=random.Random(2026092304);evaluation=[]
  for i,w in enumerate(workflows):
-  w['name']=f'Birch{i:03d}';w['key']=f'procedure for workflow {w["name"]}'
+  w['name']=f'{sys.argv[4] if len(sys.argv)>4 else "Birch"}{i:03d}';w['key']=f'procedure for workflow {w["name"]}'
   w['heldout_inputs']=rng.sample(list(range(200,400)),20)
   for x in w['heldout_inputs']:
    evaluation.append(dict(id=f'task-{w["name"]}-{x}',workflow=w['name'],key=w['key'],input=x,domain='affine-procedure',source='fresh-experience',query=f'Execute my private workflow {w["name"]} on input {x}. Return only the integer result. If the procedure is unknown, return unknown.',expected=str(w['multiplier']*x+w['offset']),scorer='integer'))
