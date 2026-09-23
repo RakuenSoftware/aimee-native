@@ -27,3 +27,5 @@ that causal contribution from rerun variability.
 Budget: four additional rounds × two models × (24 learning requests + 960 paired
 evaluation requests) = 7,872 requests. Stop on pipeline failure, preserve all
 artifacts, and repair orchestration without editing recorded model responses.
+
+Execution order: finish Gemma attempts 2–5, then Qwen attempts 2–5, as requested by the author. The existing initial Qwen run is not interrupted.
