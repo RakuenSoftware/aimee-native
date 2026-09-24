@@ -4,6 +4,9 @@ from pathlib import Path
 REPO=Path(__file__).resolve().parents[2]
 p=argparse.ArgumentParser();p.add_argument('source');p.add_argument('output');p.add_argument('--source-type',choices=['all','personal'],default='all');p.add_argument('--limit',type=int);p.add_argument('--smoke',action='store_true');a=p.parse_args()
 source=Path(a.source);root=Path(a.output);root.mkdir();os.chmod(root,0o755)
+if a.source_type=='personal':
+    from republish_personal import prepare
+    source=prepare(source,root.parent/'personal-source')
 cases=json.loads((source/'cases.json').read_text())
 if a.source_type=='personal':cases=[c for c in cases if c['source']=='personal']
 if a.limit:cases=cases[:a.limit]

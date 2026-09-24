@@ -4,6 +4,9 @@ from http.server import BaseHTTPRequestHandler
 from pathlib import Path
 repo=Path(__file__).resolve().parents[2]
 source=Path(sys.argv[1]);root=Path(sys.argv[2]);root.mkdir();os.chmod(root,0o755)
+if '--personal' in sys.argv:
+    from republish_personal import prepare
+    source=prepare(source,root.parent/'personal-source')
 cases=json.loads((source/'cases.json').read_text())
 if '--personal' in sys.argv:cases=[c for c in cases if c['source']=='personal']
 if '--smoke' in sys.argv:cases=cases[:6]
