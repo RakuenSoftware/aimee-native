@@ -65,3 +65,26 @@ personal smoke, general smoke, personal main and general main, serially. Pin
 source commits, driver hashes, source case hashes and publication manifests.
 This batch tests Gemma; Qwen expansion and corpus-scale selection require their
 own frozen follow-up protocols. No results are assumed before completion.
+
+
+## Record-delivery validity gate (before campaign start)
+
+The driver sends the full ordered expected canonical identities and revisions to
+the worker. The worker verifies the union against that list before inference,
+sets the native recall limit to the complete set size, and requires the native
+bank-construction event to contain every fact ID in that order. It reconstructs
+the complete encoding token sequence and checks both the recorded sequence and
+the actual model encoder call against it. Bank shapes are recorded before cleanup;
+at least one native bank must retain the full sequence. Local-window layer bank
+lengths are recorded rather than assumed equal to full-attention bank lengths.
+Each installed bank must be observed at the attention cache boundary, with the
+same key/value tensor objects and nonzero added native positions. The observer
+does not modify tensors or scores. These checks apply before a run is considered
+valid, including instrumentation smoke and every scored request.
+
+Seven CPU regression checks include the historical failure modes: returning one
+record, returning only four, encoding only one, truncating encoder input, wrong
+revision and reordered bank. Failed delivery marks the run INVALID and stops it;
+it is a harness/runtime failure, not evidence against memory composition or
+native-memory accuracy. Raw rows and errors remain available. Actual GPU-path
+validation remains gated on the queued smoke run; CPU checks are not GPU results.

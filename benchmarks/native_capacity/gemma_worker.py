@@ -9,6 +9,7 @@ import subprocess
 import sys
 import time
 import copy
+from coverage import validate_records, validate_encoding
 from contextlib import nullcontext
 
 REPO=Path(__file__).resolve().parents[2]
@@ -32,7 +33,7 @@ def host_staged_send(value, device, non_blocking=False, skip_keys=None):
 accelerate.hooks.send_to_device=host_staged_send
 from transformers import AutoTokenizer, Gemma4UnifiedForConditionalGeneration
 from local_image import AimeeImageClient
-from qwen_adapter import QwenAimeeAdapter
+from qwen_adapter import QwenAimeeAdapter, _ReadBankCache
 
 class PublishedClient(AimeeImageClient):
     def __init__(self,reader,image):
@@ -54,6 +55,29 @@ versions={name:p._version for name,p in model.named_parameters()}
 client=PublishedClient(REPO/'.local/bin/aimee-memory-image',a.image)
 device=model.get_input_embeddings().weight.device
 adapter=QwenAimeeAdapter(model,tokenizer,client,input_device=device,host_memory=True, encoding_cache_bytes=0, max_memory_tokens=8192)
+# Observe actual encoder calls and the banks handed to attention, independently
+# of the selected-record response. Instrumentation does not change model output.
+encoder_inputs = []
+attention_bank_reads = {}
+def observe_encoder(module, args, kwargs):
+    if adapter.encoding:
+        actual = kwargs.get('input_ids', args[0] if args else None)
+        assert actual is not None and actual.shape[0] == 1
+        encoder_inputs.append(actual[0].detach().cpu().tolist())
+encoder_hook = model.register_forward_pre_hook(observe_encoder, with_kwargs=True)
+original_bank_update = _ReadBankCache.update
+def audited_bank_update(cache, key, value, layer_idx, *args, **kwargs):
+    bank = adapter.active['banks'][layer_idx]
+    assert cache.key is bank[0] and cache.value is bank[1], 'attention received a different bank'
+    result = original_bank_update(cache, key, value, layer_idx, *args, **kwargs)
+    native_length = cache.key.shape[-2]
+    assert native_length == cache.value.shape[-2] and native_length > 0
+    assert result[0].shape[-2] == result[1].shape[-2] > native_length
+    item = attention_bank_reads.setdefault(str(layer_idx), {'calls':0,'native_positions':native_length})
+    assert item['native_positions'] == native_length
+    item['calls'] += 1
+    return result
+_ReadBankCache.update = audited_bank_update
 from profiling import TokenClock, synchronize
 print(json.dumps({'ready':True,'model':'google/gemma-4-12B-it','torch_version':torch.__version__,'gpu_names':[torch.cuda.get_device_name(i) for i in range(torch.cuda.device_count())],'device_map':model.hf_device_map,'trainable_parameters':sum(p.numel() for p in model.parameters() if p.requires_grad)}),flush=True)
 
@@ -64,6 +88,7 @@ class SelectedClient:
     def begin_request(self): return self.view
     def search(self, query, limit):
         assert query == self.query
+        assert limit >= len(self.reply['facts']), 'configured recall limit below working set'
         return copy.deepcopy(self.reply)
 
 native_preparation_times = []
@@ -82,6 +107,8 @@ for line in sys.stdin:
     query, mode = command['query'], command['mode']
     row = {'case': command['case'], 'mode': mode}
     native_preparation_times.clear()
+    encoder_inputs.clear()
+    attention_bank_reads.clear()
     try:
         synchronize()
         for gpu in range(torch.cuda.device_count()): torch.cuda.reset_peak_memory_stats(gpu)
@@ -101,8 +128,13 @@ for line in sys.stdin:
         row['selected_record_count'] = len(reply['facts'])
         selection_done = time.perf_counter()
         facts = reply['facts']
+        expected_ids = validate_records(facts, command['expected_refs'])
+        adapter.memory_limit = len(facts)
         assert facts and not reply.get('windows')
         content = 'Authoritative memory:\n' + '\n'.join(f['content'] for f in facts)
+        framed = tokenizer.apply_chat_template([{'role':'system','content':content}], tokenize=False, add_generation_prompt=False, enable_thinking=False)
+        expected_memory_tokens = tokenizer.encode(framed, add_special_tokens=False)
+        row['expected_native_tokens'] = len(expected_memory_tokens)
         row['selected_facts'] = facts
         row['selection_seconds'] = selection_done-started
         row['record_sha256'] = hashlib.sha256(json.dumps(facts, sort_keys=True).encode()).hexdigest()
@@ -154,6 +186,15 @@ for line in sys.stdin:
             output = model.generate(input_ids=ids,attention_mask=torch.ones_like(ids),max_new_tokens=32,
                 do_sample=False,return_dict_in_generate=True,use_cache=True,streamer=clock,**extra)
             if state is not None:
+                validate_encoding(state, expected_ids, expected_memory_tokens)
+                assert encoder_inputs == [expected_memory_tokens], 'actual encoder call omitted or changed record content'
+                assert set(attention_bank_reads) == {str(i) for i in state['banks']}, 'installed native bank not consumed by attention'
+                row['actual_encoder_token_ids'] = encoder_inputs[0]
+                row['attention_bank_reads'] = copy.deepcopy(attention_bank_reads)
+                row['encoded_record_count'] = len(expected_ids)
+                row['native_bank_shapes'] = {str(i): [list(k.shape),list(v.shape)] for i,(k,v) in state['banks'].items()}
+                assert state['banks'], 'no native banks installed'
+                assert max(k.shape[-2] for k,v in state['banks'].values()) == len(expected_memory_tokens), 'no native bank retains the complete sequence'
                 row['native_state_bytes']=sum(t.numel()*t.element_size() for bank in state['banks'].values() for t in bank)
         synchronize(); done = time.perf_counter()
         generated = output.sequences[0,len(prompt):].cpu().tolist()
@@ -180,4 +221,4 @@ for line in sys.stdin:
         traceback.print_exc(file=sys.stderr)
         row['error']=type(exc).__name__+': '+str(exc)
     print(json.dumps(row),flush=True)
-adapter.close();client.close()
+encoder_hook.remove();adapter.close();client.close()

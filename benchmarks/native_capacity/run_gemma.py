@@ -47,14 +47,16 @@ try:
     for i,item in enumerate(plan):
         target=item['target'];rows={}
         for req in item['requests']:
-            command=dict(case=target['id'],query=target['query'],mode=req['mode'],selection_queries=[c['query'] for c in req['selected']],reuse_encoding=False)
+            command=dict(case=target['id'],query=target['query'],mode=req['mode'],selection_queries=[c['query'] for c in req['selected']],expected_refs=[c['ref'] for c in req['selected']],reuse_encoding=False)
             proc.stdin.write(json.dumps(command)+'\n');proc.stdin.flush()
             line=proc.stdout.readline()
             if not line:raise RuntimeError('worker exited')
             row=json.loads(line)
             row.update(case_spec=target,working_set_size=req['size'],target_position=req.get('target_position'),correct=score(row.get('answer',''),target),phase='smoke' if a.smoke else 'accuracy')
             with (root/'results.jsonl').open('a') as f:f.write(json.dumps(row)+'\n');f.flush();os.fsync(f.fileno())
-            if row.get('error'):raise RuntimeError(row['error'])
+            if row.get('error'):
+                (root/'INVALID').write_text('Harness/runtime failure; incomplete study. Do not interpret failed delivery as model accuracy. '+row['error'])
+                raise RuntimeError(row['error'])
             assert [f['memory_ref'] for f in row['selected_facts']]==[c['ref'] for c in req['selected']]
             assert row['selected_record_count']==len(req['selected'])
             rows[(req['size'],req['mode'])]=row
