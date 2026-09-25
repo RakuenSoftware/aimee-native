@@ -24,6 +24,8 @@ pub const GATES: &[&str] = &[
     "reusable_preparation",
     "clean_install",
     "binary_disclosure_audit",
+    "authenticated_delivery",
+    "license_dependency_audit",
 ];
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -105,10 +107,21 @@ pub fn validate(m: &Manifest) -> Result<()> {
         component(&m.version) && component(&m.model),
         "invalid release identity"
     );
-    ensure!(
-        GATES.iter().all(|g| m.gates.iter().any(|v| v == g)),
-        "release has not passed every production gate"
-    );
+    if m.gates.iter().any(|g| g == "lab_only") {
+        ensure!(
+            cfg!(feature = "lab-release"),
+            "lab release rejected by production launcher"
+        );
+        ensure!(
+            m.model.starts_with("lab-"),
+            "lab release must use a lab model identity"
+        );
+    } else {
+        ensure!(
+            GATES.iter().all(|g| m.gates.iter().any(|v| v == g)),
+            "release has not passed every production gate"
+        );
+    }
     ensure!(
         !m.artifacts.is_empty() && m.artifacts.len() <= 128,
         "invalid release file count"
@@ -421,6 +434,15 @@ mod tests {
         d.image = format!("registry.example/aimee@sha256:{}", "a".repeat(64));
         d.model_config = "models/../config.json".into();
         assert!(d.validate().is_err());
+    }
+    #[test]
+    fn production_launcher_rejects_lab_release_marker() {
+        let (mut m, _, _, _) = fixture(1);
+        m.gates = vec!["lab_only".into()];
+        m.model = "lab-fixture".into();
+        assert_eq!(validate(&m).is_ok(), cfg!(feature = "lab-release"));
+        m.model = "customer-model".into();
+        assert!(validate(&m).is_err());
     }
     fn fixture(sequence: u64) -> (Manifest, Vec<u8>, Vec<u8>, [u8; 32]) {
         let files = [

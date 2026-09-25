@@ -57,7 +57,7 @@ fn run() -> Result<()> {
     let response = recalled
         .get("response")
         .context("missing approved response")?;
-    let approved = reader.call(json!({"op":"resolve_response","response":response}))?;
+    let approved = reader.call(json!({"op":"resolve_local_response","response":response}))?;
     ensure!(
         approved["view"] == view,
         "publication changed during selection"
@@ -109,7 +109,7 @@ fn run() -> Result<()> {
         Ok(())
     })?;
     // Revalidate even for cache hits. A stored tensor is not continuing authority.
-    let final_approval = reader.call(json!({"op":"resolve_response","response":response}))?;
+    let final_approval = reader.call(json!({"op":"resolve_local_response","response":response}))?;
     ensure!(
         final_approval["view"] == view && final_approval["refs"] == approved["refs"],
         "publication changed during preparation"

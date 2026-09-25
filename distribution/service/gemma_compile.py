@@ -3,9 +3,8 @@ import argparse,json,sys
 from pathlib import Path
 import torch
 from transformers import AutoTokenizer,Gemma4UnifiedForConditionalGeneration
-p=argparse.ArgumentParser();p.add_argument('--model',required=True);p.add_argument('--publisher-module',required=True);p.add_argument('--output',required=True);p.add_argument('--identity',required=True);p.add_argument('--key',required=True);a=p.parse_args()
-sys.path.insert(0,a.publisher_module)
-from native_loader import publish
+p=argparse.ArgumentParser();p.add_argument('--model',required=True);p.add_argument('--output',required=True);p.add_argument('--identity',required=True);p.add_argument('--key',required=True);a=p.parse_args()
+from publisher import publish
 request=json.load(sys.stdin)
 facts=request['response']['facts'];records=request['identity']['records']
 if not facts or len(facts)!=len(records):raise ValueError('incomplete selected working set')

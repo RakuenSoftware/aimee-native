@@ -17,25 +17,34 @@ import tempfile
 
 GATES = {'native_accuracy', 'quantized_model', 'all_selected_records', 'long_conversation',
          'tenant_session_isolation', 'revision_withdrawal', 'cold_warm_latency',
-         'reusable_preparation', 'clean_install', 'binary_disclosure_audit'}
+         'reusable_preparation', 'clean_install', 'binary_disclosure_audit',
+         'authenticated_delivery', 'license_dependency_audit'}
 
 def allowed(path):
     if any(p in ('', '.', '..') for p in path.split('/')) or '\\' in path:
         return False
     return bool(re.fullmatch(r'runtime/image\.json|bin/aimee-vllm|lib/[A-Za-z0-9_.+-]+\.so(?:\.[0-9]+)*|models/[A-Za-z0-9_.+-]+\.(?:gguf|safetensors|json|jinja|model)|licenses/[A-Za-z0-9_.+-]+\.txt', path))
 
-def package(plan, destination, signing_key):
+def artifact_set_digest(artifacts):
+    """Bind gate evidence to exact released bytes, paths and execution flags."""
+    raw = json.dumps(sorted(artifacts, key=lambda a:a['path']), sort_keys=True, separators=(',', ':')).encode()
+    return hashlib.sha256(raw).hexdigest()
+
+def package(plan, destination, signing_key, lab_only=False):
     target = pathlib.Path(destination)
     if target.exists(): raise ValueError('release destination already exists')
     metadata = dict(plan['manifest'])
-    for gate in GATES:
+    if lab_only and not metadata["model"].startswith("lab-"): raise ValueError("lab model identity required")
+    reports = []
+    for gate in (() if lab_only else GATES):
         evidence = json.loads(pathlib.Path(plan['gate_evidence'][gate]).read_text())
+        reports.append(evidence)
         if evidence.get('status') != 'passed': raise ValueError(f'gate not passed: {gate}')
         if evidence.get('runtime_commit') != metadata['runtime_commit'] or evidence.get('model') != metadata['model']:
             raise ValueError(f'gate evidence is for a different build/model: {gate}')
     # This is the signed declaration of an internal release decision, not proof
     # that the evaluations were well designed; retain evidence privately.
-    metadata['gates'] = sorted(GATES)
+    metadata['gates'] = ['lab_only'] if lab_only else sorted(GATES)
     files = plan['files']
     if not {'bin/aimee-vllm', 'lib/libaimee_native.so', metadata['model_file']} <= files.keys():
         raise ValueError('missing runtime/model artifacts')
@@ -62,6 +71,9 @@ def package(plan, destination, signing_key):
             with out.open('rb') as stream:
                 digest = hashlib.file_digest(stream, 'sha256').hexdigest()
             artifacts.append(dict(path=relative, bytes=out.stat().st_size, sha256=digest, executable=executable))
+        identity = artifact_set_digest(artifacts)
+        if any(e.get('artifact_set_sha256') != identity for e in reports):
+            raise ValueError('gate evidence does not match exact release artifacts')
         metadata['artifacts'] = artifacts
         (stage/'manifest.json').write_text(json.dumps(metadata, sort_keys=True, separators=(',', ':'))+'\n')
         subprocess.run(['openssl', 'pkeyutl', '-sign', '-rawin', '-inkey', str(signing_key),
@@ -71,5 +83,5 @@ def package(plan, destination, signing_key):
     return metadata
 
 if __name__ == '__main__':
-    p = argparse.ArgumentParser(); p.add_argument('plan'); p.add_argument('output'); p.add_argument('--signing-key', required=True)
-    a=p.parse_args(); package(json.loads(pathlib.Path(a.plan).read_text()), a.output, a.signing_key)
+    p = argparse.ArgumentParser(); p.add_argument('plan'); p.add_argument('output'); p.add_argument('--signing-key', required=True); p.add_argument('--lab-only',action='store_true')
+    a=p.parse_args(); package(json.loads(pathlib.Path(a.plan).read_text()), a.output, a.signing_key, lab_only=a.lab_only)

@@ -8,7 +8,7 @@ ALLOWED = {
     'aimee_native_metadata', 'aimee_native_apply', 'aimee_native_result_metadata',
     'aimee_native_result_tensor', 'aimee_native_result_free', 'aimee_native_close',
 }
-STORE_ALLOWED = {"aimee_admission_open", "aimee_admission_acquire", "aimee_admission_release", "aimee_admission_close", "aimee_cache_open", "aimee_cache_plan", "aimee_cache_close", "aimee_store_abi_version", "aimee_store_open", "aimee_store_metadata", "aimee_store_close"}
+STORE_ALLOWED = {"aimee_store_release_pages", "aimee_admission_open", "aimee_admission_acquire", "aimee_admission_release", "aimee_admission_close", "aimee_cache_open", "aimee_cache_plan", "aimee_cache_close", "aimee_store_abi_version", "aimee_store_open", "aimee_store_metadata", "aimee_store_close"}
 
 def audit(path, vllm=False):
     allowed = STORE_ALLOWED if vllm else ALLOWED

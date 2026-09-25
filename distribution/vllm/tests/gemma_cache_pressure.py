@@ -9,7 +9,7 @@ from aimee_vllm.store import PreparedStore
 config=json.loads(Path(a.config).read_text());catalog=json.loads(Path(config['catalog']).read_text())
 sizes=[]
 for spec in catalog['publications'].values():
- store=PreparedStore(ctypes.CDLL(config['library']),{**spec,'byte_budget':config['host_memory_budget']})
+ store=PreparedStore(ctypes.CDLL(config['library']),{**spec,'byte_budget':config['host_memory_budget'],'disk_backed':config.get('disk_backed',False)})
  sizes.append(store.device_bytes(2));store.close()
 config['device_memory_budget']=max(sizes)
 path=Path(a.output).with_suffix('.config.json');path.write_text(json.dumps(config))
@@ -26,3 +26,6 @@ Path(a.output).write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(rep
 assert all(row['expected'] in row['text'] for row in rows)
 assert all(row['prompt_tokens']==26 for row in rows)
 assert all(s['uploads']==3 and s['evictions']==2 and s['peak_bytes']<=config['device_memory_budget'] for s in rows[-1]['cache'])
+
+if config.get('disk_backed',False):
+ assert all(s['catalogue_payload_bytes']>config['host_memory_budget'] and s['mapped_payload_rss_bytes']==0 for row in rows for s in row['cache'])

@@ -24,7 +24,7 @@ asyncio.run(main())
             compiler.write_text('''import json,pathlib,sys
 root=pathlib.Path(sys.argv[1]);count=root/'count';n=int(count.read_text())+1 if count.exists() else 1;count.write_text(str(n))
 if n==1:sys.exit(1)
-print(json.dumps({'authorized_view':'view','recipient':'fixture','root':str(root/'bank'),'model':'fixture','key':'fixture'}))
+print(json.dumps({'authorized_view':'view','recipient':'fixture','root':str(root/'bank'),'model':'fixture','key':'fixture','records':[{'namespace':'fixture','id':'1','revision':'1'}]}))
 ''')
             follower=root/'follower.py'
             follower.write_text('''import json,pathlib,sys,time

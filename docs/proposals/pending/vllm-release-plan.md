@@ -73,8 +73,9 @@ An oversized active working set is now rejected by frontend Rust reservations
 with HTTP 429 and Retry-After before worker execution. A 512-request pressure
 probe passed isolation and three-record correctness. A
 failed GPU upload poisons the cache and requires worker restart, so partial plans
-cannot silently be served. Disk streaming/host residency remains a separate step:
-the current catalog is still admitted into host RAM.
+cannot silently be served. Disk-backed admission is now implemented and tested under a working-set budget
+smaller than the catalog. Mapped pages are released after transfer; OS page-cache
+accounting and cold-storage timing remain separate measurements.
 
 ## Implementation progress, 2026-09-25
 
@@ -90,3 +91,5 @@ superseded activation and owned-socket cleanup. Signed installer lifecycle and
 real GPU interruption/restart probes pass; see
 [the recovery record](../../validation/vllm-recovery-20260925.md). These are not
 a signed clean-host installation or a live authenticated-feed recovery test.
+
+Further work is recorded in [the production follow-up](../../validation/vllm-production-20260925.md): automatic full-working-set selection, real preparation reuse, disk-backed residency and signed clean-host lab distribution. Production deployment identities are still required; lab authority does not replace them.

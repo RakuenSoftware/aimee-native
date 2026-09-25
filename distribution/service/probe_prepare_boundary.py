@@ -12,7 +12,7 @@ for line in sys.stdin:
  if (root/'denied').exists():out={'error':'synthetic authority denial'}
  elif req['op']=='pin':out={'view':'view1','publication':'approved1'}
  elif req['op']=='recall':out={'view':'view1','outcome':'hit','response':{'facts':[{'id':str(i),'content':'synthetic fact '+str(i)} for i in range(3)]}}
- elif req['op']=='resolve_response':out={'view':'view1','refs':[{'namespace':'test','id':str(i),'revision':'r1'} for i in range(3)]}
+ elif req['op']=='resolve_local_response':out={'view':'view1','refs':[{'namespace':'test','id':str(i),'revision':'r1'} for i in range(3)]}
  else:out={'error':'unsupported'}
  print(json.dumps(out),flush=True)
 ''');reader.chmod(0o700)

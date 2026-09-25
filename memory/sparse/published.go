@@ -211,6 +211,68 @@ func (p *PublishedReader) remoteContext(namespace string) Authorization {
 func (p *PublishedReader) RestrictRemote(namespace string) (SearchRestriction, error) {
 	return RestrictSearch(p.remoteContext(namespace), namespace)
 }
+
+// ResolveLocal validates a response emitted by this published reader. Remote
+// responses must continue through ResolveRemote and its upstream receipt checks.
+func (p *PublishedReader) ResolveLocal(raw json.RawMessage, now time.Time) ([]Ref, error) {
+	var body struct {
+		Facts []struct {
+			ID   json.RawMessage `json:"id"`
+			Ref  Ref             `json:"memory_ref"`
+			Hash string          `json:"memory_hash"`
+		} `json:"facts"`
+	}
+	if err := json.Unmarshal(raw, &body); err != nil || len(body.Facts) == 0 {
+		return nil, fmt.Errorf("local receipt required")
+	}
+	context := p.context
+	context.Records = nil
+	seen := map[Ref]bool{}
+	for _, fact := range body.Facts {
+		var id string
+		if json.Unmarshal(fact.ID, &id) != nil {
+			id = string(fact.ID)
+		}
+		for _, entry := range p.approvals(id) {
+			if !seen[entry.Ref] {
+				context.Records = append(context.Records, entry)
+				seen[entry.Ref] = true
+			}
+		}
+	}
+	var canonicalBody map[string]json.RawMessage
+	if err := json.Unmarshal(raw, &canonicalBody); err != nil {
+		return nil, err
+	}
+	var canonicalFacts []map[string]json.RawMessage
+	if err := json.Unmarshal(canonicalBody["facts"], &canonicalFacts); err != nil {
+		return nil, err
+	}
+	for _, fact := range canonicalFacts {
+		delete(fact, "memory_ref")
+		delete(fact, "memory_hash")
+	}
+	canonicalBody["facts"], _ = json.Marshal(canonicalFacts)
+	canonicalRaw, _ := json.Marshal(canonicalBody)
+	refs, err := p.View.ResolveResponse(canonicalRaw, context, now)
+	if err != nil {
+		return nil, err
+	}
+	if len(refs) != len(body.Facts) {
+		return nil, fmt.Errorf("incomplete local receipt")
+	}
+	for i, ref := range refs {
+		canonical, err := p.View.Get(ref, grantMap(p.context), now)
+		if err != nil {
+			return nil, err
+		}
+		if body.Facts[i].Ref != ref || body.Facts[i].Hash != AuthorizeRecord(canonical).SHA256 {
+			return nil, fmt.Errorf("local receipt identity mismatch")
+		}
+	}
+	return refs, nil
+}
+
 func (p *PublishedReader) ResolveRemote(raw json.RawMessage, now time.Time) ([]Ref, error) {
 	var body struct {
 		Restriction *SearchRestriction `json:"restriction"`

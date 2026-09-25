@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/tmp/aimee-real-prepare.py", line 12, in <module>
+    if r.returncode:raise RuntimeError(report[name])
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: {'seconds': 5.553587133996189, 'exit_code': 1, 'stderr': 'Traceback (most recent call last):\n  File "/opt/aimee-memory-lab/vllm-native-build/distribution/service/gemma_compile.py", line 8, in <module>\n    from native_loader import publish\n  File "/opt/aimee-memory-lab/aimee-native-precomputed/benchmarks/precomputed_comparison/native_loader.py", line 17, in <module>\n    fn=getattr(LIB,\'aimee_native_\'+name);fn.argtypes=args;fn.restype=result\n  File "/usr/lib/python3.13/ctypes/__init__.py", line 403, in __getattr__\n    func = self.__getitem__(name)\n  File "/usr/lib/python3.13/ctypes/__init__.py", line 408, in __getitem__\n    func = self._FuncPtr((name_or_ordinal, self))\nAttributeError: /opt/aimee-memory-lab/aimee-native-precomputed/target/release/libaimee_qwen.so: undefined symbol: aimee_native_import. Did you mean: \'aimee_native_error\'?\nnative preparation unavailable\n'}

@@ -9,11 +9,13 @@ replacement and withdrawal semantics (see `docs/validation/local-delivery.md`).
 The native preparation worker must bind each output to that authorized view,
 recipient and exact source revisions. `src/preparation_cache.rs` supplies a
 private cache primitive for compiler callbacks. It is not an authorization API
-and is not yet wired into a hosted production worker.
+and is now wired into the private `native-prepare` worker. Hosted account
+authentication and remote prepared-artifact delivery are not yet complete.
 
 Before accepting public client requests, integrate the actual authenticated
 publication feed. Client-supplied IDs/tenant names are not release authority.
-Preparation failures leave the previously published revision active. Withdrawals
+Publication updates pause new admissions; preparation failures leave serving
+unavailable until a current approved revision can be activated. Withdrawals
 must prevent new pins; already-delivered data cannot be erased from a malicious
 host. Artifact expiry and connection-loss behavior must follow Aimee policy,
 not a locally invented grant.

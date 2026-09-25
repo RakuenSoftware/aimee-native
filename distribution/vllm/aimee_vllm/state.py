@@ -37,9 +37,9 @@ class State:
         budget = config['host_memory_budget']
         try:
             for name, spec in catalog['publications'].items():
-                store = PreparedStore(lib, {**spec, 'byte_budget': budget})
+                store = PreparedStore(lib, {**spec, 'byte_budget': budget,'disk_backed':config.get('disk_backed',False)})
                 self.stores[name] = store
-                budget -= store.metadata['bytes']
+                if not config.get('disk_backed',False):budget -= store.metadata['bytes']
                 if budget < 0:
                     raise RuntimeError('publication catalogue exceeds memory budget')
         except BaseException:
@@ -126,7 +126,8 @@ class State:
         live = {s.uid:s for s in self.cache.resident.values()}
         live.update({s.uid:s for s in self.stores.values()})
         live.update({p.store.uid:p.store for p in self.requests.values() if p.store is not None})
-        remaining = config['host_memory_budget'] - sum(s.metadata['bytes'] for s in live.values())
+        disk_backed=config.get('disk_backed',False)
+        remaining = config['host_memory_budget'] - (0 if disk_backed else sum(s.metadata['bytes'] for s in live.values()))
         admitted = {};created=[]
         try:
             for name,spec in catalog['publications'].items():
@@ -135,8 +136,9 @@ class State:
                     admitted[name] = previous
                     continue
                 if remaining <= 0: raise RuntimeError('native publication replacement exceeds pinned memory budget')
-                store = PreparedStore(self.lib,{**spec,'byte_budget':remaining})
-                created.append(store);remaining -= store.metadata['bytes'];admitted[name]=store
+                store = PreparedStore(self.lib,{**spec,'byte_budget':remaining,'disk_backed':disk_backed})
+                created.append(store);admitted[name]=store
+                if not disk_backed:remaining -= store.metadata['bytes']
             self.tables.clear()
             if not self.requests:
                 self.cache.close()

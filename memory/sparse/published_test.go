@@ -73,3 +73,44 @@ func TestPublishedReaderRefusesRawSource(t *testing.T) {
 		t.Fatal("raw source accepted as a recipient snapshot")
 	}
 }
+
+func TestLocalReceiptDoesNotWeakenRemoteReceiptBoundary(t *testing.T) {
+	src, _, records, a, pub, key := authorizationFixture(t)
+	a.ReferenceLookups = []ReferenceLookupPolicy{{"general", "test", "exact-key-v1"}}
+	dst := Store{filepath.Join(t.TempDir(), "recipient")}
+	id, err := src.CompileAuthorized(dst, signedGrant(t, a, key), pub, a.Subject, a.PolicyEpoch, testNow)
+	if err != nil {
+		t.Fatal(err)
+	}
+	p, err := dst.OpenPublished(id)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer p.Close()
+	recall, err := p.Recall(records[0].Key, 4, "test", testNow)
+	if err != nil {
+		t.Fatal(err)
+	}
+	refs, err := p.ResolveLocal(recall.Response, testNow)
+	if err != nil || len(refs) != 1 || refs[0] != records[0].Ref {
+		t.Fatalf("%v %v", refs, err)
+	}
+	if _, err = p.ResolveRemote(recall.Response, testNow); err == nil {
+		t.Fatal("local response accepted as a restricted remote receipt")
+	}
+	var body map[string]any
+	json.Unmarshal(recall.Response, &body)
+	fact := body["facts"].([]any)[0].(map[string]any)
+	fact["content"] = "fabricated replacement"
+	raw, _ := json.Marshal(body)
+	if _, err = p.ResolveLocal(raw, testNow); err == nil {
+		t.Fatal("changed local content accepted")
+	}
+	json.Unmarshal(recall.Response, &body)
+	fact = body["facts"].([]any)[0].(map[string]any)
+	delete(fact, "memory_hash")
+	raw, _ = json.Marshal(body)
+	if _, err = p.ResolveLocal(raw, testNow); err == nil {
+		t.Fatal("missing canonical local hash accepted")
+	}
+}

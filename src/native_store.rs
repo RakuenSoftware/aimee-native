@@ -5,7 +5,8 @@ use crate::native_format::{Index, Segment};
 use anyhow::{Context, Result, ensure};
 use sha2::{Digest, Sha256};
 use std::{
-    collections::HashSet, fs::File, io::Read, ops::Range, os::unix::fs::FileExt, path::Path,
+    collections::HashSet, fs::File, io::Read, ops::Range, os::fd::AsRawFd, os::unix::fs::FileExt,
+    path::Path,
 };
 
 pub struct SegmentView<'a> {
@@ -22,13 +23,60 @@ struct Plan {
     positions: usize,
     range: Range<usize>,
 }
+enum Payload {
+    Owned(Vec<u8>),
+    Mapped {
+        pointer: *mut libc::c_void,
+        bytes: usize,
+        _file: File,
+    },
+}
+impl Payload {
+    fn bytes(&self) -> &[u8] {
+        match self {
+            Self::Owned(v) => v,
+            Self::Mapped { pointer, bytes, .. } => unsafe {
+                // Immutable publisher-owned inode, retained for this mapping's lifetime.
+                std::slice::from_raw_parts(pointer.cast::<u8>(), *bytes)
+            },
+        }
+    }
+    fn release_pages(&self) {
+        if let Self::Mapped { pointer, bytes, .. } = self {
+            // Residency hint only, after synchronous H2D. No verification or reopen.
+            unsafe {
+                libc::madvise(*pointer, *bytes, libc::MADV_DONTNEED);
+            }
+        }
+    }
+}
+impl Drop for Payload {
+    fn drop(&mut self) {
+        if let Self::Mapped { pointer, bytes, .. } = self {
+            unsafe {
+                libc::munmap(*pointer, *bytes);
+            }
+        }
+    }
+}
 pub struct NativeStore {
-    data: Vec<u8>,
+    data: Payload,
     plans: Vec<Plan>,
     tokens: Vec<u32>,
 }
 impl NativeStore {
     pub fn admit(root: &Path, expected_model: &str, key: &str, byte_budget: usize) -> Result<Self> {
+        Self::admit_mode(root, expected_model, key, byte_budget, false)
+    }
+    /// Disk-backed admission requires immutable, publisher-owned inodes. Updates
+    /// replace paths atomically; in-place writes/truncation are forbidden.
+    pub fn admit_mode(
+        root: &Path,
+        expected_model: &str,
+        key: &str,
+        byte_budget: usize,
+        disk_backed: bool,
+    ) -> Result<Self> {
         let mut metadata = Vec::new();
         File::open(root.join("index.json"))?
             .take(16 * 1024 * 1024 + 1)
@@ -121,14 +169,51 @@ impl NativeStore {
             );
         }
         let file = File::open(root.join("compact.pack"))?;
-        let mut data = vec![0u8; total];
-        file.read_exact_at(&mut data, 4096)?;
-        ensure!(
-            format!("{:x}", Sha256::digest(&data)) == index.dictionary_sha256,
-            "native publication integrity rejected"
-        );
-        // The file is no longer needed by warm views. A request pins this owned
-        // allocation, so replacing a published path cannot mutate its state.
+        let data = if disk_backed {
+            ensure!(total <= isize::MAX as usize, "native mapping exceeds slice limit");
+            ensure!(
+                file.metadata()?.len() >= 4096 + total as u64,
+                "native payload truncated"
+            );
+            // Fixed-size verification scratch; never allocate the full catalogue.
+            let mut scratch = vec![0u8; total.min(256 * 1024)];
+            let mut hash = Sha256::new();
+            let mut offset = 0;
+            while offset < total {
+                let size = scratch.len().min(total - offset);
+                file.read_exact_at(&mut scratch[..size], 4096 + offset as u64)?;
+                hash.update(&scratch[..size]);
+                offset += size;
+            }
+            ensure!(
+                format!("{:x}", hash.finalize()) == index.dictionary_sha256,
+                "native publication integrity rejected"
+            );
+            let pointer = unsafe {
+                libc::mmap(
+                    std::ptr::null_mut(),
+                    total,
+                    libc::PROT_READ,
+                    libc::MAP_PRIVATE,
+                    file.as_raw_fd(),
+                    4096,
+                )
+            };
+            ensure!(pointer != libc::MAP_FAILED, "native mapping failed");
+            Payload::Mapped {
+                pointer,
+                bytes: total,
+                _file: file,
+            }
+        } else {
+            let mut data = vec![0u8; total];
+            file.read_exact_at(&mut data, 4096)?;
+            ensure!(
+                format!("{:x}", Sha256::digest(&data)) == index.dictionary_sha256,
+                "native publication integrity rejected"
+            );
+            Payload::Owned(data)
+        };
         Ok(Self {
             data,
             plans,
@@ -136,7 +221,10 @@ impl NativeStore {
         })
     }
     pub fn bytes(&self) -> usize {
-        self.data.len()
+        self.data.bytes().len()
+    }
+    pub fn release_pages(&self) {
+        self.data.release_pages();
     }
     pub fn tokens(&self) -> &[u32] {
         &self.tokens
@@ -148,7 +236,7 @@ impl NativeStore {
             heads: p.spec.heads,
             positions: p.positions,
             width: p.spec.width,
-            bytes: &self.data[p.range.clone()],
+            bytes: &self.data.bytes()[p.range.clone()],
         })
     }
 }
@@ -191,6 +279,25 @@ mod tests {
             (0..56).collect::<Vec<u8>>()
         );
         assert_eq!(store.tokens(), [11, 22, 33]);
+    }
+    #[test]
+    fn disk_mapping_pins_old_inode_across_replacement_and_page_release() {
+        let tmp = tempfile::tempdir().unwrap();
+        fixture(tmp.path());
+        let store = NativeStore::admit_mode(tmp.path(), "revision", "selection", 56, true).unwrap();
+        std::fs::rename(tmp.path().join("compact.pack"), tmp.path().join("old.pack")).unwrap();
+        std::fs::write(tmp.path().join("compact.pack"), vec![255; 4152]).unwrap();
+        std::fs::remove_file(tmp.path().join("old.pack")).unwrap();
+        for _ in 0..3 {
+            assert_eq!(
+                store
+                    .segments()
+                    .flat_map(|s| s.bytes.iter().copied())
+                    .collect::<Vec<_>>(),
+                (0..56).collect::<Vec<u8>>()
+            );
+            store.release_pages();
+        }
     }
     #[test]
     fn admission_rejects_wrong_identity_budget_corruption_and_incomplete_pairs() {

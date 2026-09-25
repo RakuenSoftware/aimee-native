@@ -42,7 +42,7 @@ class NativeAdmission:
         world=config.get("serve",{}).get("tensor_parallel_size",1)
         banks={}
         for uid,(name,spec) in enumerate(catalog['publications'].items()):
-            store=PreparedStore(lib,{**spec,'byte_budget':config['host_memory_budget']})
+            store=PreparedStore(lib,{**spec,'byte_budget':config['host_memory_budget'],'disk_backed':config.get('disk_backed',False)})
             try:banks[name]=(uid,store.device_bytes(world))
             finally:store.close()
         return banks
@@ -90,6 +90,19 @@ class NativeAdmission:
             if publication is not None and not isinstance(publication,str):raise ValueError()
         except (ValueError,AttributeError,TypeError):
             return await self.error(send,400,'invalid native request')
+        selector=getattr(self,'config',{}).get('selection_socket')
+        if selector:
+            try:
+                from .selection import select
+                selected=await select(selector,body)
+                if selected['catalog_digest']!=self.catalog_digest:
+                    raise RuntimeError('selection/catalogue mismatch')
+                publication=selected['publication']
+                extras['aimee_publication']=publication
+            except Exception:
+                return await self.error(send,503,'approved native memory is unavailable')
+            if self.poisoned or self.paused:
+                return await self.error(send,503,'native publication update in progress')
         bank=None
         if publication is not None:
             bank=self.banks.get(publication)

@@ -43,4 +43,14 @@ class AimeeWorker(Worker):
     def aimee_cache_stats(self):
         if state.CURRENT is None:
             raise RuntimeError('native memory worker is not initialized')
-        return dict(state.CURRENT.cache.stats)
+        result=dict(state.CURRENT.cache.stats)
+        result['catalogue_payload_bytes']=sum(s.metadata['bytes'] for s in state.CURRENT.stores.values())
+        result['disk_backed']=state.CURRENT.config.get('disk_backed',False)
+        # Explicit control-plane telemetry; never executed inside attention.
+        resident=0;native_mapping=False
+        with open('/proc/self/smaps') as maps:
+            for line in maps:
+                if '-' in line.split()[0]:native_mapping=line.rstrip().endswith('/compact.pack')
+                elif native_mapping and line.startswith('Rss:'):resident+=int(line.split()[1])*1024
+        result['mapped_payload_rss_bytes']=resident
+        return result

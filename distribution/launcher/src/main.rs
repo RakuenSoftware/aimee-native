@@ -54,15 +54,22 @@ fn release_key() -> Result<[u8; 32]> {
         .map_err(|_| anyhow::anyhow!("invalid embedded release key"))
 }
 fn client() -> Result<reqwest::blocking::Client> {
-    Ok(reqwest::blocking::Client::builder()
+    let builder = reqwest::blocking::Client::builder()
         .https_only(true)
         .redirect(reqwest::redirect::Policy::none())
         .connect_timeout(Duration::from_secs(15))
-        .timeout(Duration::from_secs(3600))
-        .build()?)
+        .timeout(Duration::from_secs(3600));
+    #[cfg(feature = "lab-release")]
+    let builder = builder.add_root_certificate(reqwest::Certificate::from_pem(include_bytes!(
+        env!("AIMEE_LAB_CA_FILE")
+    ))?);
+    Ok(builder.build()?)
 }
 fn run() -> Result<()> {
     let cli = Cli::parse();
+    if cfg!(feature = "lab-release") {
+        eprintln!("Aimee Native: isolated LAB release build; not for production distribution");
+    }
     let root = root(cli.root)?;
     match cli.command {
         Action::Connect { endpoint } => {
@@ -194,6 +201,8 @@ fn run() -> Result<()> {
                     "--device",
                     "/dev/kfd",
                 ]);
+                #[cfg(feature = "lab-release")]
+                cmd.args(["--cgroups=disabled", "--security-opt", "seccomp=unconfined"]);
                 for device in ["/dev/dri/renderD128", "/dev/dri/renderD129"] {
                     if std::path::Path::new(device).exists() {
                         cmd.args(["--device", device]);

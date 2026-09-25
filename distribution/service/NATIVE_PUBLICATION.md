@@ -16,7 +16,10 @@ The operator-owned JSON specifies `image_reader`, `memory_image`, `query`, `limi
 `host_memory_budget`. The compiler receives the complete approved response and
 ordered record revisions on stdin, with `--output`, `--identity`, `--key` appended
 to its arguments. `gemma_compile.py` is the private reference compiler, requiring
-`--model` and `--publisher-module` pointing to the existing native publisher.
+`--model` and `AIMEE_NATIVE_LIBRARY` pointing to the private publisher-enabled
+Rust library. `publisher.py` is private ownership glue; no research checkout is
+needed by this worker. Build the default Torch-enabled library separately from
+the stripped consumer library.
 No preparation worker is shipped in the client image.
 
 Cache reuse is bound to the authorization view, recipient, full selected record
@@ -56,9 +59,19 @@ The control socket is Unix-only, mode 0600, with same-UID peer enforcement. Keep
 it in the mounted publication directory for containers. HTTP control routes are
 not added. `refresh`, `withdraw`, and `status` are operator control operations.
 
-This is currently a **co-located private integration**. Hosted preparation,
-recipient-bound prepared-artifact delivery to remote clients and trusted
-per-request selection still require deployment integration. The protocol tests
+`selection.py --config /private/selection.json` provides trusted per-request
+selection through a same-UID Unix socket. Its configuration supplies `socket`,
+`image_reader`, `memory_image`, `authority`, `recipient`, `catalog` and `limit`.
+Set `selection_socket` in serving configuration to enable it. The caller sends
+only a query; any supplied publication ID is overridden. A cached working set
+must match the entire ordered authorized revision list and current view.
+Optional `preparation_config`, `native_prepare` and `control_socket` enable
+private preparation on misses with approval checked again before activation.
+Complex/missing reads currently fail explicitly pending authoritative fallback.
+
+This remains a **co-located private integration**. Hosted account authentication
+and recipient-bound prepared-artifact delivery to remote clients still require
+deployment integration. The protocol tests
 use synthetic authority and are not evidence that a live production deployment
 has been authenticated. Do not open an external preview on that assumption.
 

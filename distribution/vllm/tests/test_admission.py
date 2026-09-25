@@ -40,3 +40,26 @@ class AdmissionTests(unittest.IsolatedAsyncioTestCase):
         with self.assertRaises(asyncio.CancelledError):await self.call(m,'a')
         self.assertTrue(m.poisoned)
         self.assertEqual((await self.call(m,'b'))[0]['status'],503)
+
+    async def test_automatic_selection_overrides_caller_publication(self):
+        from unittest.mock import patch
+        received=[]
+        async def app(scope,receive,send):
+            received.append(json.loads((await receive())['body']))
+            await send({'type':'http.response.start','status':200,'headers':[]})
+            await send({'type':'http.response.body','body':b'ok'})
+        m=self.middleware(app);m.config={'selection_socket':'fixture'}
+        async def select(*args):return {'publication':'a','catalog_digest':'fixture'}
+        with patch('aimee_vllm.selection.select',select):
+            result=await self.call(m,'untrusted-publication')
+        self.assertEqual(result[0]['status'],200)
+        self.assertEqual(received[0]['vllm_xargs']['aimee_publication'],'a')
+
+    async def test_selection_revision_race_rejects_before_generation(self):
+        from unittest.mock import patch
+        async def app(*args):self.fail('generation received a stale selection')
+        m=self.middleware(app);m.config={'selection_socket':'fixture'}
+        async def select(*args):return {'publication':'a','catalog_digest':'stale'}
+        with patch('aimee_vllm.selection.select',select):
+            result=await self.call(m,'a')
+        self.assertEqual(result[0]['status'],503)

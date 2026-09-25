@@ -1,0 +1,21 @@
+Loading weights:   0%|          | 0/677 [00:00<?, ?it/s]Loading weights: 100%|██████████| 677/677 [00:00<00:00, 16568.70it/s]
+Traceback (most recent call last):
+  File "/opt/aimee-memory-lab/vllm-native-build/distribution/service/selection.py", line 161, in <module>
+    asyncio.run(main(json.loads(Path(parser.parse_args().config).read_text())))
+  File "/root/.local/share/uv/python/cpython-3.12.14-linux-x86_64-gnu/lib/python3.12/asyncio/runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/root/.local/share/uv/python/cpython-3.12.14-linux-x86_64-gnu/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.local/share/uv/python/cpython-3.12.14-linux-x86_64-gnu/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/opt/aimee-memory-lab/vllm-native-build/distribution/service/selection.py", line 155, in main
+    try:await serve(config)
+        ^^^^^^^^^^^^^^^^^^^
+  File "/opt/aimee-memory-lab/vllm-native-build/distribution/service/selection.py", line 147, in serve
+    await server.serve_forever()
+  File "/root/.local/share/uv/python/cpython-3.12.14-linux-x86_64-gnu/lib/python3.12/asyncio/base_events.py", line 370, in serve_forever
+    await self._serving_forever_fut
+asyncio.exceptions.CancelledError

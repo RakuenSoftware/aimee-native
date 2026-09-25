@@ -79,14 +79,15 @@ async def follow(config):
         else:raise RuntimeError('native control socket unavailable')
         follower=await asyncio.create_subprocess_exec(*config['follower'],stdout=asyncio.subprocess.PIPE,start_new_session=True)
         async def update(view,generation):
-            publications={}
+            publications={};selections=[]
             try:
                 for name,command in config['preparations'].items():
                     result=await prepare(command)
                     if result['authorized_view']!=view or result['recipient']!=serving['recipient']:
                         raise RuntimeError('prepared publication binding changed')
                     publications[name]={k:result[k] for k in ('root','model','key')}
-                catalog={'recipient':serving['recipient'],'model_config_sha256':hashlib.sha256((Path(serving['model'])/'config.json').read_bytes()).hexdigest(),'publications':publications}
+                    selections.append({'publication':name,'authorized_view':view,'records':result['records']})
+                catalog={'recipient':serving['recipient'],'model_config_sha256':hashlib.sha256((Path(serving['model'])/'config.json').read_bytes()).hexdigest(),'publications':publications,'selections':selections}
                 publish(serving['catalog'],catalog)
                 result=await control(socket,{'op':'refresh','generation':generation})
                 print(json.dumps({'state':'active','view':view,'publications':len(publications)}),flush=True)
@@ -146,6 +147,8 @@ async def main(config):
                 if attempt==config.get('restart_limit',3):raise
                 print(json.dumps({'state':'restarting','attempt':attempt+1}),flush=True)
                 await asyncio.sleep(2)
+    except asyncio.CancelledError:
+        pass  # Normal operator shutdown; child/socket cleanup runs above.
     finally:
         for sig in (signal.SIGTERM,signal.SIGINT):loop.remove_signal_handler(sig)
 

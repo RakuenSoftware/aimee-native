@@ -16,6 +16,8 @@ class PreparedStore:
         self.lib.aimee_store_metadata.argtypes = [ctypes.c_void_p]
         self.lib.aimee_store_metadata.restype = ctypes.c_char_p
         self.lib.aimee_store_close.argtypes = [ctypes.c_void_p]
+        self.lib.aimee_store_release_pages.argtypes = [ctypes.c_void_p]
+        self.lib.aimee_store_release_pages.restype = None
         if self.lib.aimee_store_abi_version() != 1:
             raise RuntimeError("native storage ABI mismatch")
         self.handle = self.lib.aimee_store_open(json.dumps(spec).encode())
@@ -41,8 +43,10 @@ class PreparedStore:
                     raise RuntimeError('native replicated-head partition mismatch')
                 head = rank // (world // s['heads'])
                 host = host[head:head+1]
-            # Activation only. No model pass, tokenization, hashing or SSD read.
+            # Activation only. Disk-backed pages can fault here, before attention;
+            # no model pass, tokenization, hashing or file reopen.
             banks[(s['layer'], s['value'])] = host.to(device=device).contiguous()
+        self.lib.aimee_store_release_pages(self.handle)
         self.device_banks[key] = banks
         return banks
 

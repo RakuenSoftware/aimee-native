@@ -11,6 +11,8 @@ struct Admission {
     model: String,
     key: String,
     byte_budget: usize,
+    #[serde(default)]
+    disk_backed: bool,
 }
 struct Handle {
     _store: NativeStore,
@@ -27,11 +29,12 @@ pub unsafe extern "C" fn aimee_store_open(spec: *const c_char) -> *mut c_void {
     let result = std::panic::catch_unwind(|| -> anyhow::Result<Handle> {
         anyhow::ensure!(!spec.is_null(), "missing admission");
         let spec: Admission = serde_json::from_str(unsafe { CStr::from_ptr(spec) }.to_str()?)?;
-        let store = NativeStore::admit(
+        let store = NativeStore::admit_mode(
             Path::new(&spec.root),
             &spec.model,
             &spec.key,
             spec.byte_budget,
+            spec.disk_backed,
         )?;
         let segments:Vec<_>=store.segments().map(|s|json!({"layer":s.layer,"value":s.value,"heads":s.heads,"positions":s.positions,"width":s.width,"pointer":s.bytes.as_ptr() as usize,"bytes":s.bytes.len()})).collect();
         let metadata=CString::new(json!({"abi":1,"positions":store.tokens().len(),"bytes":store.bytes(),"segments":segments}).to_string())?;
@@ -160,5 +163,16 @@ pub unsafe extern "C" fn aimee_admission_close(handle: *mut c_void) {
         drop(unsafe {
             Box::from_raw(handle.cast::<std::sync::Mutex<crate::device_cache::Admission>>())
         });
+    }
+}
+
+/// # Safety
+/// Live store handle; no concurrent CPU consumers while releasing mapped pages.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn aimee_store_release_pages(handle: *const c_void) {
+    if !handle.is_null() {
+        unsafe {
+            (&*handle.cast::<Handle>())._store.release_pages();
+        }
     }
 }

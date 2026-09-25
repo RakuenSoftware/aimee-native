@@ -24,8 +24,8 @@ The Rust installer now targets `bin/aimee-vllm`, a compiled native store library
 and certified model artifacts. `run` consumes a publication-installed
 `serving.json`, supplies the installed model/library paths, and binds loopback.
 It never forwards credentials through process arguments. A missing serving
-configuration fails explicitly. No endpoint, release origin, signing key or
-production feed has been invented or provisioned.
+configuration fails explicitly. An isolated TLS release origin, registry and
+lab signing key now exercise delivery. Production identities remain unconfigured.
 
 ## Implemented
 
@@ -52,22 +52,29 @@ returned correct isolated answers. See [the release validation record](../docs/v
 for protocols, artifacts and limitations.
 
 The private preparation/follower bridge is implemented against existing Aimee
-publication interfaces, with protocol tests. Live authenticated deployment and
-automatic request selection still need integration. Host catalogs remain resident
-in RAM. Broader quantization parity, isolated performance, real failure recovery,
-license checks and signed clean-machine distribution remain release gates.
+publication interfaces. Automatic selection now uses the actual scoped reader
+and requires an exact match for every selected record and revision. A miss can
+invoke the private preparer; it never silently substitutes a one-record bank.
+Disk-backed catalogs retain verified immutable mappings and fault selected pages
+on demand, releasing mapped RSS after GPU transfer. OS page cache is separate.
+
+See [the production follow-up record](../docs/validation/vllm-production-20260925.md)
+for disk pressure, automatic selection, real preparation, clean-install results,
+and the remaining authenticated deployment and certification work.
 
 For container releases, the signed artifact set can include `runtime/image.json`
 containing `image` (an immutable registry reference with `@sha256:` digest) and
 `model_config` (the packaged `models/config.json`). The launcher mounts approved
 memory and model files and runs the matched image through Podman. Model/tokenizer
-sidecars remain necessary alongside GGUF. The image is not yet published to a
-release registry; the descriptor must reference the eventual certified image.
+sidecars remain necessary alongside GGUF. A digest-pinned image is published in
+the isolated lab registry. This is not a customer production release.
 
-No release origin, signing key, production endpoint or customer-ready release has
-been invented. The compiled client still needs an audited, supported host GPU
-driver and container runtime. Successful lab containers do not establish a signed
-clean-machine installation.
+Lab builds require the explicit `lab-release` feature and `lab_only` manifest
+marker; normal launchers reject them. Production gate evidence must match the
+exact packaged artifact set, not merely the upstream runtime commit.
+The compiled client still needs a supported host GPU driver and container runtime.
+Remote account authentication and native-artifact delivery must be finished
+before the advertised connect/install/run workflow is customer-ready.
 
 Preparation stays server-side. Users receive approved local representations and
 a compiled consumer. Owning the machine still permits inspecting usable tensors
