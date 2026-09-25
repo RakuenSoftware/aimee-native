@@ -41,10 +41,16 @@ per serving instance; this component is not a public multi-tenant gateway.
 
 The supervisor stops new admissions before preparing an update, cancels obsolete
 preparations, checks result/view/recipient binding, atomically replaces the private
-catalog, and requests coordinated activation. Every worker must acknowledge the
+catalog, and requests coordinated activation. Each withdrawal advances a
+control generation; activation from an older preparation is rejected even if
+its control request outlives cancellation. Every worker must acknowledge the
 same digest before ingress resumes. Withdrawal stops new requests; existing
 requests may finish. Feed termination stops the owned server. A poisoned server
 requests full restart; restarted serving remains closed until new authorization.
+Health checks also run while publication events are arriving. Failed preparation
+is retried on the next unchanged-view event; only successful activation suppresses
+that retry. After stopping its server, the supervisor removes the observed owned
+Unix socket if the same socket is still present, so forced exits can restart.
 
 The control socket is Unix-only, mode 0600, with same-UID peer enforcement. Keep
 it in the mounted publication directory for containers. HTTP control routes are
@@ -55,3 +61,7 @@ recipient-bound prepared-artifact delivery to remote clients and trusted
 per-request selection still require deployment integration. The protocol tests
 use synthetic authority and are not evidence that a live production deployment
 has been authenticated. Do not open an external preview on that assumption.
+
+Run the process tests with `python3 -m unittest discover -s distribution/service`.
+The standalone preparation protocol probe is `probe_prepare_boundary.py`; it
+requires `--binary` and `--fixture` and is intentionally separate from discovery.

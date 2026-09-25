@@ -26,3 +26,15 @@ class ControlTests(unittest.IsolatedAsyncioTestCase):
     async def test_poisoned_status_requests_supervised_restart(self):
         o=self.owner();o.poisoned=True
         self.assertEqual((await operate(o,None,{'op':'status'}))['state'],'restart_required')
+
+    async def test_superseded_activation_cannot_reopen_after_withdrawal(self):
+        o=self.owner()
+        first=await operate(o,None,{'op':'withdraw'})
+        second=await operate(o,None,{'op':'withdraw'})
+        self.assertGreater(second['generation'],first['generation'])
+        with self.assertRaisesRegex(RuntimeError,'superseded'):
+            await operate(o,None,{'op':'refresh','generation':first['generation']})
+        self.assertTrue(o.paused);self.assertFalse(o.poisoned)
+        async def rpc(*args,**kw):return [{'publications':1,'pinned_requests':0,'catalog_digest':'new'}]*2
+        await operate(o,NS(collective_rpc=rpc),{'op':'refresh','generation':second['generation']})
+        self.assertFalse(o.paused)

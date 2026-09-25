@@ -24,9 +24,16 @@ async def start(owner, engine):
 async def operate(owner,engine,request):
     if request == {'op':'status'}:
         return {'state':'restart_required' if owner.poisoned else ('paused' if owner.paused else 'active')}
-    if request not in ({'op':'refresh'},{'op':'withdraw'}):raise ValueError('unsupported control operation')
+    guarded_refresh=(set(request)=={'op','generation'} and request['op']=='refresh'
+                     and type(request['generation']) is int and request['generation']>=0)
+    if request not in ({'op':'refresh'},{'op':'withdraw'}) and not guarded_refresh:
+        raise ValueError('unsupported control operation')
+    if guarded_refresh and request['generation']!=getattr(owner,'generation',0):
+        raise RuntimeError('superseded publication activation')
     owner.paused=True
-    if request['op']=='withdraw':return {'state':'withdrawn','active_requests':owner.active}
+    if request['op']=='withdraw':
+        owner.generation=getattr(owner,'generation',0)+1
+        return {'state':'withdrawn','active_requests':owner.active,'generation':owner.generation}
     if owner.poisoned:raise RuntimeError('worker restart required')
     try:
         await asyncio.wait_for(owner.idle.wait(),60)

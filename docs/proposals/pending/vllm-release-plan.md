@@ -84,3 +84,9 @@ compatibility are implemented. Signed launcher OCI support is implemented.
 See [the detailed evidence and outstanding gates](../../validation/vllm-release-20260925.md).
 The existing production gates remain closed: these checks do not substitute for
 live authority, hosted distribution or a signed clean-machine release test.
+
+Follow-up recovery validation fixes retry suppression, busy-feed health polling,
+superseded activation and owned-socket cleanup. Signed installer lifecycle and
+real GPU interruption/restart probes pass; see
+[the recovery record](../../validation/vllm-recovery-20260925.md). These are not
+a signed clean-host installation or a live authenticated-feed recovery test.

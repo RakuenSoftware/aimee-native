@@ -1,0 +1,39 @@
+{"files": 12, "private_source_included": false, "artifact_digests": {"libaimee_native.so": "ee624d0e098934256d86a73e2040a738369df82571b18ef4316a47c61f72fc07", "vllm_gguf_plugin-0.0.5-cp310-abi3-linux_x86_64.whl": "32313e2dec05f88ff868d22c655a52127b5afe6ecba480fa2f5050b3eda771c4", "wheel-name.txt": "3364bbfa231acd116b313e3cf12258d07d0d860a8188d1ce0bd7a83703c494d3", "client.whl": "73a8baa2e39b43315e7b48e9ebf367ed74bd27e7f743b7125ee7c427fdb3dde0", "Dockerfile": "10e0536f96483689ad4638b25f4025f8e8186bb0deeb5a84fa585f25e0445be5", "kernels/manifest.json": "7e8fd7d8d92fabd18973a6e73f3b52c6ee8e5f0a4cc7e7621e5d34a8ae6b4a7e", "kernels/fd0df534f93176a53c34db76aae264cfdc5ae20e69e6e39b8855c62b72e9b472-native_attention.hsaco": "af345dea3561b0c3be3294cf8fa3e670c07f3f357ed52f2c315b278d05336dda", "kernels/7d839fe6b40bf5338f329a2f10de0302907fd9ba345195756f1104ee5ce19dde-native_attention.json": "d20221944c61eacd06450569cec2566f8a5d73b6ce1cb282bd594893f1886830", "kernels/fd0df534f93176a53c34db76aae264cfdc5ae20e69e6e39b8855c62b72e9b472-native_attention.json": "631a43deec09909fdc93f371b641fcdee63978add0f5227bee9adcb79540b975", "kernels/7d839fe6b40bf5338f329a2f10de0302907fd9ba345195756f1104ee5ce19dde-native_attention.hsaco": "2146bada03fceba04a9fa211eb7e6a5729d28fee8357639c89e1d286b9e72554", "licenses/vllm.txt": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4", "licenses/vllm-gguf-plugin.txt": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"}}
+STEP 1/12: FROM docker.io/vllm/vllm-openai-rocm@sha256:2e7da1ad1c66836802072588adea75f9f4991da5f9545b4318e91d422c22ce6a
+STEP 2/12: COPY client.whl /opt/aimee/client.whl
+--> e5404e00ddae
+STEP 3/12: COPY libaimee_native.so /opt/aimee/libaimee_native.so
+--> 35afbaee39ce
+STEP 4/12: COPY kernels /opt/aimee/kernels
+--> 6ff2866bf92b
+STEP 5/12: COPY licenses /opt/aimee/licenses
+--> 50cd750a1ea4
+STEP 6/12: COPY wheel-name.txt /opt/aimee/wheel-name.txt
+--> 23a16e7f0d66
+STEP 7/12: RUN name=$(cat /opt/aimee/wheel-name.txt) && mv /opt/aimee/client.whl /opt/aimee/$name && python3 -m pip install --no-deps /opt/aimee/$name && rm /opt/aimee/$name /opt/aimee/wheel-name.txt
+Processing /opt/aimee/aimee_vllm-0.1.0-cp312-cp312-linux_x86_64.whl
+Installing collected packages: aimee-vllm
+Successfully installed aimee-vllm-0.1.0
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+--> 16d05b94b72c
+STEP 8/12: ENV AIMEE_KERNEL_BANK=/opt/aimee/kernels
+--> 39fabe858a02
+STEP 9/12: ENV VLLM_USE_V2_MODEL_RUNNER=0 VLLM_PLUGINS=aimee_native VLLM_ROCM_USE_AITER=0
+--> 3d6bbd93c956
+STEP 10/12: ENTRYPOINT ["aimee-vllm"]
+--> 8660d79137e2
+STEP 11/12: COPY vllm_gguf_plugin-0.0.5-cp310-abi3-linux_x86_64.whl /opt/aimee/vllm_gguf_plugin-0.0.5-cp310-abi3-linux_x86_64.whl
+--> 96a193d481f8
+STEP 12/12: RUN python3 -m pip install --no-deps /opt/aimee/vllm_gguf_plugin-0.0.5-cp310-abi3-linux_x86_64.whl gguf==0.19.0 && rm /opt/aimee/vllm_gguf_plugin-0.0.5-cp310-abi3-linux_x86_64.whl
+Processing /opt/aimee/vllm_gguf_plugin-0.0.5-cp310-abi3-linux_x86_64.whl
+Collecting gguf==0.19.0
+  Downloading gguf-0.19.0-py3-none-any.whl.metadata (4.1 kB)
+Downloading gguf-0.19.0-py3-none-any.whl (118 kB)
+Installing collected packages: vllm-gguf-plugin, gguf
+
+Successfully installed gguf-0.19.0 vllm-gguf-plugin-0.0.5
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+COMMIT localhost/aimee-native:gemma-preview-r6
+--> 06b802798f44
+Successfully tagged localhost/aimee-native:gemma-preview-r6
+06b802798f4450a69c0171f78fa12b50eccf26e05e059dbfbd655668aba6ac36

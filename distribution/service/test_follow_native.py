@@ -1,10 +1,12 @@
-import asyncio,importlib.util,json,pathlib,tempfile,unittest
+import asyncio,importlib.util,json,pathlib,tempfile,unittest,socket
 from unittest.mock import patch
 spec=importlib.util.spec_from_file_location('follow_native',pathlib.Path(__file__).with_name('follow_native.py'));service=importlib.util.module_from_spec(spec);spec.loader.exec_module(service)
 class FollowTests(unittest.IsolatedAsyncioTestCase):
     async def test_publisher_stream_end_stops_both_owned_processes(self):
         with tempfile.TemporaryDirectory() as tmp:
-            root=pathlib.Path(tmp);c=root/'serving.json';c.write_text(json.dumps({'control_socket':'fixture','start_paused':True}))
+            root=pathlib.Path(tmp);c=root/'serving.json';endpoint=root/'control.sock'
+            sock=socket.socket(socket.AF_UNIX);sock.bind(str(endpoint));self.addCleanup(sock.close)
+            c.write_text(json.dumps({'control_socket':str(endpoint),'start_paused':True}))
             class Stream:
                 async def readline(self):return b""
             class Child:
