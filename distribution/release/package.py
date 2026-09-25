@@ -23,7 +23,7 @@ GATES = {'native_accuracy', 'quantized_model', 'all_selected_records', 'long_con
 def allowed(path):
     if any(p in ('', '.', '..') for p in path.split('/')) or '\\' in path:
         return False
-    return bool(re.fullmatch(r'runtime/image\.json|bin/aimee-vllm|lib/[A-Za-z0-9_.+-]+\.so(?:\.[0-9]+)*|models/[A-Za-z0-9_.+-]+\.(?:gguf|safetensors|json|jinja|model)|licenses/[A-Za-z0-9_.+-]+\.txt', path))
+    return bool(re.fullmatch(r'runtime/(?:image|profile)\.json|bin/aimee-vllm|lib/[A-Za-z0-9_.+-]+\.so(?:\.[0-9]+)*|models/[A-Za-z0-9_.+-]+\.(?:gguf|safetensors|json|jinja|model)|licenses/[A-Za-z0-9_.+-]+\.txt', path))
 
 def artifact_set_digest(artifacts):
     """Bind gate evidence to exact released bytes, paths and execution flags."""

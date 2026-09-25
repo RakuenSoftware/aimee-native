@@ -78,3 +78,26 @@ has been authenticated. Do not open an external preview on that assumption.
 Run the process tests with `python3 -m unittest discover -s distribution/service`.
 The standalone preparation protocol probe is `probe_prepare_boundary.py`; it
 requires `--binary` and `--fixture` and is intentionally separate from discovery.
+
+## Hosted native delivery
+
+`memory/nativepublication.Handler` now implements `/v1/native/bootstrap`,
+`/v1/native/select`, and recipient-bound lease downloads/final approval. Mount it
+behind the actual Aimee authentication and release-policy resolver. Its mandatory
+`Resolve` callback must select the operator-owned `Preparer` from current identity
+and release policy, and use a scope identity incorporating policy revision.
+Do not derive either from a JSON query or an untrusted identity header.
+
+`Preparer.Access` connects that authorized mapping to the actual Rust binary and
+its fixed configuration template. The current client certificate/account grant
+must be resolved again on every HTTP call. `native-prepare CONFIG --check` checks
+the current entire selection without invoking the compiler. Optional `gateway`
+in private configuration enables Aimee's existing authoritative record fallback;
+responses requiring non-fact context are rejected explicitly.
+
+The Rust launcher now owns remote download/admission and a private local selection
+broker. A signed `runtime/profile.json` enables automatic catalog bootstrap and
+broker/container supervision. Users do not install catalogs or select publication
+IDs. See the [remote delivery validation](../../docs/validation/native-remote-delivery-20260925.md)
+for the tested clean-client flow and the distinction between lab enrollment and
+production deployment. The earlier co-located supervisor remains available.

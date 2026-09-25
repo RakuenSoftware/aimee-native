@@ -9,7 +9,7 @@ from aimee_vllm.admission import Ledger,NativeAdmission
 class AdmissionTests(unittest.IsolatedAsyncioTestCase):
     def middleware(self,app):
         m=NativeAdmission.__new__(NativeAdmission);m.app=app;m.poisoned=False
-        m.catalog_digest='fixture';m.paused=False;m.active=0;m.idle=asyncio.Event();m.idle.set()
+        m.config={};m.catalog_digest='fixture';m.paused=False;m.active=0;m.idle=asyncio.Event();m.idle.set()
         m.banks={'a':(1,10),'b':(2,10)}
         m.ledger=Ledger(ctypes.CDLL(os.environ['AIMEE_STORE_LIBRARY']),10)
         self.addCleanup(m.ledger.close);return m
@@ -63,3 +63,22 @@ class AdmissionTests(unittest.IsolatedAsyncioTestCase):
         with patch('aimee_vllm.selection.select',select):
             result=await self.call(m,'a')
         self.assertEqual(result[0]['status'],503)
+
+    async def test_paused_selection_can_activate_but_cannot_bypass_pause(self):
+        from unittest.mock import patch
+        reached=[]
+        async def app(scope,receive,send):
+            reached.append(True)
+            await send({'type':'http.response.start','status':200,'headers':[]})
+            await send({'type':'http.response.body','body':b'ok'})
+        m=self.middleware(app);m.config={'selection_socket':'fixture'};m.paused=True
+        async def unchanged(*args):return {'publication':'a','catalog_digest':'fixture'}
+        with patch('aimee_vllm.selection.select',unchanged):
+            self.assertEqual((await self.call(m,'a'))[0]['status'],503)
+        self.assertFalse(reached)
+        async def activated(*args):
+            m.paused=False
+            return {'publication':'a','catalog_digest':'fixture'}
+        with patch('aimee_vllm.selection.select',activated):
+            self.assertEqual((await self.call(m,'a'))[0]['status'],200)
+        self.assertTrue(reached)

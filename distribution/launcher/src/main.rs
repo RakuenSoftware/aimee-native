@@ -21,7 +21,33 @@ struct Cli {
 #[derive(Subcommand)]
 enum Action {
     /// Save the Aimee endpoint. Read a scoped access token from standard input.
-    Connect { endpoint: String },
+    Connect {
+        endpoint: String,
+        #[arg(long)]
+        ca_file: Option<PathBuf>,
+        /// PEM containing the enrolled client certificate and private key.
+        #[arg(long)]
+        client_identity: Option<PathBuf>,
+    },
+    /// Run the private host-side native selection broker.
+    MemoryAgent {
+        #[arg(long)]
+        serving: PathBuf,
+        #[arg(long)]
+        model: String,
+        #[arg(long, default_value_t = 1073741824)]
+        disk_budget: u64,
+    },
+    /// Fetch an approved complete native working set (control-plane diagnostic).
+    FetchMemory {
+        query: String,
+        #[arg(long)]
+        recipient: String,
+        #[arg(long)]
+        model: String,
+        #[arg(long, default_value_t = 1073741824)]
+        disk_budget: u64,
+    },
     /// Install a certified model/runtime from the configured release service.
     Install { model: String },
     /// Launch the installed native-memory runtime on loopback.
@@ -54,6 +80,9 @@ fn release_key() -> Result<[u8; 32]> {
         .map_err(|_| anyhow::anyhow!("invalid embedded release key"))
 }
 fn client() -> Result<reqwest::blocking::Client> {
+    tls_client(None, None)
+}
+fn tls_client(ca: Option<&[u8]>, identity: Option<&[u8]>) -> Result<reqwest::blocking::Client> {
     let builder = reqwest::blocking::Client::builder()
         .https_only(true)
         .redirect(reqwest::redirect::Policy::none())
@@ -63,6 +92,16 @@ fn client() -> Result<reqwest::blocking::Client> {
     let builder = builder.add_root_certificate(reqwest::Certificate::from_pem(include_bytes!(
         env!("AIMEE_LAB_CA_FILE")
     ))?);
+    let builder = if let Some(pem) = ca {
+        builder.add_root_certificate(reqwest::Certificate::from_pem(pem)?)
+    } else {
+        builder
+    };
+    let builder = if let Some(pem) = identity {
+        builder.identity(reqwest::Identity::from_pem(pem)?)
+    } else {
+        builder
+    };
     Ok(builder.build()?)
 }
 fn run() -> Result<()> {
@@ -72,11 +111,74 @@ fn run() -> Result<()> {
     }
     let root = root(cli.root)?;
     match cli.command {
-        Action::Connect { endpoint } => {
+        Action::Connect {
+            endpoint,
+            ca_file,
+            client_identity,
+        } => {
             let mut token = String::new();
             io::stdin().take(16385).read_to_string(&mut token)?;
-            native::connect(&root, &endpoint, &token)?;
-            println!("Aimee connection saved. Credentials are not sent to the release service.");
+            let ca = ca_file.map(fs::read).transpose()?;
+            let identity = client_identity.map(fs::read).transpose()?;
+            let profile = native::delivery::bootstrap(
+                &tls_client(ca.as_deref(), identity.as_deref())?,
+                &endpoint,
+                &token,
+            )?;
+            native::connect_with_tls(&root, &endpoint, &token, ca.as_deref(), identity.as_deref())?;
+            native::atomic(
+                &root.join("native-profile.json"),
+                &serde_json::to_vec(&profile)?,
+            )?;
+            println!("Authenticated Aimee native-memory connection established.");
+        }
+        Action::MemoryAgent {
+            serving,
+            model,
+            disk_budget,
+        } => {
+            let connection: native::Config =
+                serde_json::from_slice(&fs::read(root.join("config.json"))?)?;
+            let ca = connection.ca_file.as_ref().map(fs::read).transpose()?;
+            let identity = connection
+                .client_identity
+                .as_ref()
+                .map(fs::read)
+                .transpose()?;
+            native::broker::serve(
+                tls_client(ca.as_deref(), identity.as_deref())?,
+                connection,
+                &serving,
+                &model,
+                disk_budget,
+            )?;
+        }
+        Action::FetchMemory {
+            query,
+            recipient,
+            model,
+            disk_budget,
+        } => {
+            let connection: native::Config =
+                serde_json::from_slice(&fs::read(root.join("config.json"))?)?;
+            let ca = connection.ca_file.as_ref().map(fs::read).transpose()?;
+            let identity = connection
+                .client_identity
+                .as_ref()
+                .map(fs::read)
+                .transpose()?;
+            let (offer, path) = native::delivery::fetch(
+                &tls_client(ca.as_deref(), identity.as_deref())?,
+                &connection,
+                &query,
+                &recipient,
+                &model,
+                disk_budget,
+            )?;
+            println!(
+                "{}",
+                serde_json::json!({"publication":offer.key,"root":path,"records":offer.records.len(),"authorized_view":offer.authorized_view})
+            );
         }
         Action::Install { model } => {
             ensure!(native::component(&model), "invalid model identifier");
@@ -151,13 +253,31 @@ fn run() -> Result<()> {
             let connection: native::Config = serde_json::from_slice(
                 &fs::read(&config_path).context("connect Aimee before starting the runtime")?,
             )?;
-            // The trusted publication installer owns this serving configuration.
-            // Connection credentials are never forwarded through argv.
-            let serving_path = root.join("serving.json");
-            let mut serving: serde_json::Value = serde_json::from_slice(
-                &fs::read(&serving_path)
-                    .context("native publication serving configuration is not installed")?,
-            )?;
+            let _runtime_lock = native::runtime::lock(&root)?;
+            let automatic = m.artifacts.iter().any(|a| a.path == "runtime/profile.json");
+            let (mut serving, defaults) = if automatic {
+                let ca = connection.ca_file.as_ref().map(fs::read).transpose()?;
+                let identity = connection
+                    .client_identity
+                    .as_ref()
+                    .map(fs::read)
+                    .transpose()?;
+                let http = tls_client(ca.as_deref(), identity.as_deref())?;
+                let token = fs::read_to_string(&connection.token_file)?;
+                let profile = native::delivery::bootstrap(&http, &connection.endpoint, &token)?;
+                native::runtime::clean_sockets(&connection.memory_root)?;
+                let (serving, defaults) =
+                    native::runtime::initialize(&root, &dir, &connection, &profile)?;
+                (serving, Some(defaults))
+            } else {
+                (
+                    serde_json::from_slice(
+                        &fs::read(root.join("serving.json"))
+                            .context("native publication serving configuration is not installed")?,
+                    )?,
+                    None,
+                )
+            };
             if m.artifacts.iter().any(|a| a.path == "runtime/image.json") {
                 let image: native::RuntimeImage =
                     serde_json::from_slice(&fs::read(dir.join("runtime/image.json"))?)?;
@@ -224,14 +344,25 @@ fn run() -> Result<()> {
                         mode
                     ));
                 }
-                let e = cmd
-                    .arg(&image.image)
+                cmd.arg(&image.image)
                     .arg("--config")
                     .arg(runtime_config)
-                    .env_remove("AIMEE_TOKEN")
-                    .exec();
-                return Err(e).context("could not start certified container; Podman and matching GPU driver are required");
+                    .env_remove("AIMEE_TOKEN");
+                if let Some(defaults) = defaults {
+                    return native::runtime::supervise(
+                        &root,
+                        &mut cmd,
+                        &defaults.native_model,
+                        defaults.disk_budget,
+                        connection.memory_root.join("selection.sock"),
+                    );
+                }
+                return Err(cmd.exec()).context("could not start certified container; Podman and matching GPU driver are required");
             }
+            ensure!(
+                !automatic,
+                "automatic native delivery requires the certified container runtime"
+            );
             let model_path = dir.join(&m.model_file);
             serving["model"] = serde_json::json!(if m.model_file.ends_with("config.json") {
                 model_path

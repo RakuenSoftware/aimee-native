@@ -93,3 +93,11 @@ real GPU interruption/restart probes pass; see
 a signed clean-host installation or a live authenticated-feed recovery test.
 
 Further work is recorded in [the production follow-up](../../validation/vllm-production-20260925.md): automatic full-working-set selection, real preparation reuse, disk-backed residency and signed clean-host lab distribution. Production deployment identities are still required; lab authority does not replace them.
+
+The [remote delivery follow-up](../../validation/native-remote-delivery-20260925.md)
+adds the actual hosted preparer boundary, authenticated artifact transport,
+record-only authoritative fallback and automatic clean-client delivery with signed
+runtime defaults. Clean install, upgrade and rollback passed on Gemma without
+harness-installed native banks. Live production authority/API mounting and the
+production security/signing/certification gates remain open; lab successes are
+not substituted for them.

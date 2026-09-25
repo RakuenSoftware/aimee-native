@@ -74,14 +74,14 @@ class NativeAdmission:
             return await self.app(scope,receive,send)
         if scope.get('path') not in ('/v1/chat/completions','/v1/completions'):
             return await self.error(send,404,'endpoint is outside the certified native serving API')
-        if self.poisoned or self.paused:return await self.error(send,503,'native admission requires worker restart after interrupted request')
+        if self.poisoned or (self.paused and not self.config.get('selection_socket')):return await self.error(send,503,'native admission requires worker restart after interrupted request')
         chunks=[]
         while True:
             event=await receive()
             if event['type']=='http.disconnect':return
             chunks.append(event.get('body',b''))
             if not event.get('more_body',False):break
-        if self.poisoned or self.paused:return await self.error(send,503,'native publication update in progress')
+        if self.poisoned or (self.paused and not self.config.get('selection_socket')):return await self.error(send,503,'native publication update in progress')
         raw=b''.join(chunks)
         try:
             body=json.loads(raw)

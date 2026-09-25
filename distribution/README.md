@@ -83,3 +83,18 @@ than guaranteeing secrecy.
 
 The active work order and acceptance criteria are in
 [the vLLM release plan](../docs/proposals/pending/vllm-release-plan.md).
+
+## Automatic remote client follow-up
+
+The launcher now authenticates native bootstrap during `connect`, supports
+private-CA/mTLS enrollment, and can own the complete broker/container lifecycle
+from a signed `runtime/profile.json`. A clean client has passed automatic native
+memory download, Gemma answers, signed upgrade and rollback without manually
+installed banks/catalogs. The private Go handler delegates actual preparation and
+approval to Rust; authoritative identity/release resolution remains in Aimee.
+
+See [the remote delivery report](../docs/validation/native-remote-delivery-20260925.md).
+This is a tested **lab** distribution, not a declaration that all production
+acceptance gates are closed. The live account endpoint does not yet mount these
+native routes; dependency findings, production identities and final certification
+remain explicit release conditions.

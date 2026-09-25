@@ -1,0 +1,89 @@
+aimee-lab-registry
+{"files": 14, "private_source_included": false, "artifact_digests": {"libaimee_native.so": "d015e2d96e83f3c22302de60cbbfae3902004be19905a66188490aec34f2ba66", "vllm_gguf_plugin-0.0.5-cp310-abi3-linux_x86_64.whl": "32313e2dec05f88ff868d22c655a52127b5afe6ecba480fa2f5050b3eda771c4", "wheel-name.txt": "3364bbfa231acd116b313e3cf12258d07d0d860a8188d1ce0bd7a83703c494d3", "client.whl": "b1ad18206bbc23f585b7c1fa412ddae5e095f6b41000839ce12b0af19967bff0", "Dockerfile": "0997ffbd71539ab80fece2115ab8da700dd5a3f22bbb67e8541d112dd63aa2f8", "kernels/manifest.json": "7e8fd7d8d92fabd18973a6e73f3b52c6ee8e5f0a4cc7e7621e5d34a8ae6b4a7e", "kernels/fd0df534f93176a53c34db76aae264cfdc5ae20e69e6e39b8855c62b72e9b472-native_attention.hsaco": "af345dea3561b0c3be3294cf8fa3e670c07f3f357ed52f2c315b278d05336dda", "kernels/7d839fe6b40bf5338f329a2f10de0302907fd9ba345195756f1104ee5ce19dde-native_attention.json": "d20221944c61eacd06450569cec2566f8a5d73b6ce1cb282bd594893f1886830", "kernels/fd0df534f93176a53c34db76aae264cfdc5ae20e69e6e39b8855c62b72e9b472-native_attention.json": "631a43deec09909fdc93f371b641fcdee63978add0f5227bee9adcb79540b975", "kernels/7d839fe6b40bf5338f329a2f10de0302907fd9ba345195756f1104ee5ce19dde-native_attention.hsaco": "2146bada03fceba04a9fa211eb7e6a5729d28fee8357639c89e1d286b9e72554", "licenses/vllm.txt": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4", "licenses/gemma-NOTICE.txt": "f674c652e14bcf883f7f0971b2cf7ac2c0f305a4f91e0507709e9432ee8938d9", "licenses/Apache-2.0.txt": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4", "licenses/vllm-gguf-plugin.txt": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"}}
+STEP 1/13: FROM docker.io/vllm/vllm-openai-rocm@sha256:2e7da1ad1c66836802072588adea75f9f4991da5f9545b4318e91d422c22ce6a
+STEP 2/13: COPY client.whl /opt/aimee/client.whl
+--> 28b772b2b194
+STEP 3/13: COPY libaimee_native.so /opt/aimee/libaimee_native.so
+--> 93c83c2877e1
+STEP 4/13: COPY kernels /opt/aimee/kernels
+--> 9fe88120ae6b
+STEP 5/13: COPY licenses /opt/aimee/licenses
+--> 88cde4841bce
+STEP 6/13: COPY wheel-name.txt /opt/aimee/wheel-name.txt
+--> 851556ccc1d1
+STEP 7/13: RUN name=$(cat /opt/aimee/wheel-name.txt) && mv /opt/aimee/client.whl /opt/aimee/$name && python3 -m pip install --no-deps /opt/aimee/$name && rm /opt/aimee/$name /opt/aimee/wheel-name.txt
+Processing /opt/aimee/aimee_vllm-0.1.0-cp312-cp312-linux_x86_64.whl
+Installing collected packages: aimee-vllm
+Successfully installed aimee-vllm-0.1.0
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+--> 1ba7d9b9d772
+STEP 8/13: ENV NCCL_P2P_DISABLE=1 VLLM_HOST_IP=127.0.0.1
+--> 06ebf5e23b8f
+STEP 9/13: ENV AIMEE_KERNEL_BANK=/opt/aimee/kernels
+--> 0a1d077690d7
+STEP 10/13: ENV VLLM_USE_V2_MODEL_RUNNER=0 VLLM_PLUGINS=aimee_native VLLM_ROCM_USE_AITER=0
+--> 7ce1d879888a
+STEP 11/13: ENTRYPOINT ["aimee-vllm"]
+--> 353e5e0cd4be
+STEP 12/13: COPY vllm_gguf_plugin-0.0.5-cp310-abi3-linux_x86_64.whl /opt/aimee/vllm_gguf_plugin-0.0.5-cp310-abi3-linux_x86_64.whl
+--> c6770648b11c
+STEP 13/13: RUN python3 -m pip install --no-deps /opt/aimee/vllm_gguf_plugin-0.0.5-cp310-abi3-linux_x86_64.whl gguf==0.19.0 && rm /opt/aimee/vllm_gguf_plugin-0.0.5-cp310-abi3-linux_x86_64.whl
+Processing /opt/aimee/vllm_gguf_plugin-0.0.5-cp310-abi3-linux_x86_64.whl
+Collecting gguf==0.19.0
+  Downloading gguf-0.19.0-py3-none-any.whl.metadata (4.1 kB)
+Downloading gguf-0.19.0-py3-none-any.whl (118 kB)
+Installing collected packages: vllm-gguf-plugin, gguf
+
+Successfully installed gguf-0.19.0 vllm-gguf-plugin-0.0.5
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+COMMIT localhost/aimee-native:gemma-preview-r9
+--> 6fe313c7d61c
+Successfully tagged localhost/aimee-native:gemma-preview-r9
+6fe313c7d61c3053a6a4ac587cc5f563bf71f5e1462820f3776708265f76b866
+Getting image source signatures
+Copying blob sha256:39fbf5f8fe523b2ea819cd8eb2bf68807d8eaee383549f7ab80a44503ed6860b
+Copying blob sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef
+Copying blob sha256:ac14068d925a2840ed5c82f953c01a0a9229c2225c83da15773c52e9020efd89
+Copying blob sha256:af144750eb33b110fd2cd65b129dd3fea0f85f2a0ec34d5dbd7fb974494498e4
+Copying blob sha256:fe8169f5a458252747187abbc026a3bed67ec3f8e6da4fa195fb1ef5a657e955
+Copying blob sha256:f69c5d0a285f17021893d85a4cc649e83ba6e2c37a90f0c46dfdffb863089eb1
+Copying blob sha256:3b2cd9303da18ed582eaef98bc1fb129c103d0c83d51ffe6a33f6ee88528b965
+Copying blob sha256:f8729b6558f9948672ccc559abe9964991e0586fe6012c348898c799ea73cc5c
+Copying blob sha256:aeba06a1aef5a8c97c2fdfd6bdfb6e7c9ea856bd77239857fc5d75b0daa5214e
+Copying blob sha256:19a83239f0995a8fd66e32d82c3c5b773017cec73091fa0fafbf35ee79374ef4
+Copying blob sha256:3d1ad769198fccc6f4d5eddcc753e509db4fff5c7638dbabc1e86246b27e78ea
+Copying blob sha256:e438fceb17d437388706a1a5ee62cd2c179997e4b044a572213013c4fa97ea14
+Copying blob sha256:f5549476662c2ee82879048b1bb2190355cd6f69d63685ef1c891ea5ebfc678d
+Copying blob sha256:61abec4aa8cf4947fbd00d6106727d3374a7536eaffe3ca54ba7fcf20ee09d11
+Copying blob sha256:2f5dc1cbd97d7172cc8a0892b022a0ecffb035c7a260b386324e96ff9ad20dd6
+Copying blob sha256:a662a2a5c10ba69d6db4b75cbb31f417f748d64b380b6d16d25cb54ab40e599b
+Copying blob sha256:3265e0d1116c1709779a5edec61dd25469713b7885c690194984d945110e9e33
+Copying blob sha256:a609eed0c465f0df777708316a2c815069b1417a61d8c4b8d7b5335c7aa3bc69
+Copying blob sha256:547ac67691dd12ae06fdcb753539c418d827f67e7b5d4b937607b683f634f396
+Copying blob sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef
+Copying blob sha256:1493f5a0d52776386ce0590f2abfbdb583854cb6f54be9155ecd55fa6082ba9c
+Copying blob sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef
+Copying blob sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef
+Copying blob sha256:19ca65b646e52dc9e9b0eb3066d6c84fd35a0d9e912ecae69210a929566a40f4
+Copying blob sha256:add250f5957766a829a94065ca589343ab249ccb2ebf400ea74abf07be73a985
+Copying blob sha256:f90beba243ec5abf4b19de96d92b85900665746c33ca708924f08cffa5499e51
+Copying blob sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef
+Copying blob sha256:5f8f4a16e5ac82ff690893a7118cd9088ce186b2e887be2e8d4ba6399e4df43a
+Copying blob sha256:6b029f3251c0d74d35efe1901c3ab928c6d0a4ad5e2fd26c2dd40cd56e2fdff2
+Copying blob sha256:1fc599cc9c4ca407bf8bfef3e639cae23f5e4fbd1ba6435a3fd824bb12d6f332
+Copying blob sha256:9ce8eb9704b412c32988a599c4e713203c2bd5d25662a2e7e016ca969ac2f958
+Copying blob sha256:13beca97ebdf1d39f43400957878df1fe48328e8e4edb811cf6b0a37d38fc1ad
+Copying blob sha256:29f6a2b9353616149a33b7eb9ecfa01fa2e11d41bba992d68c22c168fb646010
+Copying blob sha256:1b43f624acfa23310c9ca71014d5a67f4ac5d2e3794e237b84887610e45aa200
+Copying blob sha256:c5b877471dea3ec353aae628f74daf155a31c8f6b8e259be049c2719598ac20d
+Copying blob sha256:058a55b49e55ee451d663dff76d4091b05b57a382e215c25267b9633d94f95eb
+Copying blob sha256:735e3f85608dba3fdc3a1a334350c4a5acef288da296954a44017a5a0bd36208
+Copying blob sha256:3c380499ec835dac34a66da03df6f30c8850303b72d67d71ae532401f84f36cf
+Copying blob sha256:c274319387cb0584333f413821b961eb0a932102a33874dd4caefece15a8c747
+Copying blob sha256:95cd18d072cd306c8872655bb7386be6e5add39bb4092f9d3266bd8e74acd7e2
+Copying blob sha256:b804534132edbbc461cf29988658f4bc920861c8db55765edddc1e70f6b7f88e
+Copying blob sha256:d94b3c4005dbfe51d8cc6ac0319e12a821405e12aa746ced1968aa2557ef184b
+Copying blob sha256:376bc8b6157253b5655afd893a53e97d8126ff23dc4dae4d7308ff9f94606ef3
+Copying blob sha256:9e43cf322b8115ef26bf9ab770c68e7eaae980ac5faf5ccdf3e3fae51f5cb4e5
+Copying config sha256:6fe313c7d61c3053a6a4ac587cc5f563bf71f5e1462820f3776708265f76b866
+Writing manifest to image destination

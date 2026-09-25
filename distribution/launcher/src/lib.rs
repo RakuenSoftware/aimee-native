@@ -12,6 +12,10 @@ use std::{
     path::{Component, Path, PathBuf},
 };
 
+pub mod broker;
+pub mod delivery;
+pub mod runtime;
+
 pub const ABI: u32 = 1;
 pub const GATES: &[&str] = &[
     "native_accuracy",
@@ -59,6 +63,10 @@ pub struct Config {
     pub endpoint: String,
     pub token_file: PathBuf,
     pub memory_root: PathBuf,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub ca_file: Option<PathBuf>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub client_identity: Option<PathBuf>,
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -132,8 +140,10 @@ pub fn validate(m: &Manifest) -> Result<()> {
             relative(&a.path) && names.insert(&a.path),
             "invalid or duplicate artifact path"
         );
-        let allowed = a.path == "runtime/image.json"
-            || a.path == "bin/aimee-vllm"
+        let allowed = matches!(
+            a.path.as_str(),
+            "runtime/image.json" | "runtime/profile.json"
+        ) || a.path == "bin/aimee-vllm"
             || a.path == "lib/libaimee_native.so"
             || (a.path.starts_with("lib/")
                 && a.path.split('/').count() == 2
@@ -376,6 +386,9 @@ pub fn rollback(root: &Path) -> Result<Active> {
     Ok(next)
 }
 pub fn connect(root: &Path, endpoint: &str, token: &str) -> Result<()> {
+    connect_with_tls(root, endpoint, token, None, None)
+}
+pub fn validate_endpoint(endpoint: &str) -> Result<reqwest::Url> {
     let u = reqwest::Url::parse(endpoint)?;
     ensure!(
         u.scheme() == "https"
@@ -385,6 +398,22 @@ pub fn connect(root: &Path, endpoint: &str, token: &str) -> Result<()> {
             && u.fragment().is_none(),
         "Aimee endpoint must be HTTPS without embedded credentials or query"
     );
+    Ok(u)
+}
+pub fn connect_with_tls(
+    root: &Path,
+    endpoint: &str,
+    token: &str,
+    ca: Option<&[u8]>,
+    identity: Option<&[u8]>,
+) -> Result<()> {
+    let u = validate_endpoint(endpoint)?;
+    if let Some(pem) = ca {
+        reqwest::Certificate::from_pem(pem)?;
+    }
+    if let Some(pem) = identity {
+        reqwest::Identity::from_pem(pem)?;
+    }
     ensure!(
         !token.trim().is_empty() && token.len() <= 16384 && !token.trim().contains(['\r', '\n']),
         "invalid credential"
@@ -404,11 +433,26 @@ pub fn connect(root: &Path, endpoint: &str, token: &str) -> Result<()> {
     let (_, token_file) = secret.keep().map_err(|e| e.error)?;
     let memory_root = root.join("memory");
     private_dir(&memory_root)?;
+    let save_tls = |prefix: &str, data: Option<&[u8]>| -> Result<Option<PathBuf>> {
+        data.map(|bytes| {
+            let mut f = tempfile::Builder::new()
+                .prefix(prefix)
+                .tempfile_in(&credentials)?;
+            f.as_file()
+                .set_permissions(fs::Permissions::from_mode(0o600))?;
+            f.write_all(bytes)?;
+            f.as_file().sync_all()?;
+            Ok(f.keep().map_err(|e| e.error)?.1)
+        })
+        .transpose()
+    };
     let config = Config {
         schema: 1,
         endpoint: u.to_string(),
         token_file,
         memory_root,
+        ca_file: save_tls("ca-", ca)?,
+        client_identity: save_tls("identity-", identity)?,
     };
     atomic(
         &root.join("config.json"),
