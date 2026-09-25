@@ -1,5 +1,5 @@
 fn main() {
-    if std::env::var_os("CARGO_FEATURE_NATIVE_CLIENT").is_some() {
+    if std::env::var_os("CARGO_FEATURE_NATIVE_CLIENT").is_some() || std::env::var_os("CARGO_FEATURE_VLLM_CLIENT").is_some() {
         println!("cargo:rustc-cdylib-link-arg=-Wl,--exclude-libs,ALL");
     }
     println!("cargo:rerun-if-env-changed=LIBTORCH");

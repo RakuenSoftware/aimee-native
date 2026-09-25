@@ -12,7 +12,7 @@ class PackageTests(unittest.TestCase):
     def test_only_client_files_allowed(self):
         for p in ['src/encoding.rs','bin/aimee-prepare','lib/../private.so','models/key.pem','research/result.json']:
             self.assertFalse(pkg.allowed(p),p)
-        for p in ['bin/llama-server','lib/libaimee_native.so','lib/libggml.so.0','models/gemma.gguf','licenses/llama.txt']:
+        for p in ['bin/aimee-vllm','lib/libaimee_native.so','lib/libamdhip64.so.7','models/gemma.gguf','licenses/vllm.txt']:
             self.assertTrue(pkg.allowed(p),p)
     def test_signed_explicit_package_and_gates(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -20,7 +20,7 @@ class PackageTests(unittest.TestCase):
             subprocess.run(['openssl','genpkey','-algorithm','ED25519','-out',str(key)],check=True,capture_output=True)
             subprocess.run(['openssl','pkey','-in',str(key),'-pubout','-out',str(pub)],check=True,capture_output=True)
             files={}
-            for name in ['bin/llama-server','lib/libaimee_native.so','models/test.gguf']:
+            for name in ['bin/aimee-vllm','lib/libaimee_native.so','models/test.gguf']:
                 path=root/'input'/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(b'fixture, not an executable release');files[name]=str(path)
             evidence=root/'test-only-gate.json';evidence.write_text(json.dumps({'status':'passed','runtime_commit':'a'*40,'model':'test'}))
             plan={'manifest':{'runtime_commit':'a'*40,'model':'test','model_file':'models/test.gguf'},'files':files,'gate_evidence':{g:str(evidence) for g in pkg.GATES}}

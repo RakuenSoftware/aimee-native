@@ -94,7 +94,7 @@ pub fn validate(m: &Manifest) -> Result<()> {
         "release does not match this platform"
     );
     ensure!(
-        m.runtime == "llama.cpp",
+        m.runtime == "vllm",
         "runtime is not supported by this launcher"
     );
     ensure!(
@@ -119,14 +119,18 @@ pub fn validate(m: &Manifest) -> Result<()> {
             relative(&a.path) && names.insert(&a.path),
             "invalid or duplicate artifact path"
         );
-        let allowed = a.path == "bin/llama-server"
+        let allowed = a.path == "bin/aimee-vllm"
             || a.path == "lib/libaimee_native.so"
             || (a.path.starts_with("lib/")
                 && a.path.split('/').count() == 2
                 && a.path.contains(".so"))
             || (a.path.starts_with("models/")
                 && a.path.split('/').count() == 2
-                && a.path.ends_with(".gguf"))
+                && (a.path.ends_with(".gguf")
+                    || a.path.ends_with(".safetensors")
+                    || a.path.ends_with(".json")
+                    || a.path.ends_with(".jinja")
+                    || a.path.ends_with(".model")))
             || (a.path.starts_with("licenses/")
                 && a.path.split('/').count() == 2
                 && a.path.ends_with(".txt"));
@@ -140,12 +144,12 @@ pub fn validate(m: &Manifest) -> Result<()> {
             "invalid digest"
         );
         ensure!(
-            a.executable == (a.path == "bin/llama-server"),
+            a.executable == (a.path == "bin/aimee-vllm"),
             "invalid executable permission"
         );
     }
     ensure!(
-        m.engine == "bin/llama-server" && m.library == "lib/libaimee_native.so",
+        m.engine == "bin/aimee-vllm" && m.library == "lib/libaimee_native.so",
         "invalid runtime layout"
     );
     ensure!(m.model_file.starts_with("models/"), "invalid model path");
@@ -372,9 +376,9 @@ mod tests {
     use std::io::Cursor;
     fn fixture(sequence: u64) -> (Manifest, Vec<u8>, Vec<u8>, [u8; 32]) {
         let files = [
-            "bin/llama-server",
+            "bin/aimee-vllm",
             "lib/libaimee_native.so",
-            "models/test.gguf",
+            "models/config.json",
         ];
         let m = Manifest {
             schema: 1,
@@ -382,7 +386,7 @@ mod tests {
             version: format!("test-{sequence}"),
             platform: platform(),
             model: "test".into(),
-            runtime: "llama.cpp".into(),
+            runtime: "vllm".into(),
             runtime_commit: "a".repeat(40),
             abi: ABI,
             engine: files[0].into(),

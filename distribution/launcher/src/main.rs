@@ -144,22 +144,30 @@ fn run() -> Result<()> {
             let _: native::Config = serde_json::from_slice(
                 &fs::read(&config_path).context("connect Aimee before starting the runtime")?,
             )?;
-            // Contract for the certified runtime build; upstream llama-server lacks these flags.
-            // Do not forward bearer tokens through argv, logs, or release downloads.
+            // The trusted publication installer owns this serving configuration.
+            // Connection credentials are never forwarded through argv.
+            let serving_path = root.join("serving.json");
+            let mut serving: serde_json::Value = serde_json::from_slice(
+                &fs::read(&serving_path)
+                    .context("native publication serving configuration is not installed")?,
+            )?;
+            let model_path = dir.join(&m.model_file);
+            serving["model"] = serde_json::json!(if m.model_file.ends_with("config.json") {
+                model_path
+                    .parent()
+                    .context("invalid model directory")?
+                    .to_path_buf()
+            } else {
+                model_path
+            });
+            serving["library"] = serde_json::json!(dir.join(&m.library));
+            serving["serve"]["port"] = serde_json::json!(port);
+            serving["serve"]["host"] = serde_json::json!("127.0.0.1");
+            let runtime_config = root.join("runtime.json");
+            native::atomic(&runtime_config, &serde_json::to_vec(&serving)?)?;
             let e = Command::new(dir.join(&m.engine))
-                .args([
-                    "--host",
-                    "127.0.0.1",
-                    "--port",
-                    &port.to_string(),
-                    "--model",
-                ])
-                .arg(dir.join(&m.model_file))
-                .arg("--aimee-config")
-                .arg(config_path)
-                .arg("--aimee-native-library")
-                .arg(dir.join(&m.library))
-                .env("LD_LIBRARY_PATH", dir.join("lib"))
+                .arg("--config")
+                .arg(runtime_config)
                 .env_remove("AIMEE_TOKEN")
                 .current_dir(&dir)
                 .exec();

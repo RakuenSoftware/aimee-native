@@ -22,7 +22,7 @@ GATES = {'native_accuracy', 'quantized_model', 'all_selected_records', 'long_con
 def allowed(path):
     if any(p in ('', '.', '..') for p in path.split('/')) or '\\' in path:
         return False
-    return bool(re.fullmatch(r'bin/llama-server|lib/[A-Za-z0-9_.+-]+\.so(?:\.[0-9]+)*|models/[A-Za-z0-9_.+-]+\.gguf|licenses/[A-Za-z0-9_.+-]+\.txt', path))
+    return bool(re.fullmatch(r'bin/aimee-vllm|lib/[A-Za-z0-9_.+-]+\.so(?:\.[0-9]+)*|models/[A-Za-z0-9_.+-]+\.(?:gguf|safetensors|json|jinja|model)|licenses/[A-Za-z0-9_.+-]+\.txt', path))
 
 def package(plan, destination, signing_key):
     target = pathlib.Path(destination)
@@ -37,7 +37,7 @@ def package(plan, destination, signing_key):
     # that the evaluations were well designed; retain evidence privately.
     metadata['gates'] = sorted(GATES)
     files = plan['files']
-    if not {'bin/llama-server', 'lib/libaimee_native.so', metadata['model_file']} <= files.keys():
+    if not {'bin/aimee-vllm', 'lib/libaimee_native.so', metadata['model_file']} <= files.keys():
         raise ValueError('missing runtime/model artifacts')
     target.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix='.release-', dir=target.parent) as tmp:
@@ -49,7 +49,7 @@ def package(plan, destination, signing_key):
             if source.is_symlink() or not source.is_file(): raise ValueError('source must be a regular build output')
             out = stage / relative; out.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(source, out)
-            executable = relative == 'bin/llama-server'
+            executable = relative == 'bin/aimee-vllm'
             out.chmod(0o700 if executable else 0o600)
             with out.open('rb') as stream:
                 digest = hashlib.file_digest(stream, 'sha256').hexdigest()

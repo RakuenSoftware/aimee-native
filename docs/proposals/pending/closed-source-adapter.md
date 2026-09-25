@@ -1,3 +1,10 @@
+> **2026-09-25 runtime decision:** The llama.cpp integration described below is
+> superseded. Production integration now targets unmodified vLLM through external
+> extension interfaces: no forks or upstream patches. See
+> [the current validation record](/docs/validation/vllm-native-20260925.md) and
+> [distribution/vllm](/distribution/vllm/README.md). Historical results below remain
+> evidence of the earlier work, not the current implementation plan.
+
 # Closed-source Qwen memory adapter
 
 State: long-term distribution requirement accepted; implementation approach
