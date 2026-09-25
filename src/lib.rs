@@ -37,3 +37,5 @@ pub mod native_store;
 
 #[cfg(feature = "vllm-client")]
 pub mod native_store_ffi;
+
+pub mod device_cache;

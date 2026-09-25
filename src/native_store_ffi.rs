@@ -64,3 +64,54 @@ pub unsafe extern "C" fn aimee_store_close(handle: *mut c_void) {
         drop(unsafe { Box::from_raw(handle.cast::<Handle>()) });
     }
 }
+
+struct CacheHandle {
+    cache: crate::device_cache::DeviceCache,
+    response: CString,
+}
+#[unsafe(no_mangle)]
+pub extern "C" fn aimee_cache_open(budget: usize) -> *mut c_void {
+    match crate::device_cache::DeviceCache::new(budget) {
+        Ok(cache) => Box::into_raw(Box::new(CacheHandle {
+            cache,
+            response: CString::default(),
+        }))
+        .cast(),
+        Err(_) => std::ptr::null_mut(),
+    }
+}
+/// # Safety
+/// `handle` must be a live cache handle exclusively owned for this call, and
+/// `required` a NUL-terminated JSON bank array. The response is borrowed until
+/// the next call or close. Null response means rejection without mutation.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn aimee_cache_plan(
+    handle: *mut c_void,
+    required: *const c_char,
+) -> *const c_char {
+    if handle.is_null() || required.is_null() {
+        return std::ptr::null();
+    }
+    let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(
+        || -> anyhow::Result<*const c_char> {
+            let h = unsafe { &mut *handle.cast::<CacheHandle>() };
+            let banks: Vec<crate::device_cache::Bank> =
+                serde_json::from_str(unsafe { CStr::from_ptr(required) }.to_str()?)?;
+            let plan = h.cache.reconcile(&banks)?;
+            h.response = CString::new(serde_json::to_string(&plan)?)?;
+            Ok(h.response.as_ptr())
+        },
+    ));
+    match result {
+        Ok(Ok(p)) => p,
+        _ => std::ptr::null(),
+    }
+}
+/// # Safety
+/// A non-null handle must be live, exclusively owned, and closed only once.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn aimee_cache_close(handle: *mut c_void) {
+    if !handle.is_null() {
+        drop(unsafe { Box::from_raw(handle.cast::<CacheHandle>()) });
+    }
+}

@@ -30,6 +30,7 @@ Configuration (paths must refer to admitted, publisher-owned artifacts):
   "catalog": "/var/lib/aimee/catalog.json",
   "recipient": "approved-recipient",
   "host_memory_budget": 1073741824,
+  "device_memory_budget": 268435456,
   "serve": {"tensor_parallel_size": 2, "host": "127.0.0.1", "port": 8000}
 }
 ```
@@ -66,14 +67,18 @@ parallelism, multimodal prefix attention, quantized KV and sink attention are
 rejected. GGUF loading/quantization has not been validated by this integration.
 Test weights are Hugging Face safetensors, not a GGUF release.
 
-Startup admits catalog banks into host memory; first use uploads each selected
-bank to its GPU rank, later use reuses it. This implementation is not yet a
-bounded device cache or on-demand SSD streaming service. Catalog sizing must
-leave GPU headroom. CPU/DMA, attention, compilation warmup and end-to-end latency
+Startup admits catalog banks into host memory. Rust bounds native bank payload
+bytes per GPU rank (`device_memory_budget`, default256MiB), evicts idle banks by
+LRU, and protects all active request pins. Evicted banks reload from admitted host
+buffers. Pointer-table owners are released before eviction. This budget excludes
+model/text KV, pointer tables, transient allocations and allocator-reserved memory;
+leave device headroom. An oversized active working set currently fails closed in
+the worker; ingress backpressure is still required. A failed GPU upload poisons
+the cache and requires restart. On-demand SSD/host streaming is not implemented. CPU/DMA, attention, compilation warmup and end-to-end latency
 must be measured separately; this validation establishes correctness, not a
 microsecond performance result.
 
-Hosted preparation/authorized publication feed, bounded GPU eviction, production
+Hosted preparation/authorized publication feed, admission backpressure, production
 API gateway, clean-machine driver image, latency certification, and signed
 installer integration remain release gates. The source plugin and Triton kernel
 are private development artifacts: do not ship this source wheel as the promised

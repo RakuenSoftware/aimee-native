@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import torch
 from .store import PreparedStore
+from .cache import DeviceCache
 
 CURRENT = None
 
@@ -30,6 +31,7 @@ class State:
             raise RuntimeError('publication catalogue recipient mismatch')
         lib = ctypes.CDLL(config['library'])
         self.lib = lib
+        self.cache = DeviceCache(lib, config.get("device_memory_budget", 256 * 1024**2), device, rank, world)
         budget = config['host_memory_budget']
         try:
             for name, spec in catalog['publications'].items():
@@ -58,8 +60,8 @@ class State:
                     raise RuntimeError('native publication is unavailable to this serving instance')
                 pin = Pin(publication, self.stores.get(publication))
             self.requests[req.req_id] = pin
-            if pin.store is not None:
-                pin.store.activate(self.device, self.rank, self.world)
+        if scheduler_output.finished_req_ids or scheduler_output.scheduled_new_reqs:
+            self.cache.ensure((p.store for p in self.requests.values() if p.store is not None), self.tables.clear)
         # Bound pointer-table cache at batch boundaries. Tensor references remain
         # alive through synchronous execution; graph/asynchronous modes rejected.
         if len(self.tables) > 256:
@@ -92,7 +94,7 @@ class State:
             if selected.store is None:
                 keys.append(0); values.append(0); lengths.append(0)
                 continue
-            banks = selected.store.activate(self.device, self.rank, self.world)
+            banks = selected.store.resident(self.device, self.rank, self.world)
             k, v = banks[(layer, False)], banks[(layer, True)]
             if k.shape != v.shape or k.shape[0] != heads or k.shape[2] != width or k.dtype != dtype:
                 raise RuntimeError('native attention bank geometry/dtype mismatch')
@@ -115,7 +117,8 @@ class State:
         actual = hashlib.sha256((Path(config['model'])/'config.json').read_bytes()).hexdigest()
         if catalog['model_config_sha256'] != actual or catalog['recipient'] != config['recipient']:
             raise RuntimeError('replacement publication identity mismatch')
-        live = {s.uid:s for s in self.stores.values()}
+        live = {s.uid:s for s in self.cache.resident.values()}
+        live.update({s.uid:s for s in self.stores.values()})
         live.update({p.store.uid:p.store for p in self.requests.values() if p.store is not None})
         remaining = config['host_memory_budget'] - sum(s.metadata['bytes'] for s in live.values())
         admitted = {};created=[]
@@ -137,6 +140,8 @@ class State:
 
     def close(self):
         self.tables.clear()
+        if hasattr(self, "cache"): self.cache.close()
+        self.requests.clear()
         for store in self.stores.values(): store.close()
         self.stores.clear()
         self.closed = True

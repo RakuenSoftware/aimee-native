@@ -8,6 +8,7 @@ class StateTests(unittest.TestCase):
     def state(self):
         s=State.__new__(State);s.requests={};s.tables={};s.stores={'approved':FakeStore()}
         s.device='cpu';s.rank=0;s.world=1
+        s.cache=NS(ensure=lambda stores,clear: None)
         s.runner=NS(input_batch=NS(req_ids=['b','a']))
         return s
     def output(self,ids):

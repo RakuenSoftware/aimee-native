@@ -46,6 +46,33 @@ class PreparedStore:
         self.device_banks[key] = banks
         return banks
 
+    def device_bytes(self, world):
+        # Cache TP geometry once; no disk access or content verification.
+        sizes = getattr(self, '_device_sizes', None)
+        if sizes is None:
+            self._device_sizes = sizes = {}
+        if world not in sizes:
+            total = 0
+            for seg in self.metadata['segments']:
+                heads = seg['heads']
+                if heads >= world:
+                    if heads % world:
+                        raise RuntimeError('native head partition mismatch')
+                    local_heads = heads // world
+                else:
+                    if world % heads:
+                        raise RuntimeError('native replicated-head partition mismatch')
+                    local_heads = 1
+                total += local_heads * seg['positions'] * seg['width'] * 2
+            sizes[world] = total
+        return sizes[world]
+
+    def resident(self, device, rank, world):
+        return self.device_banks[(str(device), rank, world)]
+
+    def evict(self, device, rank, world):
+        self.device_banks.pop((str(device), rank, world), None)
+
     def close(self):
         self.device_banks.clear()
         if self.handle:

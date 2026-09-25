@@ -44,8 +44,8 @@ and publication replacement. See the vLLM validation record for exact coverage.
 
 ## Remaining external-preview gates
 
-Hosted authoritative publication wiring and a deployment endpoint; a bounded
-production device cache/streaming policy; clean-machine runtime image; latency
+Hosted authoritative publication wiring and a deployment endpoint; production
+admission backpressure and host streaming; clean-machine runtime image; latency
 and sustained-load certification; certified quantization/GGUF if selected; and
 closed-source plugin packaging/disclosure audit. The private Python/Triton source
 package must not be shipped as the promised protected binary release.
@@ -59,3 +59,6 @@ Preparation stays server-side. Users receive approved local representations and
 a compiled consumer. Owning the machine still permits inspecting usable tensors
 and binary behavior; binary packaging raises the cost of reconstruction rather
 than guaranteeing secrecy.
+
+The active work order and acceptance criteria are in
+[the vLLM release plan](../docs/proposals/pending/vllm-release-plan.md).

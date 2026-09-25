@@ -39,3 +39,8 @@ class AimeeWorker(Worker):
         if state.CURRENT is None:
             raise RuntimeError('native memory worker is not initialized')
         return state.CURRENT.refresh()
+
+    def aimee_cache_stats(self):
+        if state.CURRENT is None:
+            raise RuntimeError('native memory worker is not initialized')
+        return dict(state.CURRENT.cache.stats)
