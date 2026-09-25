@@ -150,3 +150,72 @@ mod tests {
         assert!(c.reconcile(&[b(1, 10)]).unwrap().upload.is_empty());
     }
 }
+
+/// Frontend reservations count unique active banks, matching worker residency.
+/// No memory payload or GPU operation belongs in this ledger.
+pub struct Admission {
+    budget: usize,
+    used: usize,
+    active: BTreeMap<u64, (usize, usize)>,
+}
+impl Admission {
+    pub fn new(budget: usize) -> Self {
+        Self {
+            budget,
+            used: 0,
+            active: BTreeMap::new(),
+        }
+    }
+    pub fn acquire(&mut self, id: u64, bytes: usize) -> bool {
+        if bytes == 0 {
+            return false;
+        }
+        if let Some((size, refs)) = self.active.get_mut(&id) {
+            if *size != bytes || *refs == usize::MAX {
+                return false;
+            }
+            *refs += 1;
+            return true;
+        }
+        if bytes > self.budget - self.used {
+            return false;
+        }
+        self.active.insert(id, (bytes, 1));
+        self.used += bytes;
+        true
+    }
+    pub fn release(&mut self, id: u64) {
+        if let Some((bytes, refs)) = self.active.get_mut(&id) {
+            *refs -= 1;
+            if *refs == 0 {
+                self.used -= *bytes;
+                self.active.remove(&id);
+            }
+        }
+    }
+}
+#[cfg(test)]
+mod admission_tests {
+    use super::*;
+    #[test]
+    fn shared_bank_counts_once_but_releases_after_last_request() {
+        let mut a = Admission::new(10);
+        assert!(a.acquire(1, 10));
+        assert!(a.acquire(1, 10));
+        assert!(!a.acquire(2, 1));
+        a.release(1);
+        assert!(!a.acquire(2, 1));
+        a.release(1);
+        assert!(a.acquire(2, 10));
+    }
+    #[test]
+    fn different_revisions_compete_and_rejection_preserves_reservations() {
+        let mut a = Admission::new(20);
+        assert!(a.acquire(1, 10));
+        assert!(a.acquire(2, 10));
+        assert!(!a.acquire(3, 1));
+        assert!(!a.acquire(1, 11));
+        a.release(2);
+        assert!(a.acquire(3, 10));
+    }
+}

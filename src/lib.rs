@@ -29,7 +29,7 @@ pub mod streaming_copy;
 #[cfg(feature = "torch")]
 pub mod native_ffi;
 
-#[cfg(not(any(feature = "native-client", feature = "vllm-client")))]
+#[cfg(any(feature = "preparation-service", not(any(feature = "native-client", feature = "vllm-client"))))]
 pub mod preparation_cache;
 
 mod native_format;

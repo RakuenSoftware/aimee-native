@@ -42,18 +42,32 @@ production feed has been invented or provisioned.
 Full-model Gemma validation has passed recall, isolation, three-record composition
 and publication replacement. See the vLLM validation record for exact coverage.
 
-## Remaining external-preview gates
+## Current validation and remaining gates
 
-Hosted authoritative publication wiring and a deployment endpoint; production
-admission backpressure and host streaming; clean-machine runtime image; latency
-and sustained-load certification; certified quantization/GGUF if selected; and
-closed-source plugin packaging/disclosure audit. The private Python/Triton source
-package must not be shipped as the promised protected binary release.
+Compiled client modules, binary native kernels and the pinned ROCm container now
+pass full-model smoke checks. Q8_0 GGUF loading also passes without invoking the
+upstream GGUF dependency's patching entrypoint. Rust ingress admission and
+coordinated multiworker refresh are implemented; 512 concurrent pressure requests
+returned correct isolated answers. See [the release validation record](../docs/validation/vllm-release-20260925.md)
+for protocols, artifacts and limitations.
 
-The Rust launcher/package layout does not itself bundle a working Python/ROCm
-installation. A platform runtime bundle or image is required before clean install
-can pass. Release gates remain closed until actual evidence exists. A source
-plugin working in the lab is not a finished customer installer.
+The private preparation/follower bridge is implemented against existing Aimee
+publication interfaces, with protocol tests. Live authenticated deployment and
+automatic request selection still need integration. Host catalogs remain resident
+in RAM. Broader quantization parity, isolated performance, real failure recovery,
+license checks and signed clean-machine distribution remain release gates.
+
+For container releases, the signed artifact set can include `runtime/image.json`
+containing `image` (an immutable registry reference with `@sha256:` digest) and
+`model_config` (the packaged `models/config.json`). The launcher mounts approved
+memory and model files and runs the matched image through Podman. Model/tokenizer
+sidecars remain necessary alongside GGUF. The image is not yet published to a
+release registry; the descriptor must reference the eventual certified image.
+
+No release origin, signing key, production endpoint or customer-ready release has
+been invented. The compiled client still needs an audited, supported host GPU
+driver and container runtime. Successful lab containers do not establish a signed
+clean-machine installation.
 
 Preparation stays server-side. Users receive approved local representations and
 a compiled consumer. Owning the machine still permits inspecting usable tensors

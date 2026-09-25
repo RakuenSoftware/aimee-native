@@ -141,7 +141,7 @@ fn run() -> Result<()> {
                 serde_json::from_slice(&fs::read(dir.join("manifest.json"))?)?;
             native::validate(&m)?;
             let config_path = root.join("config.json");
-            let _: native::Config = serde_json::from_slice(
+            let connection: native::Config = serde_json::from_slice(
                 &fs::read(&config_path).context("connect Aimee before starting the runtime")?,
             )?;
             // The trusted publication installer owns this serving configuration.
@@ -151,6 +151,78 @@ fn run() -> Result<()> {
                 &fs::read(&serving_path)
                     .context("native publication serving configuration is not installed")?,
             )?;
+            if m.artifacts.iter().any(|a| a.path == "runtime/image.json") {
+                let image: native::RuntimeImage =
+                    serde_json::from_slice(&fs::read(dir.join("runtime/image.json"))?)?;
+                image.validate()?;
+                anyhow::ensure!(
+                    m.artifacts.iter().any(|a| a.path == image.model_config),
+                    "missing model configuration sidecar"
+                );
+                let memory_root = fs::canonicalize(&connection.memory_root)?;
+                let catalog =
+                    fs::canonicalize(serving["catalog"].as_str().context("missing catalog")?)?;
+                anyhow::ensure!(
+                    catalog.starts_with(&memory_root),
+                    "catalog must reside in managed memory root"
+                );
+                let model_dir = fs::canonicalize(
+                    dir.join(&image.model_config)
+                        .parent()
+                        .context("missing model directory")?,
+                )?;
+                serving["catalog"] = serde_json::json!(catalog);
+                serving["model"] = serde_json::json!(model_dir);
+                serving["library"] = serde_json::json!("/opt/aimee/libaimee_native.so");
+                if m.model_file.ends_with(".gguf") {
+                    serving["gguf_weights"] =
+                        serde_json::json!(fs::canonicalize(dir.join(&m.model_file))?);
+                }
+                serving["serve"]["port"] = serde_json::json!(port);
+                serving["serve"]["host"] = serde_json::json!("127.0.0.1");
+                let runtime_config = root.join("runtime.json");
+                native::atomic(&runtime_config, &serde_json::to_vec(&serving)?)?;
+                let runtime_config = fs::canonicalize(runtime_config)?;
+                // Pulls are digest-pinned by the signed descriptor. Preparation and
+                // account credentials are not mounted into the client container.
+                let mut cmd = Command::new("podman");
+                cmd.args([
+                    "run",
+                    "--rm",
+                    "--ipc=host",
+                    "--network=host",
+                    "--device",
+                    "/dev/kfd",
+                ]);
+                for device in ["/dev/dri/renderD128", "/dev/dri/renderD129"] {
+                    if std::path::Path::new(device).exists() {
+                        cmd.args(["--device", device]);
+                    }
+                }
+                for (path, mode) in [
+                    (&model_dir, "ro"),
+                    (&memory_root, "rw"),
+                    (&runtime_config, "ro"),
+                ] {
+                    anyhow::ensure!(
+                        !path.as_os_str().as_encoded_bytes().contains(&b':'),
+                        "unsupported mount path"
+                    );
+                    cmd.arg("--volume").arg(format!(
+                        "{}:{}:{}",
+                        path.display(),
+                        path.display(),
+                        mode
+                    ));
+                }
+                let e = cmd
+                    .arg(&image.image)
+                    .arg("--config")
+                    .arg(runtime_config)
+                    .env_remove("AIMEE_TOKEN")
+                    .exec();
+                return Err(e).context("could not start certified container; Podman and matching GPU driver are required");
+            }
             let model_path = dir.join(&m.model_file);
             serving["model"] = serde_json::json!(if m.model_file.ends_with("config.json") {
                 model_path

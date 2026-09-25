@@ -22,7 +22,7 @@ GATES = {'native_accuracy', 'quantized_model', 'all_selected_records', 'long_con
 def allowed(path):
     if any(p in ('', '.', '..') for p in path.split('/')) or '\\' in path:
         return False
-    return bool(re.fullmatch(r'bin/aimee-vllm|lib/[A-Za-z0-9_.+-]+\.so(?:\.[0-9]+)*|models/[A-Za-z0-9_.+-]+\.(?:gguf|safetensors|json|jinja|model)|licenses/[A-Za-z0-9_.+-]+\.txt', path))
+    return bool(re.fullmatch(r'runtime/image\.json|bin/aimee-vllm|lib/[A-Za-z0-9_.+-]+\.so(?:\.[0-9]+)*|models/[A-Za-z0-9_.+-]+\.(?:gguf|safetensors|json|jinja|model)|licenses/[A-Za-z0-9_.+-]+\.txt', path))
 
 def package(plan, destination, signing_key):
     target = pathlib.Path(destination)
@@ -39,6 +39,14 @@ def package(plan, destination, signing_key):
     files = plan['files']
     if not {'bin/aimee-vllm', 'lib/libaimee_native.so', metadata['model_file']} <= files.keys():
         raise ValueError('missing runtime/model artifacts')
+    if 'runtime/image.json' in files:
+        descriptor = json.loads(pathlib.Path(files['runtime/image.json']).read_text())
+        if set(descriptor) != {'image', 'model_config'}:
+            raise ValueError('invalid runtime image descriptor')
+        if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9/._:-]*/[A-Za-z0-9/._:-]+@sha256:[a-fA-F0-9]{64}', descriptor['image']):
+            raise ValueError('runtime image must be digest-pinned')
+        if descriptor['model_config'] not in files or not re.fullmatch(r'models/[A-Za-z0-9_.+-]*config\.json',descriptor['model_config']):
+            raise ValueError('missing model configuration sidecar')
     target.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix='.release-', dir=target.parent) as tmp:
         stage = pathlib.Path(tmp)

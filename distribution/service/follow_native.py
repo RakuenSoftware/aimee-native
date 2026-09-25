@@ -1,0 +1,136 @@
+"""Private supervisor: existing Aimee follower -> approved preparation -> vLLM.
+All argv/config paths are operator-owned. No policy issuance or public API here.
+"""
+import argparse,asyncio,hashlib,json,os,signal,tempfile
+from pathlib import Path
+
+async def control(path,op):
+    reader,writer=await asyncio.wait_for(asyncio.open_unix_connection(path),10)
+    try:
+        writer.write(json.dumps({'op':op}).encode()+b'\n');await writer.drain()
+        result=json.loads(await asyncio.wait_for(reader.readline(),120))
+        if result.get('error'):raise RuntimeError('native control rejected update')
+        return result
+    finally:writer.close();await writer.wait_closed()
+
+async def stop(child):
+    if child is None:return
+    try:os.killpg(child.pid,signal.SIGTERM)
+    except ProcessLookupError:return
+    try:await asyncio.wait_for(child.wait(),10)
+    except asyncio.TimeoutError:
+        os.killpg(child.pid,signal.SIGKILL);await child.wait()
+
+async def prepare(command):
+    child=await asyncio.create_subprocess_exec(*command,stdout=asyncio.subprocess.PIPE,start_new_session=True)
+    try:
+        output,_=await child.communicate()
+        if child.returncode:raise RuntimeError('approved preparation failed')
+        return json.loads(output)
+    finally:await stop(child)
+
+def publish(path,catalog):
+    path=Path(path)
+    with tempfile.NamedTemporaryFile(mode='w',dir=path.parent,delete=False) as f:
+        staged=Path(f.name)
+        try:
+            os.chmod(staged,0o600);json.dump(catalog,f);f.flush();os.fsync(f.fileno())
+            staged.replace(path)
+            fd=os.open(path.parent,os.O_RDONLY|os.O_DIRECTORY)
+            try:os.fsync(fd)
+            finally:os.close(fd)
+        finally:staged.unlink(missing_ok=True)
+
+async def events(stream, socket):
+    # Keep one pending read: health polling must not discard a partial feed line.
+    pending=asyncio.create_task(stream.readline())
+    try:
+        while True:
+            done,_=await asyncio.wait({pending},timeout=2)
+            if not done:
+                if (await control(socket,'status')).get('state')=='restart_required':
+                    raise RuntimeError('native serving recovery required')
+                continue
+            line=pending.result()
+            if not line:return
+            yield line
+            pending=asyncio.create_task(stream.readline())
+    finally:
+        pending.cancel()
+        try:await pending
+        except asyncio.CancelledError:pass
+
+async def follow(config):
+    serving=json.loads(Path(config['serving_config']).read_text());socket=serving['control_socket']
+    if not serving.get('start_paused'):raise RuntimeError('supervised serving must start with admission paused')
+    server=await asyncio.create_subprocess_exec(*config['server'],start_new_session=True)
+    follower=None;pending=None
+    try:
+        for _ in range(180):
+            if server.returncode is not None:raise RuntimeError('serving process exited')
+            try:await control(socket,'withdraw');break
+            except (OSError,asyncio.TimeoutError):await asyncio.sleep(1)
+        else:raise RuntimeError('native control socket unavailable')
+        follower=await asyncio.create_subprocess_exec(*config['follower'],stdout=asyncio.subprocess.PIPE,start_new_session=True)
+        async def update(view):
+            publications={}
+            try:
+                for name,command in config['preparations'].items():
+                    result=await prepare(command)
+                    if result['authorized_view']!=view or result['recipient']!=serving['recipient']:
+                        raise RuntimeError('prepared publication binding changed')
+                    publications[name]={k:result[k] for k in ('root','model','key')}
+                catalog={'recipient':serving['recipient'],'model_config_sha256':hashlib.sha256((Path(serving['model'])/'config.json').read_bytes()).hexdigest(),'publications':publications}
+                publish(serving['catalog'],catalog)
+                result=await control(socket,'refresh')
+                print(json.dumps({'state':'active','view':view,'publications':len(publications)}),flush=True)
+            except asyncio.CancelledError:raise
+            except Exception:
+                # A failed update must not restore old authority implicitly.
+                try:await control(socket,'withdraw')
+                except Exception:
+                    await stop(server)
+                    raise
+                print(json.dumps({'state':'unavailable','reason':'preparation_or_activation_failed'}),flush=True)
+        last=None
+        async for line in events(follower.stdout,socket):
+            event=json.loads(line)
+            if event.get('state')=='unchanged' and event.get('view')==last:continue
+            await control(socket,'withdraw')
+            if pending is not None:
+                pending.cancel()
+                try:await pending
+                except asyncio.CancelledError:pass
+            if event.get('state') in ('installed','unchanged') and event.get('view'):
+                last=event['view'];pending=asyncio.create_task(update(last))
+            else:
+                last=None;pending=None
+                print(json.dumps({'state':'withdrawn'}),flush=True)
+        raise RuntimeError('authoritative publication stream ended')
+    finally:
+        if pending is not None:
+            pending.cancel()
+            try:await pending
+            except (asyncio.CancelledError,Exception):pass
+        # Never leave a model serving native memory after its authority feed dies.
+        await stop(server);await stop(follower)
+
+async def main(config):
+    loop=asyncio.get_running_loop();task=asyncio.current_task()
+    for sig in (signal.SIGTERM,signal.SIGINT):loop.add_signal_handler(sig,task.cancel)
+    try:
+        for attempt in range(config.get('restart_limit',3)+1):
+            try:
+                await follow(config)
+                return
+            except asyncio.CancelledError:raise
+            except Exception:
+                if attempt==config.get('restart_limit',3):raise
+                print(json.dumps({'state':'restarting','attempt':attempt+1}),flush=True)
+                await asyncio.sleep(2)
+    finally:
+        for sig in (signal.SIGTERM,signal.SIGINT):loop.remove_signal_handler(sig)
+
+if __name__=='__main__':
+    p=argparse.ArgumentParser();p.add_argument('--config',required=True);a=p.parse_args()
+    asyncio.run(main(json.loads(Path(a.config).read_text())))

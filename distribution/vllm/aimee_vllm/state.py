@@ -23,13 +23,15 @@ class State:
         self.tables = {}
         self.closed = False
         self.config = config
-        catalog = json.loads(Path(config['catalog']).read_text())
+        raw_catalog = Path(config['catalog']).read_bytes()
+        catalog = json.loads(raw_catalog)
         actual = hashlib.sha256((Path(config['model'])/'config.json').read_bytes()).hexdigest()
         if catalog['model_config_sha256'] != actual:
             raise RuntimeError('publication catalogue model mismatch')
         if catalog['recipient'] != config['recipient']:
             raise RuntimeError('publication catalogue recipient mismatch')
         lib = ctypes.CDLL(config['library'])
+        self.catalog_digest = hashlib.sha256(raw_catalog).hexdigest()
         self.lib = lib
         self.cache = DeviceCache(lib, config.get("device_memory_budget", 256 * 1024**2), device, rank, world)
         budget = config['host_memory_budget']
@@ -50,6 +52,9 @@ class State:
         for req in scheduler_output.scheduled_new_reqs:
             extras = req.sampling_params.extra_args if req.sampling_params else None
             publication = (extras or {}).get('aimee_publication')
+            expected = (extras or {}).get('aimee_catalog_digest')
+            if expected is not None and expected != self.catalog_digest:
+                raise RuntimeError('frontend/worker publication mismatch')
             old = self.requests.get(req.req_id)
             if old is not None:
                 if old.publication != publication:
@@ -113,7 +118,8 @@ class State:
         No file checks or integrity scans are added to attention execution.
         """
         config = self.config
-        catalog = json.loads(Path(config['catalog']).read_text())
+        raw_catalog = Path(config['catalog']).read_bytes()
+        catalog = json.loads(raw_catalog)
         actual = hashlib.sha256((Path(config['model'])/'config.json').read_bytes()).hexdigest()
         if catalog['model_config_sha256'] != actual or catalog['recipient'] != config['recipient']:
             raise RuntimeError('replacement publication identity mismatch')
@@ -131,12 +137,16 @@ class State:
                 if remaining <= 0: raise RuntimeError('native publication replacement exceeds pinned memory budget')
                 store = PreparedStore(self.lib,{**spec,'byte_budget':remaining})
                 created.append(store);remaining -= store.metadata['bytes'];admitted[name]=store
-            self.stores = admitted
             self.tables.clear()
+            if not self.requests:
+                self.cache.close()
+                self.cache = DeviceCache(self.lib, config.get("device_memory_budget",256*1024**2), self.device,self.rank,self.world)
+            self.stores = admitted
+            self.catalog_digest = hashlib.sha256(raw_catalog).hexdigest()
         except BaseException:
             for store in created: store.close()
             raise
-        return {'publications':len(admitted),'pinned_requests':len(self.requests)}
+        return {'publications':len(admitted),'pinned_requests':len(self.requests),'catalog_digest':self.catalog_digest}
 
     def close(self):
         self.tables.clear()

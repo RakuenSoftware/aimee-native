@@ -11,6 +11,7 @@ torch = ["dep:tch"]
 # Client build excludes offline authoring entry points and research diagnostics.
 native-client = ["torch"]
 vllm-client = []
+preparation-service = []
 
 [dependencies]
 anyhow = "1"
@@ -65,3 +66,8 @@ cc = "1"
 
 [lib]
 crate-type = ["rlib", "cdylib"]
+
+[[bin]]
+name = "native-prepare"
+path = "src/bin/native-prepare.rs"
+required-features = ["preparation-service"]

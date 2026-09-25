@@ -4,7 +4,12 @@ import triton
 from vllm.v1.attention.backends.triton_attn import TritonAttentionBackend, TritonAttentionImpl, TritonAttentionMetadataBuilder
 from vllm.v1.attention.backend import AttentionCGSupport, AttentionType
 from . import state
-from .kernel import native_attention
+import os
+if os.environ.get("AIMEE_KERNEL_BANK"):
+    from .binary_kernel import BinaryAttention
+    native_attention = BinaryAttention(os.environ["AIMEE_KERNEL_BANK"])
+else:
+    from .kernel import native_attention
 
 class AimeeMetadataBuilder(TritonAttentionMetadataBuilder):
     _cudagraph_support = AttentionCGSupport.NEVER
@@ -55,12 +60,16 @@ class AimeeAttentionImpl(TritonAttentionImpl):
             raise RuntimeError('native release currently requires BF16 attention/cache')
         kp,vp,lengths,_owners=table
         view=output.view(-1,self.num_heads,self.head_size)
-        native_attention[(len(ids),self.num_heads,attn_metadata.max_query_len)](
+        args = (
             query,kv_cache,view,attn_metadata.query_start_loc,attn_metadata.seq_lens,
             attn_metadata.block_table,kp,vp,lengths,
             query.stride(0),query.stride(1),kv_cache.stride(0),kv_cache.stride(1),kv_cache.stride(2),
             view.stride(0),view.stride(1),attn_metadata.block_table.stride(0),
             self.num_heads,self.num_kv_heads,self.head_size,kv_cache.shape[2],self.scale,
             self.sliding_window[0],self.logits_soft_cap,32,triton.next_power_of_2(self.head_size),
-            num_warps=4)
+            )
+        kernel = native_attention[(len(ids),self.num_heads,attn_metadata.max_query_len)](*args,num_warps=4)
+        if os.environ.get("AIMEE_EXPORT_KERNELS"):
+            from .export_kernel import export
+            export(os.environ["AIMEE_EXPORT_KERNELS"] + "/" + str(state.CURRENT.rank),kernel,args)
         return output

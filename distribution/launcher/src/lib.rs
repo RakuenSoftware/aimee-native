@@ -119,7 +119,8 @@ pub fn validate(m: &Manifest) -> Result<()> {
             relative(&a.path) && names.insert(&a.path),
             "invalid or duplicate artifact path"
         );
-        let allowed = a.path == "bin/aimee-vllm"
+        let allowed = a.path == "runtime/image.json"
+            || a.path == "bin/aimee-vllm"
             || a.path == "lib/libaimee_native.so"
             || (a.path.starts_with("lib/")
                 && a.path.split('/').count() == 2
@@ -158,6 +159,40 @@ pub fn validate(m: &Manifest) -> Result<()> {
     }
     Ok(())
 }
+/// Signed runtime descriptor. Mutable image tags are never accepted.
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct RuntimeImage {
+    pub image: String,
+    pub model_config: String,
+}
+impl RuntimeImage {
+    pub fn validate(&self) -> Result<()> {
+        let (repository, digest) = self
+            .image
+            .rsplit_once("@sha256:")
+            .context("container runtime must use an immutable digest")?;
+        ensure!(
+            !repository.is_empty()
+                && repository.contains('/')
+                && repository
+                    .bytes()
+                    .all(|b| b.is_ascii_alphanumeric() || b"/._-:".contains(&b))
+                && !repository.starts_with('-')
+                && digest.len() == 64
+                && digest.bytes().all(|b| b.is_ascii_hexdigit()),
+            "invalid runtime image identity"
+        );
+        ensure!(
+            relative(&self.model_config)
+                && self.model_config.starts_with("models/")
+                && self.model_config.ends_with("config.json"),
+            "invalid model configuration sidecar"
+        );
+        Ok(())
+    }
+}
+
 pub fn authenticate(raw: &[u8], signature: &[u8], public_key: &[u8; 32]) -> Result<Manifest> {
     ensure!(raw.len() <= 1024 * 1024, "manifest is too large");
     VerifyingKey::from_bytes(public_key)?
@@ -374,6 +409,19 @@ mod tests {
     use super::*;
     use ed25519_dalek::{Signer, SigningKey};
     use std::io::Cursor;
+    #[test]
+    fn container_descriptor_rejects_mutable_tags_and_escape_paths() {
+        let mut d = RuntimeImage {
+            image: format!("registry.example/aimee@sha256:{}", "a".repeat(64)),
+            model_config: "models/config.json".into(),
+        };
+        assert!(d.validate().is_ok());
+        d.image = "registry.example/aimee:latest".into();
+        assert!(d.validate().is_err());
+        d.image = format!("registry.example/aimee@sha256:{}", "a".repeat(64));
+        d.model_config = "models/../config.json".into();
+        assert!(d.validate().is_err());
+    }
     fn fixture(sequence: u64) -> (Manifest, Vec<u8>, Vec<u8>, [u8; 32]) {
         let files = [
             "bin/aimee-vllm",

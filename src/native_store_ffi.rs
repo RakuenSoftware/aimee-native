@@ -115,3 +115,50 @@ pub unsafe extern "C" fn aimee_cache_close(handle: *mut c_void) {
         drop(unsafe { Box::from_raw(handle.cast::<CacheHandle>()) });
     }
 }
+
+#[unsafe(no_mangle)]
+pub extern "C" fn aimee_admission_open(budget: usize) -> *mut c_void {
+    Box::into_raw(Box::new(std::sync::Mutex::new(
+        crate::device_cache::Admission::new(budget),
+    )))
+    .cast()
+}
+/// # Safety
+/// Handle must be a live admission handle. Calls may be concurrent, but closing
+/// the handle requires exclusive ownership after all calls/requests finish.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn aimee_admission_acquire(
+    handle: *mut c_void,
+    id: u64,
+    bytes: usize,
+) -> bool {
+    if handle.is_null() {
+        return false;
+    }
+    let mutex = unsafe { &*handle.cast::<std::sync::Mutex<crate::device_cache::Admission>>() };
+    mutex
+        .lock()
+        .map(|mut a| a.acquire(id, bytes))
+        .unwrap_or(false)
+}
+/// # Safety
+/// Handle must be live; release exactly once per successful acquisition.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn aimee_admission_release(handle: *mut c_void, id: u64) {
+    if !handle.is_null() {
+        let mutex = unsafe { &*handle.cast::<std::sync::Mutex<crate::device_cache::Admission>>() };
+        if let Ok(mut a) = mutex.lock() {
+            a.release(id);
+        }
+    }
+}
+/// # Safety
+/// Handle must be null or live and exclusively owned; close only once.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn aimee_admission_close(handle: *mut c_void) {
+    if !handle.is_null() {
+        drop(unsafe {
+            Box::from_raw(handle.cast::<std::sync::Mutex<crate::device_cache::Admission>>())
+        });
+    }
+}

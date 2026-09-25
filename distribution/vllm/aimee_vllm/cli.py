@@ -22,12 +22,16 @@ def command(config_path):
             '--max-num-seqs', str(serve.get('max_num_seqs', 4)),
             '--max-num-batched-tokens', str(serve.get('max_num_batched_tokens', 256)),
             '--gpu-memory-utilization', str(serve.get('gpu_memory_utilization', .75)),
+            '--middleware', 'aimee_vllm.admission.NativeAdmission',
             '--enforce-eager', '--no-enable-prefix-caching', '--no-async-scheduling',
             '--disable-custom-all-reduce', '--worker-cls', 'aimee_vllm.worker.AimeeWorker',
             '--attention-config', '{"backend":"CUSTOM"}',
             '--limit-mm-per-prompt', '{"image":0,"audio":0,"video":0}']
     env = {'AIMEE_VLLM_CONFIG': str(path), 'VLLM_USE_V2_MODEL_RUNNER': '0',
-           'VLLM_PLUGINS': 'aimee_native', 'VLLM_ROCM_USE_AITER': '0'}
+           'VLLM_PLUGINS': 'aimee_native', 'VLLM_ROCM_USE_AITER': '0', 'AIMEE_GGUF_ENABLE': '0'}
+    if config.get('gguf_weights'):
+        args += ['--model-loader-extra-config',json.dumps({'gguf_weights':config['gguf_weights']}),'--load-format','aimee_gguf_unified','--quantization','gguf']
+        env['AIMEE_GGUF_ENABLE']='1'
     return args, env
 
 

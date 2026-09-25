@@ -15,8 +15,8 @@ OpenAI-compatible API. A trusted gateway selects approved publications; end user
 should not need to choose internal publication IDs per request.
 
 A GGUF alone cannot install an inference extension or connect its memory runtime.
-The current demonstrated model is BF16 safetensors. Certify the first optimized
-model artifact against this baseline; GGUF remains a format-validation task,
+BF16 safetensors and a Q8_0 GGUF smoke profile now work. Broader quantization
+parity remains necessary; GGUF support is profile-specific,
 not the mechanism that activates native memory. Do not advertise support for
 arbitrary GGUF-consuming programs without their own supported integration.
 
@@ -69,8 +69,18 @@ verification or integrity scan is added to attention. The policy accounts for
 bank tensor payload bytes per GPU rank; it does not call `empty_cache` or force
 Torch's allocator to return reusable allocations to the driver.
 
-An oversized active working set currently fails closed inside the worker.
-Production ingress backpressure is still required for graceful admission. A
+An oversized active working set is now rejected by frontend Rust reservations
+with HTTP 429 and Retry-After before worker execution. A 512-request pressure
+probe passed isolation and three-record correctness. A
 failed GPU upload poisons the cache and requires worker restart, so partial plans
 cannot silently be served. Disk streaming/host residency remains a separate step:
 the current catalog is still admitted into host RAM.
+
+## Implementation progress, 2026-09-25
+
+Admission, coordinated refresh, private preparation/follower integration,
+compiled client/HIP packaging, official clean runtime image and initial Q8 GGUF
+compatibility are implemented. Signed launcher OCI support is implemented.
+See [the detailed evidence and outstanding gates](../../validation/vllm-release-20260925.md).
+The existing production gates remain closed: these checks do not substitute for
+live authority, hosted distribution or a signed clean-machine release test.
