@@ -1,4 +1,4 @@
-#[cfg(feature = "torch")]
+#[cfg(all(feature = "torch", not(feature = "native-client")))]
 pub mod adapter;
 #[cfg(feature = "torch")]
 pub mod model;
@@ -8,3 +8,29 @@ pub mod transport;
 pub mod knowledge;
 
 pub mod memory_encoding;
+
+#[cfg(feature = "torch")]
+pub mod prepared_memory;
+
+pub mod native_packing;
+
+pub mod prepared_files;
+
+pub mod native_compression;
+
+#[cfg(feature = "torch")]
+pub mod compact_memory;
+
+#[cfg(feature = "torch")]
+pub mod prepared_transfer;
+
+pub mod streaming_copy;
+
+#[cfg(feature = "torch")]
+pub mod native_ffi;
+
+#[cfg(not(feature = "native-client"))]
+pub mod preparation_cache;
+
+mod native_format;
+pub mod native_store;

@@ -26,6 +26,8 @@ enum Command {
     Serve(Serve),
     #[cfg(feature = "torch")]
     Probe(Probe),
+    #[cfg(feature = "torch")]
+    PrepareMemory(PrepareMemory),
 }
 #[derive(clap::Args)]
 struct Connection {
@@ -262,6 +264,21 @@ fn read_check(c: Connection) -> Result<()> {
 #[cfg(feature = "torch")]
 #[derive(clap::Args)]
 struct Serve {
+    /// Research-only bounded native snapshot; enables explicit offline preparation.
+    #[arg(long, conflicts_with = "prepared_memory")]
+    compact_working_root: Option<PathBuf>,
+    /// Synchronize complete native bank readiness for latency measurement.
+    #[arg(long)]
+    measure_native_ready: bool,
+    /// Strict ahead-of-time native store; no model encoding on a serving miss.
+    #[arg(long, requires = "prepared_model_revision")]
+    prepared_memory: Option<PathBuf>,
+    /// Close unused prepared artifact handles after this many idle seconds.
+    #[arg(long, default_value_t = 60)]
+    prepared_idle_seconds: u64,
+    /// Immutable checkpoint revision used when preparing this store.
+    #[arg(long, requires = "prepared_memory")]
+    prepared_model_revision: Option<String>,
     /// Enable bounded research-only encoding/position diagnostics.
     #[arg(long)]
     enable_memory_diagnostics: bool,
@@ -299,6 +316,96 @@ struct Probe {
     #[arg(long)]
     int8: bool,
 }
+#[cfg(feature = "torch")]
+#[derive(clap::Args)]
+struct PrepareMemory {
+    #[command(flatten)]
+    runtime: Serve,
+    /// JSON array of {query, expected_refs}; records are read through Aimee.
+    #[arg(long)]
+    requests: PathBuf,
+    #[arg(long)]
+    record_encoding: bool,
+}
+#[cfg(feature = "torch")]
+fn prepared_identity(args: &Serve) -> Result<String> {
+    use sha2::{Digest, Sha256};
+    let revision = args
+        .prepared_model_revision
+        .as_ref()
+        .context("pinned model revision required")?;
+    ensure!(
+        revision.len() >= 40 && revision.bytes().all(|x| x.is_ascii_hexdigit()),
+        "immutable model revision required"
+    );
+    let mut hash = Sha256::new();
+    hash.update(b"aimee-native-codec-v1");
+    hash.update(revision.as_bytes());
+    hash.update([u8::from(args.int8)]);
+    for file in ["config.json", "tokenizer.json"] {
+        hash.update(std::fs::read(args.model.join(file))?);
+    }
+    Ok(format!("{:x}", hash.finalize()))
+}
+#[cfg(feature = "torch")]
+fn prepare_memory(args: PrepareMemory) -> Result<()> {
+    use aimee_qwen::{adapter::Adapter, model::Model, prepared_memory::Store, tokens::Tokens};
+    let runtime = &args.runtime;
+    let identity = prepared_identity(runtime)?;
+    let path = runtime
+        .prepared_memory
+        .as_ref()
+        .context("prepared-memory store required")?;
+    let _guard = tch::no_grad_guard();
+    tch::set_num_threads(8);
+    let model = Model::load(&runtime.model, runtime.placement.as_deref(), runtime.int8)?;
+    let tokenizer = Tokens::load(&runtime.model.join("tokenizer.json"))?;
+    let mut adapter = Adapter::new(
+        Box::new(runtime.connection.open()?),
+        runtime.memory_limit,
+        runtime.max_memory_tokens,
+        0,
+    );
+    adapter.prepared_store = Some(Store::open(path, &identity, true)?);
+    adapter.preparation_mode = true;
+    let requests: Vec<Value> = serde_json::from_slice(&std::fs::read(&args.requests)?)?;
+    for request in requests {
+        let query = request["query"]
+            .as_str()
+            .context("preparation query required")?;
+        let expected = request["expected_refs"]
+            .as_array()
+            .context("expected record refs required")?;
+        ensure!(!expected.is_empty(), "empty preparation selection");
+        adapter.expected_preparation_refs = Some(expected.clone());
+        let mut state = adapter.begin(false, false)?;
+        state.record_encoding = args.record_encoding;
+        adapter.recall(
+            &model,
+            &tokenizer,
+            &mut state,
+            query,
+            "offline_preparation",
+            vec![],
+        )?;
+        let refs: Vec<_> = state
+            .facts
+            .iter()
+            .map(|f| f["memory_ref"].clone())
+            .collect();
+        ensure!(
+            &refs == expected,
+            "offline preparation omitted or changed selected records"
+        );
+        adapter.check_generation(&state.binding)?;
+        println!(
+            "{}",
+            json!({"query":query,"records":refs,"encodings":state.encodings,"events":state.events})
+        );
+    }
+    Ok(())
+}
+
 #[cfg(any(feature = "torch", test))]
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -396,6 +503,15 @@ fn serve(args: Serve) -> Result<()> {
             .checked_mul(1 << 20)
             .context("cache budget overflow")?,
     );
+    adapter.compact_root = args.compact_working_root.clone();
+    if let Some(path) = &args.prepared_memory {
+        adapter.prepared_store = Some(aimee_qwen::prepared_memory::Store::open_with_idle(
+            path,
+            &prepared_identity(&args)?,
+            false,
+            std::time::Duration::from_secs(args.prepared_idle_seconds),
+        )?);
+    }
     std::fs::create_dir_all(&args.trace_dir)?;
     std::fs::set_permissions(&args.trace_dir, std::fs::Permissions::from_mode(0o700))?;
     let server = tiny_http::Server::http(("127.0.0.1", args.port))
@@ -412,6 +528,25 @@ fn serve(args: Serve) -> Result<()> {
                 200,
                 json!({"status":"ready","runtime":"rust","adapter_trainable_parameters":0}),
             );
+            continue;
+        }
+        if request.method() == &tiny_http::Method::Post
+            && request.url() == "/aimee/prepare"
+            && args.compact_working_root.is_some()
+        {
+            let result = (|| -> Result<Value> {
+                let input = body(&mut request, 1_000_000)?;
+                let query = input["query"].as_str().context("query required")?;
+                let expected = input["expected_refs"]
+                    .as_array()
+                    .context("expected refs required")?;
+                ensure!(!expected.is_empty(), "empty expected records");
+                adapter.prepare_compact(&model, &tokenizer, query, expected)
+            })();
+            match result {
+                Ok(v) => reply(request, 200, v),
+                Err(e) => reply(request, 400, json!({"error":format!("{e:#}")})),
+            }
             continue;
         }
         if request.method() != &tiny_http::Method::Post || request.url() != "/v1/chat/completions" {
@@ -560,6 +695,8 @@ fn serve(args: Serve) -> Result<()> {
             let prompt_text = chat(&messages)?;
             let prompt = tokenizer.encode(&prompt_text)?;
             ensure!(prompt.len() <= 8192, "prompt exceeds experimental bound");
+            let native_ready_started = std::time::Instant::now();
+            let mut native_ready_ns = None;
             state = if enabled {
                 Some(adapter.begin(decode, reuse)?)
             } else {
@@ -591,6 +728,10 @@ fn serve(args: Serve) -> Result<()> {
                     "prompt_preload",
                     vec![],
                 )?;
+            }
+            if args.measure_native_ready && enabled && preload {
+                state.as_ref().unwrap().prepare_ready(&model)?;
+                native_ready_ns = Some(native_ready_started.elapsed().as_nanos());
             }
             let mut cache = Cache::new(model.config.num_hidden_layers);
             let mut next = prompt.clone();
@@ -638,7 +779,7 @@ fn serve(args: Serve) -> Result<()> {
             if let Some(s) = state.as_ref() {
                 adapter.check_generation(&s.binding)?;
             }
-            let trace = json!({"cache_transition":state.as_ref().map(|s|&s.cache_transition),"runtime":"rust-libtorch","id":id,"logit_trace":logit_trace,"attention_trace":state.as_ref().map(|s|&s.attention_trace),"generation_prompt":prompt_text,"prompt_token_ids":prompt,"generated_token_ids":generated,"memory_prompt_tokens":0,"publication":state.as_ref().map(|s|&s.binding),"memory_encoding":state.as_ref().map(|s|&s.encoding_format),"memory_encoding_granularity":state.as_ref().map(|s|if s.record_encoding {"record"} else {"bank"}),"memory_before_prompt":state.as_ref().map(|s|s.before_prompt),"memory_position_offset":state.as_ref().map(|s|s.bank_position_offset()),"answer":answer,"finish_reason":finish_reason,"elapsed_ms":started.elapsed().as_secs_f64()*1000.,"memory_encoding_passes":state.as_ref().map(|s|s.encodings).unwrap_or(0),"native_reads":state.as_ref().map(|s|s.native_reads).unwrap_or(0),"bank_residence":"ram","recall_events":state.as_ref().map(|s|&s.events),"main_cache_length":cache.length});
+            let trace = json!({"native_ready_ns":native_ready_ns,"cache_transition":state.as_ref().map(|s|&s.cache_transition),"runtime":"rust-libtorch","id":id,"logit_trace":logit_trace,"attention_trace":state.as_ref().map(|s|&s.attention_trace),"generation_prompt":prompt_text,"prompt_token_ids":prompt,"generated_token_ids":generated,"memory_prompt_tokens":0,"publication":state.as_ref().map(|s|&s.binding),"memory_encoding":state.as_ref().map(|s|&s.encoding_format),"memory_encoding_granularity":state.as_ref().map(|s|if s.record_encoding {"record"} else {"bank"}),"memory_before_prompt":state.as_ref().map(|s|s.before_prompt),"memory_position_offset":state.as_ref().map(|s|s.bank_position_offset()),"answer":answer,"finish_reason":finish_reason,"elapsed_ms":started.elapsed().as_secs_f64()*1000.,"memory_encoding_passes":state.as_ref().map(|s|s.encodings).unwrap_or(0),"native_reads":state.as_ref().map(|s|s.native_reads).unwrap_or(0),"bank_residence":"layer_devices","native_bank_preparations":state.as_ref().map(|s|s.bank_preparations.get()),"native_bank_reuses":state.as_ref().map(|s|s.bank_reuses.get()),"native_bank_application_cpu_ns":state.as_ref().map(|s|s.bank_application_cpu_ns.get()),"recall_events":state.as_ref().map(|s|&s.events),"main_cache_length":cache.length});
             Ok((answer, trace))
         })();
         match result {
@@ -711,6 +852,8 @@ fn main() -> Result<()> {
         Command::Serve(s) => serve(s),
         #[cfg(feature = "torch")]
         Command::Probe(p) => probe(p),
+        #[cfg(feature = "torch")]
+        Command::PrepareMemory(p) => prepare_memory(p),
     }
 }
 

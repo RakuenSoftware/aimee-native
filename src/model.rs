@@ -402,23 +402,31 @@ impl Model {
         hidden = transfer(&hidden, self.head);
         Ok(self.linear(&self.norm(&hidden, "model.norm"), "lm_head"))
     }
-    pub fn encode(&self, ids: &[u32]) -> Result<HashMap<usize, Bank>> {
+    /// Encode on the owning layer devices. Serving must not bounce a newly
+    /// created active bank through host RAM before immediately consuming it.
+    pub fn encode_native(&self, ids: &[u32]) -> Result<HashMap<usize, Bank>> {
         let mut cache = Cache::new(self.config.num_hidden_layers);
         let _ = self.forward(ids, &mut cache, None)?;
         Ok(cache
             .layers
             .into_iter()
             .enumerate()
-            .filter_map(|(i, l)| {
-                l.kv.map(|b| {
-                    (
-                        i,
-                        Bank {
-                            keys: b.keys.to_device(Device::Cpu),
-                            values: b.values.to_device(Device::Cpu),
-                        },
-                    )
-                })
+            .filter_map(|(i, layer)| layer.kv.map(|bank| (i, bank)))
+            .collect())
+    }
+    /// Retained host-resident reference path for offline export and controls.
+    pub fn encode(&self, ids: &[u32]) -> Result<HashMap<usize, Bank>> {
+        Ok(self
+            .encode_native(ids)?
+            .into_iter()
+            .map(|(i, b)| {
+                (
+                    i,
+                    Bank {
+                        keys: b.keys.to_device(Device::Cpu),
+                        values: b.values.to_device(Device::Cpu),
+                    },
+                )
             })
             .collect())
     }
