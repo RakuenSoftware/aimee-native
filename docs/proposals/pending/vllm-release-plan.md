@@ -101,3 +101,11 @@ runtime defaults. Clean install, upgrade and rollback passed on Gemma without
 harness-installed native banks. Live production authority/API mounting and the
 production security/signing/certification gates remain open; lab successes are
 not substituted for them.
+
+The [2026-09-26 follow-up](../../validation/native-production-20260926.md) adds the
+actual Aimee frontend bridge, a kernel-authenticated private delivery daemon,
+current principal/release binding, total-resource telemetry, target-specific
+license inventory, pinned dependency remediation and exact-image certification.
+Certification found and fixed a normal-SSE-completion admission bug. Live
+frontend deployment, remaining dependency review and non-lab signing are still
+acceptance conditions; implementation and lab evidence are tracked separately.

@@ -1,7 +1,7 @@
 """Exercise Aimee's actual C transport against the private delivery service.
 Identity grants here are explicit fixtures, not a live production authorization.
 """
-import argparse,datetime,hashlib,json,os,pathlib,subprocess,tempfile,time,unittest
+import argparse,datetime,hashlib,json,os,pathlib,socket,subprocess,tempfile,threading,time,unittest
 
 p=argparse.ArgumentParser();p.add_argument('--aimee',required=True);p.add_argument('--delivery',required=True)
 a,rest=p.parse_known_args()
@@ -42,8 +42,8 @@ int main(int argc,char **argv){
  @classmethod
  def tearDownClass(cls):
   cls.service.terminate();cls.service.wait(timeout=5);cls.service.stderr.close();cls.temp.cleanup()
- def run_request(self,principal='webuser:alice',path='/v1/native/bootstrap',method='GET'):
-  return subprocess.run([str(self.probe),method,path,principal],env=dict(os.environ,AIMEE_NATIVE_SOCKET=str(self.socket)),capture_output=True,check=False)
+ def run_request(self,principal='webuser:alice',path='/v1/native/bootstrap',method='GET',socket_path=None):
+  return subprocess.run([str(self.probe),method,path,principal],env=dict(os.environ,AIMEE_NATIVE_SOCKET=str(socket_path or self.socket)),capture_output=True,check=False)
  def test_current_binding_and_withdrawal(self):
   self.policy['active']=True;self.write_policy()
   result=self.run_request();self.assertEqual(result.returncode,0);self.assertIn(b'200 OK',result.stdout);self.assertEqual(result.stderr,b'200\n');self.assertIn(b'"recipient":"alice"',result.stdout)
@@ -51,6 +51,29 @@ int main(int argc,char **argv){
   self.assertIn(b'403',self.run_request().stdout)
   self.policy['active']=True;self.write_policy()
   self.assertIn(b'200 OK',self.run_request().stdout)
+ def test_large_stream_preserves_bytes_and_backend_status(self):
+  path=self.root/'stream.sock';listener=socket.socket(socket.AF_UNIX,socket.SOCK_STREAM)
+  listener.bind(str(path));path.chmod(0o600);listener.listen(1);listener.settimeout(5)
+  payload=bytes(range(256))*4096
+  response=b'HTTP/1.1 206 Partial Content\r\nContent-Length: '+str(len(payload)).encode()+b'\r\nConnection: close\r\n\r\n'+payload
+  failures=[]
+  def serve():
+   try:
+    connection,_=listener.accept()
+    with connection:
+     connection.settimeout(5);request=b''
+     while b'\r\n\r\n' not in request:request+=connection.recv(4096)
+     if b'X-Aimee-Native-Principal: 776562757365723a616c696365' not in request:raise AssertionError('attested principal missing')
+     for offset in range(0,len(response),997):connection.sendall(response[offset:offset+997])
+   except BaseException as e:failures.append(repr(e))
+  worker=threading.Thread(target=serve);worker.start()
+  try:
+   result=self.run_request(path='/v1/native/leases/'+('a'*64)+'/compact.pack',socket_path=path)
+   worker.join(timeout=10)
+   self.assertFalse(worker.is_alive());self.assertEqual(failures,[])
+   self.assertEqual(result.returncode,0);self.assertEqual(result.stderr,b'206\n')
+   self.assertEqual(len(result.stdout),len(response));self.assertEqual(hashlib.sha256(result.stdout).digest(),hashlib.sha256(response).digest())
+  finally:listener.close();worker.join(timeout=6);path.unlink(missing_ok=True)
  def test_unbound_and_empty_identity(self):
   for principal in ('webuser:bob',''):
    self.assertIn(b'403',self.run_request(principal).stdout)

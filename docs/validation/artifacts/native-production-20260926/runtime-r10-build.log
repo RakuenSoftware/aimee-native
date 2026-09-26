@@ -1,0 +1,43 @@
+STEP 1/6: FROM localhost/aimee-native:gemma-preview-r9
+STEP 2/6: COPY wheels /opt/aimee/runtime-wheels
+--> Using cache 3730beec5da49488173eafe8d15b86b20f62e2809141bb2a0c867094e8927de5
+--> 3730beec5da4
+STEP 3/6: COPY requirements.lock /opt/aimee/runtime-requirements.lock
+--> Using cache 05d46b4ce709641abfcd8f32914c2f1ffbe32ba16292f23da8db006854e7403f
+--> 05d46b4ce709
+STEP 4/6: RUN python3 -m pip install --no-index --find-links=/opt/aimee/runtime-wheels --require-hashes --ignore-installed -r /opt/aimee/runtime-requirements.lock && rm -rf /opt/aimee/runtime-wheels
+Looking in links: /opt/aimee/runtime-wheels
+Processing /opt/aimee/runtime-wheels/pyjwt-2.15.0-py3-none-any.whl (from -r /opt/aimee/runtime-requirements.lock (line 1))
+Processing /opt/aimee/runtime-wheels/cffi-2.1.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (from -r /opt/aimee/runtime-requirements.lock (line 2))
+Processing /opt/aimee/runtime-wheels/cryptography-50.0.1-cp311-abi3-manylinux_2_34_x86_64.whl (from -r /opt/aimee/runtime-requirements.lock (line 3))
+Processing /opt/aimee/runtime-wheels/httplib2-0.32.0-py3-none-any.whl (from -r /opt/aimee/runtime-requirements.lock (line 4))
+Processing /opt/aimee/runtime-wheels/oauthlib-3.3.1-py3-none-any.whl (from -r /opt/aimee/runtime-requirements.lock (line 5))
+Processing /opt/aimee/runtime-wheels/pycparser-3.0-py3-none-any.whl (from -r /opt/aimee/runtime-requirements.lock (line 6))
+Processing /opt/aimee/runtime-wheels/pyparsing-3.3.3-py3-none-any.whl (from -r /opt/aimee/runtime-requirements.lock (line 7))
+Processing /opt/aimee/runtime-wheels/setuptools-84.0.0-py3-none-any.whl (from -r /opt/aimee/runtime-requirements.lock (line 8))
+Processing /opt/aimee/runtime-wheels/zipp-4.1.0-py3-none-any.whl (from -r /opt/aimee/runtime-requirements.lock (line 9))
+Installing collected packages: zipp, setuptools, pyparsing, PyJWT, pycparser, oauthlib, httplib2, cffi, cryptography
+
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+lmcache 0.5.3 requires setuptools<81.0.0,>=77.0.3, but you have setuptools 84.0.0 which is incompatible.
+vllm 0.30.0+rocm723 requires setuptools<80.0.0,>=77.0.3, but you have setuptools 84.0.0 which is incompatible.
+vllm 0.30.0+rocm723 requires setuptools<81.0.0,>=77.0.3; python_version > "3.11", but you have setuptools 84.0.0 which is incompatible.
+torch 2.12.0+git6bbd260 requires setuptools<82, but you have setuptools 84.0.0 which is incompatible.
+Successfully installed PyJWT-2.15.0 cffi-2.1.1 cryptography-50.0.1 httplib2-0.32.0 oauthlib-3.3.1 pycparser-3.0 pyparsing-3.3.3 setuptools-84.0.0 zipp-4.1.0
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+--> 9ea8f589de54
+STEP 5/6: COPY aimee_vllm-0.1.0-cp312-cp312-linux_x86_64.whl /opt/aimee/client/
+--> b5aa7ed9bac4
+STEP 6/6: RUN python3 -m pip install --no-deps --force-reinstall /opt/aimee/client/aimee_vllm-0.1.0-cp312-cp312-linux_x86_64.whl && rm -rf /opt/aimee/client
+Processing /opt/aimee/client/aimee_vllm-0.1.0-cp312-cp312-linux_x86_64.whl
+Installing collected packages: aimee-vllm
+  Attempting uninstall: aimee-vllm
+    Found existing installation: aimee-vllm 0.1.0
+    Uninstalling aimee-vllm-0.1.0:
+      Successfully uninstalled aimee-vllm-0.1.0
+Successfully installed aimee-vllm-0.1.0
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+COMMIT localhost/aimee-native:gemma-preview-r10
+--> 533a4a97ad8f
+Successfully tagged localhost/aimee-native:gemma-preview-r10
+533a4a97ad8ff64ea3b64f00988750ce07d8dc416ebb1d9e60fdaf78792b5431
