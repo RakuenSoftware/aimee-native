@@ -67,6 +67,8 @@ pub struct Config {
     pub ca_file: Option<PathBuf>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub client_identity: Option<PathBuf>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub connect_address: Option<std::net::SocketAddr>,
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -400,6 +402,18 @@ pub fn validate_endpoint(endpoint: &str) -> Result<reqwest::Url> {
     );
     Ok(u)
 }
+pub fn validate_connect_address(url: &reqwest::Url, address: std::net::SocketAddr) -> Result<()> {
+    let host = url.host_str().context("endpoint hostname required")?;
+    ensure!(
+        host.parse::<std::net::IpAddr>().is_err() && !host.starts_with('['),
+        "connect address requires a DNS-name endpoint"
+    );
+    ensure!(
+        url.port_or_known_default() == Some(address.port()),
+        "connect address port must match the endpoint"
+    );
+    Ok(())
+}
 pub fn connect_with_tls(
     root: &Path,
     endpoint: &str,
@@ -407,7 +421,20 @@ pub fn connect_with_tls(
     ca: Option<&[u8]>,
     identity: Option<&[u8]>,
 ) -> Result<()> {
+    connect_with_address(root, endpoint, token, ca, identity, None)
+}
+pub fn connect_with_address(
+    root: &Path,
+    endpoint: &str,
+    token: &str,
+    ca: Option<&[u8]>,
+    identity: Option<&[u8]>,
+    connect_address: Option<std::net::SocketAddr>,
+) -> Result<()> {
     let u = validate_endpoint(endpoint)?;
+    if let Some(address) = connect_address {
+        validate_connect_address(&u, address)?;
+    }
     if let Some(pem) = ca {
         reqwest::Certificate::from_pem(pem)?;
     }
@@ -453,6 +480,7 @@ pub fn connect_with_tls(
         memory_root,
         ca_file: save_tls("ca-", ca)?,
         client_identity: save_tls("identity-", identity)?,
+        connect_address,
     };
     atomic(
         &root.join("config.json"),
@@ -466,6 +494,45 @@ mod tests {
     use super::*;
     use ed25519_dalek::{Signer, SigningKey};
     use std::io::Cursor;
+    #[test]
+    fn connect_address_preserves_named_tls_endpoint_and_port() {
+        let address = "192.0.2.10:8743".parse().unwrap();
+        assert!(
+            validate_connect_address(
+                &validate_endpoint("https://memory.example:8743").unwrap(),
+                address
+            )
+            .is_ok()
+        );
+        assert!(
+            validate_connect_address(
+                &validate_endpoint("https://memory.example").unwrap(),
+                address
+            )
+            .is_err()
+        );
+        assert!(
+            validate_connect_address(
+                &validate_endpoint("https://192.0.2.10:8743").unwrap(),
+                address
+            )
+            .is_err()
+        );
+        let root = tempfile::tempdir().unwrap();
+        connect_with_address(
+            root.path(),
+            "https://memory.example:8743",
+            "test-token",
+            None,
+            None,
+            Some(address),
+        )
+        .unwrap();
+        let config: Config =
+            serde_json::from_slice(&fs::read(root.path().join("config.json")).unwrap()).unwrap();
+        assert_eq!(config.connect_address, Some(address));
+        assert_eq!(config.endpoint, "https://memory.example:8743/");
+    }
     #[test]
     fn container_descriptor_rejects_mutable_tags_and_escape_paths() {
         let mut d = RuntimeImage {

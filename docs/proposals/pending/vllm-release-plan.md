@@ -15,8 +15,8 @@ OpenAI-compatible API. A trusted gateway selects approved publications; end user
 should not need to choose internal publication IDs per request.
 
 A GGUF alone cannot install an inference extension or connect its memory runtime.
-BF16 safetensors and a Q8_0 GGUF smoke profile now work. Broader quantization
-parity remains necessary; GGUF support is profile-specific,
+BF16 safetensors and the certified Q8_0 GGUF profile work. Other quantization
+profiles need their own certification; GGUF support is profile-specific,
 not the mechanism that activates native memory. Do not advertise support for
 arbitrary GGUF-consuming programs without their own supported integration.
 
@@ -109,3 +109,19 @@ license inventory, pinned dependency remediation and exact-image certification.
 Certification found and fixed a normal-SSE-completion admission bug. Live
 frontend deployment, remaining dependency review and non-lab signing are still
 acceptance conditions; implementation and lab evidence are tracked separately.
+
+## Private-preview release closure, 2026-09-26
+
+All six workstreams are implemented for the controlled, certified private
+preview. [The live release record](../../validation/native-live-release-20260926.md)
+replaces the earlier open deployment/signing conditions with actual Aimee source
+publication, restricted fallback, account authentication, private remote CPU
+preparation, restart recovery and normal-launcher signed lifecycle evidence.
+The default frontend Compose override preserves the deployed bridge.
+
+This closure is scoped to the exact Gemma Q8 package and dual-7900XTX profile.
+Cold activation still misses the microsecond performance target; new ordered
+working sets can require model execution on the private preparation host.
+Public redistribution review, broader hardware/model profiles and further
+performance optimization remain separate work. They are not claimed complete
+by the private-preview release gates.

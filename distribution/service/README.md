@@ -10,7 +10,9 @@ The native preparation worker must bind each output to that authorized view,
 recipient and exact source revisions. `src/preparation_cache.rs` supplies a
 private cache primitive for compiler callbacks. It is not an authorization API
 and is now wired into the private `native-prepare` worker. Hosted account
-authentication and remote prepared-artifact delivery are not yet complete.
+authentication and prepared-artifact delivery are now connected to the actual
+Aimee frontend; see [deployment](DEPLOYMENT.md) and the
+[live release evidence](../../docs/validation/native-live-release-20260926.md).
 
 Before accepting public client requests, integrate the actual authenticated
 publication feed. Client-supplied IDs/tenant names are not release authority.
@@ -20,9 +22,10 @@ must prevent new pins; already-delivered data cannot be erased from a malicious
 host. Artifact expiry and connection-loss behavior must follow Aimee policy,
 not a locally invented grant.
 
-The deployment host, authenticated feed contract and release origin remain
-unconfigured. No credentials, signing keys or test-issued grants may substitute
-for those inputs. The research `/aimee/prepare` endpoint is not a production API.
+The controlled preview uses an explicitly approved three-record canary release
+through the real Aimee source owner. Customer publications require their own
+operator enrollment and scope. Research grants never substitute for authority.
+The research `/aimee/prepare` endpoint is not the deployed account API.
 
 Keep service-only logs/symbols and operational diagnostics off the client.
 Model-specific preparation can involve model execution on the service. The

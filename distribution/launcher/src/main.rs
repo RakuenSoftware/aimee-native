@@ -28,6 +28,9 @@ enum Action {
         /// PEM containing the enrolled client certificate and private key.
         #[arg(long)]
         client_identity: Option<PathBuf>,
+        /// Dial this address while verifying the HTTPS endpoint hostname.
+        #[arg(long)]
+        connect_address: Option<std::net::SocketAddr>,
     },
     /// Run the private host-side native selection broker.
     MemoryAgent {
@@ -80,9 +83,19 @@ fn release_key() -> Result<[u8; 32]> {
         .map_err(|_| anyhow::anyhow!("invalid embedded release key"))
 }
 fn client() -> Result<reqwest::blocking::Client> {
-    tls_client(None, None)
+    tls_client(
+        option_env!("AIMEE_RELEASE_CA_PEM").map(str::as_bytes),
+        None,
+        None,
+        None,
+    )
 }
-fn tls_client(ca: Option<&[u8]>, identity: Option<&[u8]>) -> Result<reqwest::blocking::Client> {
+fn tls_client(
+    ca: Option<&[u8]>,
+    identity: Option<&[u8]>,
+    endpoint: Option<&str>,
+    address: Option<std::net::SocketAddr>,
+) -> Result<reqwest::blocking::Client> {
     let builder = reqwest::blocking::Client::builder()
         .https_only(true)
         .redirect(reqwest::redirect::Policy::none())
@@ -102,6 +115,14 @@ fn tls_client(ca: Option<&[u8]>, identity: Option<&[u8]>) -> Result<reqwest::blo
     } else {
         builder
     };
+    let builder = if let Some(address) = address {
+        let url =
+            native::validate_endpoint(endpoint.context("dial override requires an endpoint")?)?;
+        native::validate_connect_address(&url, address)?;
+        builder.no_proxy().resolve(url.host_str().unwrap(), address)
+    } else {
+        builder
+    };
     Ok(builder.build()?)
 }
 fn run() -> Result<()> {
@@ -115,17 +136,30 @@ fn run() -> Result<()> {
             endpoint,
             ca_file,
             client_identity,
+            connect_address,
         } => {
             let mut token = String::new();
             io::stdin().take(16385).read_to_string(&mut token)?;
             let ca = ca_file.map(fs::read).transpose()?;
             let identity = client_identity.map(fs::read).transpose()?;
             let profile = native::delivery::bootstrap(
-                &tls_client(ca.as_deref(), identity.as_deref())?,
+                &tls_client(
+                    ca.as_deref(),
+                    identity.as_deref(),
+                    Some(&endpoint),
+                    connect_address,
+                )?,
                 &endpoint,
                 &token,
             )?;
-            native::connect_with_tls(&root, &endpoint, &token, ca.as_deref(), identity.as_deref())?;
+            native::connect_with_address(
+                &root,
+                &endpoint,
+                &token,
+                ca.as_deref(),
+                identity.as_deref(),
+                connect_address,
+            )?;
             native::atomic(
                 &root.join("native-profile.json"),
                 &serde_json::to_vec(&profile)?,
@@ -146,7 +180,12 @@ fn run() -> Result<()> {
                 .map(fs::read)
                 .transpose()?;
             native::broker::serve(
-                tls_client(ca.as_deref(), identity.as_deref())?,
+                tls_client(
+                    ca.as_deref(),
+                    identity.as_deref(),
+                    Some(&connection.endpoint),
+                    connection.connect_address,
+                )?,
                 connection,
                 &serving,
                 &model,
@@ -168,7 +207,12 @@ fn run() -> Result<()> {
                 .map(fs::read)
                 .transpose()?;
             let (offer, path) = native::delivery::fetch(
-                &tls_client(ca.as_deref(), identity.as_deref())?,
+                &tls_client(
+                    ca.as_deref(),
+                    identity.as_deref(),
+                    Some(&connection.endpoint),
+                    connection.connect_address,
+                )?,
                 &connection,
                 &query,
                 &recipient,
@@ -262,7 +306,12 @@ fn run() -> Result<()> {
                     .as_ref()
                     .map(fs::read)
                     .transpose()?;
-                let http = tls_client(ca.as_deref(), identity.as_deref())?;
+                let http = tls_client(
+                    ca.as_deref(),
+                    identity.as_deref(),
+                    Some(&connection.endpoint),
+                    connection.connect_address,
+                )?;
                 let token = fs::read_to_string(&connection.token_file)?;
                 let profile = native::delivery::bootstrap(&http, &connection.endpoint, &token)?;
                 native::runtime::clean_sockets(&connection.memory_root)?;
@@ -312,6 +361,33 @@ fn run() -> Result<()> {
                 let runtime_config = fs::canonicalize(runtime_config)?;
                 // Pulls are digest-pinned by the signed descriptor. Preparation and
                 // account credentials are not mounted into the client container.
+                // Keep private registry trust local to this installation. The
+                // model container never receives account TLS identities.
+                if let Some(ca) = option_env!("AIMEE_RELEASE_CA_PEM") {
+                    let present = Command::new("podman")
+                        .args(["image", "exists", &image.image])
+                        .env_remove("AIMEE_TOKEN")
+                        .status()?;
+                    ensure!(
+                        present.success() || present.code() == Some(1),
+                        "cannot inspect container image"
+                    );
+                    if !present.success() {
+                        let trust = root.join("release-trust");
+                        native::private_dir(&trust)?;
+                        native::atomic(&trust.join("ca.crt"), ca.as_bytes())?;
+                        ensure!(
+                            Command::new("podman")
+                                .args(["pull", "--cert-dir"])
+                                .arg(&trust)
+                                .arg(&image.image)
+                                .env_remove("AIMEE_TOKEN")
+                                .status()?
+                                .success(),
+                            "verified runtime image download failed"
+                        );
+                    }
+                }
                 let mut cmd = Command::new("podman");
                 cmd.args([
                     "run",
@@ -321,8 +397,12 @@ fn run() -> Result<()> {
                     "--device",
                     "/dev/kfd",
                 ]);
-                #[cfg(feature = "lab-release")]
-                cmd.args(["--cgroups=disabled", "--security-opt", "seccomp=unconfined"]);
+                if let Some(defaults) = &defaults {
+                    cmd.arg("--memory")
+                        .arg(defaults.system_memory_budget.to_string())
+                        .arg("--memory-swap")
+                        .arg(defaults.system_memory_budget.to_string());
+                }
                 for device in ["/dev/dri/renderD128", "/dev/dri/renderD129"] {
                     if std::path::Path::new(device).exists() {
                         cmd.args(["--device", device]);

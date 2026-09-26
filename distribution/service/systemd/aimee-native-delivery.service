@@ -1,6 +1,7 @@
 [Unit]
 Description=Aimee private native-memory delivery
-After=network.target
+After=network.target aimee-native-follower.service
+BindsTo=aimee-native-follower.service
 
 [Service]
 Type=simple
@@ -8,9 +9,12 @@ User=aimee
 Group=aimee
 RuntimeDirectory=aimee-native
 RuntimeDirectoryMode=0700
+# The frontend bind-mounts this directory; preserve its inode across restarts.
+RuntimeDirectoryPreserve=yes
 StateDirectory=aimee-native
 StateDirectoryMode=0700
 UMask=0077
+ExecStartPre=/usr/bin/python3 /opt/aimee-native/service/recover_socket.py /run/aimee-native/delivery.sock
 ExecStart=/opt/aimee-native/bin/aimee-native-delivery --socket /run/aimee-native/delivery.sock --bindings /etc/aimee-native/bindings.json
 Restart=on-failure
 RestartSec=3

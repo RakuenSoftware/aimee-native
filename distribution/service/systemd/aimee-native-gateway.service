@@ -1,0 +1,28 @@
+[Unit]
+Description=Aimee restricted authoritative fallback for native preparation
+After=aimee-native-follower.service
+Wants=aimee-native-follower.service
+
+[Service]
+Type=simple
+User=aimee
+Group=aimee
+RuntimeDirectory=aimee-native-gateway
+RuntimeDirectoryMode=0700
+UMask=0077
+# For a containerized frontend, override the source path with its existing
+# server-owned socket. Only this socket is mounted into the service namespace.
+BindReadOnlyPaths=/var/lib/aimee/aimee-http.sock:/run/aimee-native-gateway/upstream.sock
+ExecStart=/opt/aimee-native/bin/aimee-qwen gateway --image-reader /opt/aimee-native/bin/aimee-memory-image --memory-image /var/lib/aimee-native/image --socket /run/aimee-native-gateway/read.sock --upstream-unix /run/aimee-native-gateway/upstream.sock --upstream-namespace native-preview-user
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/run/aimee-native-gateway
+TimeoutStopSec=15
+KillMode=control-group
+
+[Install]
+WantedBy=multi-user.target

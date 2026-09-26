@@ -1,0 +1,28 @@
+[Unit]
+Description=Aimee approved native-memory image follower
+After=aimee-native-publisher.service
+Wants=aimee-native-publisher.service
+Upholds=aimee-native-delivery.service
+
+[Service]
+Type=simple
+User=aimee
+Group=aimee
+StateDirectory=aimee-native
+StateDirectoryMode=0700
+UMask=0077
+ExecStartPre=/usr/bin/python3 /opt/aimee-native/service/withdraw_image.py --reader /opt/aimee-native/bin/aimee-memory-image --root /var/lib/aimee-native/image
+ExecStopPost=/usr/bin/python3 /opt/aimee-native/service/withdraw_image.py --reader /opt/aimee-native/bin/aimee-memory-image --root /var/lib/aimee-native/image
+ExecStart=/opt/aimee-native/bin/aimee-memory-image follow-published --publication-unix /run/aimee-native-publication/source.sock --root /var/lib/aimee-native/image --state-root /var/lib/aimee-native/resume
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/aimee-native
+TimeoutStopSec=15
+KillMode=control-group
+
+[Install]
+WantedBy=multi-user.target

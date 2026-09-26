@@ -1,0 +1,10 @@
+[Unit]
+Description=Refresh native fallback after the Aimee listener is replaced
+
+[Path]
+# Override this with the same host source used by the gateway socket bind.
+PathChanged=/var/lib/aimee/aimee-http.sock
+Unit=aimee-native-gateway-refresh.service
+
+[Install]
+WantedBy=multi-user.target

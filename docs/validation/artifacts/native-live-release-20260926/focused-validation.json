@@ -1,0 +1,39 @@
+{
+  "private_service_unit_tests": {
+    "passed": true,
+    "tests": 15
+  },
+  "release_packaging_tests": {
+    "passed": true,
+    "tests": 2
+  },
+  "launcher": {
+    "passed": true,
+    "unit_tests": 14,
+    "cli_container_tests": 1,
+    "evidence": "launcher-build.log"
+  },
+  "named_tls_integration": {
+    "passed": true,
+    "checks": [
+      "valid named endpoint/private dial address",
+      "reject wrong certificate hostname",
+      "reject untrusted CA"
+    ]
+  },
+  "aimee_owner_restriction": {
+    "passed": true,
+    "core_commit": "e2aff5b22",
+    "checks": [
+      "public wrapper forwards and echoes restriction",
+      "malformed and unsupported restrictions denied",
+      "actual PostgreSQL restricted search, 13 subcases",
+      "KB scope/lifecycle filtering"
+    ]
+  },
+  "frontend_bridge": {
+    "passed": true,
+    "tests": 5,
+    "release_base": "v0.4.5"
+  }
+}

@@ -77,7 +77,16 @@ fn signed_install_upgrade_rollback_and_container_invocation() {
     fs::create_dir(&bin).unwrap();
     fs::write(
         bin.join("podman"),
-        b"#!/bin/sh\nprintf '%s\\n' \"$@\" > \"$CAPTURE\"\ntest -z \"${AIMEE_TOKEN+x}\"\n",
+        br#"#!/bin/sh
+test -z "${AIMEE_TOKEN+x}" || exit 8
+if [ "$1" = image ]; then exit 1; fi
+if [ "$1" = pull ]; then
+    test "$2" = --cert-dir && test -f "$3/ca.crt" || exit 9
+    printf '%s\n' "$@" > "$CAPTURE.pull"
+    exit 0
+fi
+printf '%s\n' "$@" > "$CAPTURE"
+"#,
     )
     .unwrap();
     fs::set_permissions(bin.join("podman"), fs::Permissions::from_mode(0o700)).unwrap();
@@ -107,6 +116,13 @@ fn signed_install_upgrade_rollback_and_container_invocation() {
     let args = launch();
     assert!(args.contains(&format!("@sha256:{}", "2".repeat(64))));
     assert!(!args.contains("fixture-secret"));
+    if option_env!("AIMEE_RELEASE_CA_PEM").is_some() {
+        let pull = fs::read_to_string(format!("{}.pull", capture.display())).unwrap();
+        assert!(pull.contains("--cert-dir"));
+        assert!(pull.contains("@sha256:"));
+        assert!(!pull.contains("tls-verify=false"));
+    }
+
     assert!(!args.contains(config.token_file.to_str().unwrap()));
     assert!(
         !args

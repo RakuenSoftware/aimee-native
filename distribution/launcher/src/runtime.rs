@@ -23,7 +23,12 @@ pub struct Defaults {
     pub host_memory_budget: u64,
     pub device_memory_budget: u64,
     pub disk_budget: u64,
+    #[serde(default = "default_system_memory_budget")]
+    pub system_memory_budget: u64,
     pub serve: Value,
+}
+fn default_system_memory_budget() -> u64 {
+    48 * 1024 * 1024 * 1024
 }
 pub fn initialize(
     root: &Path,
@@ -42,6 +47,8 @@ pub fn initialize(
         d.host_memory_budget > 0
             && d.device_memory_budget > 0
             && d.disk_budget >= d.host_memory_budget
+            && d.system_memory_budget >= d.host_memory_budget
+            && d.system_memory_budget >= 1024 * 1024 * 1024
             && d.serve.is_object(),
         "invalid runtime defaults"
     );

@@ -24,8 +24,9 @@ The Rust installer now targets `bin/aimee-vllm`, a compiled native store library
 and certified model artifacts. `run` consumes a publication-installed
 `serving.json`, supplies the installed model/library paths, and binds loopback.
 It never forwards credentials through process arguments. A missing serving
-configuration fails explicitly. An isolated TLS release origin, registry and
-lab signing key now exercise delivery. Production identities remain unconfigured.
+configuration fails explicitly. The controlled private preview uses a dedicated TLS origin, immutable registry
+digest and new signing authority. See the [live release record](../docs/validation/native-live-release-20260926.md)
+for the supported profile, installation commands and measured limits.
 
 ## Implemented
 
@@ -42,7 +43,7 @@ lab signing key now exercise delivery. Production identities remain unconfigured
 Full-model Gemma validation has passed recall, isolation, three-record composition
 and publication replacement. See the vLLM validation record for exact coverage.
 
-## Current validation and remaining gates
+## Certification and supported-profile limits
 
 Compiled client modules, binary native kernels and the pinned ROCm container now
 pass full-model smoke checks. Q8_0 GGUF loading also passes without invoking the
@@ -73,8 +74,9 @@ Lab builds require the explicit `lab-release` feature and `lab_only` manifest
 marker; normal launchers reject them. Production gate evidence must match the
 exact packaged artifact set, not merely the upstream runtime commit.
 The compiled client still needs a supported host GPU driver and container runtime.
-Remote account authentication and native-artifact delivery must be finished
-before the advertised connect/install/run workflow is customer-ready.
+The live Aimee account endpoint now authenticates and delivers scoped native
+artifacts. Client enrollment and an operator-approved publication are required;
+the release does not grant access to an entire user or general knowledge base.
 
 Preparation stays server-side. Users receive approved local representations and
 a compiled consumer. Owning the machine still permits inspecting usable tensors
@@ -94,13 +96,32 @@ installed banks/catalogs. The private Go handler delegates actual preparation an
 approval to Rust; authoritative identity/release resolution remains in Aimee.
 
 See [the remote delivery report](../docs/validation/native-remote-delivery-20260925.md).
-This is a tested **lab** distribution, not a declaration that all production
-acceptance gates are closed. The live account endpoint does not yet mount these
-native routes; dependency findings, production identities and final certification
-remain explicit release conditions.
+That report records the earlier lab distribution. The subsequent
+[live release record](../docs/validation/native-live-release-20260926.md) covers
+real account authentication, private preparation, dedicated signing and the
+normal launcher. Public redistribution and untested hardware remain outside
+this controlled private-preview release.
 
 The [current integration and certification report](../docs/validation/native-production-20260926.md)
 records the maintained Aimee ingress bridge, private Unix service, current-account
 binding, complete Gemma engineering workloads and dependency remediation.
 [Deployment instructions](service/DEPLOYMENT.md) keep all native delivery and
 preparation implementation here; Aimee contains only the authenticated bridge.
+
+## Building the enrolled launcher
+
+Build `distribution/launcher` with `cargo build --release --locked`, supplying
+`AIMEE_RELEASE_URL` and the Ed25519 `AIMEE_RELEASE_PUBLIC_KEY` at build time.
+For a private PKI, set `AIMEE_RELEASE_CA_PEM` to the public CA PEM contents.
+The private CA must include critical `basicConstraints=CA:TRUE` and
+`keyUsage=keyCertSign,cRLSign`; verify its leaf with `openssl verify -x509_strict`.
+Never embed the signing private key or a client identity. The normal build
+rejects lab manifests; `lab-release` is only for isolated validation.
+
+`connect` accepts `--ca-file` and `--client-identity` for the Aimee account.
+For a private address with a different certificate hostname, use
+`--connect-address IP:PORT`; the HTTPS endpoint hostname is still verified.
+The bearer is read from stdin and never forwarded to the runtime container.
+The release CA is scoped to the installer and its OCI pull, not the host trust
+store. Signed profiles bound whole-container memory as well as native-bank
+budgets; the tested profile uses 48 GiB and normal container security defaults.
