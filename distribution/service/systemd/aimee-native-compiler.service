@@ -1,0 +1,27 @@
+[Unit]
+Description=Private resident Aimee native-memory CPU compiler
+After=local-fs.target
+
+[Service]
+Type=simple
+User=aimee-compiler
+Group=aimee-compiler
+RuntimeDirectory=aimee-native-compiler
+RuntimeDirectoryMode=0700
+UMask=0077
+Environment=HF_HUB_OFFLINE=1
+Environment=TOKENIZERS_PARALLELISM=false
+ExecStart=/opt/aimee-memory-lab/venv/bin/python /opt/aimee-native-compiler/resident_compile.py --config /opt/aimee-native-compiler/resident.json --socket /run/aimee-native-compiler/compile.sock
+Restart=on-failure
+RestartSec=3
+MemoryMax=60G
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/aimee-compiler /run/aimee-native-compiler
+TimeoutStopSec=15
+KillMode=control-group
+
+[Install]
+WantedBy=multi-user.target

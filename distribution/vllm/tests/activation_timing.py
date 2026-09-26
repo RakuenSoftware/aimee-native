@@ -2,14 +2,12 @@
 
 Preparation and initial integrity admission are separate. Activation measurements
 include Python views, page faults where labeled, and completed H2D transfers.
-Cold samples use fresh processes and require zero resident file pages before
-activation. GPU context and unrelated allocation/transfer warmup precede timing.
 They are not isolated DMA, SSD controller latency, or attention/answer latency.
 """
 import argparse,ctypes,json,math,mmap,os,pathlib,statistics,time,subprocess,sys,tempfile
 import torch
 from aimee_vllm.store import PreparedStore
-p=argparse.ArgumentParser();p.add_argument('--catalog',required=True);p.add_argument('--publication',required=True);p.add_argument('--library',default='/opt/aimee/libaimee_native.so');p.add_argument('--output',required=True);p.add_argument('--repetitions',type=int,default=100);p.add_argument('--single-cold',action='store_true');p.add_argument('--cold-repetitions',type=int,default=20);a=p.parse_args()
+p=argparse.ArgumentParser();p.add_argument('--catalog',required=True);p.add_argument('--publication',required=True);p.add_argument('--library',default='/opt/aimee/libaimee_native.so');p.add_argument('--output',required=True);p.add_argument('--repetitions',type=int,default=100);p.add_argument('--single-cold',action='store_true');p.add_argument('--cold-repetitions',type=int,default=20);p.add_argument('--packed',action='store_true');a=p.parse_args()
 spec=json.loads(pathlib.Path(a.catalog).read_text())['publications'][a.publication]
 spec=dict(spec,disk_backed=True,byte_budget=512*1024**2)
 lib=ctypes.CDLL(a.library);device=torch.device('cuda:0');torch.cuda.set_device(device)
@@ -37,6 +35,10 @@ try:
     if a.single_cold:
         # Prime allocation/transfer paths with unrelated zeros. Reading the target
         # bank here can leave pages resident even after DONTNEED; do not do that.
+        if a.packed:
+            pinned=torch.empty(store.device_bytes(2)//2,dtype=torch.bfloat16,pin_memory=True)
+            pinned.zero_();dummy_packed=pinned.to(device,non_blocking=True)
+            torch.cuda.synchronize();del dummy_packed,pinned
         dummy=[]
         for segment in store.metadata['segments']:
             heads=segment['heads']//2 if segment['heads']>=2 else 1
@@ -58,7 +60,7 @@ try:
         with tempfile.TemporaryDirectory(prefix='native-cold-') as temp:
             for i in range(a.cold_repetitions):
                 target=pathlib.Path(temp)/f'{i}.json'
-                subprocess.run([sys.executable,__file__,'--catalog',a.catalog,'--publication',a.publication,'--library',a.library,'--output',str(target),'--single-cold'],check=True,stdout=subprocess.DEVNULL)
+                subprocess.run([sys.executable,__file__,'--catalog',a.catalog,'--publication',a.publication,'--library',a.library,'--output',str(target),'--single-cold']+(['--packed'] if a.packed else []),check=True,stdout=subprocess.DEVNULL)
                 trial=json.loads(target.read_text());assert trial['status']=='passed'
                 report['rows']['os_page_cache_cold']+=trial['rows']['os_page_cache_cold']
         store.activate(device,0,2);torch.cuda.synchronize();store.evict(device,0,2)
@@ -71,6 +73,17 @@ try:
     for _ in range(0 if a.single_cold else a.repetitions):
         started=time.perf_counter_ns();store.activate(device,0,2)
         report['rows']['already_device_resident'].append({'us':(time.perf_counter_ns()-started)/1000})
+    # Verify complete GPU bytes against the admitted source after measurement.
+    banks=store.activate(device,0,2);checked=0
+    for seg in store.metadata['segments']:
+        raw=(ctypes.c_ubyte*seg['bytes']).from_address(seg['pointer'])
+        expected=torch.frombuffer(raw,dtype=torch.bfloat16).reshape(seg['heads'],seg['positions'],seg['width'])
+        expected=expected.chunk(2,dim=0)[0] if seg['heads']>=2 else expected
+        actual=banks[(seg['layer'],seg['value'])].cpu()
+        if not torch.equal(actual.contiguous().view(torch.uint8),expected.contiguous().view(torch.uint8)):
+            raise RuntimeError('native transfer changed tensor bytes')
+        checked+=1
+    report['exact_segments_verified']=checked
     report['summary']={k:summary(v) for k,v in report['rows'].items() if v};report['status']='passed'
 except BaseException as e:
     report['status']='failed';report['error']=str(e);raise

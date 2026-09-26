@@ -25,27 +25,40 @@ class PreparedStore:
             raise RuntimeError("native publication admission failed")
         self.metadata = json.loads(self.lib.aimee_store_metadata(self.handle))
         self.device_banks = {}
+        self.transfer_plans = {}
+        for name, args, result in (
+            ('open', [ctypes.c_void_p, ctypes.c_size_t, ctypes.c_size_t], ctypes.c_void_p),
+            ('metadata', [ctypes.c_void_p], ctypes.c_char_p),
+            ('copy', [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_size_t], ctypes.c_bool),
+            ('close', [ctypes.c_void_p], None),
+        ):
+            fn = getattr(self.lib, 'aimee_store_pack_' + name)
+            fn.argtypes, fn.restype = args, result
 
     def activate(self, device, rank, world):
         key = (str(device), rank, world)
         if key in self.device_banks:
             return self.device_banks[key]
+        plan_key = (rank, world)
+        if plan_key not in self.transfer_plans:
+            handle = self.lib.aimee_store_pack_open(self.handle, rank, world)
+            if not handle:
+                raise RuntimeError('native head partition mismatch')
+            self.transfer_plans[plan_key] = (handle, json.loads(self.lib.aimee_store_pack_metadata(handle)))
+        handle, plan = self.transfer_plans[plan_key]
+        # One bounded pinned staging allocation and one DMA, instead of a
+        # synchronous allocation/copy per K/V segment. Rust owns byte layout.
+        host = torch.empty(plan['bytes'] // 2, dtype=torch.bfloat16, pin_memory=True)
+        if not self.lib.aimee_store_pack_copy(handle, host.data_ptr(), plan['bytes']):
+            raise RuntimeError('native rank copy failed')
+        packed = host.to(device=device, non_blocking=True)
+        # Complete this stream before releasing source pages or staging storage.
+        torch.cuda.current_stream(device).synchronize()
         banks = {}
-        for s in self.metadata['segments']:
-            buffer = (ctypes.c_ubyte * s['bytes']).from_address(s['pointer'])
-            host = torch.frombuffer(buffer, dtype=torch.bfloat16).reshape(s['heads'], s['positions'], s['width'])
-            if s['heads'] >= world:
-                if s['heads'] % world:
-                    raise RuntimeError('native head partition mismatch')
-                host = host.chunk(world, dim=0)[rank]
-            else:
-                if world % s['heads']:
-                    raise RuntimeError('native replicated-head partition mismatch')
-                head = rank // (world // s['heads'])
-                host = host[head:head+1]
-            # Activation only. Disk-backed pages can fault here, before attention;
-            # no model pass, tokenization, hashing or file reopen.
-            banks[(s['layer'], s['value'])] = host.to(device=device).contiguous()
+        for seg in plan['segments']:
+            shape = (seg['heads'], seg['positions'], seg['width'])
+            strides = (seg['positions'] * seg['width'], seg['width'], 1)
+            banks[(seg['layer'], seg['value'])] = packed.as_strided(shape, strides, seg['offset'] // 2)
         self.lib.aimee_store_release_pages(self.handle)
         self.device_banks[key] = banks
         return banks
@@ -79,6 +92,9 @@ class PreparedStore:
 
     def close(self):
         self.device_banks.clear()
+        for handle, _ in getattr(self, 'transfer_plans', {}).values():
+            self.lib.aimee_store_pack_close(handle)
+        self.transfer_plans = {}
         if self.handle:
             self.lib.aimee_store_close(self.handle)
             self.handle = None

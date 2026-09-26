@@ -27,6 +27,9 @@ It never forwards credentials through process arguments. A missing serving
 configuration fails explicitly. The controlled private preview uses a dedicated TLS origin, immutable registry
 digest and new signing authority. See the [live release record](../docs/validation/native-live-release-20260926.md)
 for the supported profile, installation commands and measured limits.
+The [latency follow-up](../docs/validation/native-latency-20260926.md) documents
+packed activation and resident private preparation, with exact-image results
+and the remaining cold-path performance limits.
 
 ## Implemented
 

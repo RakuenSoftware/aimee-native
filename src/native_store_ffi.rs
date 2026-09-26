@@ -1,9 +1,10 @@
 //! Torch-independent client ABI. Publication admission precedes serving.
-use crate::native_store::NativeStore;
+use crate::native_store::{NativeStore, RankPlan};
 use serde::Deserialize;
 use serde_json::json;
 use std::ffi::{CStr, CString, c_char, c_void};
 use std::path::Path;
+use std::sync::Arc;
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
 struct Admission {
@@ -15,7 +16,7 @@ struct Admission {
     disk_backed: bool,
 }
 struct Handle {
-    _store: NativeStore,
+    _store: Arc<NativeStore>,
     metadata: CString,
 }
 #[unsafe(no_mangle)]
@@ -39,7 +40,7 @@ pub unsafe extern "C" fn aimee_store_open(spec: *const c_char) -> *mut c_void {
         let segments:Vec<_>=store.segments().map(|s|json!({"layer":s.layer,"value":s.value,"heads":s.heads,"positions":s.positions,"width":s.width,"pointer":s.bytes.as_ptr() as usize,"bytes":s.bytes.len()})).collect();
         let metadata=CString::new(json!({"abi":1,"positions":store.tokens().len(),"bytes":store.bytes(),"segments":segments}).to_string())?;
         Ok(Handle {
-            _store: store,
+            _store: Arc::new(store),
             metadata,
         })
     });
@@ -174,5 +175,76 @@ pub unsafe extern "C" fn aimee_store_release_pages(handle: *const c_void) {
         unsafe {
             (&*handle.cast::<Handle>())._store.release_pages();
         }
+    }
+}
+
+struct PackHandle {
+    store: Arc<NativeStore>,
+    plan: RankPlan,
+    metadata: CString,
+}
+/// # Safety
+/// Store must be live for this call. The returned plan independently retains it.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn aimee_store_pack_open(
+    handle: *const c_void,
+    rank: usize,
+    world: usize,
+) -> *mut c_void {
+    if handle.is_null() {
+        return std::ptr::null_mut();
+    }
+    let result = std::panic::catch_unwind(|| -> anyhow::Result<PackHandle> {
+        let store = unsafe { &*handle.cast::<Handle>() }._store.clone();
+        let plan = store.rank_plan(rank, world)?;
+        let metadata =
+            CString::new(json!({"bytes":plan.bytes,"segments":plan.segments}).to_string())?;
+        Ok(PackHandle {
+            store,
+            plan,
+            metadata,
+        })
+    });
+    match result {
+        Ok(Ok(h)) => Box::into_raw(Box::new(h)).cast(),
+        _ => std::ptr::null_mut(),
+    }
+}
+/// # Safety
+/// Live pack handle; returned metadata is borrowed until close.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn aimee_store_pack_metadata(handle: *const c_void) -> *const c_char {
+    if handle.is_null() {
+        return std::ptr::null();
+    }
+    unsafe { (&*handle.cast::<PackHandle>()).metadata.as_ptr() }
+}
+/// # Safety
+/// Live pack handle and a writable, non-overlapping destination of `bytes` bytes.
+/// Caller owns DMA synchronization; no concurrent release/close of this plan.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn aimee_store_pack_copy(
+    handle: *const c_void,
+    destination: *mut u8,
+    bytes: usize,
+) -> bool {
+    if handle.is_null() || destination.is_null() || bytes > isize::MAX as usize {
+        return false;
+    }
+    let h = unsafe { &*handle.cast::<PackHandle>() };
+    if bytes != h.plan.bytes {
+        return false;
+    }
+    let destination = unsafe {
+        std::slice::from_raw_parts_mut(destination.cast::<std::mem::MaybeUninit<u8>>(), bytes)
+    };
+    h.store.pack_rank_uninit(&h.plan, destination).is_ok()
+}
+/// # Safety
+/// Null or exclusively owned live pack handle, closed exactly once.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn aimee_store_pack_close(handle: *mut c_void) {
+    if !handle.is_null() {
+        drop(unsafe { Box::from_raw(handle.cast::<PackHandle>()) });
     }
 }

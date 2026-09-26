@@ -141,3 +141,9 @@ See [the live evidence directory](artifacts/native-live-release-20260926/), its
 SHA-256 index, and [the exact-image certification](native-production-20260926.md).
 The live rollout does not revise or erase earlier failed experiments. No signing
 private key, account bearer, database credential or model weight is stored here.
+
+## Performance follow-up
+
+The subsequent [latency follow-up](native-latency-20260926.md) preserves this
+release as the baseline and records packed activation, resident preparation and
+the next signed release. The measurements above remain the original results.

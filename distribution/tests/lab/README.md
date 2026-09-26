@@ -65,3 +65,18 @@ The released image contains the compiled client, Rust consumer and GPU binaries;
 it does not contain these test tools, private compiler, publisher glue, authority
 fixtures or private signing keys. Stop the lab release origin/registry when tests
 finish. Do not promote a lab manifest to production gate evidence.
+
+
+## Private compiler latency comparison
+
+On the deployed compiler host, run `resident_preparation.py --output NEW_DIRECTORY`
+to compare the old one-shot compiler with the resident service. It uses complete
+synthetic working sets, changes order/content, alternates execution order and
+requires identical artifacts. Optional `--facts-json` supplies a JSON array of
+synthetic content arrays. Keep GPU startup and other CPU-heavy jobs stopped for
+isolated measurements. The script does not establish Aimee authorization.
+
+`preparation_threads.py --output NEW_DIRECTORY` performs the exploratory CPU
+thread sweep and checks that tensor bytes remain identical. Neither script
+reuses an evidence directory. The measured results and retained failed activation
+attempt are in [the latency report](../../../docs/validation/native-latency-20260926.md).

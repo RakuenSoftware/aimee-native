@@ -135,3 +135,27 @@ On the controlled preview host, `compose.override.yaml` points to the explicit
 preserves the bridge image and owned socket mount. The original image and
 `compose.native-rollback.json` remain available for deliberate rollback. Do not
 replace an existing deployment override without merging its settings.
+
+### Resident private preparation
+
+`resident_compile.py` keeps the CPU model/tokenizer loaded and creates a new KV
+cache for every job. It is a private compiler-host service, never a client
+component. Install `aimee-native-compiler.service` and an operator-owned
+`resident.json` with `model`, `model_revision`, `library`, `state`,
+`max_memory_tokens` and `threads`. The documented host uses 12 CPU threads and a
+60 GiB service memory ceiling. It trades persistent model residency for avoiding
+per-request Python/model startup. Model-specific preparation still takes seconds.
+
+After the daemon reports `ready`, add `resident_socket` to the existing forced-SSH
+worker configuration. Preserve the old worker configuration for rollback. The
+worker still checks the exact model identity and streams the same bounded
+artifacts; it does not accept client paths or commands. The Unix socket is 0600
+and checks the peer UID. Jobs are serialized, outputs are daemon-owned temporary
+files, and failures do not become prepared-cache hits. Remove `resident_socket`
+to return to the one-shot compiler. A service restart reloads the model; it does
+not grant continued authority to old publications.
+
+The Rust preparation cache, authorization revalidation, ordered record keys and
+complete-working-set requirements are unchanged. Separate preparation timing
+from storage activation and generation. Do not run CPU preparation benchmarks
+concurrently with model startup and describe the result as isolated latency.

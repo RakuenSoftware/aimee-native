@@ -3,7 +3,7 @@
 Use a restricted SSH key and pinned host key. Neither role is a customer runtime.
 The frontend accepts only fixed artifact names; Rust admits their content later.
 """
-import argparse,fcntl,json,os,pathlib,re,signal,stat,struct,subprocess,sys,tempfile
+import argparse,fcntl,json,os,pathlib,re,signal,socket,stat,struct,subprocess,sys,tempfile
 MAGIC=b'AMCP1';MAX_REQUEST=8*1024**2;MAX_INDEX=16*1024**2;MAX_PAYLOAD=1024**3
 
 def read_exact(stream,count):
@@ -55,12 +55,38 @@ def frontend(config,output,identity,key):
             child.stdout.close()
             if child.poll() is None:child.kill();child.wait()
 
-def worker(config):
-    raw=sys.stdin.buffer.read(MAX_REQUEST+1)
+def validate_wire(raw, model_revision):
     if len(raw)>MAX_REQUEST:raise ValueError('compiler request too large')
     wire=json.loads(raw)
-    if set(wire)!={'identity','key','request'} or wire['identity']!=config['model_revision'] or not re.fullmatch('[a-f0-9]{64}',wire['key']):raise ValueError('compiler identity rejected')
+    if set(wire)!={'identity','key','request'} or wire['identity']!=model_revision or not re.fullmatch('[a-f0-9]{64}',wire['key']):raise ValueError('compiler identity rejected')
     if wire['request']['identity']['model_revision']!=wire['identity']:raise ValueError('compiler model mismatch')
+    return wire
+
+
+def resident_worker(config, raw):
+    # The daemon owns model lifetime and temporary output. No caller paths or
+    # shell commands cross this socket; disconnected responses are discarded.
+    with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as client:
+        client.settimeout(540)
+        client.connect(config['resident_socket'])
+        client.sendall(raw)
+        client.shutdown(socket.SHUT_WR)
+        with client.makefile('rb') as response:
+            if read_exact(response,5)!=MAGIC:raise ValueError('invalid resident compiler response')
+            sizes=struct.unpack('!QQ',read_exact(response,16))
+            if not 0<sizes[0]<=MAX_INDEX or not 0<sizes[1]<=MAX_PAYLOAD:raise ValueError('resident compiler artifact exceeds limit')
+            sys.stdout.buffer.write(MAGIC+struct.pack('!QQ',*sizes))
+            for size in sizes:transfer(response,sys.stdout.buffer,size)
+            if response.read(1):raise ValueError('extra resident compiler response')
+            sys.stdout.buffer.flush()
+
+
+def worker(config):
+    raw=sys.stdin.buffer.read(MAX_REQUEST+1)
+    wire=validate_wire(raw,config['model_revision'])
+    if config.get('resident_socket'):
+        resident_worker(config,raw)
+        return
     state=pathlib.Path(config['state']);state.mkdir(mode=0o700,parents=True,exist_ok=True)
     with (state/'compiler.lock').open('a') as lock:
         fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)

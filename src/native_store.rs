@@ -9,6 +9,20 @@ use std::{
     path::Path,
 };
 
+fn native_readers() -> Result<&'static rayon::ThreadPool> {
+    static READERS: std::sync::OnceLock<Option<rayon::ThreadPool>> = std::sync::OnceLock::new();
+    READERS
+        .get_or_init(|| {
+            rayon::ThreadPoolBuilder::new()
+                .num_threads(4)
+                .thread_name(|i| format!("native-read-{i}"))
+                .build()
+                .ok()
+        })
+        .as_ref()
+        .context("native I/O pool unavailable")
+}
+
 pub struct SegmentView<'a> {
     pub layer: usize,
     pub value: bool,
@@ -58,6 +72,20 @@ impl Drop for Payload {
             }
         }
     }
+}
+#[derive(serde::Serialize)]
+pub struct PackedSegment {
+    pub layer: usize,
+    pub value: bool,
+    pub heads: usize,
+    pub positions: usize,
+    pub width: usize,
+    pub offset: usize,
+}
+pub struct RankPlan {
+    pub segments: Vec<PackedSegment>,
+    pub bytes: usize,
+    ranges: Vec<Range<usize>>,
 }
 pub struct NativeStore {
     data: Payload,
@@ -170,7 +198,11 @@ impl NativeStore {
         }
         let file = File::open(root.join("compact.pack"))?;
         let data = if disk_backed {
-            ensure!(total <= isize::MAX as usize, "native mapping exceeds slice limit");
+            native_readers()?; // Initialize bounded I/O resources during admission.
+            ensure!(
+                total <= isize::MAX as usize,
+                "native mapping exceeds slice limit"
+            );
             ensure!(
                 file.metadata()?.len() >= 4096 + total as u64,
                 "native payload truncated"
@@ -220,6 +252,127 @@ impl NativeStore {
             tokens: record.tokens,
         })
     }
+    /// Build TP geometry once, outside activation/attention. Replicated KV heads
+    /// select the same source head for each rank in their replication group.
+    pub fn rank_plan(&self, rank: usize, world: usize) -> Result<RankPlan> {
+        ensure!(world > 0 && rank < world, "invalid native rank");
+        let mut plan = RankPlan {
+            segments: Vec::new(),
+            ranges: Vec::new(),
+            bytes: 0,
+        };
+        for p in &self.plans {
+            let heads = p.spec.heads;
+            let (start_head, local_heads) = if heads >= world {
+                ensure!(heads % world == 0, "native head partition mismatch");
+                (rank * (heads / world), heads / world)
+            } else {
+                ensure!(
+                    world % heads == 0,
+                    "native replicated-head partition mismatch"
+                );
+                (rank / (world / heads), 1)
+            };
+            let head_bytes = p.positions * p.spec.width * 2;
+            let start = p.range.start + start_head * head_bytes;
+            let size = local_heads * head_bytes;
+            plan.segments.push(PackedSegment {
+                layer: p.spec.layer,
+                value: p.spec.value,
+                heads: local_heads,
+                positions: p.positions,
+                width: p.spec.width,
+                offset: plan.bytes,
+            });
+            plan.ranges.push(start..start + size);
+            plan.bytes = plan
+                .bytes
+                .checked_add(size)
+                .context("packed native extent overflow")?;
+        }
+        Ok(plan)
+    }
+    /// Copy admitted rank slices into caller-owned pinned memory. No reopening,
+    /// stat, hashing, model execution, or content verification on this path.
+    pub fn pack_rank(&self, plan: &RankPlan, destination: &mut [u8]) -> Result<()> {
+        // Initialized byte buffers are also valid MaybeUninit byte buffers.
+        let destination = unsafe {
+            std::slice::from_raw_parts_mut(
+                destination.as_mut_ptr().cast::<std::mem::MaybeUninit<u8>>(),
+                destination.len(),
+            )
+        };
+        self.pack_rank_uninit(plan, destination)
+    }
+    /// Pinned tensors can be uninitialized. Write every byte before publishing
+    /// success, without manufacturing references to uninitialized u8 values.
+    pub fn pack_rank_uninit(
+        &self,
+        plan: &RankPlan,
+        destination: &mut [std::mem::MaybeUninit<u8>],
+    ) -> Result<()> {
+        ensure!(
+            destination.len() == plan.bytes,
+            "native destination extent mismatch"
+        );
+        if let Payload::Mapped { _file: file, .. } = &self.data {
+            // Read exactly this rank's admitted ranges into pinned destination
+            // memory. A small reusable I/O pool batches independent extents and
+            // avoids serial mmap faults. No reopen, metadata or integrity work.
+            use rayon::prelude::*;
+            let pool = native_readers()?;
+            let mut remainder = destination;
+            let mut reads = Vec::with_capacity(plan.ranges.len());
+            for range in &plan.ranges {
+                let (chunk, tail) = remainder.split_at_mut(range.len());
+                reads.push((range.start, chunk));
+                remainder = tail;
+            }
+            pool.install(|| {
+                reads.into_par_iter().try_for_each(|(offset, target)| {
+                    let mut written = 0;
+                    while written < target.len() {
+                        let n = unsafe {
+                            libc::pread(
+                                file.as_raw_fd(),
+                                target.as_mut_ptr().add(written).cast(),
+                                target.len() - written,
+                                (4096 + offset + written) as libc::off_t,
+                            )
+                        };
+                        if n < 0 {
+                            let error = std::io::Error::last_os_error();
+                            if error.kind() == std::io::ErrorKind::Interrupted {
+                                continue;
+                            }
+                            return Err(error);
+                        }
+                        if n == 0 {
+                            return Err(std::io::Error::from(std::io::ErrorKind::UnexpectedEof));
+                        }
+                        written += n as usize;
+                    }
+                    Ok(())
+                })
+            })?;
+        } else {
+            let source = self.data.bytes();
+            let mut offset = 0;
+            for range in &plan.ranges {
+                let bytes = &source[range.clone()];
+                let target = &mut destination[offset..offset + bytes.len()];
+                unsafe {
+                    std::ptr::copy_nonoverlapping(
+                        bytes.as_ptr(),
+                        target.as_mut_ptr().cast(),
+                        bytes.len(),
+                    );
+                }
+                offset += bytes.len();
+            }
+        }
+        Ok(())
+    }
     pub fn bytes(&self) -> usize {
         self.data.bytes().len()
     }
@@ -244,6 +397,51 @@ impl NativeStore {
 mod tests {
     use super::*;
     use serde_json::{Value, json};
+    #[test]
+    fn packed_rank_matches_all_partitioned_and_replicated_heads() {
+        let root = tempfile::tempdir().unwrap();
+        fixture(root.path());
+        for disk in [false, true] {
+            let store =
+                NativeStore::admit_mode(root.path(), "revision", "selection", 1024, disk).unwrap();
+            for world in [1, 2, 4] {
+                for rank in 0..world {
+                    let plan = store.rank_plan(rank, world).unwrap();
+                    let mut packed = vec![0; plan.bytes];
+                    store.pack_rank(&plan, &mut packed).unwrap();
+                    let mut expected = Vec::new();
+                    for seg in store.segments() {
+                        let head_bytes = seg.positions * seg.width * 2;
+                        let (head, count) = if seg.heads >= world {
+                            (rank * (seg.heads / world), seg.heads / world)
+                        } else {
+                            (rank / (world / seg.heads), 1)
+                        };
+                        expected.extend_from_slice(
+                            &seg.bytes[head * head_bytes..(head + count) * head_bytes],
+                        );
+                    }
+                    assert_eq!(packed, expected);
+                    let mut uninitialized = vec![std::mem::MaybeUninit::<u8>::uninit(); plan.bytes];
+                    store.pack_rank_uninit(&plan, &mut uninitialized).unwrap();
+                    let initialized: Vec<u8> = uninitialized
+                        .into_iter()
+                        .map(|b| unsafe { b.assume_init() })
+                        .collect();
+                    assert_eq!(initialized, expected);
+                    assert_eq!(plan.segments.len(), 4);
+                    assert!(
+                        store
+                            .pack_rank(&plan, &mut packed[..plan.bytes - 1])
+                            .is_err()
+                    );
+                }
+            }
+            assert!(store.rank_plan(0, 0).is_err());
+            assert!(store.rank_plan(2, 2).is_err());
+            assert!(store.rank_plan(0, 3).is_err());
+        }
+    }
     fn fixture(root: &Path) -> Value {
         // Global layer has three positions; local layer has two, different width.
         let data: Vec<u8> = (0..56).collect();
@@ -296,6 +494,10 @@ mod tests {
                     .collect::<Vec<_>>(),
                 (0..56).collect::<Vec<u8>>()
             );
+            let plan = store.rank_plan(0, 1).unwrap();
+            let mut packed = vec![0; plan.bytes];
+            store.pack_rank(&plan, &mut packed).unwrap();
+            assert_eq!(packed, (0..56).collect::<Vec<u8>>());
             store.release_pages();
         }
     }
