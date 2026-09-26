@@ -46,6 +46,7 @@ def attempt(task,arm,publication):
  if (out/'result.json').exists():return json.loads((out/'result.json').read_text())
  row={'instance_id':iid,'arm':arm,'publication':publication,'status':'running','started':time.time()};env=None;agent=None
  try:
+  row['image_inspect']=json.loads(subprocess.check_output(['docker','image','inspect',image(task)]))[0]['Id']
   env=DockerEnvironment(image=image(task),cwd='/testbed',timeout=45,pull_timeout=600,run_args=['--rm','--network','none','--memory','3g','--cpus','2'],interpreter=['bash','-c'],env={'BASH_ENV':'/root/.bashrc','PAGER':'cat'})
   # Benchmark images may include setup commits; explicitly restore the dataset base.
   reset=env.execute({'command':'git reset --hard '+task['base_commit']})
@@ -100,12 +101,15 @@ if __name__=='__main__':
   for start in range(0,len(tasks),4):
    group=tasks[start:start+4];lessons={};publications={}
    available=[]
-   for task in group:
-    pulled=False
+   def ensure_image(task):
+    if subprocess.run(['docker','image','inspect',image(task)],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL).returncode==0:return True
     for retry in range(3):
-     try:
-      subprocess.run(['docker','pull',image(task)],check=True,timeout=600);pulled=True;break
+     try:subprocess.run(['docker','pull',image(task)],check=True,timeout=600);return True
      except (subprocess.CalledProcessError,subprocess.TimeoutExpired):time.sleep(5)
+    return False
+   with concurrent.futures.ThreadPoolExecutor(max_workers=4) as prefetch:
+    ready=list(prefetch.map(ensure_image,group))
+   for task,pulled in zip(group,ready):
     if pulled:available.append(task);continue
     for skipped_arm in ['control']+[f'learn-{i}' for i in range(1,ROUNDS+1)]:
      out=ROOT/'results'/skipped_arm/task['instance_id'];out.mkdir(parents=True,exist_ok=True)

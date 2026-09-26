@@ -23,8 +23,8 @@ Obtain the enrolled launcher, pinned release trust and approved account identity
 from the operator. The server-side compiler is not installed on the client.
 
 ```
-aimee-native connect https://YOUR-AIMEE-ENDPOINT
 aimee-native install gemma4-12b-q8-native
+aimee-native connect https://YOUR-AIMEE-ENDPOINT
 aimee-native run
 ```
 

@@ -63,3 +63,9 @@ a setup commit. The runner explicitly resets tracked files to dataset base_commi
 and verifies HEAD, while preserving installed environment/build files. The first
 checkout failure and incomplete concurrent attempts were archived as infrastructure
 preflight evidence after draining GPU requests; no learned records existed yet.
+
+Images already present are reused and their immutable image IDs are recorded in
+each result. Missing images are fetched four at a time before a task group starts,
+outside the per-attempt budget. Official harness documentation:
+https://www.swebench.com/SWE-bench/guides/evaluation/ and
+https://mini-swe-agent.com/latest/reference/run/swebench/.
