@@ -7,6 +7,7 @@ from aimee_vllm.cache import DeviceCache
 class Bank:
     def __init__(self, uid, size=10): self.uid=uid;self.size=size;self.loaded=False;self.loads=0
     def device_bytes(self,world): return self.size
+    def reservation_bytes(self,world,rank=0): return self.size
     def activate(self,*args): self.loaded=True;self.loads+=1
     def evict(self,*args): self.loaded=False
 
@@ -15,6 +16,11 @@ class CacheTests(unittest.TestCase):
     def cache(self, budget=20):
         c=DeviceCache(ctypes.CDLL(os.environ['AIMEE_STORE_LIBRARY']),budget,'cpu',0,1)
         self.addCleanup(c.close);return c
+    def test_temporary_decode_storage_counts_toward_budget(self):
+        c=self.cache(budget=15);a=Bank(1,10)
+        a.reservation_bytes=lambda world,rank:18
+        with self.assertRaises(RuntimeError):c.ensure([a],lambda:self.fail('unexpected eviction'))
+        self.assertFalse(a.loaded)
     def test_eviction_clears_pointer_owners_before_bank_release_and_reload(self):
         c=self.cache();a,b,d=Bank(1),Bank(2),Bank(3);events=[]
         c.ensure([a,b],lambda:None)

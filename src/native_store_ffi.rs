@@ -1,4 +1,4 @@
-//! Torch-independent client ABI. Publication admission precedes serving.
+//! Store ABI with optional runtime-only ATen activation. Admission precedes serving.
 use crate::native_store::{NativeStore, RankPlan};
 use serde::Deserialize;
 use serde_json::json;
@@ -181,6 +181,8 @@ pub unsafe extern "C" fn aimee_store_release_pages(handle: *const c_void) {
 struct PackHandle {
     store: Arc<NativeStore>,
     plan: RankPlan,
+    #[cfg(feature = "vllm-runtime")]
+    transport: Option<crate::native_transport::Transport>,
     metadata: CString,
 }
 /// # Safety
@@ -202,6 +204,8 @@ pub unsafe extern "C" fn aimee_store_pack_open(
         Ok(PackHandle {
             store,
             plan,
+            #[cfg(feature = "vllm-runtime")]
+            transport: None,
             metadata,
         })
     });
@@ -247,4 +251,68 @@ pub unsafe extern "C" fn aimee_store_pack_close(handle: *mut c_void) {
     if !handle.is_null() {
         drop(unsafe { Box::from_raw(handle.cast::<PackHandle>()) });
     }
+}
+
+/// # Safety
+/// Live admitted plan; no concurrent mutation/close. Own and free the result.
+#[cfg(feature = "vllm-runtime")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn aimee_store_pack_activate(handle: *const c_void, device: i32, profile: bool) -> *mut c_void {
+    if handle.is_null() { return std::ptr::null_mut(); }
+    match std::panic::catch_unwind(|| {
+        let h = unsafe { &*handle.cast::<PackHandle>() };
+        crate::native_runtime::Activation::run(&h.store, &h.plan, h.transport.as_ref(), device, profile)
+    }) {
+        Ok(Ok(a)) => Box::into_raw(Box::new(a)).cast(),
+        _ => std::ptr::null_mut(),
+    }
+}
+/// # Safety
+/// Live activation and held CPython GIL. Result is a new Python reference.
+#[cfg(feature = "vllm-runtime")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn aimee_store_activation_python(handle: *const c_void) -> *mut c_void {
+    if handle.is_null() { return std::ptr::null_mut(); }
+    unsafe { (&*handle.cast::<crate::native_runtime::Activation>()).python() }
+}
+/// # Safety
+/// Live activation. Returned string is borrowed until activation is freed.
+#[cfg(feature = "vllm-runtime")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn aimee_store_activation_profile(handle: *const c_void) -> *const c_char {
+    if handle.is_null() { return std::ptr::null(); }
+    unsafe { (&*handle.cast::<crate::native_runtime::Activation>()).profile.as_ptr() }
+}
+/// # Safety
+/// Null or exclusively owned activation, freed exactly once.
+#[cfg(feature = "vllm-runtime")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn aimee_store_activation_free(handle: *mut c_void) {
+    if !handle.is_null() { drop(unsafe { Box::from_raw(handle.cast::<crate::native_runtime::Activation>()) }); }
+}
+
+/// Admission-only optional lossless transport authoring. No runtime compilation.
+/// Safety: live exclusively held plan, called before activation; no concurrent users.
+#[cfg(feature = "vllm-runtime")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn aimee_store_pack_prepare_transport(handle: *mut c_void, device_budget: usize) -> bool {
+    if handle.is_null() { return false; }
+    std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+        let h = unsafe { &mut *handle.cast::<PackHandle>() };
+        h.transport = crate::native_transport::Transport::prepare(&h.store, &h.plan, device_budget).ok().flatten();
+        let (transfer_bytes, reservation_bytes, source) = match &h.transport {
+            Some(t) => (t.transfer_bytes, h.plan.bytes+t.transfer_bytes, t.source()),
+            None => (h.plan.bytes, h.plan.bytes, serde_json::Value::Null),
+        };
+        h.metadata = CString::new(json!({"bytes":h.plan.bytes,"segments":h.plan.segments,
+            "transfer_bytes":transfer_bytes,"reservation_bytes":reservation_bytes,
+            "transport_source":source,"lossless_transport":h.transport.is_some()}).to_string()).unwrap();
+        true
+    })).unwrap_or(false)
+}
+
+#[cfg(feature = "vllm-runtime")]
+#[unsafe(no_mangle)]
+pub extern "C" fn aimee_store_runtime_warmup(device: i32) -> bool {
+    matches!(std::panic::catch_unwind(|| crate::native_runtime::warmup(device)), Ok(Ok(())))
 }

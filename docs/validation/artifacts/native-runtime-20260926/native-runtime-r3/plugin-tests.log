@@ -1,0 +1,20 @@
+..................E........
+======================================================================
+ERROR: test_gpu_attention (unittest.loader._FailedTest.test_gpu_attention)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_gpu_attention
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/unittest/loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "/opt/aimee-memory-lab/vllm-native-build/distribution/vllm/tests/test_gpu_attention.py", line 7, in <module>
+    from aimee_vllm.kernel import native_attention
+ModuleNotFoundError: No module named 'aimee_vllm.kernel'
+
+
+----------------------------------------------------------------------
+Ran 27 tests in 0.024s
+
+FAILED (errors=1)

@@ -33,11 +33,16 @@ class State:
         lib = ctypes.CDLL(config['library'])
         self.catalog_digest = hashlib.sha256(raw_catalog).hexdigest()
         self.lib = lib
+        lib.aimee_store_runtime_warmup.argtypes = [ctypes.c_int]
+        lib.aimee_store_runtime_warmup.restype = ctypes.c_bool
+        if not lib.aimee_store_runtime_warmup(device.index):
+            raise RuntimeError('native runtime warmup failed')
         self.cache = DeviceCache(lib, config.get("device_memory_budget", 256 * 1024**2), device, rank, world)
         budget = config['host_memory_budget']
         try:
             for name, spec in catalog['publications'].items():
-                store = PreparedStore(lib, {**spec, 'byte_budget': budget,'disk_backed':config.get('disk_backed',False)})
+                store = PreparedStore(lib, {**spec, 'byte_budget': budget,'disk_backed':config.get('disk_backed',False),'lossless_transport':config.get('lossless_transport',True),'device_budget':config.get('device_memory_budget',256*1024**2)})
+                store.prepare_plan(rank, world)
                 self.stores[name] = store
                 if not config.get('disk_backed',False):budget -= store.metadata['bytes']
                 if budget < 0:
@@ -136,7 +141,8 @@ class State:
                     admitted[name] = previous
                     continue
                 if remaining <= 0: raise RuntimeError('native publication replacement exceeds pinned memory budget')
-                store = PreparedStore(self.lib,{**spec,'byte_budget':remaining,'disk_backed':disk_backed})
+                store = PreparedStore(self.lib,{**spec,'byte_budget':remaining,'disk_backed':disk_backed,'lossless_transport':config.get('lossless_transport',True),'device_budget':config.get('device_memory_budget',256*1024**2)})
+                store.prepare_plan(self.rank, self.world)
                 created.append(store);admitted[name]=store
                 if not disk_backed:remaining -= store.metadata['bytes']
             self.tables.clear()

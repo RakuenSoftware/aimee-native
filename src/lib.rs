@@ -39,3 +39,15 @@ pub mod native_store;
 pub mod native_store_ffi;
 
 pub mod device_cache;
+
+#[cfg(feature = "vllm-runtime")]
+mod native_runtime;
+
+#[cfg(feature = "preparation-service")]
+mod preparation_reuse;
+
+#[cfg(any(feature = "preparation-service", feature = "vllm-runtime"))]
+pub mod native_transport_codec;
+
+#[cfg(any(feature = "preparation-service", feature = "vllm-runtime"))]
+mod native_transport;

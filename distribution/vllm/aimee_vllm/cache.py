@@ -22,7 +22,8 @@ class DeviceCache:
         if self.poisoned:
             raise RuntimeError('native device activation failed; restart worker')
         required = {s.uid: s for s in stores}
-        request = [{'id': uid, 'bytes': s.device_bytes(self.world)} for uid, s in required.items()]
+        # Reserve dense output plus transient compressed GPU input where enabled.
+        request = [{'id': uid, 'bytes': s.reservation_bytes(self.world, self.rank)} for uid, s in required.items()]
         response = self.lib.aimee_cache_plan(self.handle, json.dumps(request).encode())
         if response is None:
             raise RuntimeError('pinned native memory exceeds device budget or has invalid geometry')

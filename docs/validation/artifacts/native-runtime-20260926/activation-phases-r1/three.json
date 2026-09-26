@@ -1,0 +1,625 @@
+{
+  "scope": "Instrumented packed activation stage timings, with verified OS page residency.\n\nPreparation and initial integrity admission are separate. Activation measurements\ninclude Python views, page faults where labeled, and completed H2D transfers.\nThey are not isolated DMA, SSD controller latency, or attention/answer latency.\n",
+  "source_bytes": 18239700,
+  "rank": 0,
+  "world": 2,
+  "device_bytes": 9551872,
+  "initial_admission_us": 11176.07,
+  "rows": {
+    "os_page_cache_cold": [
+      {
+        "us": 5533.7,
+        "phases_us": {
+          "plan": 233.714,
+          "pinned_allocation": 17.63,
+          "read_into_pinned": 4048.618,
+          "h2d_submit": 37.701,
+          "h2d_wait": 851.432,
+          "views": 281.394,
+          "release": 4.6
+        },
+        "resident_pages_before": 0,
+        "conditioning_attempts": 1
+      },
+      {
+        "us": 5874.844,
+        "phases_us": {
+          "plan": 243.724,
+          "pinned_allocation": 16.99,
+          "read_into_pinned": 4365.652,
+          "h2d_submit": 32.381,
+          "h2d_wait": 853.932,
+          "views": 301.684,
+          "release": 4.42
+        },
+        "resident_pages_before": 0,
+        "conditioning_attempts": 1
+      },
+      {
+        "us": 5694.972,
+        "phases_us": {
+          "plan": 225.734,
+          "pinned_allocation": 16.46,
+          "read_into_pinned": 4204.67,
+          "h2d_submit": 47.441,
+          "h2d_wait": 850.712,
+          "views": 278.354,
+          "release": 13.31
+        },
+        "resident_pages_before": 0,
+        "conditioning_attempts": 1
+      },
+      {
+        "us": 5827.163,
+        "phases_us": {
+          "plan": 232.553,
+          "pinned_allocation": 16.481,
+          "read_into_pinned": 4288.901,
+          "h2d_submit": 71.661,
+          "h2d_wait": 849.362,
+          "views": 298.984,
+          "release": 8.171
+        },
+        "resident_pages_before": 0,
+        "conditioning_attempts": 1
+      },
+      {
+        "us": 5717.022,
+        "phases_us": {
+          "plan": 231.243,
+          "pinned_allocation": 16.471,
+          "read_into_pinned": 4215.91,
+          "h2d_submit": 31.191,
+          "h2d_wait": 853.742,
+          "views": 305.494,
+          "release": 4.69
+        },
+        "resident_pages_before": 0,
+        "conditioning_attempts": 1
+      },
+      {
+        "us": 5828.164,
+        "phases_us": {
+          "plan": 225.874,
+          "pinned_allocation": 16.56,
+          "read_into_pinned": 4377.193,
+          "h2d_submit": 30.19,
+          "h2d_wait": 851.352,
+          "views": 265.464,
+          "release": 4.56
+        },
+        "resident_pages_before": 0,
+        "conditioning_attempts": 1
+      }
+    ],
+    "os_page_cache_warm": [
+      {
+        "us": 2200.712,
+        "phases_us": {
+          "plan": 2.17,
+          "pinned_allocation": 26.121,
+          "read_into_pinned": 999.184,
+          "h2d_submit": 61.601,
+          "h2d_wait": 872.532,
+          "views": 182.483,
+          "release": 5.57
+        },
+        "resident_pages_before": 4454
+      },
+      {
+        "us": 2030.39,
+        "phases_us": {
+          "plan": 0.76,
+          "pinned_allocation": 9.161,
+          "read_into_pinned": 921.393,
+          "h2d_submit": 26.93,
+          "h2d_wait": 834.682,
+          "views": 191.483,
+          "release": 4.48
+        },
+        "resident_pages_before": 4454
+      },
+      {
+        "us": 2029.83,
+        "phases_us": {
+          "plan": 0.48,
+          "pinned_allocation": 8.221,
+          "read_into_pinned": 932.963,
+          "h2d_submit": 26.73,
+          "h2d_wait": 837.352,
+          "views": 179.083,
+          "release": 4.06
+        },
+        "resident_pages_before": 4454
+      },
+      {
+        "us": 2094.58,
+        "phases_us": {
+          "plan": 0.55,
+          "pinned_allocation": 8.09,
+          "read_into_pinned": 1003.384,
+          "h2d_submit": 25.141,
+          "h2d_wait": 834.852,
+          "views": 176.472,
+          "release": 4.09
+        },
+        "resident_pages_before": 4454
+      },
+      {
+        "us": 1872.867,
+        "phases_us": {
+          "plan": 0.54,
+          "pinned_allocation": 8.15,
+          "read_into_pinned": 777.622,
+          "h2d_submit": 25.38,
+          "h2d_wait": 837.322,
+          "views": 177.503,
+          "release": 4.19
+        },
+        "resident_pages_before": 4454
+      },
+      {
+        "us": 2145.631,
+        "phases_us": {
+          "plan": 0.5,
+          "pinned_allocation": 8.67,
+          "read_into_pinned": 1045.575,
+          "h2d_submit": 28.49,
+          "h2d_wait": 836.742,
+          "views": 178.933,
+          "release": 4.78
+        },
+        "resident_pages_before": 4454
+      },
+      {
+        "us": 2107.091,
+        "phases_us": {
+          "plan": 0.64,
+          "pinned_allocation": 13.23,
+          "read_into_pinned": 969.214,
+          "h2d_submit": 45.68,
+          "h2d_wait": 837.862,
+          "views": 187.723,
+          "release": 6.09
+        },
+        "resident_pages_before": 4454
+      },
+      {
+        "us": 2156.471,
+        "phases_us": {
+          "plan": 1.01,
+          "pinned_allocation": 28.601,
+          "read_into_pinned": 953.183,
+          "h2d_submit": 81.952,
+          "h2d_wait": 836.222,
+          "views": 195.583,
+          "release": 8.41
+        },
+        "resident_pages_before": 4454
+      },
+      {
+        "us": 1976.338,
+        "phases_us": {
+          "plan": 0.48,
+          "pinned_allocation": 11.51,
+          "read_into_pinned": 873.623,
+          "h2d_submit": 27.67,
+          "h2d_wait": 838.582,
+          "views": 176.653,
+          "release": 4.28
+        },
+        "resident_pages_before": 4454
+      },
+      {
+        "us": 2266.042,
+        "phases_us": {
+          "plan": 0.49,
+          "pinned_allocation": 9.29,
+          "read_into_pinned": 997.974,
+          "h2d_submit": 129.362,
+          "h2d_wait": 834.762,
+          "views": 226.283,
+          "release": 9.92
+        },
+        "resident_pages_before": 4454
+      },
+      {
+        "us": 2003.239,
+        "phases_us": {
+          "plan": 1.04,
+          "pinned_allocation": 19.46,
+          "read_into_pinned": 890.433,
+          "h2d_submit": 23.82,
+          "h2d_wait": 835.982,
+          "views": 177.653,
+          "release": 3.38
+        },
+        "resident_pages_before": 4454
+      },
+      {
+        "us": 1811.197,
+        "phases_us": {
+          "plan": 0.43,
+          "pinned_allocation": 7.621,
+          "read_into_pinned": 725.85,
+          "h2d_submit": 22.35,
+          "h2d_wait": 837.092,
+          "views": 173.523,
+          "release": 3.08
+        },
+        "resident_pages_before": 4454
+      },
+      {
+        "us": 2025.529,
+        "phases_us": {
+          "plan": 0.64,
+          "pinned_allocation": 10.601,
+          "read_into_pinned": 867.602,
+          "h2d_submit": 27.58,
+          "h2d_wait": 839.582,
+          "views": 226.414,
+          "release": 5.74
+        },
+        "resident_pages_before": 4454
+      },
+      {
+        "us": 2096.05,
+        "phases_us": {
+          "plan": 0.79,
+          "pinned_allocation": 10.26,
+          "read_into_pinned": 984.374,
+          "h2d_submit": 36.941,
+          "h2d_wait": 835.092,
+          "views": 181.002,
+          "release": 4.05
+        },
+        "resident_pages_before": 4454
+      },
+      {
+        "us": 2181.201,
+        "phases_us": {
+          "plan": 0.49,
+          "pinned_allocation": 9.51,
+          "read_into_pinned": 1056.905,
+          "h2d_submit": 28.001,
+          "h2d_wait": 836.191,
+          "views": 201.893,
+          "release": 4.61
+        },
+        "resident_pages_before": 4454
+      },
+      {
+        "us": 2023.509,
+        "phases_us": {
+          "plan": 0.6,
+          "pinned_allocation": 10.65,
+          "read_into_pinned": 917.653,
+          "h2d_submit": 29.641,
+          "h2d_wait": 836.512,
+          "views": 179.422,
+          "release": 4.64
+        },
+        "resident_pages_before": 4454
+      },
+      {
+        "us": 2010.018,
+        "phases_us": {
+          "plan": 0.68,
+          "pinned_allocation": 10.74,
+          "read_into_pinned": 890.583,
+          "h2d_submit": 36.86,
+          "h2d_wait": 837.262,
+          "views": 185.513,
+          "release": 4.31
+        },
+        "resident_pages_before": 4454
+      },
+      {
+        "us": 1937.958,
+        "phases_us": {
+          "plan": 0.56,
+          "pinned_allocation": 10.04,
+          "read_into_pinned": 837.412,
+          "h2d_submit": 29.871,
+          "h2d_wait": 835.362,
+          "views": 177.102,
+          "release": 3.96
+        },
+        "resident_pages_before": 4454
+      },
+      {
+        "us": 1797.615,
+        "phases_us": {
+          "plan": 0.51,
+          "pinned_allocation": 8.63,
+          "read_into_pinned": 703.72,
+          "h2d_submit": 26.18,
+          "h2d_wait": 836.622,
+          "views": 176.183,
+          "release": 4.08
+        },
+        "resident_pages_before": 4454
+      },
+      {
+        "us": 1764.485,
+        "phases_us": {
+          "plan": 0.63,
+          "pinned_allocation": 10.04,
+          "read_into_pinned": 669.239,
+          "h2d_submit": 25.771,
+          "h2d_wait": 837.872,
+          "views": 176.272,
+          "release": 3.76
+        },
+        "resident_pages_before": 4454
+      },
+      {
+        "us": 1731.494,
+        "phases_us": {
+          "plan": 0.45,
+          "pinned_allocation": 8.58,
+          "read_into_pinned": 640.129,
+          "h2d_submit": 25.171,
+          "h2d_wait": 837.191,
+          "views": 175.863,
+          "release": 3.72
+        },
+        "resident_pages_before": 4454
+      },
+      {
+        "us": 1900.798,
+        "phases_us": {
+          "plan": 0.49,
+          "pinned_allocation": 8.151,
+          "read_into_pinned": 811.331,
+          "h2d_submit": 24.161,
+          "h2d_wait": 836.182,
+          "views": 175.952,
+          "release": 4.03
+        },
+        "resident_pages_before": 4454
+      },
+      {
+        "us": 2062.809,
+        "phases_us": {
+          "plan": 0.45,
+          "pinned_allocation": 8.12,
+          "read_into_pinned": 1017.235,
+          "h2d_submit": 25.37,
+          "h2d_wait": 791.051,
+          "views": 175.353,
+          "release": 3.85
+        },
+        "resident_pages_before": 4454
+      },
+      {
+        "us": 2017.999,
+        "phases_us": {
+          "plan": 0.47,
+          "pinned_allocation": 7.76,
+          "read_into_pinned": 921.103,
+          "h2d_submit": 24.341,
+          "h2d_wait": 835.602,
+          "views": 175.352,
+          "release": 3.49
+        },
+        "resident_pages_before": 4454
+      },
+      {
+        "us": 1939.808,
+        "phases_us": {
+          "plan": 0.42,
+          "pinned_allocation": 7.61,
+          "read_into_pinned": 850.722,
+          "h2d_submit": 24.291,
+          "h2d_wait": 837.642,
+          "views": 175.792,
+          "release": 3.74
+        },
+        "resident_pages_before": 4454
+      },
+      {
+        "us": 1964.848,
+        "phases_us": {
+          "plan": 0.49,
+          "pinned_allocation": 7.55,
+          "read_into_pinned": 874.283,
+          "h2d_submit": 23.58,
+          "h2d_wait": 834.772,
+          "views": 180.933,
+          "release": 3.61
+        },
+        "resident_pages_before": 4454
+      },
+      {
+        "us": 1894.937,
+        "phases_us": {
+          "plan": 0.44,
+          "pinned_allocation": 14.181,
+          "read_into_pinned": 795.801,
+          "h2d_submit": 23.42,
+          "h2d_wait": 837.552,
+          "views": 175.173,
+          "release": 3.79
+        },
+        "resident_pages_before": 4454
+      },
+      {
+        "us": 1944.178,
+        "phases_us": {
+          "plan": 0.43,
+          "pinned_allocation": 7.491,
+          "read_into_pinned": 845.992,
+          "h2d_submit": 24.15,
+          "h2d_wait": 846.432,
+          "views": 175.383,
+          "release": 3.94
+        },
+        "resident_pages_before": 4454
+      },
+      {
+        "us": 2022.308,
+        "phases_us": {
+          "plan": 0.42,
+          "pinned_allocation": 7.82,
+          "read_into_pinned": 931.823,
+          "h2d_submit": 25.59,
+          "h2d_wait": 835.952,
+          "views": 176.173,
+          "release": 3.6
+        },
+        "resident_pages_before": 4454
+      },
+      {
+        "us": 1916.867,
+        "phases_us": {
+          "plan": 0.45,
+          "pinned_allocation": 7.94,
+          "read_into_pinned": 829.242,
+          "h2d_submit": 23.34,
+          "h2d_wait": 837.202,
+          "views": 175.883,
+          "release": 3.55
+        },
+        "resident_pages_before": 4454
+      }
+    ],
+    "already_device_resident": [
+      {
+        "us": 3.04
+      },
+      {
+        "us": 1.08
+      },
+      {
+        "us": 0.71
+      },
+      {
+        "us": 0.59
+      },
+      {
+        "us": 0.57
+      },
+      {
+        "us": 0.59
+      },
+      {
+        "us": 0.58
+      },
+      {
+        "us": 0.55
+      },
+      {
+        "us": 0.541
+      },
+      {
+        "us": 0.54
+      },
+      {
+        "us": 0.54
+      },
+      {
+        "us": 0.56
+      },
+      {
+        "us": 0.54
+      },
+      {
+        "us": 0.55
+      },
+      {
+        "us": 0.56
+      },
+      {
+        "us": 0.54
+      },
+      {
+        "us": 0.53
+      },
+      {
+        "us": 0.55
+      },
+      {
+        "us": 0.55
+      },
+      {
+        "us": 0.54
+      },
+      {
+        "us": 0.54
+      },
+      {
+        "us": 0.52
+      },
+      {
+        "us": 0.53
+      },
+      {
+        "us": 0.55
+      },
+      {
+        "us": 0.56
+      },
+      {
+        "us": 0.54
+      },
+      {
+        "us": 0.57
+      },
+      {
+        "us": 0.55
+      },
+      {
+        "us": 0.54
+      },
+      {
+        "us": 0.56
+      }
+    ]
+  },
+  "status": "passed",
+  "exact_segments_verified": 96,
+  "summary": {
+    "os_page_cache_cold": {
+      "n": 6,
+      "median_us": 5772.0925,
+      "p95_us": 5874.844,
+      "min_us": 5533.7,
+      "max_us": 5874.844
+    },
+    "os_page_cache_warm": {
+      "n": 30,
+      "median_us": 2014.0085,
+      "p95_us": 2200.712,
+      "min_us": 1731.494,
+      "max_us": 2266.042
+    },
+    "already_device_resident": {
+      "n": 30,
+      "median_us": 0.55,
+      "p95_us": 1.08,
+      "min_us": 0.52,
+      "max_us": 3.04
+    }
+  },
+  "phase_medians_us": {
+    "os_page_cache_cold": {
+      "plan": 231.898,
+      "pinned_allocation": 16.5205,
+      "read_into_pinned": 4252.4055,
+      "h2d_submit": 35.041,
+      "h2d_wait": 851.392,
+      "views": 290.18899999999996,
+      "release": 4.645
+    },
+    "os_page_cache_warm": {
+      "plan": 0.495,
+      "pinned_allocation": 8.9155,
+      "read_into_pinned": 890.508,
+      "h2d_submit": 25.9755,
+      "h2d_wait": 836.682,
+      "views": 177.3025,
+      "release": 4.055
+    }
+  }
+}

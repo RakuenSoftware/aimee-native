@@ -20,7 +20,10 @@ class PreparedStore:
         self.lib.aimee_store_release_pages.restype = None
         if self.lib.aimee_store_abi_version() != 1:
             raise RuntimeError("native storage ABI mismatch")
-        self.handle = self.lib.aimee_store_open(json.dumps(spec).encode())
+        admission = dict(spec)
+        self.lossless_transport = admission.pop('lossless_transport', True)
+        self.device_budget = admission.pop('device_budget', 256 * 1024**2)
+        self.handle = self.lib.aimee_store_open(json.dumps(admission).encode())
         if not self.handle:
             raise RuntimeError("native publication admission failed")
         self.metadata = json.loads(self.lib.aimee_store_metadata(self.handle))
@@ -34,55 +37,65 @@ class PreparedStore:
         ):
             fn = getattr(self.lib, 'aimee_store_pack_' + name)
             fn.argtypes, fn.restype = args, result
+        for name, args, result in (
+            ('pack_prepare_transport', [ctypes.c_void_p, ctypes.c_size_t], ctypes.c_bool),
+            ('pack_activate', [ctypes.c_void_p, ctypes.c_int, ctypes.c_bool], ctypes.c_void_p),
+            ('activation_profile', [ctypes.c_void_p], ctypes.c_char_p),
+            ('activation_free', [ctypes.c_void_p], None),
+        ):
+            fn = getattr(self.lib, 'aimee_store_' + name)
+            fn.argtypes, fn.restype = args, result
+        self.py_lib = ctypes.PyDLL(self.lib._name)
+        self.py_lib.aimee_store_activation_python.argtypes = [ctypes.c_void_p]
+        self.py_lib.aimee_store_activation_python.restype = ctypes.c_void_p
+        self.decref = ctypes.pythonapi.Py_DecRef
+        self.decref.argtypes, self.decref.restype = [ctypes.c_void_p], None
 
-    def activate(self, device, rank, world):
-        key = (str(device), rank, world)
-        if key in self.device_banks:
-            return self.device_banks[key]
-        plan_key = (rank, world)
-        if plan_key not in self.transfer_plans:
+    def prepare_plan(self, rank, world):
+        key = (rank, world)
+        if key not in self.transfer_plans:
             handle = self.lib.aimee_store_pack_open(self.handle, rank, world)
             if not handle:
                 raise RuntimeError('native head partition mismatch')
-            self.transfer_plans[plan_key] = (handle, json.loads(self.lib.aimee_store_pack_metadata(handle)))
-        handle, plan = self.transfer_plans[plan_key]
-        # One bounded pinned staging allocation and one DMA, instead of a
-        # synchronous allocation/copy per K/V segment. Rust owns byte layout.
-        host = torch.empty(plan['bytes'] // 2, dtype=torch.bfloat16, pin_memory=True)
-        if not self.lib.aimee_store_pack_copy(handle, host.data_ptr(), plan['bytes']):
-            raise RuntimeError('native rank copy failed')
-        packed = host.to(device=device, non_blocking=True)
-        # Complete this stream before releasing source pages or staging storage.
-        torch.cuda.current_stream(device).synchronize()
-        banks = {}
-        for seg in plan['segments']:
-            shape = (seg['heads'], seg['positions'], seg['width'])
-            strides = (seg['positions'] * seg['width'], seg['width'], 1)
-            banks[(seg['layer'], seg['value'])] = packed.as_strided(shape, strides, seg['offset'] // 2)
-        self.lib.aimee_store_release_pages(self.handle)
-        self.device_banks[key] = banks
-        return banks
+            if self.lossless_transport:
+                if not self.lib.aimee_store_pack_prepare_transport(handle, self.device_budget):
+                    self.lib.aimee_store_pack_close(handle)
+                    raise RuntimeError('native transport admission failed')
+            self.transfer_plans[key] = (handle, json.loads(self.lib.aimee_store_pack_metadata(handle)))
+        return self.transfer_plans[key]
+
+    def activate(self, device, rank, world, profile=False):
+        key = (str(device), rank, world)
+        if key in self.device_banks:
+            return self.device_banks[key]
+        handle, _ = self.prepare_plan(rank, world)
+        device_index = device.index if device.index is not None else torch.cuda.current_device()
+        result = self.lib.aimee_store_pack_activate(handle, device_index, profile)
+        if not result:
+            raise RuntimeError('native activation failed')
+        try:
+            # Rust has already read, transferred, synchronized and made every view.
+            # This GIL-held call only wraps existing tensors for vLLM ownership.
+            pointer = self.py_lib.aimee_store_activation_python(result)
+            if not pointer:
+                raise RuntimeError('native tensor wrapping failed')
+            try:
+                banks = ctypes.cast(pointer, ctypes.py_object).value
+            finally:
+                self.decref(pointer)  # Transfer the native NEW reference to Python.
+            if profile:
+                self.last_profile = json.loads(self.lib.aimee_store_activation_profile(result))
+            self.device_banks[key] = banks
+            return banks
+        finally:
+            self.lib.aimee_store_activation_free(result)
 
     def device_bytes(self, world):
-        # Cache TP geometry once; no disk access or content verification.
-        sizes = getattr(self, '_device_sizes', None)
-        if sizes is None:
-            self._device_sizes = sizes = {}
-        if world not in sizes:
-            total = 0
-            for seg in self.metadata['segments']:
-                heads = seg['heads']
-                if heads >= world:
-                    if heads % world:
-                        raise RuntimeError('native head partition mismatch')
-                    local_heads = heads // world
-                else:
-                    if world % heads:
-                        raise RuntimeError('native replicated-head partition mismatch')
-                    local_heads = 1
-                total += local_heads * seg['positions'] * seg['width'] * 2
-            sizes[world] = total
-        return sizes[world]
+        return self.prepare_plan(0, world)[1]['bytes']
+
+    def reservation_bytes(self, world, rank=0):
+        plan = self.prepare_plan(rank, world)[1]
+        return plan.get('reservation_bytes', plan['bytes'])
 
     def resident(self, device, rank, world):
         return self.device_banks[(str(device), rank, world)]

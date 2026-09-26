@@ -30,12 +30,15 @@ for the supported profile, installation commands and measured limits.
 The [latency follow-up](../docs/validation/native-latency-20260926.md) documents
 packed activation and resident private preparation, with exact-image results
 and the remaining cold-path performance limits.
+The [Rust runtime follow-up](../docs/validation/native-runtime-ownership-20260926.md)
+records native activation ownership, lossless GPU transport, exact preparation
+reuse, and the Python/framework boundary that remains.
 
 ## Implemented
 
 - External vLLM native attention with request isolation, ragged batches, tensor
   parallelism, separate memory banks, unchanged text positions and prompt tokens.
-- Rust Torch-free store admission and immutable views; no encoder in serving.
+- Rust store admission and activation through the installed ATen runtime; no encoder in serving.
 - Revision pinning, explicit catalog refresh, graceful withdrawal for new requests.
 - Single-command private vLLM server launcher using the unmodified package.
 - Signed installer, atomic installs, rollback and release sequence protection.

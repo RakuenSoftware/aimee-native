@@ -138,8 +138,8 @@ replace an existing deployment override without merging its settings.
 
 ### Resident private preparation
 
-`resident_compile.py` keeps the CPU model/tokenizer loaded and creates a new KV
-cache for every job. It is a private compiler-host service, never a client
+`resident_compile.py` keeps the CPU model/tokenizer loaded. By default it creates
+a fresh KV cache; optional Rust-planned reuse clones an approved exact prefix. It is a private compiler-host service, never a client
 component. Install `aimee-native-compiler.service` and an operator-owned
 `resident.json` with `model`, `model_revision`, `library`, `state`,
 `max_memory_tokens` and `threads`. The documented host uses 12 CPU threads and a
@@ -159,3 +159,23 @@ The Rust preparation cache, authorization revalidation, ordered record keys and
 complete-working-set requirements are unchanged. Separate preparation timing
 from storage activation and generation. Do not run CPU preparation benchmarks
 concurrently with model startup and describe the result as isolated latency.
+
+### Rust-planned preparation reuse
+
+The private compiler can optionally load `reuse_library`, built with
+`--no-default-features --features preparation-service`. This library is private
+service code and must not enter the client package. Rust binds the previous
+complete computational state to recipient/view/model/runtime/encoding/position
+identity and requires equal total token length before permitting prefix reuse.
+The framework creates a fresh cache from cloned prefix tensors; no prior request
+cache is mutated. The final publication still contains every selected record.
+
+Only one previous state is retained, bounded by `max_memory_tokens`. Length or
+scope changes force full evaluation; unsupported cache layouts also fall back.
+Removing `reuse_library` disables reuse while preserving the resident model.
+Aimee authorization and preparation-cache publication checks remain mandatory.
+
+The daemon logs only token counts for reuse (`tokens`, `reused_prefix_tokens`,
+`evaluated_tokens`), alongside elapsed times. Selected text and tensor contents
+are not included in these events. Changing an authorized view forces full
+preparation, including when the view changes as part of a knowledge update.

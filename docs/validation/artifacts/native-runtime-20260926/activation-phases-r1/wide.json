@@ -1,0 +1,625 @@
+{
+  "scope": "Instrumented packed activation stage timings, with verified OS page residency.\n\nPreparation and initial integrity admission are separate. Activation measurements\ninclude Python views, page faults where labeled, and completed H2D transfers.\nThey are not isolated DMA, SSD controller latency, or attention/answer latency.\n",
+  "source_bytes": 201627944,
+  "rank": 0,
+  "world": 2,
+  "device_bytes": 105611264,
+  "initial_admission_us": 116797.076,
+  "rows": {
+    "os_page_cache_cold": [
+      {
+        "us": 51675.372,
+        "phases_us": {
+          "plan": 303.265,
+          "pinned_allocation": 40.24,
+          "read_into_pinned": 42624.572,
+          "h2d_submit": 105.722,
+          "h2d_wait": 8144.637,
+          "views": 279.114,
+          "release": 8.19
+        },
+        "resident_pages_before": 0,
+        "conditioning_attempts": 1
+      },
+      {
+        "us": 52486.464,
+        "phases_us": {
+          "plan": 296.064,
+          "pinned_allocation": 50.001,
+          "read_into_pinned": 43221.15,
+          "h2d_submit": 119.042,
+          "h2d_wait": 8134.617,
+          "views": 312.154,
+          "release": 12.62
+        },
+        "resident_pages_before": 0,
+        "conditioning_attempts": 1
+      },
+      {
+        "us": 51665.351,
+        "phases_us": {
+          "plan": 306.944,
+          "pinned_allocation": 43.281,
+          "read_into_pinned": 42627.221,
+          "h2d_submit": 133.122,
+          "h2d_wait": 8122.627,
+          "views": 303.064,
+          "release": 12.37
+        },
+        "resident_pages_before": 0,
+        "conditioning_attempts": 1
+      },
+      {
+        "us": 51507.389,
+        "phases_us": {
+          "plan": 288.374,
+          "pinned_allocation": 20.47,
+          "read_into_pinned": 42343.538,
+          "h2d_submit": 106.292,
+          "h2d_wait": 8088.426,
+          "views": 320.525,
+          "release": 14.55
+        },
+        "resident_pages_before": 0,
+        "conditioning_attempts": 1
+      },
+      {
+        "us": 51331.267,
+        "phases_us": {
+          "plan": 242.083,
+          "pinned_allocation": 28.071,
+          "read_into_pinned": 42522.13,
+          "h2d_submit": 70.951,
+          "h2d_wait": 8096.297,
+          "views": 259.733,
+          "release": 6.08
+        },
+        "resident_pages_before": 0,
+        "conditioning_attempts": 1
+      },
+      {
+        "us": 51631.941,
+        "phases_us": {
+          "plan": 244.664,
+          "pinned_allocation": 18.98,
+          "read_into_pinned": 42688.563,
+          "h2d_submit": 111.961,
+          "h2d_wait": 8079.986,
+          "views": 351.445,
+          "release": 14.79
+        },
+        "resident_pages_before": 0,
+        "conditioning_attempts": 1
+      }
+    ],
+    "os_page_cache_warm": [
+      {
+        "us": 20957.271,
+        "phases_us": {
+          "plan": 3.68,
+          "pinned_allocation": 48.921,
+          "read_into_pinned": 12264.636,
+          "h2d_submit": 96.352,
+          "h2d_wait": 8179.787,
+          "views": 220.203,
+          "release": 12.58
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 20562.995,
+        "phases_us": {
+          "plan": 1.12,
+          "pinned_allocation": 15.341,
+          "read_into_pinned": 12480.199,
+          "h2d_submit": 123.752,
+          "h2d_wait": 7646.389,
+          "views": 217.933,
+          "release": 12.861
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 20780.689,
+        "phases_us": {
+          "plan": 0.99,
+          "pinned_allocation": 24.271,
+          "read_into_pinned": 12644.801,
+          "h2d_submit": 116.392,
+          "h2d_wait": 7690.51,
+          "views": 223.464,
+          "release": 12.66
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 20577.795,
+        "phases_us": {
+          "plan": 0.92,
+          "pinned_allocation": 25.65,
+          "read_into_pinned": 12454.949,
+          "h2d_submit": 117.862,
+          "h2d_wait": 7683.03,
+          "views": 226.743,
+          "release": 12.15
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 20854.9,
+        "phases_us": {
+          "plan": 0.96,
+          "pinned_allocation": 25.54,
+          "read_into_pinned": 12687.072,
+          "h2d_submit": 57.191,
+          "h2d_wait": 7816.792,
+          "views": 196.943,
+          "release": 5.69
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 21563.65,
+        "phases_us": {
+          "plan": 1.22,
+          "pinned_allocation": 22.12,
+          "read_into_pinned": 13527.564,
+          "h2d_submit": 63.431,
+          "h2d_wait": 7694.2,
+          "views": 202.363,
+          "release": 6.021
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 20965.801,
+        "phases_us": {
+          "plan": 1.03,
+          "pinned_allocation": 16.62,
+          "read_into_pinned": 12919.996,
+          "h2d_submit": 48.18,
+          "h2d_wait": 7731.521,
+          "views": 191.723,
+          "release": 4.91
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 20982.051,
+        "phases_us": {
+          "plan": 0.72,
+          "pinned_allocation": 15.141,
+          "read_into_pinned": 13033.696,
+          "h2d_submit": 43.241,
+          "h2d_wait": 7645.19,
+          "views": 197.453,
+          "release": 4.68
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 20712.927,
+        "phases_us": {
+          "plan": 0.79,
+          "pinned_allocation": 12.31,
+          "read_into_pinned": 12293.556,
+          "h2d_submit": 111.912,
+          "h2d_wait": 7980.255,
+          "views": 230.763,
+          "release": 14.3
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 20857.009,
+        "phases_us": {
+          "plan": 0.99,
+          "pinned_allocation": 21.51,
+          "read_into_pinned": 12665.302,
+          "h2d_submit": 115.751,
+          "h2d_wait": 7764.872,
+          "views": 218.933,
+          "release": 12.151
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 20415.153,
+        "phases_us": {
+          "plan": 0.92,
+          "pinned_allocation": 21.9,
+          "read_into_pinned": 12272.837,
+          "h2d_submit": 120.371,
+          "h2d_wait": 7692.061,
+          "views": 224.463,
+          "release": 13.83
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 21083.602,
+        "phases_us": {
+          "plan": 0.64,
+          "pinned_allocation": 20.91,
+          "read_into_pinned": 12799.544,
+          "h2d_submit": 118.682,
+          "h2d_wait": 7844.312,
+          "views": 221.683,
+          "release": 14.291
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 20399.953,
+        "phases_us": {
+          "plan": 0.7,
+          "pinned_allocation": 24.891,
+          "read_into_pinned": 12354.157,
+          "h2d_submit": 46.201,
+          "h2d_wait": 7714.771,
+          "views": 194.342,
+          "release": 4.91
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 19958.406,
+        "phases_us": {
+          "plan": 0.64,
+          "pinned_allocation": 12.35,
+          "read_into_pinned": 11858.69,
+          "h2d_submit": 117.642,
+          "h2d_wait": 7670.46,
+          "views": 218.373,
+          "release": 21.7
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 22036.426,
+        "phases_us": {
+          "plan": 0.95,
+          "pinned_allocation": 24.21,
+          "read_into_pinned": 13946.12,
+          "h2d_submit": 43.881,
+          "h2d_wait": 7773.371,
+          "views": 190.333,
+          "release": 5.0
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 21138.274,
+        "phases_us": {
+          "plan": 0.66,
+          "pinned_allocation": 12.84,
+          "read_into_pinned": 13170.04,
+          "h2d_submit": 32.65,
+          "h2d_wait": 7692.18,
+          "views": 184.373,
+          "release": 4.95
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 23610.109,
+        "phases_us": {
+          "plan": 0.65,
+          "pinned_allocation": 12.901,
+          "read_into_pinned": 15545.943,
+          "h2d_submit": 35.7,
+          "h2d_wait": 7774.892,
+          "views": 186.683,
+          "release": 4.84
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 25399.185,
+        "phases_us": {
+          "plan": 0.75,
+          "pinned_allocation": 12.65,
+          "read_into_pinned": 16313.094,
+          "h2d_submit": 37.11,
+          "h2d_wait": 8804.007,
+          "views": 187.212,
+          "release": 5.25
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 29102.508,
+        "phases_us": {
+          "plan": 0.77,
+          "pinned_allocation": 12.281,
+          "read_into_pinned": 19136.654,
+          "h2d_submit": 43.191,
+          "h2d_wait": 9660.429,
+          "views": 191.852,
+          "release": 4.54
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 21377.217,
+        "phases_us": {
+          "plan": 0.73,
+          "pinned_allocation": 11.79,
+          "read_into_pinned": 13444.313,
+          "h2d_submit": 37.33,
+          "h2d_wait": 7645.791,
+          "views": 191.892,
+          "release": 4.98
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 21276.656,
+        "phases_us": {
+          "plan": 0.73,
+          "pinned_allocation": 13.71,
+          "read_into_pinned": 13384.642,
+          "h2d_submit": 36.51,
+          "h2d_wait": 7593.949,
+          "views": 192.473,
+          "release": 4.79
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 20841.46,
+        "phases_us": {
+          "plan": 1.49,
+          "pinned_allocation": 34.94,
+          "read_into_pinned": 12756.693,
+          "h2d_submit": 90.761,
+          "h2d_wait": 7683.741,
+          "views": 210.533,
+          "release": 7.68
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 22107.317,
+        "phases_us": {
+          "plan": 0.68,
+          "pinned_allocation": 12.01,
+          "read_into_pinned": 14105.422,
+          "h2d_submit": 42.721,
+          "h2d_wait": 7692.531,
+          "views": 197.443,
+          "release": 4.87
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 20289.661,
+        "phases_us": {
+          "plan": 0.83,
+          "pinned_allocation": 18.58,
+          "read_into_pinned": 12259.566,
+          "h2d_submit": 50.631,
+          "h2d_wait": 7710.551,
+          "views": 196.822,
+          "release": 6.491
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 20470.224,
+        "phases_us": {
+          "plan": 0.67,
+          "pinned_allocation": 18.64,
+          "read_into_pinned": 12495.63,
+          "h2d_submit": 33.44,
+          "h2d_wait": 7676.75,
+          "views": 188.973,
+          "release": 4.74
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 20604.986,
+        "phases_us": {
+          "plan": 0.61,
+          "pinned_allocation": 13.92,
+          "read_into_pinned": 12499.02,
+          "h2d_submit": 131.452,
+          "h2d_wait": 7647.149,
+          "views": 238.734,
+          "release": 14.88
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 21198.825,
+        "phases_us": {
+          "plan": 0.811,
+          "pinned_allocation": 20.44,
+          "read_into_pinned": 13058.187,
+          "h2d_submit": 140.992,
+          "h2d_wait": 7651.1,
+          "views": 241.924,
+          "release": 15.22
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 21056.492,
+        "phases_us": {
+          "plan": 0.97,
+          "pinned_allocation": 22.83,
+          "read_into_pinned": 12890.385,
+          "h2d_submit": 140.813,
+          "h2d_wait": 7710.06,
+          "views": 218.073,
+          "release": 12.3
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 20896.45,
+        "phases_us": {
+          "plan": 0.73,
+          "pinned_allocation": 18.881,
+          "read_into_pinned": 12798.093,
+          "h2d_submit": 61.981,
+          "h2d_wait": 7708.051,
+          "views": 220.273,
+          "release": 14.51
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 20698.777,
+        "phases_us": {
+          "plan": 0.88,
+          "pinned_allocation": 19.28,
+          "read_into_pinned": 12668.432,
+          "h2d_submit": 53.871,
+          "h2d_wait": 7654.55,
+          "views": 218.693,
+          "release": 14.96
+        },
+        "resident_pages_before": 49226
+      }
+    ],
+    "already_device_resident": [
+      {
+        "us": 6.64
+      },
+      {
+        "us": 1.39
+      },
+      {
+        "us": 0.72
+      },
+      {
+        "us": 0.58
+      },
+      {
+        "us": 0.58
+      },
+      {
+        "us": 0.56
+      },
+      {
+        "us": 0.56
+      },
+      {
+        "us": 0.56
+      },
+      {
+        "us": 0.55
+      },
+      {
+        "us": 0.55
+      },
+      {
+        "us": 0.55
+      },
+      {
+        "us": 0.56
+      },
+      {
+        "us": 0.55
+      },
+      {
+        "us": 0.55
+      },
+      {
+        "us": 0.55
+      },
+      {
+        "us": 0.55
+      },
+      {
+        "us": 0.55
+      },
+      {
+        "us": 0.56
+      },
+      {
+        "us": 0.55
+      },
+      {
+        "us": 0.55
+      },
+      {
+        "us": 0.55
+      },
+      {
+        "us": 0.54
+      },
+      {
+        "us": 0.55
+      },
+      {
+        "us": 0.55
+      },
+      {
+        "us": 0.54
+      },
+      {
+        "us": 0.55
+      },
+      {
+        "us": 0.55
+      },
+      {
+        "us": 0.55
+      },
+      {
+        "us": 0.54
+      },
+      {
+        "us": 0.55
+      }
+    ]
+  },
+  "status": "passed",
+  "exact_segments_verified": 96,
+  "summary": {
+    "os_page_cache_cold": {
+      "n": 6,
+      "median_us": 51648.646,
+      "p95_us": 52486.464,
+      "min_us": 51331.267,
+      "max_us": 52486.464
+    },
+    "os_page_cache_warm": {
+      "n": 30,
+      "median_us": 20926.860500000003,
+      "p95_us": 25399.185,
+      "min_us": 19958.406,
+      "max_us": 29102.508
+    },
+    "already_device_resident": {
+      "n": 30,
+      "median_us": 0.55,
+      "p95_us": 1.39,
+      "min_us": 0.54,
+      "max_us": 6.64
+    }
+  },
+  "phase_medians_us": {
+    "os_page_cache_cold": {
+      "plan": 292.21900000000005,
+      "pinned_allocation": 34.1555,
+      "read_into_pinned": 42625.8965,
+      "h2d_submit": 109.1265,
+      "h2d_wait": 8109.4619999999995,
+      "views": 307.60900000000004,
+      "release": 12.495
+    },
+    "os_page_cache_warm": {
+      "plan": 0.8005,
+      "pinned_allocation": 18.7605,
+      "read_into_pinned": 12777.393,
+      "h2d_submit": 59.586,
+      "h2d_wait": 7693.3655,
+      "views": 206.44799999999998,
+      "release": 7.0855
+    }
+  }
+}

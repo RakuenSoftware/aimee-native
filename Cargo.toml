@@ -11,6 +11,8 @@ torch = ["dep:tch"]
 # Client build excludes offline authoring entry points and research diagnostics.
 native-client = ["torch"]
 vllm-client = []
+# Runtime-only ATen/CPython bridge; does not enable tch or private encoding.
+vllm-runtime = ["vllm-client"]
 preparation-service = []
 
 [dependencies]
@@ -70,4 +72,9 @@ crate-type = ["rlib", "cdylib"]
 [[bin]]
 name = "native-prepare"
 path = "src/bin/native-prepare.rs"
+required-features = ["preparation-service"]
+
+[[bin]]
+name = "native-codec-bench"
+path = "src/bin/native-codec-bench.rs"
 required-features = ["preparation-service"]

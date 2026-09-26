@@ -373,6 +373,7 @@ impl NativeStore {
         }
         Ok(())
     }
+    pub fn is_disk_backed(&self) -> bool { matches!(self.data, Payload::Mapped { .. }) }
     pub fn bytes(&self) -> usize {
         self.data.bytes().len()
     }

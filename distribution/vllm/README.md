@@ -5,8 +5,9 @@ subclass using vLLM's existing extension interfaces. It does not patch, fork,
 replace installed source files, or monkey-patch vLLM. Pin vLLM 0.30.0; the tested
 ROCm wheel is 0.30.0+rocm723. Upstream interfaces are version-sensitive.
 
-The serving process contains a Torch-free Rust store reader and an external GPU
-attention implementation. Encoding remains in the private preparation system.
+The serving process uses Rust store admission and activation, a small ABI bridge
+to the installed ATen runtime, and an external GPU attention implementation.
+Encoding remains in the private preparation system.
 Prepared native banks are separate from text KV cache allocation and prompt
 positions. The worker pins a specific publication for each request, including
 preemption/resumption, and the metadata builder uses the actual reordered batch.
@@ -56,7 +57,8 @@ is provided.
 
 ## Validated scope and remaining gates
 
-BF16 Gemma4 12B, two RX7900XTXs, tensor parallel size2, V1 runner, eager execution,
+Gemma4 12B with BF16 native memory and certified Q8 GGUF weights, two
+RX7900XTXs, tensor parallel size2, V1 runner, eager execution,
 chunked text prefill and decode. Native attention supports ragged requests, GQA,
 local text windows and logit softcaps. Native memory visibility matches the
 existing independent negative-position encoder. Other model/position profiles
@@ -64,23 +66,45 @@ require certification; a generic kernel is not a universal empirical result.
 
 Graph capture, prefix caching, asynchronous/speculative scheduling, pipeline
 parallelism, multimodal prefix attention, quantized KV and sink attention are
-rejected. GGUF loading/quantization has not been validated by this integration.
-Test weights are Hugging Face safetensors, not a GGUF release.
+rejected. The pinned loader supports the certified Q8 GGUF artifact. This does
+not establish compatibility with arbitrary GGUF files or runtime versions.
 
-Startup admits catalog banks into host memory. Rust bounds native bank payload
-bytes per GPU rank (`device_memory_budget`, default256MiB), evicts idle banks by
-LRU, and protects all active request pins. Evicted banks reload from admitted host
-buffers. Pointer-table owners are released before eviction. This budget excludes
-model/text KV, pointer tables, transient allocations and allocator-reserved memory;
-leave device headroom. An oversized active working set currently fails closed in
-the worker; ingress backpressure is still required. A failed GPU upload poisons
-the cache and requires restart. On-demand SSD/host streaming is not implemented. CPU/DMA, attention, compilation warmup and end-to-end latency
-must be measured separately; this validation establishes correctness, not a
-microsecond performance result.
+With `disk_backed: true`, startup verifies and admits immutable banks, prepares
+rank layouts and optionally authors lossless transport extents. Rust bounds the
+native memory reservation per rank (`device_memory_budget`, default 256 MiB),
+evicts idle banks and protects active request pins. The reservation covers dense
+banks and encoded staging where used, but excludes model/text KV, pointer tables,
+host staging and allocator-reserved memory. Leave device headroom. Ingress
+admission rejects incompatible concurrent working sets before generation. Failed
+activation poisons the worker cache rather than serving incomplete state.
 
-Hosted preparation/authorized publication feed, admission backpressure, production
-API gateway, clean-machine driver image, latency certification, and signed
-installer integration remain release gates. The source plugin and Triton kernel
-are private development artifacts: do not ship this source wheel as the promised
-closed-source product. A protected binary distribution and disclosure audit are
-still required. The old llama.cpp patch is abandoned, not a dependency.
+The private preview includes hosted preparation, authorized delivery, signed
+installation, compiled client code and a pinned runtime image. The source plugin
+and kernel remain private development artifacts. Public redistribution and broader
+hardware/model certification remain separate gates. See the release evidence in
+`docs/validation/`; isolated activation, preparation and end-to-end serving are
+different measurements. The old llama.cpp patch is abandoned, not a dependency.
+
+
+### Native activation boundary
+
+The current bridge requires a `vllm-runtime` consumer build against the pinned
+runtime's `LIBTORCH` and `PYTHON_INCLUDE`. This enables only the ATen/CPython ABI
+shim; it does not enable the Rust `torch` feature, private model implementation
+or publisher. Rust owns allocation, I/O, transfer completion and tensor geometry.
+The Python bridge receives a dictionary of already-created tensors and retains
+their framework ownership. There is no Python allocation/transfer/view fallback.
+
+Build the small lossless decoder with `distribution/release/build-vllm-codec.sh`
+inside the pinned ROCm image (`AIMEE_GPU_ARCH=gfx1100` for the certified XTXs).
+Pass its `AIMEE_CODEC_OBJECT` and that image's `HIP_LIB_DIR` to the client build.
+This reuses the installed ATen/HIP runtime; it does not implement a tensor engine.
+An admission-time lossless transport copy occupies extents in one owned file.
+Its index remains in RAM, and its descriptor remains open while any extent is
+live. Activation reads the extent into pinned storage and decodes on the GPU.
+`lossless_transport: false` selects raw transport. Insufficient GPU staging budget,
+poor compression or unavailable optional arena storage also use raw transport.
+The device reservation includes both dense output and temporary encoded input.
+
+See [the runtime ownership report](../../docs/validation/native-runtime-ownership-20260926.md)
+for profiling boundaries and exactness/ownership checks.

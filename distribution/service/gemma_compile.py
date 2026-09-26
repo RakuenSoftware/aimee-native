@@ -9,13 +9,17 @@ from publisher import publish
 
 
 class GemmaCompiler:
-    """Retain only model/tokenizer across jobs; every job gets a fresh KV cache."""
-    def __init__(self, model, max_memory_tokens=1024, threads=12):
+    """Retain the model and optionally one scope-bound, Rust-planned prefix cache."""
+    def __init__(self, model, max_memory_tokens=1024, threads=12, reuse_library=None):
         torch.set_num_threads(threads)
         self.max_memory_tokens = max_memory_tokens
         self.tokenizer = AutoTokenizer.from_pretrained(model, local_files_only=True)
         self.model_path = model
         self.model = None
+        self.cache = None
+        self.last_metrics = {}
+        from reuse import ReusePlanner
+        self.planner = ReusePlanner(reuse_library, max_memory_tokens) if reuse_library else None
 
     def load(self):
         if self.model is None:
@@ -41,13 +45,43 @@ class GemmaCompiler:
         if not 0 < len(tokens) <= self.max_memory_tokens:
             raise ValueError('selected memory exceeds certified preparation positions')
         self.load()
-        ids = torch.tensor([tokens])
-        with torch.inference_mode():
-            result = self.model(input_ids=ids, attention_mask=torch.ones_like(ids),
-                                position_ids=torch.arange(-len(tokens), 0).unsqueeze(0),
-                                use_cache=True, logits_to_keep=1)
+        prefix = 0
+        text_config = self.model.config.get_text_config()
+        reusable = (len(tokens) < text_config.sliding_window
+                    and not text_config.num_kv_shared_layers
+                    and text_config.use_bidirectional_attention != 'all')
+        if self.planner:
+            plan = self.planner.plan(request['identity'], tokens)
+            if not plan['same_scope']:
+                self.cache = None
+            if reusable and self.cache is not None:
+                prefix = plan['prefix']
+        if prefix == len(tokens):
+            cache = self.cache
+        else:
+            from transformers import DynamicCache
+            cache = None
+            if prefix:
+                cache = DynamicCache(config=text_config)
+                for i, layer in enumerate(self.cache.layers):
+                    cache.update(layer.keys[:, :, :prefix, :].clone(),
+                                 layer.values[:, :, :prefix, :].clone(), i)
+            ids = torch.tensor([tokens[prefix:]])
+            with torch.inference_mode():
+                # Existing backbone API; the vocabulary projection is unnecessary
+                # for preparation. Neither model code nor its weights are replaced.
+                result = self.model.model(input_ids=ids,
+                    attention_mask=torch.ones((1, len(tokens)), dtype=torch.long),
+                    position_ids=torch.arange(-len(tokens) + prefix, 0).unsqueeze(0),
+                    past_key_values=cache, use_cache=True)
+            cache = result.past_key_values
+        if self.planner:
+            self.planner.plan(request['identity'], tokens, commit=True)
+            self.cache = cache if reusable else None
+        self.last_metrics = {'tokens': len(tokens), 'reused_prefix_tokens': prefix,
+                             'evaluated_tokens': len(tokens) - prefix}
         banks = {i: (layer.keys.detach(), layer.values.detach())
-                 for i, layer in enumerate(result.past_key_values.layers)}
+                 for i, layer in enumerate(cache.layers)}
         return tokens, banks
 
     def compile(self, request, output, identity, key):
