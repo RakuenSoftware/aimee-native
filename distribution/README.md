@@ -133,3 +133,13 @@ The bearer is read from stdin and never forwarded to the runtime container.
 The release CA is scoped to the installer and its OCI pull, not the host trust
 store. Signed profiles bound whole-container memory as well as native-bank
 budgets; the tested profile uses 48 GiB and normal container security defaults.
+
+## Beta follow-up, 26 September
+
+[Private beta instructions](beta/README.md) describe the signed profile and remaining
+external-distribution gate. [The vLLM comparison](../docs/validation/vllm-stream-validation-20260926.md)
+records 336/336 paired responses and separated activation timing.
+[Load and connected validation](../docs/validation/beta-validation-20260926.md)
+adds 2,048 concurrent pressure answers and 64 live Aimee answers.
+The [SWE learning protocol](../benchmarks/swe_learning/PROTOCOL.md) is an ongoing
+150-task repeated-experience study, not yet a scored release claim.
