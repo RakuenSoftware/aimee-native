@@ -33,6 +33,8 @@ and the remaining cold-path performance limits.
 The [Rust runtime follow-up](../docs/validation/native-runtime-ownership-20260926.md)
 records native activation ownership, lossless GPU transport, exact preparation
 reuse, and the Python/framework boundary that remains.
+The [streaming follow-up](../docs/validation/native-streaming-20260926.md) adds
+parallel/pipelined reads and per-upload staging accounting.
 
 ## Implemented
 

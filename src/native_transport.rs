@@ -60,8 +60,8 @@ impl Extent {
                     return Ok(None);
                 }
                 let offset = a.end;
+                arena.file.set_len((a.end + reserved) as u64)?;
                 a.end += reserved;
-                arena.file.set_len(a.end as u64)?;
                 offset
             }
         };
@@ -161,46 +161,96 @@ impl Transport {
     pub fn source(&self) -> serde_json::Value {
         serde_json::json!({"fd":self.extent.arena.file.as_raw_fd(),"offset":self.extent.offset,"bytes":self.file_bytes})
     }
-    /// Valid writable pinned allocation of transfer_bytes bytes, exclusively held.
-    pub unsafe fn fill(&self, target: *mut u8) -> Result<()> {
-        let mut written = 0;
-        while written < self.file_bytes {
-            let n = unsafe {
-                libc::pread(
-                    self.extent.arena.file.as_raw_fd(),
-                    target.add(written).cast(),
-                    self.file_bytes - written,
-                    (self.extent.offset + written) as libc::off_t,
-                )
-            };
-            if n < 0 {
-                let e = std::io::Error::last_os_error();
-                if e.kind() == std::io::ErrorKind::Interrupted {
-                    continue;
-                }
-                return Err(e.into());
-            }
-            ensure!(n > 0, "native transport read failed");
-            written += n as usize;
-        }
+    /// Safety: valid exclusively owned writable allocation of transfer_bytes.
+    /// Each callback observes a complete disjoint byte range. The caller retains
+    /// the allocation until any asynchronous consumer has completed.
+    pub unsafe fn fill_streamed(
+        &self, target: *mut u8, mut complete: impl FnMut(usize, usize) -> Result<()>,
+    ) -> Result<()> {
+        const CHUNK: usize = 1024 * 1024;
+        // The RAM index and alignment padding are authored before reads start.
         unsafe {
-            std::ptr::write_bytes(
-                target.add(self.file_bytes),
-                0,
-                self.index_offset - self.file_bytes,
-            );
-            std::ptr::copy_nonoverlapping(
-                self.indices.as_ptr().cast::<u8>(),
-                target.add(self.index_offset),
-                self.indices.len() * 4,
-            );
+            std::ptr::write_bytes(target.add(self.file_bytes), 0, self.index_offset-self.file_bytes);
+            std::ptr::copy_nonoverlapping(self.indices.as_ptr().cast::<u8>(),
+                target.add(self.index_offset), self.indices.len()*4);
         }
-        Ok(())
+        let bytes = unsafe { std::slice::from_raw_parts_mut(
+            target.cast::<std::mem::MaybeUninit<u8>>(), self.transfer_bytes) };
+        let (tx, rx) = std::sync::mpsc::channel();
+        let pool = crate::native_store::native_readers()?;
+        let mut result = Ok(());
+        // in_place_scope keeps callbacks on the caller's framework stream/thread.
+        pool.in_place_scope(|scope| {
+            for (i, chunk) in bytes.chunks_mut(CHUNK).enumerate() {
+                let tx=tx.clone();
+                scope.spawn(move |_| {
+                    let offset=i*CHUNK;
+                    let count=self.file_bytes.saturating_sub(offset).min(chunk.len());
+                    let read=(|| -> Result<()> {
+                        let mut done=0;
+                        while done<count {
+                            let n=unsafe { libc::pread(self.extent.arena.file.as_raw_fd(),
+                                chunk.as_mut_ptr().add(done).cast(), count-done,
+                                (self.extent.offset+offset+done) as libc::off_t) };
+                            if n<0 {
+                                let e=std::io::Error::last_os_error();
+                                if e.kind()==std::io::ErrorKind::Interrupted { continue; }
+                                return Err(e.into());
+                            }
+                            ensure!(n>0, "native transport read failed");
+                            done+=n as usize;
+                        }
+                        Ok(())
+                    })();
+                    let _=tx.send((offset,chunk.len(),read));
+                });
+            }
+            drop(tx);
+            for (offset, len, read) in rx {
+                if result.is_ok() { result=read.and_then(|_| complete(offset,len)); }
+                // Drain/join all reads on error before the destination can be freed.
+            }
+        });
+        result
     }
+    /// Safety: writable exclusive allocation of transfer_bytes bytes.
+    pub unsafe fn fill(&self, target: *mut u8) -> Result<()> {
+        unsafe { self.fill_streamed(target, |_,_| Ok(())) }
+    }
+
 }
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn streamed_ranges_preserve_bytes_thread_and_report_short_reads() {
+        let payload: Vec<u8>=(0..3*1024*1024+3).map(|i| (i%251) as u8).collect();
+        let file=tempfile::tempfile().unwrap();
+        file.write_all_at(&payload,0).unwrap();
+        let arena=Arc::new(Arena{file,allocation:Mutex::new(Allocation{end:payload.len(),free:vec![]})});
+        let offset=payload.len().next_multiple_of(4);
+        let t=Transport{extent:Extent{arena,offset:0,reserved:payload.len()},file_bytes:payload.len(),
+            transfer_bytes:offset+8,index_offset:offset,words:0,exception_offset:0,exceptions:2,
+            table:[0;16],indices:vec![7,19]};
+        let mut target=vec![0xaa;t.transfer_bytes];
+        let thread=std::thread::current().id();
+        let mut ranges=vec![];
+        unsafe { t.fill_streamed(target.as_mut_ptr(),|start,len| {
+            assert_eq!(std::thread::current().id(),thread);
+            ranges.push((start,len));Ok(())
+        }).unwrap(); }
+        assert_eq!(&target[..payload.len()],payload);
+        assert_eq!(&target[payload.len()..offset],&[0]);
+        assert_eq!(&target[offset..],&[7,0,0,0,19,0,0,0]);
+        ranges.sort_unstable();
+        let mut end=0;
+        for (start,len) in ranges { assert_eq!(start,end);end+=len; }
+        assert_eq!(end,target.len());
+        t.extent.arena.file.set_len((payload.len()-1) as u64).unwrap();
+        assert!(unsafe { t.fill(target.as_mut_ptr()) }.is_err());
+        // Returning from the failed read joins all writers: no later writes.
+        target.fill(0xbb);
+    }
     #[test]
     fn arena_reuses_one_descriptor_and_reclaims_only_retired_extents() {
         let a = Extent::write(b"first").unwrap().unwrap();

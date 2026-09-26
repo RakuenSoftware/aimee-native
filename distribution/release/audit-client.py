@@ -10,7 +10,7 @@ ALLOWED = {
 }
 STORE_ALLOWED = {"aimee_store_pack_open", "aimee_store_pack_metadata", "aimee_store_pack_copy", "aimee_store_pack_close", "aimee_store_release_pages", "aimee_admission_open", "aimee_admission_acquire", "aimee_admission_release", "aimee_admission_close", "aimee_cache_open", "aimee_cache_plan", "aimee_cache_close", "aimee_store_abi_version", "aimee_store_open", "aimee_store_metadata", "aimee_store_close"}
 
-RUNTIME_ALLOWED = {"aimee_store_runtime_warmup", "aimee_store_pack_prepare_transport", "aimee_store_pack_activate", "aimee_store_activation_python", "aimee_store_activation_profile", "aimee_store_activation_free"}
+RUNTIME_ALLOWED = {"aimee_store_pack_activate_limited", "aimee_store_runtime_warmup", "aimee_store_pack_prepare_transport", "aimee_store_pack_activate", "aimee_store_activation_python", "aimee_store_activation_profile", "aimee_store_activation_free"}
 
 def audit(path, vllm=False, runtime=False):
     allowed = (STORE_ALLOWED | (RUNTIME_ALLOWED if runtime else set())) if vllm else ALLOWED

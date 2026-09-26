@@ -41,7 +41,7 @@ class State:
         budget = config['host_memory_budget']
         try:
             for name, spec in catalog['publications'].items():
-                store = PreparedStore(lib, {**spec, 'byte_budget': budget,'disk_backed':config.get('disk_backed',False),'lossless_transport':config.get('lossless_transport',True),'device_budget':config.get('device_memory_budget',256*1024**2)})
+                store = PreparedStore(lib, {**spec, 'byte_budget': budget,'disk_backed':config.get('disk_backed',False),'lossless_transport':config.get('lossless_transport',True),'pipeline_transport':config.get('pipeline_transport',True),'device_budget':config.get('device_memory_budget',256*1024**2)})
                 store.prepare_plan(rank, world)
                 self.stores[name] = store
                 if not config.get('disk_backed',False):budget -= store.metadata['bytes']
@@ -141,7 +141,7 @@ class State:
                     admitted[name] = previous
                     continue
                 if remaining <= 0: raise RuntimeError('native publication replacement exceeds pinned memory budget')
-                store = PreparedStore(self.lib,{**spec,'byte_budget':remaining,'disk_backed':disk_backed,'lossless_transport':config.get('lossless_transport',True),'device_budget':config.get('device_memory_budget',256*1024**2)})
+                store = PreparedStore(self.lib,{**spec,'byte_budget':remaining,'disk_backed':disk_backed,'lossless_transport':config.get('lossless_transport',True),'pipeline_transport':config.get('pipeline_transport',True),'device_budget':config.get('device_memory_budget',256*1024**2)})
                 store.prepare_plan(self.rank, self.world)
                 created.append(store);admitted[name]=store
                 if not disk_backed:remaining -= store.metadata['bytes']

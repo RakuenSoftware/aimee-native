@@ -9,7 +9,7 @@ use std::{
     path::Path,
 };
 
-fn native_readers() -> Result<&'static rayon::ThreadPool> {
+pub(crate) fn native_readers() -> Result<&'static rayon::ThreadPool> {
     static READERS: std::sync::OnceLock<Option<rayon::ThreadPool>> = std::sync::OnceLock::new();
     READERS
         .get_or_init(|| {
@@ -255,6 +255,7 @@ impl NativeStore {
     /// Build TP geometry once, outside activation/attention. Replicated KV heads
     /// select the same source head for each rank in their replication group.
     pub fn rank_plan(&self, rank: usize, world: usize) -> Result<RankPlan> {
+        if self.is_disk_backed() { native_readers()?; }
         ensure!(world > 0 && rank < world, "invalid native rank");
         let mut plan = RankPlan {
             segments: Vec::new(),

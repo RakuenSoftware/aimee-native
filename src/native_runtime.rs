@@ -26,6 +26,7 @@ unsafe extern "C" {
     ) -> i32;
     fn aimee_rt_data(tensor: *mut c_void) -> *mut u8;
     fn aimee_rt_upload(tensor: *mut c_void, device: i32) -> *mut c_void;
+    fn aimee_rt_upload_range(host: *mut c_void, device: *mut c_void, offset: usize, bytes: usize) -> bool;
     fn aimee_rt_wait(tensor: *mut c_void) -> bool;
     fn aimee_rt_view(
         tensor: *mut c_void,
@@ -67,6 +68,7 @@ impl Activation {
         transport: Option<&Transport>,
         device: i32,
         profile: bool,
+        pipeline: bool,
     ) -> Result<Self> {
         ensure!(device >= 0 && device <= i16::MAX as i32, "invalid device");
         let mut marks = Vec::new();
@@ -84,21 +86,32 @@ impl Activation {
             !pointer.is_null() && transfer_bytes <= isize::MAX as usize,
             "invalid staging allocation"
         );
-        if let Some(t) = transport {
+        let staged = if pipeline && transport.is_some() {
+            Some(Tensor::new(unsafe { aimee_rt_device(transfer_bytes, device) })?)
+        } else { None };
+        let fill = if let Some(t) = transport {
             unsafe {
-                t.fill(pointer)?;
+                if let Some(gpu) = &staged {
+                    t.fill_streamed(pointer, |offset, bytes| {
+                        ensure!(aimee_rt_upload_range(host.0, gpu.0, offset, bytes), "native chunk upload failed");
+                        Ok(())
+                    })
+                } else { t.fill(pointer) }
             }
         } else {
-            let target = unsafe {
-                std::slice::from_raw_parts_mut(
-                    pointer.cast::<std::mem::MaybeUninit<u8>>(),
-                    plan.bytes,
-                )
-            };
-            store.pack_rank_uninit(plan, target)?;
+            let target = unsafe { std::slice::from_raw_parts_mut(
+                pointer.cast::<std::mem::MaybeUninit<u8>>(), plan.bytes) };
+            store.pack_rank_uninit(plan, target)
+        };
+        if let Err(error) = fill {
+            if let Some(gpu)=&staged { unsafe { aimee_rt_wait(gpu.0); } }
+            return Err(error);
         }
         mark();
-        let transferred = Tensor::new(unsafe { aimee_rt_upload(host.0, device) })?;
+        let transferred = match staged {
+            Some(gpu) => gpu,
+            None => Tensor::new(unsafe { aimee_rt_upload(host.0, device) })?,
+        };
         let decoded = if let Some(t) = transport {
             let out = Tensor::new(unsafe { aimee_rt_device(plan.bytes, device) })?;
             let source = unsafe { aimee_rt_data(transferred.0) };
@@ -154,7 +167,7 @@ impl Activation {
         mark();
         let names = [
             "pinned_allocation",
-            "read_into_pinned",
+            if pipeline && transport.is_some() { "read_and_submit" } else { "read_into_pinned" },
             "device_submit",
             "device_wait",
             "views",

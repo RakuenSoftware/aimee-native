@@ -261,7 +261,7 @@ pub unsafe extern "C" fn aimee_store_pack_activate(handle: *const c_void, device
     if handle.is_null() { return std::ptr::null_mut(); }
     match std::panic::catch_unwind(|| {
         let h = unsafe { &*handle.cast::<PackHandle>() };
-        crate::native_runtime::Activation::run(&h.store, &h.plan, h.transport.as_ref(), device, profile)
+        crate::native_runtime::Activation::run(&h.store, &h.plan, h.transport.as_ref(), device, profile, true)
     }) {
         Ok(Ok(a)) => Box::into_raw(Box::new(a)).cast(),
         _ => std::ptr::null_mut(),
@@ -315,4 +315,22 @@ pub unsafe extern "C" fn aimee_store_pack_prepare_transport(handle: *mut c_void,
 #[unsafe(no_mangle)]
 pub extern "C" fn aimee_store_runtime_warmup(device: i32) -> bool {
     matches!(std::panic::catch_unwind(|| crate::native_runtime::warmup(device)), Ok(Ok(())))
+}
+
+/// # Safety
+/// Live admitted plan, exclusively used. staging_limit excludes dense output.
+#[cfg(feature = "vllm-runtime")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn aimee_store_pack_activate_limited(
+    handle: *const c_void, device: i32, profile: bool, staging_limit: usize, pipeline: bool,
+) -> *mut c_void {
+    if handle.is_null() { return std::ptr::null_mut(); }
+    match std::panic::catch_unwind(|| {
+        let h=unsafe { &*handle.cast::<PackHandle>() };
+        let transport=h.transport.as_ref().filter(|t| t.transfer_bytes<=staging_limit);
+        crate::native_runtime::Activation::run(&h.store,&h.plan,transport,device,profile,pipeline)
+    }) {
+        Ok(Ok(a)) => Box::into_raw(Box::new(a)).cast(),
+        _ => std::ptr::null_mut(),
+    }
 }

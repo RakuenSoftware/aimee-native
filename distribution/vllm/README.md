@@ -104,7 +104,20 @@ Its index remains in RAM, and its descriptor remains open while any extent is
 live. Activation reads the extent into pinned storage and decodes on the GPU.
 `lossless_transport: false` selects raw transport. Insufficient GPU staging budget,
 poor compression or unavailable optional arena storage also use raw transport.
-The device reservation includes both dense output and temporary encoded input.
+Rust accounts for dense residency and temporary staging separately. Completed
+uploads release the staging charge. If staging cannot fit, the worker uploads the
+same bank through raw transport, preserving active pins and complete tensor bytes.
+Frontend admission reserves dense bytes; the worker enforces each upload's peak.
+
+Compressed reads use the retained descriptor and four existing Rust I/O workers.
+Completed chunks are submitted on the caller's ATen stream while other chunks
+are read. `pipeline_transport: false` keeps parallel reads but waits for all reads
+before upload, for diagnostics or workloads where overlap is unfavorable.
+Read failures drain the I/O workers and synchronize already-submitted GPU work
+before buffers are released. No model encoding or integrity work enters activation.
 
 See [the runtime ownership report](../../docs/validation/native-runtime-ownership-20260926.md)
 for profiling boundaries and exactness/ownership checks.
+
+See [streaming and transient-residency measurements](../../docs/validation/native-streaming-20260926.md)
+for the latest implementation and the still-unmet cold microsecond target.

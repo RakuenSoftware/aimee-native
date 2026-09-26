@@ -16,14 +16,14 @@ class DeviceCache:
             raise RuntimeError('invalid native device memory budget')
         self.resident = {}
         self.poisoned = False
-        self.stats = {'uploads': 0, 'evictions': 0, 'resident_bytes': 0, 'peak_bytes': 0}
+        self.stats = {'uploads': 0, 'evictions': 0, 'resident_bytes': 0, 'peak_bytes': 0, 'raw_uploads': 0}
 
     def ensure(self, stores, clear_tables):
         if self.poisoned:
             raise RuntimeError('native device activation failed; restart worker')
         required = {s.uid: s for s in stores}
-        # Reserve dense output plus transient compressed GPU input where enabled.
-        request = [{'id': uid, 'bytes': s.reservation_bytes(self.world, self.rank)} for uid, s in required.items()]
+        # Only dense bytes persist. Rust schedules/reclaims staging per upload.
+        request = [{'id': uid, 'bytes': s.device_bytes(self.world, self.rank), 'staging_bytes': s.staging_bytes(self.world, self.rank)} for uid, s in required.items()]
         response = self.lib.aimee_cache_plan(self.handle, json.dumps(request).encode())
         if response is None:
             raise RuntimeError('pinned native memory exceeds device budget or has invalid geometry')
@@ -37,11 +37,12 @@ class DeviceCache:
                 self.stats['evictions'] += 1
             for uid in plan['upload']:
                 store = required[uid]
-                store.activate(self.device, self.rank, self.world)
+                store.activate(self.device, self.rank, self.world, staging_budget=plan["staging_limits"][str(uid)])
                 self.resident[uid] = store
                 self.stats['uploads'] += 1
+            self.stats['raw_uploads'] += len(plan['raw_upload'])
             self.stats['resident_bytes'] = plan['resident_bytes']
-            self.stats['peak_bytes'] = max(self.stats['peak_bytes'], plan['resident_bytes'])
+            self.stats['peak_bytes'] = max(self.stats['peak_bytes'], plan['peak_bytes'])
         except BaseException:
             # The Rust plan reserves residency before DMA. A partial upload must
             # never be treated as a usable cache. Restart rather than serve it.

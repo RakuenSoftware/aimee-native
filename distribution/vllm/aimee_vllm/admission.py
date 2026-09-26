@@ -43,8 +43,8 @@ class NativeAdmission:
         world=config.get("serve",{}).get("tensor_parallel_size",1)
         banks={}
         for uid,(name,spec) in enumerate(catalog['publications'].items()):
-            store=PreparedStore(lib,{**spec,'byte_budget':config['host_memory_budget'],'disk_backed':config.get('disk_backed',False),'lossless_transport':config.get('lossless_transport',True),'device_budget':config.get('device_memory_budget',256*1024**2)})
-            try:banks[name]=(uid,max(store.reservation_bytes(world, rank) for rank in range(world)))
+            store=PreparedStore(lib,{**spec,'byte_budget':config['host_memory_budget'],'disk_backed':config.get('disk_backed',False),'lossless_transport':False,'device_budget':config.get('device_memory_budget',256*1024**2)})
+            try:banks[name]=(uid,max(store.prepare_plan(rank, world)[1]["bytes"] for rank in range(world)))
             finally:store.close()
         return banks
 

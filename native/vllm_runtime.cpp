@@ -20,6 +20,13 @@ void* aimee_rt_upload(void* tensor, int device) noexcept {
   try { return new at::Tensor(static_cast<at::Tensor*>(tensor)->to(at::Device(at::kCUDA, device), true, false)); }
   catch (...) { return nullptr; }
 }
+bool aimee_rt_upload_range(void* host, void* device, size_t offset, size_t bytes) noexcept {
+  try {
+    static_cast<at::Tensor*>(device)->narrow(0,offset/2,bytes/2).copy_(
+        static_cast<at::Tensor*>(host)->narrow(0,offset/2,bytes/2),true);
+    return true;
+  } catch (...) { return false; }
+}
 bool aimee_rt_wait(void* tensor) noexcept {
   try {
     auto device = static_cast<at::Tensor*>(tensor)->device();

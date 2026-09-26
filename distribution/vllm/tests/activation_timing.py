@@ -7,7 +7,7 @@ They are not isolated DMA, SSD controller latency, or attention/answer latency.
 import argparse,ctypes,json,math,mmap,os,pathlib,statistics,time,subprocess,sys,tempfile
 import torch
 
-p=argparse.ArgumentParser();p.add_argument('--catalog',required=True);p.add_argument('--publication',required=True);p.add_argument('--library',default='/opt/aimee/libaimee_native.so');p.add_argument('--output',required=True);p.add_argument('--repetitions',type=int,default=100);p.add_argument('--single-cold',action='store_true');p.add_argument('--cold-repetitions',type=int,default=20);p.add_argument('--packed',action='store_true');p.add_argument('--bridge-file');p.add_argument('--native-profile',action='store_true');p.add_argument('--raw-transport',action='store_true');a=p.parse_args()
+p=argparse.ArgumentParser();p.add_argument('--catalog',required=True);p.add_argument('--publication',required=True);p.add_argument('--library',default='/opt/aimee/libaimee_native.so');p.add_argument('--output',required=True);p.add_argument('--repetitions',type=int,default=100);p.add_argument('--single-cold',action='store_true');p.add_argument('--cold-repetitions',type=int,default=20);p.add_argument('--packed',action='store_true');p.add_argument('--bridge-file');p.add_argument('--native-profile',action='store_true');p.add_argument('--raw-transport',action='store_true');p.add_argument('--parallel-only',action='store_true');a=p.parse_args()
 if a.bridge_file:
     import importlib.util
     module=importlib.util.spec_from_file_location('native_store_probe',a.bridge_file);bridge=importlib.util.module_from_spec(module);module.loader.exec_module(bridge);PreparedStore=bridge.PreparedStore
@@ -18,6 +18,7 @@ def activate():
 spec=json.loads(pathlib.Path(a.catalog).read_text())['publications'][a.publication]
 spec=dict(spec,disk_backed=True,byte_budget=512*1024**2)
 if a.bridge_file or a.raw_transport:spec.update(lossless_transport=not a.raw_transport,device_budget=256*1024**2)
+spec.update(pipeline_transport=not a.parallel_only)
 lib=ctypes.CDLL(a.library);device=torch.device('cuda:0');torch.cuda.set_device(device)
 # Initialize GPU context before measuring admission or application.
 torch.empty(1,device=device);torch.cuda.synchronize()
@@ -81,7 +82,7 @@ try:
         with tempfile.TemporaryDirectory(prefix='native-cold-') as temp:
             for i in range(a.cold_repetitions):
                 target=pathlib.Path(temp)/f'{i}.json'
-                subprocess.run([sys.executable,__file__,'--catalog',a.catalog,'--publication',a.publication,'--library',a.library,'--output',str(target),'--single-cold']+(['--packed'] if a.packed else [])+(['--bridge-file',a.bridge_file] if a.bridge_file else [])+(['--native-profile'] if a.native_profile else [])+(['--raw-transport'] if a.raw_transport else []),check=True,stdout=subprocess.DEVNULL)
+                subprocess.run([sys.executable,__file__,'--catalog',a.catalog,'--publication',a.publication,'--library',a.library,'--output',str(target),'--single-cold']+(['--packed'] if a.packed else [])+(['--bridge-file',a.bridge_file] if a.bridge_file else [])+(['--native-profile'] if a.native_profile else [])+(['--raw-transport'] if a.raw_transport else [])+(['--parallel-only'] if a.parallel_only else []),check=True,stdout=subprocess.DEVNULL)
                 trial=json.loads(target.read_text());assert trial['status']=='passed'
                 report['rows']['os_page_cache_cold']+=trial['rows']['os_page_cache_cold']
         activate();torch.cuda.synchronize();store.evict(device,0,2)

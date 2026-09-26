@@ -10,6 +10,8 @@ use std::collections::{BTreeMap, BTreeSet};
 pub struct Bank {
     pub id: u64,
     pub bytes: usize,
+    #[serde(default)]
+    pub staging_bytes: usize,
 }
 #[derive(Clone)]
 struct Resident {
@@ -27,6 +29,9 @@ pub struct Plan {
     pub evict: Vec<u64>,
     pub upload: Vec<u64>,
     pub resident_bytes: usize,
+    pub peak_bytes: usize,
+    pub staging_limits: BTreeMap<u64, usize>,
+    pub raw_upload: Vec<u64>,
 }
 impl DeviceCache {
     pub fn new(budget: usize) -> Result<Self> {
@@ -84,24 +89,36 @@ impl DeviceCache {
             evict.push(id);
         }
         let mut upload = Vec::new();
+        let mut staging_limits = BTreeMap::new();
+        let mut raw_upload = Vec::new();
+        let mut peak_bytes = bytes;
+        // Large transient allocations first minimize the maximum sequential peak.
+        // Staging is released after each synchronous upload; only dense bytes stay.
+        let mut pending: Vec<_> = required.iter()
+            .filter(|b| !next.resident.contains_key(&b.id)).collect();
+        pending.sort_by_key(|b| (std::cmp::Reverse(b.staging_bytes), b.id));
+        for bank in pending {
+            upload.push(bank.id);
+            bytes += bank.bytes;
+            let available = self.budget - bytes;
+            staging_limits.insert(bank.id, available);
+            let staging = if bank.staging_bytes <= available { bank.staging_bytes } else {
+                raw_upload.push(bank.id);
+                0
+            };
+            peak_bytes = peak_bytes.max(bytes + staging);
+        }
         for bank in required {
-            if !next.resident.contains_key(&bank.id) {
-                upload.push(bank.id);
-                bytes += bank.bytes;
-            }
-            next.resident.insert(
-                bank.id,
-                Resident {
-                    bytes: bank.bytes,
-                    touched: next.epoch,
-                },
-            );
+            next.resident.insert(bank.id, Resident { bytes: bank.bytes, touched: next.epoch });
         }
         *self = next;
         Ok(Plan {
             evict,
             upload,
             resident_bytes: bytes,
+            peak_bytes,
+            staging_limits,
+            raw_upload,
         })
     }
 }
@@ -110,7 +127,38 @@ impl DeviceCache {
 mod tests {
     use super::*;
     fn b(id: u64, bytes: usize) -> Bank {
-        Bank { id, bytes }
+        Bank { id, bytes, staging_bytes: 0 }
+    }
+    #[test]
+    fn transient_staging_is_released_between_uploads_and_residency() {
+        let mut c=DeviceCache::new(30).unwrap();
+        let banks: Vec<_>=(1..=3).map(|id| Bank{id,bytes:10,staging_bytes:8}).collect();
+        let p=c.reconcile(&banks).unwrap();
+        assert_eq!(p.resident_bytes,30);
+        assert_eq!(p.peak_bytes,30);
+        assert_eq!(p.raw_upload,vec![3]);
+        let p=c.reconcile(&banks).unwrap();
+        assert!(p.upload.is_empty());
+        assert!(p.evict.is_empty());
+        assert_eq!(p.peak_bytes,30);
+    }
+    #[test]
+    fn staging_pressure_does_not_evict_an_otherwise_fitting_idle_bank() {
+        let mut c=DeviceCache::new(20).unwrap();
+        c.reconcile(&[b(1,10)]).unwrap();
+        let p=c.reconcile(&[Bank{id:2,bytes:10,staging_bytes:8}]).unwrap();
+        assert!(p.evict.is_empty());
+        assert_eq!(p.raw_upload,vec![2]);
+        assert_eq!(p.resident_bytes,20);
+        assert_eq!(p.peak_bytes,20);
+    }
+    #[test]
+    fn upload_order_places_large_staging_first() {
+        let mut c=DeviceCache::new(30).unwrap();
+        let p=c.reconcile(&[Bank{id:1,bytes:10,staging_bytes:1},Bank{id:2,bytes:10,staging_bytes:19}]).unwrap();
+        assert_eq!(p.upload,vec![2,1]);
+        assert!(p.raw_upload.is_empty());
+        assert_eq!(p.peak_bytes,29);
     }
     #[test]
     fn idle_lru_eviction_preserves_active_pins() {

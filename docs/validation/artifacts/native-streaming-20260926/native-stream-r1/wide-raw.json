@@ -1,0 +1,592 @@
+{
+  "scope": "Exact compiled-consumer activation timings, with verified OS page residency.\n\nPreparation and initial integrity admission are separate. Activation measurements\ninclude framework wrapping, page faults where labeled, and completed GPU work.\nThey are not isolated DMA, SSD controller latency, or attention/answer latency.\n",
+  "source_bytes": 201627944,
+  "original_source_bytes": 201627944,
+  "runtime_warmup_us": 282071.43,
+  "transport_preparation_us": 216.893,
+  "lossless_transport": false,
+  "transfer_bytes": 105611264,
+  "rank": 0,
+  "world": 2,
+  "device_bytes": 105611264,
+  "initial_admission_us": 119561.073,
+  "rows": {
+    "os_page_cache_cold": [
+      {
+        "us": 51382.318,
+        "phases_us": {
+          "device_submit": 113.06099999999999,
+          "device_wait": 8145.711,
+          "pinned_allocation": 20.91,
+          "read_into_pinned": 42715.64,
+          "release": 8.48,
+          "views": 143.782
+        },
+        "resident_pages_before": 0,
+        "conditioning_attempts": 1
+      },
+      {
+        "us": 52070.228,
+        "phases_us": {
+          "device_submit": 115.331,
+          "device_wait": 8101.07,
+          "pinned_allocation": 27.900000000000002,
+          "read_into_pinned": 43431.12100000001,
+          "release": 5.48,
+          "views": 155.052
+        },
+        "resident_pages_before": 0,
+        "conditioning_attempts": 1
+      },
+      {
+        "us": 51375.888,
+        "phases_us": {
+          "device_submit": 87.202,
+          "device_wait": 8144.570000000001,
+          "pinned_allocation": 27.900000000000002,
+          "read_into_pinned": 42795.211,
+          "release": 4.930000000000001,
+          "views": 138.75199999999998
+        },
+        "resident_pages_before": 0,
+        "conditioning_attempts": 1
+      },
+      {
+        "us": 51301.337,
+        "phases_us": {
+          "device_submit": 88.651,
+          "device_wait": 8160.541,
+          "pinned_allocation": 30.0,
+          "read_into_pinned": 42580.958,
+          "release": 8.290000000000001,
+          "views": 181.492
+        },
+        "resident_pages_before": 0,
+        "conditioning_attempts": 1
+      },
+      {
+        "us": 51364.567,
+        "phases_us": {
+          "device_submit": 49.400999999999996,
+          "device_wait": 8102.18,
+          "pinned_allocation": 15.841,
+          "read_into_pinned": 42923.981999999996,
+          "release": 4.59,
+          "views": 121.91199999999999
+        },
+        "resident_pages_before": 0,
+        "conditioning_attempts": 1
+      },
+      {
+        "us": 50534.775,
+        "phases_us": {
+          "device_submit": 112.41199999999999,
+          "device_wait": 7595.742,
+          "pinned_allocation": 24.041,
+          "read_into_pinned": 42430.494999999995,
+          "release": 7.4399999999999995,
+          "views": 132.512
+        },
+        "resident_pages_before": 0,
+        "conditioning_attempts": 1
+      }
+    ],
+    "os_page_cache_warm": [
+      {
+        "us": 16274.8,
+        "phases_us": {
+          "device_submit": 79.132,
+          "device_wait": 8143.370000000001,
+          "pinned_allocation": 23.180000000000003,
+          "read_into_pinned": 7792.175,
+          "release": 5.699999999999999,
+          "views": 77.111
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 15881.294,
+        "phases_us": {
+          "device_submit": 38.349999999999994,
+          "device_wait": 7704.414,
+          "pinned_allocation": 9.290000000000001,
+          "read_into_pinned": 7965.587999999999,
+          "release": 3.18,
+          "views": 70.851
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 15976.015,
+        "phases_us": {
+          "device_submit": 33.311,
+          "device_wait": 7684.463,
+          "pinned_allocation": 7.51,
+          "read_into_pinned": 8094.479,
+          "release": 2.9299999999999997,
+          "views": 70.40100000000001
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 16241.85,
+        "phases_us": {
+          "device_submit": 31.99,
+          "device_wait": 7764.065,
+          "pinned_allocation": 7.859999999999999,
+          "read_into_pinned": 8281.892000000002,
+          "release": 3.1999999999999997,
+          "views": 71.731
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 16321.761,
+        "phases_us": {
+          "device_submit": 32.480000000000004,
+          "device_wait": 7646.383,
+          "pinned_allocation": 7.7700000000000005,
+          "read_into_pinned": 8453.634999999998,
+          "release": 3.591,
+          "views": 74.711
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 16781.867,
+        "phases_us": {
+          "device_submit": 33.911,
+          "device_wait": 7942.767,
+          "pinned_allocation": 7.97,
+          "read_into_pinned": 8622.876999999999,
+          "release": 3.2399999999999998,
+          "views": 72.711
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 15959.035,
+        "phases_us": {
+          "device_submit": 110.932,
+          "device_wait": 7690.463,
+          "pinned_allocation": 31.581000000000003,
+          "read_into_pinned": 7770.894,
+          "release": 6.98,
+          "views": 115.63199999999999
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 16124.958,
+        "phases_us": {
+          "device_submit": 112.291,
+          "device_wait": 7680.443,
+          "pinned_allocation": 31.189999999999998,
+          "read_into_pinned": 7974.948000000001,
+          "release": 7.279999999999999,
+          "views": 109.012
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 17006.231,
+        "phases_us": {
+          "device_submit": 110.782,
+          "device_wait": 7797.925,
+          "pinned_allocation": 31.42,
+          "read_into_pinned": 8746.299,
+          "release": 8.709999999999999,
+          "views": 95.29100000000001
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 15679.611,
+        "phases_us": {
+          "device_submit": 111.772,
+          "device_wait": 7772.344,
+          "pinned_allocation": 28.77,
+          "read_into_pinned": 7460.320000000001,
+          "release": 8.610000000000001,
+          "views": 92.432
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 15915.305,
+        "phases_us": {
+          "device_submit": 110.84100000000001,
+          "device_wait": 7640.783,
+          "pinned_allocation": 15.319999999999999,
+          "read_into_pinned": 7845.536,
+          "release": 7.85,
+          "views": 90.902
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 15612.931,
+        "phases_us": {
+          "device_submit": 93.741,
+          "device_wait": 7645.243,
+          "pinned_allocation": 26.79,
+          "read_into_pinned": 7568.952,
+          "release": 6.83,
+          "views": 99.551
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 15750.212,
+        "phases_us": {
+          "device_submit": 110.832,
+          "device_wait": 7674.563,
+          "pinned_allocation": 30.36,
+          "read_into_pinned": 7607.6720000000005,
+          "release": 7.859999999999999,
+          "views": 96.742
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 15914.825,
+        "phases_us": {
+          "device_submit": 112.03099999999999,
+          "device_wait": 7769.645,
+          "pinned_allocation": 35.83,
+          "read_into_pinned": 7675.304,
+          "release": 7.34,
+          "views": 99.681
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 15498.038,
+        "phases_us": {
+          "device_submit": 97.881,
+          "device_wait": 7643.6230000000005,
+          "pinned_allocation": 23.511,
+          "read_into_pinned": 7467.92,
+          "release": 5.38,
+          "views": 90.021
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 20631.664,
+        "phases_us": {
+          "device_submit": 104.25200000000001,
+          "device_wait": 11916.655999999999,
+          "pinned_allocation": 30.99,
+          "read_into_pinned": 8238.971,
+          "release": 5.5600000000000005,
+          "views": 101.771
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 15861.644,
+        "phases_us": {
+          "device_submit": 116.88199999999999,
+          "device_wait": 7684.713,
+          "pinned_allocation": 28.479999999999997,
+          "read_into_pinned": 7700.324,
+          "release": 9.371,
+          "views": 101.501
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 15614.711,
+        "phases_us": {
+          "device_submit": 79.631,
+          "device_wait": 7682.353999999999,
+          "pinned_allocation": 13.45,
+          "read_into_pinned": 7562.722,
+          "release": 9.26,
+          "views": 91.581
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 15760.522,
+        "phases_us": {
+          "device_submit": 61.24,
+          "device_wait": 7688.1539999999995,
+          "pinned_allocation": 11.270000000000001,
+          "read_into_pinned": 7711.244,
+          "release": 9.08,
+          "views": 90.131
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 15902.805,
+        "phases_us": {
+          "device_submit": 96.551,
+          "device_wait": 7687.374000000001,
+          "pinned_allocation": 13.101,
+          "read_into_pinned": 7822.235000000001,
+          "release": 7.659999999999999,
+          "views": 91.141
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 15842.863,
+        "phases_us": {
+          "device_submit": 105.05199999999999,
+          "device_wait": 7584.582,
+          "pinned_allocation": 9.89,
+          "read_into_pinned": 7814.494999999999,
+          "release": 8.87,
+          "views": 103.671
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 15852.443,
+        "phases_us": {
+          "device_submit": 91.362,
+          "device_wait": 7832.765,
+          "pinned_allocation": 14.59,
+          "read_into_pinned": 7615.612,
+          "release": 9.08,
+          "views": 96.11200000000001
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 15788.333,
+        "phases_us": {
+          "device_submit": 112.742,
+          "device_wait": 7690.763,
+          "pinned_allocation": 14.610000000000001,
+          "read_into_pinned": 7646.843000000001,
+          "release": 9.08,
+          "views": 95.681
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 15752.822,
+        "phases_us": {
+          "device_submit": 108.581,
+          "device_wait": 7700.924,
+          "pinned_allocation": 15.45,
+          "read_into_pinned": 7633.693,
+          "release": 7.53,
+          "views": 91.91199999999999
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 15954.215,
+        "phases_us": {
+          "device_submit": 108.571,
+          "device_wait": 7681.1140000000005,
+          "pinned_allocation": 15.370000000000001,
+          "read_into_pinned": 7853.255999999999,
+          "release": 9.74,
+          "views": 92.101
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 16003.216,
+        "phases_us": {
+          "device_submit": 96.851,
+          "device_wait": 7770.455,
+          "pinned_allocation": 30.851,
+          "read_into_pinned": 7786.025000000001,
+          "release": 7.52,
+          "views": 99.42099999999999
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 15905.295,
+        "phases_us": {
+          "device_submit": 112.341,
+          "device_wait": 7679.524,
+          "pinned_allocation": 29.810000000000002,
+          "read_into_pinned": 7753.425,
+          "release": 9.16,
+          "views": 94.831
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 15756.122,
+        "phases_us": {
+          "device_submit": 118.141,
+          "device_wait": 7683.114,
+          "pinned_allocation": 21.259999999999998,
+          "read_into_pinned": 7637.063,
+          "release": 8.63,
+          "views": 93.53099999999999
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 16158.999,
+        "phases_us": {
+          "device_submit": 113.971,
+          "device_wait": 7680.994,
+          "pinned_allocation": 26.060000000000002,
+          "read_into_pinned": 8024.619000000001,
+          "release": 8.379999999999999,
+          "views": 93.081
+        },
+        "resident_pages_before": 49226
+      },
+      {
+        "us": 26129.105,
+        "phases_us": {
+          "device_submit": 115.122,
+          "device_wait": 16921.779000000002,
+          "pinned_allocation": 28.381,
+          "read_into_pinned": 8719.448,
+          "release": 6.93,
+          "views": 106.012
+        },
+        "resident_pages_before": 49226
+      }
+    ],
+    "already_device_resident": [
+      {
+        "us": 9.72
+      },
+      {
+        "us": 1.74
+      },
+      {
+        "us": 0.761
+      },
+      {
+        "us": 0.61
+      },
+      {
+        "us": 0.61
+      },
+      {
+        "us": 0.6
+      },
+      {
+        "us": 0.58
+      },
+      {
+        "us": 0.58
+      },
+      {
+        "us": 0.57
+      },
+      {
+        "us": 0.57
+      },
+      {
+        "us": 0.56
+      },
+      {
+        "us": 0.6
+      },
+      {
+        "us": 0.56
+      },
+      {
+        "us": 0.56
+      },
+      {
+        "us": 0.56
+      },
+      {
+        "us": 0.56
+      },
+      {
+        "us": 0.56
+      },
+      {
+        "us": 0.57
+      },
+      {
+        "us": 0.56
+      },
+      {
+        "us": 0.55
+      },
+      {
+        "us": 0.57
+      },
+      {
+        "us": 0.56
+      },
+      {
+        "us": 0.67
+      },
+      {
+        "us": 0.57
+      },
+      {
+        "us": 0.56
+      },
+      {
+        "us": 0.6
+      },
+      {
+        "us": 0.6
+      },
+      {
+        "us": 0.56
+      },
+      {
+        "us": 0.57
+      },
+      {
+        "us": 0.56
+      }
+    ]
+  },
+  "status": "passed",
+  "exact_segments_verified": 96,
+  "summary": {
+    "os_page_cache_cold": {
+      "n": 6,
+      "median_us": 51370.2275,
+      "p95_us": 52070.228,
+      "min_us": 50534.775,
+      "max_us": 52070.228
+    },
+    "os_page_cache_warm": {
+      "n": 30,
+      "median_us": 15910.060000000001,
+      "p95_us": 20631.664,
+      "min_us": 15498.038,
+      "max_us": 26129.105
+    },
+    "already_device_resident": {
+      "n": 30,
+      "median_us": 0.57,
+      "p95_us": 1.74,
+      "min_us": 0.55,
+      "max_us": 9.72
+    }
+  },
+  "phase_medians_us": {
+    "os_page_cache_cold": {
+      "device_submit": 100.5315,
+      "device_wait": 8123.375,
+      "pinned_allocation": 25.9705,
+      "read_into_pinned": 42755.4255,
+      "release": 6.46,
+      "views": 141.267
+    },
+    "os_page_cache_warm": {
+      "device_submit": 106.8115,
+      "device_wait": 7687.764,
+      "pinned_allocation": 22.22,
+      "read_into_pinned": 7789.1,
+      "release": 7.595,
+      "views": 93.306
+    }
+  }
+}
