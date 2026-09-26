@@ -53,4 +53,22 @@ class AimeeWorker(Worker):
                 if '-' in line.split()[0]:native_mapping=line.rstrip().endswith('/compact.pack')
                 elif native_mapping and line.startswith('Rss:'):resident+=int(line.split()[1])*1024
         result['mapped_payload_rss_bytes']=resident
+        import torch
+        free,total=torch.cuda.mem_get_info(self.device)
+        result['device']={
+            'total_bytes':total, 'free_bytes':free,
+            'driver_used_bytes':total-free,
+            'torch_allocated_bytes':torch.cuda.memory_allocated(self.device),
+            'torch_reserved_bytes':torch.cuda.memory_reserved(self.device),
+            'torch_peak_allocated_bytes':torch.cuda.max_memory_allocated(self.device),
+            'torch_peak_reserved_bytes':torch.cuda.max_memory_reserved(self.device),
+        }
+        # Includes model weights, KV cache, native banks, pointer tables and
+        # temporary allocations tracked by the allocator. Driver use additionally
+        # includes non-Torch allocations and other processes on this GPU.
+        with open('/proc/self/status') as status:
+            fields={line.split(':',1)[0]:line.split(':',1)[1].strip()
+                    for line in status if ':' in line}
+        result['process']={key:int(fields[key].split()[0])*1024
+                           for key in ('VmRSS','VmHWM') if key in fields}
         return result

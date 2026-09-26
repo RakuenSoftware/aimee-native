@@ -8,6 +8,7 @@ import json
 import os
 from pathlib import Path
 from .store import PreparedStore
+from .stream_completion import StreamCompletion
 
 class Ledger:
     def __init__(self, lib, budget):
@@ -115,6 +116,7 @@ class NativeAdmission:
             scope['headers']=[(k,v) for k,v in scope.get('headers',[]) if k.lower()!=b'content-length']+[(b'content-length',str(len(raw)).encode())]
         self.active+=1;self.idle.clear()
         replayed=False;disconnected=False;complete=False
+        stream=StreamCompletion(body.get("n",1));is_sse=False
         async def replay():
             nonlocal replayed,disconnected
             if not replayed:
@@ -123,7 +125,15 @@ class NativeAdmission:
             if event['type']=='http.disconnect':disconnected=True
             return event
         async def forward(event):
-            nonlocal complete
+            nonlocal complete,is_sse
+            if event['type']=='http.response.start':
+                is_sse=(body.get('stream') is True and event['status']==200 and
+                        any(k.lower()==b'content-type' and v.lower().startswith(b'text/event-stream')
+                            for k,v in event.get('headers',[])))
+            if is_sse and event['type']=='http.response.body':
+                # Inspect engine output before delivery: a client may disconnect
+                # as soon as it sees [DONE], before ASGI sends its final empty body.
+                stream.feed(event.get('body',b''))
             await send(event)
             if event['type']=='http.response.body' and not event.get('more_body',False):complete=True
         try:
@@ -132,7 +142,7 @@ class NativeAdmission:
             self.active-=1
             if self.active==0:self.idle.set()
             if bank is not None:
-                if complete and not disconnected:self.ledger.release(bank[0])
+                if (complete and not disconnected) or (is_sse and stream.complete):self.ledger.release(bank[0])
                 else:
                     # Do not assume an HTTP cancellation acknowledged GPU abort.
                     # Keep reservation and stop admission until a supervised restart.

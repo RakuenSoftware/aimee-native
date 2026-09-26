@@ -18,8 +18,9 @@ import (
 // The caller MUST first resolve identity and authorize the recipient/source via
 // Aimee. This type neither creates grants nor substitutes for that resolver.
 type Preparer struct {
-	Binary, Template string
-	Profile          Profile
+	Binary   string  `json:"binary"`
+	Template string  `json:"template"`
+	Profile  Profile `json:"profile"`
 }
 type limitedOutput struct {
 	bytes.Buffer

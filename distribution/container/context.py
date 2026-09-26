@@ -1,6 +1,6 @@
 """Explicit binary-only container context; never point a Docker build at the repo."""
-import argparse,hashlib,json,pathlib,shutil,zipfile
-p=argparse.ArgumentParser();p.add_argument('--wheel',required=True);p.add_argument('--library',required=True);p.add_argument('--kernels',required=True);p.add_argument('--gguf-wheel');p.add_argument('--output',required=True);a=p.parse_args()
+import argparse,hashlib,json,pathlib,shutil,zipfile,email,re
+p=argparse.ArgumentParser();p.add_argument('--wheel',required=True);p.add_argument('--library',required=True);p.add_argument('--kernels',required=True);p.add_argument('--gguf-wheel');p.add_argument('--runtime-wheels',required=True);p.add_argument('--output',required=True);a=p.parse_args()
 wheel=pathlib.Path(a.wheel);bank=pathlib.Path(a.kernels);out=pathlib.Path(a.output)
 with zipfile.ZipFile(wheel) as w:
  for name in w.namelist():
@@ -12,7 +12,33 @@ for kernel in manifest['kernels']:
   if pathlib.Path(name).name!=name or not name.endswith(('.json','.hsaco')):raise ValueError('unapproved kernel artifact')
   files.add(name)
 if not manifest['kernels']:raise ValueError('empty kernel bank')
+lock=pathlib.Path(__file__).with_name('runtime-requirements.lock')
+os_lock=pathlib.Path(__file__).with_name('os-packages.lock')
+if not os_lock.read_text().splitlines() or any(not re.fullmatch(r'[a-z0-9][a-z0-9+.-]*(?::[a-z0-9]+)?=[A-Za-z0-9.+:~_-]+',line) for line in os_lock.read_text().splitlines()):raise ValueError('invalid OS dependency lock')
+expected={}
+for line in lock.read_text().splitlines():
+ if not line.strip() or line.startswith('#'):continue
+ match=re.fullmatch(r'([A-Za-z0-9_.-]+)==([^ ]+) --hash=sha256:([a-f0-9]{64})',line)
+ if not match:raise ValueError('invalid runtime dependency lock')
+ key=(match[1].lower().replace('_','-'),match[2])
+ if key in expected:raise ValueError('duplicate runtime dependency')
+ expected[key]=match[3]
+resolved={}
+for dependency in pathlib.Path(a.runtime_wheels).iterdir():
+ if dependency.is_symlink() or not dependency.is_file() or dependency.suffix!='.whl':raise ValueError('unexpected runtime dependency file')
+ with zipfile.ZipFile(dependency) as z:
+  names=[n for n in z.namelist() if n.count('/')==1 and n.endswith('.dist-info/METADATA')]
+  if len(names)!=1:raise ValueError('missing wheel metadata')
+  metadata=email.message_from_bytes(z.read(names[0]))
+ key=(metadata['Name'].lower().replace('_','-'),metadata['Version'])
+ if key not in expected or key in resolved or hashlib.sha256(dependency.read_bytes()).hexdigest()!=expected[key]:raise ValueError('runtime dependency does not match lock')
+ resolved[key]=dependency
+if set(resolved)!=set(expected):raise ValueError('incomplete runtime dependencies')
 out.mkdir(parents=True,exist_ok=False);(out/'kernels').mkdir()
+(out/'runtime-wheels').mkdir()
+for dependency in resolved.values():shutil.copyfile(dependency,out/'runtime-wheels'/dependency.name)
+shutil.copyfile(lock,out/'runtime-requirements.lock')
+shutil.copyfile(os_lock,out/'os-packages.lock')
 shutil.copyfile(wheel,out/'client.whl');(out/'wheel-name.txt').write_text(wheel.name)
 shutil.copyfile(a.library,out/'libaimee_native.so')
 for name in files:shutil.copyfile(bank/name,out/'kernels'/name)

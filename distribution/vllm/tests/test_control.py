@@ -38,3 +38,14 @@ class ControlTests(unittest.IsolatedAsyncioTestCase):
         async def rpc(*args,**kw):return [{'publications':1,'pinned_requests':0,'catalog_digest':'new'}]*2
         await operate(o,NS(collective_rpc=rpc),{'op':'refresh','generation':second['generation']})
         self.assertFalse(o.paused)
+
+    async def test_metrics_require_every_rank_and_do_not_change_admission(self):
+        o=self.owner()
+        async def partial(*args,**kw):return [{}]
+        with self.assertRaisesRegex(RuntimeError,'incomplete worker metrics'):
+            await operate(o,NS(collective_rpc=partial),{'op':'metrics'})
+        self.assertFalse(o.paused);self.assertFalse(o.poisoned)
+        async def complete(name,**kw):
+            self.assertEqual(name,'aimee_cache_stats');return [{'rank':0},{'rank':1}]
+        result=await operate(o,NS(collective_rpc=complete),{'op':'metrics'})
+        self.assertEqual(len(result['workers']),2);self.assertFalse(o.paused)

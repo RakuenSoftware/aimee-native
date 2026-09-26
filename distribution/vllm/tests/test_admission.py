@@ -82,3 +82,22 @@ class AdmissionTests(unittest.IsolatedAsyncioTestCase):
         with patch('aimee_vllm.selection.select',activated):
             self.assertEqual((await self.call(m,'a'))[0]['status'],200)
         self.assertTrue(reached)
+
+    async def test_done_disconnect_releases_but_interrupted_stream_stays_pinned(self):
+        for completed in (False,True):
+            async def app(scope,receive,send):
+                await receive()
+                await send({'type':'http.response.start','status':200,'headers':[(b'content-type',b'text/event-stream')]})
+                wire=b'data: {"choices":[{"index":0,"finish_reason":"stop"}]}\n\n' if completed else b'data: {"choices":[{"index":0,"finish_reason":null}]}\n\n'
+                if completed:wire+=b'data: [DONE]\n\n'
+                await send({'type':'http.response.body','body':wire,'more_body':True})
+                self.assertEqual((await receive())['type'],'http.disconnect')
+                raise asyncio.CancelledError()
+            m=self.middleware(app)
+            events=iter([{'type':'http.request','body':json.dumps({'stream':True,'vllm_xargs':{'aimee_publication':'a'}}).encode()},{'type':'http.disconnect'}])
+            async def receive():return next(events)
+            async def send(event):pass
+            with self.assertRaises(asyncio.CancelledError):
+                await m({'type':'http','method':'POST','path':'/v1/chat/completions'},receive,send)
+            self.assertEqual(m.poisoned,not completed)
+            self.assertEqual(m.ledger.acquire(2,10),completed)

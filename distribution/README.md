@@ -98,3 +98,9 @@ This is a tested **lab** distribution, not a declaration that all production
 acceptance gates are closed. The live account endpoint does not yet mount these
 native routes; dependency findings, production identities and final certification
 remain explicit release conditions.
+
+The [current integration and certification report](../docs/validation/native-production-20260926.md)
+records the maintained Aimee ingress bridge, private Unix service, current-account
+binding, complete Gemma engineering workloads and dependency remediation.
+[Deployment instructions](service/DEPLOYMENT.md) keep all native delivery and
+preparation implementation here; Aimee contains only the authenticated bridge.

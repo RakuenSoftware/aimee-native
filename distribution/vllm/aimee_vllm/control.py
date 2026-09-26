@@ -24,6 +24,14 @@ async def start(owner, engine):
 async def operate(owner,engine,request):
     if request == {'op':'status'}:
         return {'state':'restart_required' if owner.poisoned else ('paused' if owner.paused else 'active')}
+    if request == {'op':'metrics'}:
+        # Explicit operator request, outside admission and attention. A missing
+        # rank is a failed measurement, never reported as a smaller footprint.
+        workers=await engine.collective_rpc('aimee_cache_stats',timeout=30)
+        expected=owner.config.get('serve',{}).get('tensor_parallel_size',1)
+        if len(workers)!=expected:raise RuntimeError('incomplete worker metrics')
+        return {'workers':workers,'active_requests':owner.active,
+                'state':'restart_required' if owner.poisoned else ('paused' if owner.paused else 'active')}
     guarded_refresh=(set(request)=={'op','generation'} and request['op']=='refresh'
                      and type(request['generation']) is int and request['generation']>=0)
     if request not in ({'op':'refresh'},{'op':'withdraw'}) and not guarded_refresh:
