@@ -57,3 +57,9 @@ extended binary kernel bank. Both head geometries passed dense-reference checks
 at 32 and 8,000 text positions on both GPUs. The signed customer release remains
 the separately certified 2,048-token profile. Initial unsupported-profile and
 preflight infrastructure failures remain recorded and are not scored tasks.
+
+Image setup correction before scored continuation: some official images include
+a setup commit. The runner explicitly resets tracked files to dataset base_commit
+and verifies HEAD, while preserving installed environment/build files. The first
+checkout failure and incomplete concurrent attempts were archived as infrastructure
+preflight evidence after draining GPU requests; no learned records existed yet.

@@ -47,6 +47,9 @@ def attempt(task,arm,publication):
  row={'instance_id':iid,'arm':arm,'publication':publication,'status':'running','started':time.time()};env=None;agent=None
  try:
   env=DockerEnvironment(image=image(task),cwd='/testbed',timeout=45,pull_timeout=600,run_args=['--rm','--network','none','--memory','3g','--cpus','2'],interpreter=['bash','-c'],env={'BASH_ENV':'/root/.bashrc','PAGER':'cat'})
+  # Benchmark images may include setup commits; explicitly restore the dataset base.
+  reset=env.execute({'command':'git reset --hard '+task['base_commit']})
+  if reset['returncode']!=0:raise RuntimeError('dataset base checkout failed')
   check=env.execute({'command':'git rev-parse HEAD'})
   if check['output'].strip()!=task['base_commit']:raise RuntimeError('checkout mismatch')
   agent=DefaultAgent(NativeModel(publication),env,system_template=SYSTEM,instance_template='Fix this issue:\n{{task}}',step_limit=STEPS,cost_limit=0,wall_time_limit_seconds=SECONDS,max_consecutive_format_errors=5,output_path=out/'trajectory.json')
