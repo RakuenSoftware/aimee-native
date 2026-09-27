@@ -12,6 +12,8 @@ if min(STEPS,SECONDS,ROUNDS)<=0:raise ValueError('experiment budgets must be pos
 OUTPUT_TOKENS=int(os.environ.get('SWE_OUTPUT_TOKENS','512'))
 if not 1<=OUTPUT_TOKENS<=4096:raise ValueError('output budget must be between 1 and 4096 tokens')
 INPUT_TOKENS=min(7400,8192-OUTPUT_TOKENS-280)
+GRADE_TIMEOUT=int(os.environ.get('SWE_GRADE_TIMEOUT','180'))
+if GRADE_TIMEOUT<=0:raise ValueError('grading timeout must be positive')
 SYSTEM='''You are a software engineer fixing a repository issue in /testbed. Use exactly one fenced bash command per response, with at most two brief sentences before it. Read relevant code, implement the fix, and run relevant existing tests or your own reproduction. Do not modify existing tests or commit. You may have native memory from earlier attempts: use its concrete feedback, but verify against this clean checkout. To finish, run exactly: echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT && git diff --no-ext-diff .\nExample:\n```bash\nls\n```'''
 def api(path,body):
  req=urllib.request.Request(BASE+path,data=json.dumps(body).encode(),headers={'Content-Type':'application/json'})
@@ -82,7 +84,8 @@ def attempt(task,arm,publication,text_memory=None):
   row.update(resolved=False,grade_status='empty_prediction',finished=time.time());(out/'result.json').write_text(json.dumps(row,indent=2)+'\n');return row
  full=GRADER[iid];pred={'instance_id':iid,'model_name_or_path':'gemma-native-'+arm,'model_patch':row['model_patch']}
  try:
-  spec=make_test_spec(full,namespace='swebench');result=run_instance(spec,pred,False,False,docker.from_env(),'native-20260926-'+arm,timeout=180)
+  row['grade_timeout_seconds']=GRADE_TIMEOUT
+  spec=make_test_spec(full,namespace='swebench');result=run_instance(spec,pred,False,False,docker.from_env(),'native-20260926-'+arm,timeout=GRADE_TIMEOUT)
   if result is None:raise RuntimeError('grader produced no report')
   (out/'grade.json').write_text(json.dumps(result,indent=2)+'\n')
   if not result['completed']:raise RuntimeError('official grader did not complete')
@@ -111,7 +114,7 @@ if __name__=='__main__':
  os.chdir(ROOT);(ROOT/'results').mkdir(exist_ok=True)
  tasks=json.loads((ROOT/'tasks.json').read_text());GRADER={r['instance_id']:r for r in json.loads((ROOT/'selected-grader-only.json').read_text())}
  with urllib.request.urlopen(BASE+'/v1/models') as r:MODEL=json.load(r)['data'][0]['id']
- state={'status':'running','target_tasks':len(tasks),'learning_rounds':ROUNDS,'started':time.time(),'budget':{'steps':STEPS,'wall_seconds':SECONDS,'max_output_tokens':OUTPUT_TOKENS,'max_input_tokens':INPUT_TOKENS,'context_tokens':8192,'concurrency':4}};save_status(state)
+ state={'status':'running','target_tasks':len(tasks),'learning_rounds':ROUNDS,'started':time.time(),'budget':{'steps':STEPS,'wall_seconds':SECONDS,'max_output_tokens':OUTPUT_TOKENS,'max_input_tokens':INPUT_TOKENS,'grader_seconds':GRADE_TIMEOUT,'context_tokens':8192,'concurrency':4}};save_status(state)
  try:
   for start in range(0,len(tasks),4):
    group=tasks[start:start+4];lessons={};publications={}

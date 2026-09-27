@@ -201,3 +201,28 @@ supplied in any arm. Every native call carried its native publication, while
 all control calls omitted it. Subsequent histories naturally differ as actions
 diverge; the equality claim concerns the initial request only. The derived audit
 is retained beside the full raw trajectories in `matplotlib-input-audit.json`.
+
+## Grading interruption and separate output-budget diagnostic
+
+The campaign stopped after recording 26 attempts when SymPy-11870's control
+grader exceeded 180 seconds. Its original result remains an infrastructure/
+uncompleted-grading record pending diagnosis; it has not been silently changed
+into a model failure. The saved model patch and all earlier attempts remain
+unchanged. A public existing test completed in about two seconds on both base
+and submitted source, but the official test fixture also exceeded 180 seconds
+on an unchanged functional checkout. That check does not establish that the
+model's patch caused the timeout.
+
+Two CPU-only grader diagnostics now use 900 seconds, one for unchanged functional
+source and one for the exact submitted patch. Their results are pending. The
+runner supports an explicit `SWE_GRADE_TIMEOUT`, separately from the unchanged
+model attempt budget. A guarded `SWE_RESUME_GROUP` can resume at a pair boundary
+only when every prior attempt is recorded and graded; its checks pass. Resume
+will reuse saved attempts rather than repeat model generation.
+
+During this pause, a separate exploratory Matplotlib pair runs with 1536 output
+tokens, 6376 input tokens, 600 seconds/40 steps, and 900 seconds for grading. One
+control and one native attempt use the same retained procedure as before. This
+output/context-budget diagnostic is post-hoc and is not part of the fixed
+64-attempt campaign. It does not update memories or alter that campaign's
+512-token model budget. Results remain pending.

@@ -1,6 +1,7 @@
 """Fixed 16-task, three-round source-backed learning campaign. Private fixture."""
 import concurrent.futures,hashlib,json,os,pathlib,shlex,subprocess,time,urllib.request
 import run
+from resume_campaign import validate_resume
 from source_experience import accept_success,failure_evidence,promote,render_success
 ROOT=run.ROOT;ORIGINAL=ROOT.parent
 
@@ -62,7 +63,9 @@ def save():
 
 if __name__=='__main__':
  os.chdir(ROOT);tasks=json.loads((ROOT/'tasks.json').read_text());run.GRADER={t['instance_id']:t for t in json.loads((ORIGINAL/'selected-grader-only.json').read_text())}
- state={'status':'waiting_for_fidelity','started':time.time(),'scheduled_attempts':len(tasks)*4,'budget':{'seconds':run.SECONDS,'steps':run.STEPS,'output_tokens':run.OUTPUT_TOKENS,'input_tokens':run.INPUT_TOKENS,'context_tokens':8192,'concurrency':2},'scope':'Same-task experience reuse with three native rounds. Eight previously calibrated tasks plus eight additional frozen-list tasks. Prior calibration learn-1 successes are automatically replay-validated and retained before this campaign; no hidden solutions. No held-out-task generalization claim.'};save()
+ resume_start=validate_resume(ROOT,tasks,int(os.environ.get('SWE_RESUME_GROUP','0')))
+ prior_state=json.loads((ROOT/'status.json').read_text()) if resume_start and (ROOT/'status.json').exists() else {}
+ state={'status':'waiting_for_fidelity','started':prior_state.get('started',time.time()),'resume_group':resume_start,'resumed_at':time.time() if resume_start else None,'scheduled_attempts':len(tasks)*4,'budget':{'seconds':run.SECONDS,'steps':run.STEPS,'output_tokens':run.OUTPUT_TOKENS,'input_tokens':run.INPUT_TOKENS,'grader_seconds':run.GRADE_TIMEOUT,'context_tokens':8192,'concurrency':2},'scope':'Same-task experience reuse with three native rounds. Eight previously calibrated tasks plus eight additional frozen-list tasks. Prior calibration learn-1 successes are automatically replay-validated and retained before this campaign; no hidden solutions. No held-out-task generalization claim.'};save()
  try:
   while True:
    prior=json.loads((ORIGINAL/'lesson-fidelity-20260927/status.json').read_text())
@@ -70,7 +73,7 @@ if __name__=='__main__':
    if prior['status']=='failed':raise RuntimeError('predecessor failed; preserve comparison and inspect')
    time.sleep(15)
   with urllib.request.urlopen(run.BASE+'/v1/models',timeout=30) as response:run.MODEL=json.load(response)['data'][0]['id']
-  for start in range(0,len(tasks),2):
+  for start in range(resume_start,len(tasks),2):
    group=tasks[start:start+2];experiences={};publications={};state.update(status='running',group_start=start);save()
    for task in group:
     if subprocess.run(['docker','image','inspect',run.image(task)],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL).returncode:
