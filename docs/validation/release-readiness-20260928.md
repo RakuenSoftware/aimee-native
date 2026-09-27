@@ -248,3 +248,43 @@ are retained unchanged; no earlier model attempt is rerun.
 
 The full grader audit, including scripts, reports and the original interruption,
 is archived in `artifacts/source-learning-20260927/sympy-grader-audit.tar.gz`.
+
+
+## Completed larger-output diagnostic and campaign resume
+
+The exploratory Matplotlib pair completed with official grades. With 1536 output
+tokens, native memory passed in five calls (91 seconds of agent execution); the
+control failed after 25 calls and reached its time limit (676 seconds including
+the final in-flight operation). Both used the same 600-second/40-step configured
+budget. These are different outcomes, not a matched-quality latency comparison.
+The native trajectory repeats some patch lines, despite passing the grader;
+passing this task does not establish minimal or ideal code quality.
+
+The wider output budget did not remove the observed task advantage of the
+retained procedure. This remains one task, with prior experience from the
+explicitly declared calibration source, and is a post-hoc diagnostic rather
+than another independent task gain. Full trajectories, patches and official
+grades are in `artifacts/source-learning-20260927/output-budget-1536.tar.gz`.
+
+The fixed campaign resumed at task-pair offset 6 with all 26 saved attempts
+reused. Its original generation budget remains unchanged, and its only budget
+change is the 900-second official grader allowance documented above. GPU
+inference for the separate diagnostic had finished before the campaign resumed;
+only independent CPU grading overlapped. The release-certification queue was
+rearmed after the resumed worker reported running.
+
+
+## FP32 preparation reuse gate
+
+The release queue now checks reusable preparation under the repaired FP32 dtype;
+previous BF16 comparisons do not certify that change. Nine synthetic cases
+compare reused computation with fresh computation using the same loaded model:
+initial records, changed trailing content, identical content at a new revision,
+changed length, reordering, recipient and view boundaries, and two 32-record
+working sets. Each comparison requires identical exported tensors, and scope
+or length changes require zero reused prefix. The test remains pending.
+
+To respect the host memory budget, the queue temporarily stops the resident
+compiler while this isolated comparison owns the CPU model, then restarts the
+service before the enrolled-client probe. No learning workload is interrupted;
+this follows completed learning, image certification and the staged migration.

@@ -36,6 +36,17 @@ with (ROOT/'preparation-upgrade.log').open('w') as log:
  p=subprocess.run(['python3','/root/aimee-upgrade-preparation-20260928.py'],stdout=log,stderr=subprocess.STDOUT)
 if p.returncode:
  save({'status':'failed','stage':'preparation_upgrade','returncode':p.returncode,'image':image});raise SystemExit(p.returncode)
+# Precision changed, so old BF16 reuse evidence cannot certify FP32 reuse.
+# Free the resident model while the isolated CPU comparison owns that RAM.
+save({'status':'checking_fp32_preparation_reuse'})
+subprocess.run(['pct','exec','101','--','systemctl','stop','aimee-native-compiler'],check=True)
+try:
+ with (ROOT/'preparation-reuse.log').open('w') as log:
+  p=subprocess.run(['pct','exec','101','--','/opt/aimee-memory-lab/venv/bin/python','/opt/aimee-memory-lab/aimee-qwen/distribution/tests/lab/preparation_reuse.py','--output','/opt/aimee-memory-lab/release-candidate-20260927/fp32-preparation-reuse','--source','/opt/aimee-native-compiler','--library','/opt/aimee-native-compiler/libaimee_prepare.so','--compute-dtype','float32'],stdout=log,stderr=subprocess.STDOUT)
+finally:
+ subprocess.run(['pct','exec','101','--','systemctl','start','aimee-native-compiler'],check=True)
+if p.returncode:
+ save({'status':'failed','stage':'fp32_preparation_reuse','returncode':p.returncode,'image':image});raise SystemExit(p.returncode)
 save({'status':'validating_candidate_client'})
 with (ROOT/'candidate-client.log').open('w') as log:
  p=subprocess.run(['pct','exec','110','--','python3','/opt/aimee-client/live_client_runtime.py','--launcher','/opt/aimee-client/bin/aimee-native-candidate-test','--root','/opt/aimee-client/native-candidate-6','--query','What are the native release verification vault code, project, and drink?','--expect','28461','--expect','Juniper','--expect','hibiscus','--output','/opt/aimee-client/release-evidence/candidate-6-runtime.json','--repeat','2'],stdout=log,stderr=subprocess.STDOUT)

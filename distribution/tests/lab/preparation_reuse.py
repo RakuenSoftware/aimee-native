@@ -1,19 +1,19 @@
 """Exact CPU comparison against the deployed one-shot encoder; synthetic records."""
 import argparse,hashlib,importlib.util,json,pathlib,sys,time
 import torch
-p=argparse.ArgumentParser();p.add_argument('--output',required=True);p.add_argument('--source',required=True);p.add_argument('--library',required=True);p.add_argument('--baseline-source',default='/opt/aimee-native-compiler/gemma_compile.py');p.add_argument('--model',default='/opt/aimee-memory-lab/gemma4');a=p.parse_args()
+p=argparse.ArgumentParser();p.add_argument('--output',required=True);p.add_argument('--source',required=True);p.add_argument('--library',required=True);p.add_argument('--baseline-source',default='/opt/aimee-native-compiler/gemma_compile.py');p.add_argument('--model',default='/opt/aimee-memory-lab/gemma4');p.add_argument('--compute-dtype',choices=['bfloat16','float32'],default='bfloat16');a=p.parse_args()
 r=pathlib.Path(a.output);r.mkdir(parents=True,exist_ok=False)
 sys.path.insert(0,a.source)
 from gemma_compile import GemmaCompiler
 old_spec=importlib.util.spec_from_file_location('baseline_gemma',a.baseline_source);old=importlib.util.module_from_spec(old_spec);old_spec.loader.exec_module(old)
-c=GemmaCompiler(a.model,reuse_library=a.library);c.load();baseline=old.GemmaCompiler(a.model);baseline.model=c.model
-identity={'recipient':'synthetic/user-a','authorized_view':'synthetic/view-a','model_revision':'gemma-fixture','runtime_profile':'cpu-bf16','encoding_revision':'joint-negative-v1','position_policy':'negative-complete-set'}
+c=GemmaCompiler(a.model,reuse_library=a.library,compute_dtype=a.compute_dtype);c.load();baseline=old.GemmaCompiler(a.model,compute_dtype=a.compute_dtype);baseline.model=c.model
+identity={'recipient':'synthetic/user-a','authorized_view':'synthetic/view-a','model_revision':'gemma-fixture','runtime_profile':'cpu-'+a.compute_dtype,'encoding_revision':'joint-negative-'+a.compute_dtype,'position_policy':'negative-complete-set'}
 base=['The verification vault code is 53728.','The verification project is named Willow.','The verification drink is chamomile tea.']
 changed=base[:-1]+['The verification drink is peppermint tea.']
 cases=[('initial',base,{}),('last-record-change',changed,{}),('identical-content-new-revision',changed,{}),('length-change',base[:-1]+['The verification drink is very strong black coffee.'],{}),('reorder',list(reversed(base)),{}),('recipient-change',list(reversed(base)),{'recipient':'synthetic/user-b'}),('view-change',list(reversed(base)),{'recipient':'synthetic/user-b','authorized_view':'synthetic/view-b'})]
 wide=[f'The access code for unit {i:03d} is {20000+i}.' for i in range(32)]
 cases += [('wide-initial',wide,{}),('wide-tail-change',wide[:-1]+['The access code for unit 031 is 91827.'],{})]
-report={'status':'running','scope':'synthetic exact computation reuse; no authority claim','rows':[]}
+report={'status':'running','scope':'synthetic exact computation reuse; no authority claim','rows':[],'compute_dtype':a.compute_dtype,'library_sha256':hashlib.file_digest(pathlib.Path(a.library).open('rb'),'sha256').hexdigest()}
 def digest(banks):
  h=hashlib.sha256()
  for _,pair in sorted(banks.items()):
