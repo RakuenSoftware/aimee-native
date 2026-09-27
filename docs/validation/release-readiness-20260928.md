@@ -95,3 +95,10 @@ After eight scored campaign attempts, neither of the first two tasks resolved
 in control or any native round. No infrastructure errors were recorded. Those
 results remain failures; successful procedure acquisition alone does not prove
 that the model will use a record effectively. The remaining pairs are running.
+
+The exact-image test now includes eight additional long-context requests: two
+independent three-record banks, native/text delivery, and prompt targets of
+4096 and 7168 tokens. The server tokenizer establishes each actual length, and
+inference usage must agree. All three selected values must be recalled in each
+answer. These probes are queued, not yet passed; merely configuring an 8192-token
+server does not certify behavior near that limit.

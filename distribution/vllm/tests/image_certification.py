@@ -56,6 +56,23 @@ def payload(model,bank='alpha',mode='native',turns=0):
  if mode=='native':result['vllm_xargs']={'aimee_publication':bank}
  return result,values
 
+def long_payload(model,bank,mode,target):
+ body,expected=payload(model,bank,mode)
+ question=body['messages'][-1]['content']
+ def count(repeats):
+  body['messages'][-1]['content']='Background meeting notes:\n'+('meeting agenda. '*repeats)+'\n\n'+question
+  req=urllib.request.Request(base+'/tokenize',data=json.dumps({'model':model,'messages':body['messages'],'chat_template_kwargs':{'enable_thinking':False}}).encode(),headers={'Content-Type':'application/json'})
+  with urllib.request.urlopen(req,timeout=30) as response:return json.load(response)['count']
+ low,high=0,target
+ if count(high)<target:raise RuntimeError('long-context fixture cannot reach target')
+ while low<high:
+  mid=(low+high)//2
+  if count(mid)<target:low=mid+1
+  else:high=mid
+ actual=count(low)
+ if not target<=actual<a.context_tokens-body['max_tokens']:raise RuntimeError('long-context fixture outside context budget')
+ return body,expected,actual
+
 try:
  for profile in a.profiles:
   work=out/profile;work.mkdir();sock=work/'control.sock'
@@ -82,6 +99,17 @@ try:
    subprocess.run(['python3',str(pathlib.Path(__file__).with_name('serving_matrix.py')),'--endpoint',base,'--output',str(work/'matrix.json'),'--label',profile+'-exact-image'],check=True)
    matrix=json.loads((work/'matrix.json').read_text());data['matrix_summary']=matrix['summary'];assert all(r['correct'] for r in matrix['rows'])
    metrics('after_matrix');save()
+   data['long_context']=[]
+   if a.context_tokens==8192:
+    for target in (4096,7168):
+     for bank in ('alpha','beta'):
+      for mode in ('native','text'):
+       body,expected,actual=long_payload(model,bank,mode,target)
+       row=request(body);row.update(target_prompt_tokens=target,tokenized_prompt_tokens=actual,bank=bank,mode=mode,correct=all(v.lower() in row['answer'].lower() for v in expected))
+       data['long_context'].append(row);save()
+       assert row['usage']['prompt_tokens']==actual,'tokenizer and inference disagree'
+       assert row['correct'],'long-context memory recall failed'
+    metrics('after_long_context');save()
    def concurrent_request(i):
     bank='alpha' if i%2==0 else 'beta';body,expected=payload(model,bank)
     retries=0;started=time.perf_counter()
