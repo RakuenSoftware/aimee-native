@@ -147,3 +147,20 @@ and records both input/output budgets; all delivery conditions use the same
 rule. Six protocol checks pass in an isolated CPU-only test directory. The
 active 64-attempt campaign's deployed scripts and 512-token budget are unchanged.
 No larger-budget GPU result is claimed.
+
+## First native task gain (partial campaign)
+
+Matplotlib-25340 failed without memory (repeated formatting errors, empty patch)
+and passed official grading in native round one. The model made four calls:
+it attempted a reproduction, applied the retained patch, attempted the
+reproduction again, and submitted. The submitted patch's SHA-256 exactly matches
+the source experience accepted by automatic independent replay. Acquisition used
+the full own-patch fallback after three replay trials; no hand-written command
+or hidden reference patch was supplied.
+
+The acquired procedure came from the explicitly declared prior calibration
+success, so this is successful source-experience reuse, not discovery of a new
+solution during the current campaign. Agent wall time was 109.6 seconds, which
+includes tool execution and is not memory-application latency. Later rounds and
+the other tasks remain pending. Raw control, acquisition, native trajectory and
+official outcome are in `artifacts/source-learning-20260927/first-native-gain.tar.gz`.
