@@ -297,3 +297,22 @@ also been corrected to validate the final round before skipping acquisition;
 that source change is for future launches and does not modify this running
 process. The deployed queue supplies the independent guard for the active run.
 The guarded-prefix check, including rejection of an ungraded last round, passes.
+
+
+## Captured record and native request audit
+
+A read-only audit checked 664 observed model requests across 30 attempt
+trajectories (including two still in progress) and 18 native publications.
+Every control request omitted a publication; every native request used its
+expected preceding-round publication; no trajectory supplied text memory.
+For every publication, the complete captured record exactly matches the stored
+preparation source, its content hash, ordered record revisions and derived
+publication identity. The payload size matches, and the encoding revision is
+`native-swe-v2-fp32`. All checks passed in this snapshot.
+
+This establishes source completeness and request routing for these observations.
+It does not independently establish tensor semantics, correct answers, or
+completion of the in-progress attempts. The full audit is
+`artifacts/source-learning-20260927/delivery-audit-1790552807.json`; the operator
+script is `distribution/tests/audit_source_delivery.py`. It makes no model calls
+and does not change either catalog or study records.
