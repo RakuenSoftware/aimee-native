@@ -226,3 +226,25 @@ control and one native attempt use the same retained procedure as before. This
 output/context-budget diagnostic is post-hoc and is not part of the fixed
 64-attempt campaign. It does not update memories or alter that campaign's
 512-token model budget. Results remain pending.
+
+
+## Completed SymPy grading diagnosis
+
+Both cache-disabled official graders completed with a 900-second limit: about
+732 seconds on unchanged functional source and 733 seconds on the exact saved
+control patch. Both returned `completed: true, resolved: false`. The interruption
+was an insufficient grading budget, not evidence that the model patch caused a
+hang. The control result now points to its completed official regrade; the
+original null result, 180-second report, runner and launch manifest remain in
+`interruptions/grader-timeout-20260928` and the archived audit.
+
+A separate diagnostic enabled SymPy's cache in the otherwise same test command.
+Both versions completed in about 33 seconds and still failed. Those diagnostics
+are not canonical SWE-bench scores and do not replace official grading. The
+resumed campaign retains the official cache-disabled command and raises only
+its grading allowance to 900 seconds. Model generation remains 600 seconds,
+40 steps and 512 output tokens. Earlier completed grades and model trajectories
+are retained unchanged; no earlier model attempt is rerun.
+
+The full grader audit, including scripts, reports and the original interruption,
+is archived in `artifacts/source-learning-20260927/sympy-grader-audit.tar.gz`.
