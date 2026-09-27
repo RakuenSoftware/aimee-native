@@ -71,3 +71,12 @@ selection result, not claimed as a successful three-record retrieval. The final
 installed runtime probe must use the declared three-canary verification query
 and check all three answers. Evidence resides in
 `artifacts/release-candidate-20260927/`.
+
+The separate client candidate installation verifies all 18 artifact hashes and
+matches the expected artifact-set identity. Its manifest is explicitly lab-only,
+used with the existing candidate-test launcher; the signed release-5 installation
+is unchanged. Candidate staging and tamper-rejection tests pass. After learning,
+the operator queue runs standard image certification, the 32-record workload,
+and the enrolled candidate client's three-canary model-answer probe, in that
+order. It stops on a failed stage. This queue does not sign or promote a release;
+normal signed installation, update and rollback still follow successful gates.
