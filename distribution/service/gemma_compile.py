@@ -2,6 +2,7 @@
 import argparse
 import json
 import sys
+import time
 from pathlib import Path
 import torch
 from transformers import AutoTokenizer, Gemma4UnifiedForConditionalGeneration
@@ -10,8 +11,12 @@ from publisher import publish
 
 class GemmaCompiler:
     """Retain the model and optionally one scope-bound, Rust-planned prefix cache."""
-    def __init__(self, model, max_memory_tokens=1024, threads=12, reuse_library=None):
+    def __init__(self, model, max_memory_tokens=1024, threads=12, reuse_library=None,
+                 compute_dtype='bfloat16'):
         torch.set_num_threads(threads)
+        if compute_dtype not in ('bfloat16', 'float32'):
+            raise ValueError('unsupported CPU preparation dtype')
+        self.compute_dtype = getattr(torch, compute_dtype)
         self.max_memory_tokens = max_memory_tokens
         self.tokenizer = AutoTokenizer.from_pretrained(model, local_files_only=True)
         self.model_path = model
@@ -24,10 +29,11 @@ class GemmaCompiler:
     def load(self):
         if self.model is None:
             self.model = Gemma4UnifiedForConditionalGeneration.from_pretrained(
-                self.model_path, local_files_only=True, dtype=torch.bfloat16,
+                self.model_path, local_files_only=True, dtype=self.compute_dtype,
                 device_map='cpu', attn_implementation='eager').eval()
 
     def encode(self, request):
+        started = time.perf_counter()
         facts = request['response']['facts']
         records = request['identity']['records']
         if not facts or len(facts) != len(records):
@@ -45,6 +51,7 @@ class GemmaCompiler:
         if not 0 < len(tokens) <= self.max_memory_tokens:
             raise ValueError('selected memory exceeds certified preparation positions')
         self.load()
+        ready = time.perf_counter()
         prefix = 0
         text_config = self.model.config.get_text_config()
         reusable = (len(tokens) < text_config.sliding_window
@@ -78,15 +85,22 @@ class GemmaCompiler:
         if self.planner:
             self.planner.plan(request['identity'], tokens, commit=True)
             self.cache = cache if reusable else None
-        self.last_metrics = {'tokens': len(tokens), 'reused_prefix_tokens': prefix,
-                             'evaluated_tokens': len(tokens) - prefix}
-        banks = {i: (layer.keys.detach(), layer.values.detach())
+        computed = time.perf_counter()
+        banks = {i: (layer.keys.detach().to(torch.bfloat16), layer.values.detach().to(torch.bfloat16))
                  for i, layer in enumerate(cache.layers)}
+        self.last_metrics = {'tokens': len(tokens), 'reused_prefix_tokens': prefix,
+                             'evaluated_tokens': len(tokens) - prefix,
+                             'compute_dtype': str(self.compute_dtype),
+                             'input_seconds': ready - started,
+                             'forward_seconds': computed - ready,
+                             'export_seconds': time.perf_counter() - computed}
         return tokens, banks
 
     def compile(self, request, output, identity, key):
         tokens, banks = self.encode(request)
+        started = time.perf_counter()
         publish(Path(output), identity, key, tokens, banks)
+        self.last_metrics['publish_seconds'] = time.perf_counter() - started
 
 
 def main():
@@ -97,8 +111,9 @@ def main():
     p.add_argument('--key', required=True)
     p.add_argument('--max-memory-tokens', type=int, default=1024)
     p.add_argument('--threads', type=int, default=12)
+    p.add_argument('--compute-dtype', choices=('bfloat16','float32'), default='bfloat16')
     a = p.parse_args()
-    GemmaCompiler(a.model, a.max_memory_tokens, a.threads).compile(
+    GemmaCompiler(a.model, a.max_memory_tokens, a.threads, compute_dtype=a.compute_dtype).compile(
         json.load(sys.stdin), a.output, a.identity, a.key)
 
 

@@ -33,7 +33,9 @@ def handle(client, config, compiler):
         return {'event': 'prepared', 'compile_seconds': round(prepared - started, 6),
                 'response_seconds': round(time.perf_counter() - prepared, 6), 'payload_bytes': sizes[1],
                 'computation': {k:v for k,v in getattr(compiler, 'last_metrics', {}).items()
-                                if k in ('tokens', 'reused_prefix_tokens', 'evaluated_tokens')}}
+                                if k in ('tokens', 'reused_prefix_tokens', 'evaluated_tokens',
+                                         'compute_dtype', 'input_seconds', 'forward_seconds',
+                                         'export_seconds', 'publish_seconds')}}
 
 
 def serve(config, path, compiler):
@@ -76,7 +78,7 @@ def main():
     os.environ['HF_HUB_OFFLINE'] = '1'
     from gemma_compile import GemmaCompiler
     started = time.perf_counter()
-    compiler = GemmaCompiler(config['model'], config.get('max_memory_tokens', 1024), config.get('threads', 12), config.get('reuse_library'))
+    compiler = GemmaCompiler(config['model'], config.get('max_memory_tokens', 1024), config.get('threads', 12), config.get('reuse_library'), config.get('compute_dtype','bfloat16'))
     compiler.load()
     print(json.dumps({'event': 'model_loaded', 'seconds': round(time.perf_counter() - started, 6)}), flush=True)
     serve(config, a.socket, compiler)

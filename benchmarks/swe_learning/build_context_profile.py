@@ -27,7 +27,9 @@ try:
     for h in range(heads):
      kh=h//(heads//kvheads);start=max(0,length-1-window) if window>=0 else 0
      text=torch.stack([cache[t//block,kh,t%block] for t in range(start,length)])
-     keys=torch.cat([k[kh],text[:,:width]]).float();values=torch.cat([v[kh],text[:,width:]]).float();scores=keys@q[0,h].float()*scale
+     memory_positions=torch.arange(-73,0,device=device)
+     visible=torch.ones_like(memory_positions,dtype=torch.bool) if window<0 else memory_positions>=length-1-window
+     keys=torch.cat([k[kh,visible],text[:,:width]]).float();values=torch.cat([v[kh,visible],text[:,width:]]).float();scores=keys@q[0,h].float()*scale
      if cap>0:scores=cap*torch.tanh(scores/cap)
      reference[0,h]=torch.softmax(scores,dim=0)@values
     torch.testing.assert_close(result,reference,atol=.03,rtol=.02)

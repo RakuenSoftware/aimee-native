@@ -12,7 +12,7 @@ class AttentionTests(unittest.TestCase):
         torch.manual_seed(4721)
         results=[]
         for width in (64,256,512):
-            for window in (-1,3):
+            for window in (-1,3,20):
                 for cap in (0.,2.):
                     heads,kvheads,block_size=4,2,16
                     starts=torch.tensor([0,3,4,6],device='cuda',dtype=torch.int32)
@@ -38,8 +38,10 @@ class AttentionTests(unittest.TestCase):
                             for head in range(heads):
                                 kh=head//(heads//kvheads)
                                 text=torch.stack([cache[blocks[req,t//block_size],kh,t%block_size] for t in range(first,pos+1)])
-                                k=torch.cat([memories[req][0][kh],text[:,:width]]).float()
-                                v=torch.cat([memories[req][1][kh],text[:,width:]]).float()
+                                positions=torch.arange(-mlens[req],0,device='cuda')
+                                visible=torch.ones_like(positions,dtype=torch.bool) if window<0 else positions>=pos-window
+                                k=torch.cat([memories[req][0][kh,visible],text[:,:width]]).float()
+                                v=torch.cat([memories[req][1][kh,visible],text[:,width:]]).float()
                                 logits=k@q[row,head].float()/math.sqrt(width)
                                 if cap:logits=cap*torch.tanh(logits/cap)
                                 ref[row,head]=torch.softmax(logits,dim=0)@v

@@ -4,9 +4,11 @@ import docker
 from minisweagent.agents.default import DefaultAgent
 from minisweagent.environments.docker import DockerEnvironment
 from minisweagent.models.utils.actions_text import parse_regex_actions,format_observation_messages
+from minisweagent.exceptions import FormatError
 from swebench.harness.run_evaluation import make_test_spec,run_instance
-ROOT=pathlib.Path('/opt/swe-native');BASE='http://127.0.0.1:8170';SSH=['ssh','-F',str(ROOT/'ssh.conf'),'native-gpu']
-STEPS=40;SECONDS=240;ROUNDS=5
+ROOT=pathlib.Path(os.environ.get('SWE_RUN_ROOT','/opt/swe-native'));BASE='http://127.0.0.1:8170';SSH=['ssh','-F',str(ROOT/'ssh.conf'),'native-gpu']
+STEPS=int(os.environ.get('SWE_STEPS','40'));SECONDS=int(os.environ.get('SWE_SECONDS','240'));ROUNDS=int(os.environ.get('SWE_LEARNING_ROUNDS','5'))
+if min(STEPS,SECONDS,ROUNDS)<=0:raise ValueError('experiment budgets must be positive')
 SYSTEM='''You are a software engineer fixing a repository issue in /testbed. Use exactly one fenced bash command per response, with at most two brief sentences before it. Read relevant code, implement the fix, and run relevant existing tests or your own reproduction. Do not modify existing tests or commit. You may have native memory from earlier attempts: use its concrete feedback, but verify against this clean checkout. To finish, run exactly: echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT && git diff --no-ext-diff .\nExample:\n```bash\nls\n```'''
 def api(path,body):
  req=urllib.request.Request(BASE+path,data=json.dumps(body).encode(),headers={'Content-Type':'application/json'})
@@ -34,8 +36,13 @@ class NativeModel:
   body={'model':MODEL,'messages':ms,'temperature':0,'seed':20260926,'max_tokens':512,'chat_template_kwargs':{'enable_thinking':False}}
   if self.publication:body['vllm_xargs']={'aimee_publication':self.publication}
   start=time.monotonic();r=api('/v1/chat/completions',body);text=r['choices'][0]['message']['content'] or ''
-  self.calls.append({'seconds':time.monotonic()-start,'usage':r['usage'],'input_messages':len(ms),'publication':self.publication})
-  actions=parse_regex_actions(text,action_regex=r'```(?:bash|mswea_bash_command)\s*\n(.*?)\n```',format_error_template='Return exactly one fenced bash command. {{error}}')
+  self.calls.append({'seconds':time.monotonic()-start,'usage':r['usage'],'input_messages':len(ms),'publication':self.publication,'finish_reason':r['choices'][0]['finish_reason'],'prompt_sha256':hashlib.sha256(json.dumps(ms,sort_keys=True).encode()).hexdigest(),'response_sha256':hashlib.sha256(text.encode()).hexdigest(),'thought_count':text.count('thought')})
+  try:
+   actions=parse_regex_actions(text,action_regex=r'```(?:bash|mswea_bash_command)\s*\n(.*?)\n```',format_error_template='Return exactly one fenced bash command. {{error}} Choose one action and omit discarded alternatives.{% if finish_reason == "length" %} Your response exceeded the output limit. Use one shorter command; split large edits into separate steps.{% endif %}',template_kwargs={'finish_reason':r['choices'][0]['finish_reason']})
+  except FormatError as error:
+   # Parsing fails before DefaultAgent.query can record the assistant message.
+   # Keep it in history so recovery can see what was rejected. No action runs.
+   raise FormatError({'role':'assistant','content':text,'extra':{'cost':0.0,'finish_reason':r['choices'][0]['finish_reason']}},*error.messages) from error
   return {'role':'assistant','content':text,'extra':{'actions':actions,'cost':0.0}}
  def format_observation_messages(self,message,outputs,template_vars=None):
   return format_observation_messages(outputs,observation_template='<returncode>{{output.returncode}}</returncode>\n{{output.output[:5000]}}',template_vars=template_vars)
@@ -121,6 +128,10 @@ if __name__=='__main__':
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
      results=list(pool.map(lambda t:attempt(t,arm,publications.get(t['instance_id']) if arm not in ('control','learn-1') else None),group))
     save_status(state)
+    # Preserve every failed attempt, but stop a broken native interaction before
+    # spending the remaining campaign on the same protocol degeneration.
+    if arm not in ('control','learn-1') and len(results)>=4 and sum(r.get('exit_status')=='RepeatedFormatError' for r in results)*2>=len(results):
+     raise RuntimeError('native formatting failure gate: at least half this group exhausted format recovery; diagnose before resuming')
     metrics=bridge({'op':'metrics'})
     (ROOT/f'metrics-group-{start}-{arm}.json').write_text(json.dumps(metrics,indent=2)+'\n')
     if arm!='control':

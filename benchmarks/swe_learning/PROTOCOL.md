@@ -69,3 +69,14 @@ each result. Missing images are fetched four at a time before a task group start
 outside the per-attempt budget. Official harness documentation:
 https://www.swebench.com/SWE-bench/guides/evaluation/ and
 https://mini-swe-agent.com/latest/reference/run/swebench/.
+
+## 27 September repair boundary
+
+The original campaign stopped after 180 records; see
+`docs/validation/swe-diagnosis-20260927.md`. Do not resume into its result tree.
+The 150-task selection remains unchanged. A separate eight-task calibration uses
+the first eight frozen tasks, 600 seconds, 40 steps, one control and three learning
+passes. It uses local-window-corrected attention, FP32 private preparation with a
+new encoding identity, and corrected format-recovery history. It is exploratory
+repair/budget validation, not a completed demonstration of learning or a new
+independent effect estimate. The larger campaign is held until this gate is read.

@@ -31,3 +31,16 @@ Keep service-only logs/symbols and operational diagnostics off the client.
 Model-specific preparation can involve model execution on the service. The
 completed benchmark's exact RAM snapshots are not evidence that a compact
 arbitrary memory representation can always be reconstructed without that work.
+
+CPU preparation accepts `compute_dtype` (`bfloat16`, the compatibility default,
+or `float32`) in the resident compiler configuration, and `--compute-dtype` in
+the one-shot compiler. CPUs without accelerated BF16 arithmetic can be much
+faster with FP32. This changes preparation arithmetic and model RAM usage;
+outputs are still exported as BF16 attention tensors. Use a new encoding
+revision/cache identity when changing precision, validate consumption quality,
+and size the service memory limit for the larger FP32 model. Do not silently
+mix artifacts from different precision profiles under one preparation identity.
+
+Resident reports separate input/model readiness, forward computation, BF16
+export, Rust publication and response transfer. These are background preparation
+costs, not resident-memory application latency. Content is not logged.

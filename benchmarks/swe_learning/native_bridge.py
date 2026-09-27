@@ -2,6 +2,7 @@
 import fcntl,hashlib,json,pathlib,socket,struct,subprocess,sys,time
 ROOT=pathlib.Path('/opt/aimee-memory-lab/swe-learning-20260926')
 MODEL='google-gemma-4-12b-native-negative-v1'
+PROFILE=ROOT/'preparation-profile.json'
 def control(op):
  with socket.socket(socket.AF_UNIX) as s:
   s.settimeout(180);s.connect(str(ROOT/'control.sock'));s.sendall(json.dumps({'op':op}).encode()+b'\n');r=json.loads(s.makefile('rb').readline())
@@ -13,12 +14,13 @@ with (ROOT/'bridge.lock').open('a') as lock:
  if request['op']=='metrics':print(json.dumps(control('metrics')));sys.exit()
  if request['op']!='publish':raise ValueError('unsupported operation')
  facts=request['facts'];assert 0<len(facts)<=4 and all(isinstance(x,str) and 0<len(x)<=5000 for x in facts)
- identity={'recipient':'swe-learning-public-fixture','authorized_view':'public-task-experiences-v1','model_revision':MODEL,'runtime_profile':'gemma-q8-tp2-v1','encoding_revision':'native-swe-v1','position_policy':'negative-prefix','records':[{'namespace':'swe-public-experience','id':str(i),'revision':hashlib.sha256(x.encode()).hexdigest()} for i,x in enumerate(facts)]}
+ profile=json.loads(PROFILE.read_text()) if PROFILE.exists() else {'encoding_revision':'native-swe-v1','worker_config':'/opt/aimee-native-compiler/benchmark-resident.json'}
+ identity={'recipient':'swe-learning-public-fixture','authorized_view':'public-task-experiences-v1','model_revision':MODEL,'runtime_profile':'gemma-q8-tp2-v1','encoding_revision':profile['encoding_revision'],'position_policy':'negative-prefix','records':[{'namespace':'swe-public-experience','id':str(i),'revision':hashlib.sha256(x.encode()).hexdigest()} for i,x in enumerate(facts)]}
  key=hashlib.sha256(json.dumps(identity,sort_keys=True).encode()).hexdigest();out=ROOT/'banks'/key
  started=time.perf_counter()
  if not out.exists():
   wire={'identity':MODEL,'key':key,'request':{'identity':identity,'response':{'facts':[{'content':x} for x in facts]}}}
-  command=['runuser','-u','aimee-compiler','--','/opt/aimee-memory-lab/venv/bin/python','/opt/aimee-native-compiler/remote_compile.py','worker','--config','/opt/aimee-native-compiler/benchmark-resident.json']
+  command=['runuser','-u','aimee-compiler','--','/opt/aimee-memory-lab/venv/bin/python','/opt/aimee-native-compiler/remote_compile.py','worker','--config',profile['worker_config']]
   raw=subprocess.check_output(command,input=json.dumps(wire).encode(),timeout=600)
   assert raw[:5]==b'AMCP1',repr(raw[:5])
   ni,np=struct.unpack('!QQ',raw[5:21]);assert len(raw)==21+ni+np

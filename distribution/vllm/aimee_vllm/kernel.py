@@ -30,8 +30,13 @@ def native_attention(Q, CACHE, OUT, START, SEQLEN, BLOCKS, KP, VP, MLEN,
     maximum=tl.full((),float('-inf'),tl.float32)
     denom=tl.full((),0,tl.float32)
     accum=tl.full((WIDTH,),0,tl.float32)
-    # The approved memory bank remains visible independently of text windows.
-    for base in range(0,mem_len,TILE):
+    # Prepared positions are [-mem_len, -1]. Local attention must retain its
+    # positional window; global layers continue to read every memory position.
+    # Starting at the first visible position also avoids an all-masked softmax
+    # tile when the entire bank is outside a local window.
+    memory_start=0
+    if WINDOW>=0: memory_start=tl.maximum(0,mem_len+q_pos-WINDOW)
+    for base in range(memory_start,mem_len,TILE):
         t=base+tl.arange(0,TILE)
         off=(kvhead*mem_len+t[:,None])*D+d[None,:]
         k=tl.load(kp+off,(t[:,None]<mem_len)&(d[None,:]<D),0).to(tl.float32)
