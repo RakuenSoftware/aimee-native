@@ -89,10 +89,11 @@ if __name__=='__main__':
     with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
      results=list(pool.map(lambda t:run.attempt(t,arm,publications.get(t['instance_id']) if arm!='source-control' else None),group))
     save()
+    for task,row in zip(group,results):
+     if type(row.get('resolved')) is not bool:raise RuntimeError('infrastructure error, not a learning outcome: '+task['instance_id'])
     if arm=='source-learn-3':continue
     for task,row in zip(group,results):
      iid=task['instance_id']
-     if row['resolved'] is None:raise RuntimeError('infrastructure error, not a learning outcome: '+iid)
      experiences[iid]=capture(task,row,experiences.get(iid))
     publications={}
     for task in group:

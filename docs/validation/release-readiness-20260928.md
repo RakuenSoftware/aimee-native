@@ -288,3 +288,12 @@ To respect the host memory budget, the queue temporarily stops the resident
 compiler while this isolated comparison owns the CPU model, then restarts the
 service before the enrolled-client probe. No learning workload is interrupted;
 this follows completed learning, image certification and the staged migration.
+
+
+The queue independently checks every task/arm result before stopping the learning
+server, including the final native round. A null, missing or mismatched result
+blocks certification even if the driver's status says complete. The driver has
+also been corrected to validate the final round before skipping acquisition;
+that source change is for future launches and does not modify this running
+process. The deployed queue supplies the independent guard for the active run.
+The guarded-prefix check, including rejection of an ungraded last round, passes.

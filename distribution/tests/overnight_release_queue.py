@@ -16,6 +16,10 @@ while True:
  if probe.returncode:
   save({'status':'blocked_by_worker_exit','error':probe.stderr,'last_learning_state':state});raise SystemExit(1)
  time.sleep(30)
+# Independently audit all rows, including the final round which has no capture step.
+p=subprocess.run(['pct','exec','113','--','python3','-c',"import json,pathlib,sys; r=pathlib.Path('/opt/swe-native/source-learning-20260927'); sys.path.insert(0,str(r)); from resume_campaign import validate_resume; tasks=json.loads((r/'tasks.json').read_text()); validate_resume(r,tasks,len(tasks))"],capture_output=True,text=True)
+if p.returncode:
+ save({'status':'blocked_by_incomplete_learning_results','error':p.stderr});raise SystemExit(1)
 save({'status':'stopping_completed_learning_server'})
 p=subprocess.run(['pct','exec','101','--','podman','stop','--time','60','aimee-swe-learning'],capture_output=True,text=True)
 (ROOT/'server-stop.log').write_text(p.stdout+p.stderr)
