@@ -38,4 +38,18 @@ class Delivery(unittest.TestCase):
  def test_mixed_delivery_is_rejected(self):
   with self.assertRaises(ValueError):run.NativeModel('fixture','lesson')
 
+class OutputBudget(unittest.TestCase):
+ def test_larger_output_reserves_context_and_preserves_initial_issue(self):
+  original=[{'role':'system','content':'Common instructions'},{'role':'user','content':'Original issue'},{'role':'assistant','content':'Old action'},{'role':'user','content':'Old observation'},{'role':'assistant','content':'Recent action'},{'role':'user','content':'Recent observation'}]
+  for mode in ('none','text','native'):
+   model=run.NativeModel(publication='fixture' if mode=='native' else None,text_memory='Complete lesson' if mode=='text' else None)
+   responses=[{'count':7000},{'count':6000},{'choices':[{'message':{'content':'```bash\npwd\n```'},'finish_reason':'stop'}],'usage':{}}]
+   with patch.object(run,'OUTPUT_TOKENS',1536),patch.object(run,'INPUT_TOKENS',6376),patch.object(run,'api',side_effect=responses) as api:model.query(original)
+   request=api.call_args.args[1]
+   self.assertEqual(request['max_tokens'],1536)
+   self.assertEqual(len(request['messages']),4)
+   self.assertEqual(request['messages'][1]['content'],'Original issue')
+   self.assertEqual(len(original),6)
+   self.assertEqual(request['messages'][-1]['content'],'Recent observation')
+
 if __name__=='__main__':unittest.main()

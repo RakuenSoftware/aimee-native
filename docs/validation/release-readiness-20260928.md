@@ -131,3 +131,19 @@ publication facts, patches and outcomes are retained in
 `artifacts/source-learning-20260927/first-four-tasks.tar.gz`; the adjacent JSON
 contains the per-attempt exit statuses and durations. Twelve tasks remain in the
 running campaign. The next block includes a prior validated Matplotlib procedure.
+
+## Output-budget observation and follow-up support
+
+The installed chat template explicitly honors `enable_thinking=False`; the
+observed truncations cannot be attributed to an ignored thinking-disable option.
+In the Matplotlib control, six of the first eighteen model calls reached the
+512-token response cap, including an ordinary Python source-edit command cut
+off before its closing fence. This is a harness limitation to investigate, not
+proof that increasing the limit fixes task accuracy or native-memory regressions.
+
+`SWE_OUTPUT_TOKENS` now permits a separately declared output budget (default 512,
+maximum 4096). The runner reserves matching space inside its 8192-token context
+and records both input/output budgets; all delivery conditions use the same
+rule. Six protocol checks pass in an isolated CPU-only test directory. The
+active 64-attempt campaign's deployed scripts and 512-token budget are unchanged.
+No larger-budget GPU result is claimed.

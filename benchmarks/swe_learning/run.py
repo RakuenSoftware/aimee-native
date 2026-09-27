@@ -9,6 +9,9 @@ from swebench.harness.run_evaluation import make_test_spec,run_instance
 ROOT=pathlib.Path(os.environ.get('SWE_RUN_ROOT','/opt/swe-native'));BASE='http://127.0.0.1:8170';SSH=['ssh','-F',str(ROOT/'ssh.conf'),'native-gpu']
 STEPS=int(os.environ.get('SWE_STEPS','40'));SECONDS=int(os.environ.get('SWE_SECONDS','240'));ROUNDS=int(os.environ.get('SWE_LEARNING_ROUNDS','5'))
 if min(STEPS,SECONDS,ROUNDS)<=0:raise ValueError('experiment budgets must be positive')
+OUTPUT_TOKENS=int(os.environ.get('SWE_OUTPUT_TOKENS','512'))
+if not 1<=OUTPUT_TOKENS<=4096:raise ValueError('output budget must be between 1 and 4096 tokens')
+INPUT_TOKENS=min(7400,8192-OUTPUT_TOKENS-280)
 SYSTEM='''You are a software engineer fixing a repository issue in /testbed. Use exactly one fenced bash command per response, with at most two brief sentences before it. Read relevant code, implement the fix, and run relevant existing tests or your own reproduction. Do not modify existing tests or commit. You may have native memory from earlier attempts: use its concrete feedback, but verify against this clean checkout. To finish, run exactly: echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT && git diff --no-ext-diff .\nExample:\n```bash\nls\n```'''
 def api(path,body):
  req=urllib.request.Request(BASE+path,data=json.dumps(body).encode(),headers={'Content-Type':'application/json'})
@@ -35,10 +38,10 @@ class NativeModel:
   # Same bounded-history rule for every arm; complete initial issue retained.
   while True:
    count=api('/tokenize',{'model':MODEL,'messages':ms,'chat_template_kwargs':{'enable_thinking':False}})['count']
-   if count<=7400:break
+   if count<=INPUT_TOKENS:break
    if len(ms)<=3:raise RuntimeError('initial issue exceeds fixed context budget')
    del ms[2:4]
-  body={'model':MODEL,'messages':ms,'temperature':0,'seed':20260926,'max_tokens':512,'chat_template_kwargs':{'enable_thinking':False}}
+  body={'model':MODEL,'messages':ms,'temperature':0,'seed':20260926,'max_tokens':OUTPUT_TOKENS,'chat_template_kwargs':{'enable_thinking':False}}
   if self.publication:body['vllm_xargs']={'aimee_publication':self.publication}
   start=time.monotonic();r=api('/v1/chat/completions',body);text=r['choices'][0]['message']['content'] or ''
   self.calls.append({'seconds':time.monotonic()-start,'usage':r['usage'],'input_messages':len(ms),'publication':self.publication,'finish_reason':r['choices'][0]['finish_reason'],'prompt_sha256':hashlib.sha256(json.dumps(ms,sort_keys=True).encode()).hexdigest(),'response_sha256':hashlib.sha256(text.encode()).hexdigest(),'thought_count':text.count('thought')})
@@ -108,7 +111,7 @@ if __name__=='__main__':
  os.chdir(ROOT);(ROOT/'results').mkdir(exist_ok=True)
  tasks=json.loads((ROOT/'tasks.json').read_text());GRADER={r['instance_id']:r for r in json.loads((ROOT/'selected-grader-only.json').read_text())}
  with urllib.request.urlopen(BASE+'/v1/models') as r:MODEL=json.load(r)['data'][0]['id']
- state={'status':'running','target_tasks':len(tasks),'learning_rounds':ROUNDS,'started':time.time(),'budget':{'steps':STEPS,'wall_seconds':SECONDS,'max_output_tokens':512,'context_tokens':8192,'concurrency':4}};save_status(state)
+ state={'status':'running','target_tasks':len(tasks),'learning_rounds':ROUNDS,'started':time.time(),'budget':{'steps':STEPS,'wall_seconds':SECONDS,'max_output_tokens':OUTPUT_TOKENS,'max_input_tokens':INPUT_TOKENS,'context_tokens':8192,'concurrency':4}};save_status(state)
  try:
   for start in range(0,len(tasks),4):
    group=tasks[start:start+4];lessons={};publications={}

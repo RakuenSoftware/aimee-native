@@ -62,7 +62,7 @@ def save():
 
 if __name__=='__main__':
  os.chdir(ROOT);tasks=json.loads((ROOT/'tasks.json').read_text());run.GRADER={t['instance_id']:t for t in json.loads((ORIGINAL/'selected-grader-only.json').read_text())}
- state={'status':'waiting_for_fidelity','started':time.time(),'scheduled_attempts':len(tasks)*4,'budget':{'seconds':run.SECONDS,'steps':run.STEPS,'output_tokens':512,'context_tokens':8192,'concurrency':2},'scope':'Same-task experience reuse with three native rounds. Eight previously calibrated tasks plus eight additional frozen-list tasks. Prior calibration learn-1 successes are automatically replay-validated and retained before this campaign; no hidden solutions. No held-out-task generalization claim.'};save()
+ state={'status':'waiting_for_fidelity','started':time.time(),'scheduled_attempts':len(tasks)*4,'budget':{'seconds':run.SECONDS,'steps':run.STEPS,'output_tokens':run.OUTPUT_TOKENS,'input_tokens':run.INPUT_TOKENS,'context_tokens':8192,'concurrency':2},'scope':'Same-task experience reuse with three native rounds. Eight previously calibrated tasks plus eight additional frozen-list tasks. Prior calibration learn-1 successes are automatically replay-validated and retained before this campaign; no hidden solutions. No held-out-task generalization claim.'};save()
  try:
   while True:
    prior=json.loads((ORIGINAL/'lesson-fidelity-20260927/status.json').read_text())
