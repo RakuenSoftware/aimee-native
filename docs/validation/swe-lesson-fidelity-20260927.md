@@ -105,3 +105,32 @@ again. A native-only residual regression requires a separate runtime probe;
 text failures do not exonerate native integration.
 
 No production learning policy or customer runtime is changed by this diagnostic.
+
+## Completed comparison and intervention results
+
+The matched study finished 18/18 attempts with no infrastructure errors:
+no memory 6/6 resolved, original summary as text 0/6, original summary as native
+memory 0/6. The full raw evidence is archived in `matched-complete.tar.gz`.
+
+The subsequent eight-attempt study completed after the experimental resident
+compiler was restored. Its initial connection-refused preparation failure is
+preserved separately; it occurred before any scored attempt. Results:
+
+| Representation | Text | Native |
+|---|---|---|
+| Successful action alone, with provenance | Resolved, 41.0 s | Resolved, 7.7 s |
+| Original summary plus successful action | Resolved, 95.6 s | Failed, step limit |
+| Concise behavioral invariant | Resolved, 198.5 s | Failed, time limit |
+
+The native successful-action run made three model calls: it executed the retained
+edit, ran all 59 existing blueprint tests successfully, and submitted the same
+patch to the official grader, which passed. The surrounding no-memory controls
+remain separate measurements in `fidelity-complete.tar.gz`.
+
+These single-cell diagnostic results support preserving source procedures and
+show that appending a working command to the original prose is insufficient.
+They do not prove that every native regression is caused solely by summarization:
+the concise invariant also failed natively while passing as text. The automatic
+source-backed campaign is the next capability test, not a relabeling of this
+one-task diagnostic as a general fix. Generated summaries are disabled for both
+successful and failed experience acquisition in that campaign.

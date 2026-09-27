@@ -5,10 +5,10 @@ Runs matched answers, conversation growth, concurrent eviction pressure, streami
 TTFT and full-process/device measurements. Timing labels preserve their scope.
 """
 import argparse,concurrent.futures,json,pathlib,socket,statistics,subprocess,threading,time,urllib.request,urllib.error
-p=argparse.ArgumentParser();p.add_argument('--image',required=True);p.add_argument('--root',default='/opt/aimee-memory-lab');p.add_argument('--output',required=True);p.add_argument('--requests',type=int,default=128);p.add_argument('--profiles',nargs='+',choices=('bf16','q8'),default=['bf16','q8']);a=p.parse_args()
+p=argparse.ArgumentParser();p.add_argument('--image',required=True);p.add_argument('--root',default='/opt/aimee-memory-lab');p.add_argument('--output',required=True);p.add_argument('--requests',type=int,default=128);p.add_argument('--profiles',nargs='+',choices=('bf16','q8'),default=['bf16','q8']);p.add_argument('--context-tokens',type=int,choices=(2048,8192),default=2048);p.add_argument('--gpu-utilization',type=float,default=.70);a=p.parse_args()
 root=pathlib.Path(a.root);out=pathlib.Path(a.output);out.mkdir(parents=True,exist_ok=False)
 fixture=root/'vllm-native-fixture-r1';port=8160;base=f'http://127.0.0.1:{port}';name='aimee-image-certification'
-report={'image':a.image,'image_inspect':json.loads(subprocess.check_output(['podman','image','inspect',a.image]))[0]['Id'],'scope':'synthetic operational certification; not population accuracy or live grant verification','profiles':{},'status':'running'}
+report={'image':a.image,'image_inspect':json.loads(subprocess.check_output(['podman','image','inspect',a.image]))[0]['Id'],'scope':'synthetic operational certification; not population accuracy or live grant verification','profiles':{},'status':'running','context_tokens':a.context_tokens,'gpu_utilization':a.gpu_utilization}
 stop=threading.Event();samples=[]
 def sample():
  while not stop.is_set():
@@ -60,7 +60,7 @@ try:
  for profile in a.profiles:
   work=out/profile;work.mkdir();sock=work/'control.sock'
   config=json.loads((fixture/'disk-config.json').read_text())
-  config.update(library='/opt/aimee/libaimee_native.so',device_memory_budget=10*1024**2,control_socket=str(sock),serve={'tensor_parallel_size':2,'port':port,'gpu_memory_utilization':.70})
+  config.update(library='/opt/aimee/libaimee_native.so',device_memory_budget=10*1024**2,control_socket=str(sock),serve={'tensor_parallel_size':2,'port':port,'gpu_memory_utilization':a.gpu_utilization,'max_model_len':a.context_tokens,'max_num_seqs':4,'max_num_batched_tokens':256})
   if profile=='q8':config['gguf_weights']=str(root/'gemma4-aimee-q8.gguf')
   (work/'config.json').write_text(json.dumps(config))
   cmd=['podman','run','--rm','--name',name,'--network','host','--ipc','host','--device','/dev/kfd','--device','/dev/dri/renderD128','--device','/dev/dri/renderD129','--memory','48g','--memory-swap','48g','-v',f'{fixture}:{fixture}:ro','-v',f'{root}/gemma4:{root}/gemma4:ro','-v',f'{work}:{work}:rw']
