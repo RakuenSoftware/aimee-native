@@ -174,3 +174,12 @@ rejection checks pass, and the two migration/rollback checks still pass. This is
 an operator-side evidence check, outside the inference hot path. Its live result
 is pending. The pinned `runtime_commit` remains the unchanged upstream vLLM
 commit; the immutable candidate image separately identifies the corrected kernels.
+
+Matplotlib subsequently passed native rounds two and three as well: **0/1 control,
+3/3 native rounds**, four model calls per native attempt, and the exact acquired
+patch each time. The complete task case is retained in
+`artifacts/source-learning-20260927/matplotlib-retention.tar.gz`. Publication and
+fact bytes were unchanged between rounds, and the learner explicitly retained
+the accepted success. This demonstrates repeatable procedure reuse for this
+task; it is not three independently learned tasks or evidence that successive
+rounds discovered a better solution. The remaining campaign is still running.
