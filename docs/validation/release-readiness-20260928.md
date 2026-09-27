@@ -119,3 +119,15 @@ the prior compiler and preparation configuration. Two isolated tests cover the
 upgrade and rollback paths; actual service migration and client validation remain
 pending. The queue must not count the old BF16 client route as combined-repair
 validation. Implementation remains private in `distribution/tests/upgrade_preparation.py`.
+
+## First completed task block (partial campaign)
+
+All four conditions finished for the first four frozen tasks: astropy-13438,
+pytest-9475, django-11377 and scikit-learn-12557. All sixteen attempts failed
+their task; none was an infrastructure error. No task gain or regression relative
+to a successful control can be claimed from this block because every control
+also failed. This does not establish useful automatic learning. Full trajectories,
+publication facts, patches and outcomes are retained in
+`artifacts/source-learning-20260927/first-four-tasks.tar.gz`; the adjacent JSON
+contains the per-attempt exit statuses and durations. Twelve tasks remain in the
+running campaign. The next block includes a prior validated Matplotlib procedure.
