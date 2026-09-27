@@ -183,3 +183,14 @@ fact bytes were unchanged between rounds, and the learner explicitly retained
 the accepted success. This demonstrates repeatable procedure reuse for this
 task; it is not three independently learned tasks or evidence that successive
 rounds discovered a better solution. The remaining campaign is still running.
+
+## Paired results audit
+
+`python benchmarks/swe_learning/report_source_learning.py RUN_ROOT` produces the
+full per-task audit directly from result files. It separates unique task gains
+from repeated native passes, reports successful-control tasks and paired losses,
+and does not count pending writes, missing attempts or infrastructure errors as
+model failures. Its paired-outcome check passes. The first live snapshot covers
+24 completed attempts: one unique gain retained in all three rounds, no losses,
+and zero successful controls. The absence of a loss in that snapshot therefore
+does not establish regression safety. Later tasks must supply that comparison.
