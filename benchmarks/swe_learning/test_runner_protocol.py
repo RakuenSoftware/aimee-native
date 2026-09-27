@@ -24,4 +24,18 @@ class Recovery(unittest.TestCase):
  def test_valid_single_action_is_unchanged(self):
   self.assertEqual(self.query('```bash\npwd\n```')['extra']['actions'],[{'command':'pwd'}])
 
+class Delivery(unittest.TestCase):
+ def test_delivery_is_exclusive_and_does_not_mutate_history(self):
+  original=[{'role':'system','content':'Common instructions'},{'role':'user','content':'Issue'}]
+  for mode in ('none','text','native'):
+   model=run.NativeModel(publication='fixture' if mode=='native' else None,text_memory='Complete lesson' if mode=='text' else None)
+   responses=[{'count':20},{'choices':[{'message':{'content':'```bash\npwd\n```'},'finish_reason':'stop'}],'usage':{}}]
+   with patch.object(run,'api',side_effect=responses) as api:model.query(original)
+   request=api.call_args.args[1]
+   self.assertEqual(original[0]['content'],'Common instructions')
+   self.assertEqual(request['messages'][0]['content'],'Common instructions'+('\n\nAuthoritative memory:\nComplete lesson' if mode=='text' else ''))
+   self.assertEqual('vllm_xargs' in request,mode=='native')
+ def test_mixed_delivery_is_rejected(self):
+  with self.assertRaises(ValueError):run.NativeModel('fixture','lesson')
+
 if __name__=='__main__':unittest.main()

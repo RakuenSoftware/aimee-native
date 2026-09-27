@@ -21,12 +21,17 @@ def api(path,body):
  raise RuntimeError('admission unavailable')
 MODEL=None
 class NativeModel:
- def __init__(self,publication=None):self.publication=publication;self.calls=[]
+ def __init__(self,publication=None,text_memory=None):
+  if publication is not None and text_memory is not None:raise ValueError('choose one memory delivery condition')
+  self.publication=publication;self.text_memory=text_memory;self.calls=[]
  def get_template_vars(self):return {}
  def format_message(self,**kw):return kw
- def serialize(self):return {'native_calls':self.calls,'native_publication':self.publication}
+ def serialize(self):return {'native_calls':self.calls,'native_publication':self.publication,'text_memory':self.text_memory}
  def query(self,messages):
   ms=[{'role':m['role'],'content':m['content']} for m in messages if m['role'] in ('system','user','assistant')]
+  if self.text_memory is not None:
+   if not ms or ms[0]['role']!='system':raise ValueError('text-memory comparison requires the common system message')
+   ms[0]['content']+='\n\nAuthoritative memory:\n'+self.text_memory
   # Same bounded-history rule for every arm; complete initial issue retained.
   while True:
    count=api('/tokenize',{'model':MODEL,'messages':ms,'chat_template_kwargs':{'enable_thinking':False}})['count']
@@ -48,10 +53,10 @@ class NativeModel:
   return format_observation_messages(outputs,observation_template='<returncode>{{output.returncode}}</returncode>\n{{output.output[:5000]}}',template_vars=template_vars)
 def bridge(body):return json.loads(subprocess.check_output(SSH,input=json.dumps(body).encode(),timeout=660))
 def image(task):return 'docker.io/swebench/sweb.eval.x86_64.'+task['instance_id'].replace('__','_1776_').lower()+':latest'
-def attempt(task,arm,publication):
+def attempt(task,arm,publication,text_memory=None):
  iid=task['instance_id'];out=ROOT/'results'/arm/iid;out.mkdir(parents=True,exist_ok=True)
  if (out/'result.json').exists():return json.loads((out/'result.json').read_text())
- row={'instance_id':iid,'arm':arm,'publication':publication,'status':'running','started':time.time()};env=None;agent=None
+ row={'instance_id':iid,'arm':arm,'publication':publication,'text_memory_sha256':hashlib.sha256(text_memory.encode()).hexdigest() if text_memory is not None else None,'status':'running','started':time.time()};env=None;agent=None
  try:
   row['image_inspect']=json.loads(subprocess.check_output(['docker','image','inspect',image(task)]))[0]['Id']
   env=DockerEnvironment(image=image(task),cwd='/testbed',timeout=45,pull_timeout=600,run_args=['--rm','--network','none','--memory','3g','--cpus','2'],interpreter=['bash','-c'],env={'BASH_ENV':'/root/.bashrc','PAGER':'cat'})
@@ -60,7 +65,7 @@ def attempt(task,arm,publication):
   if reset['returncode']!=0:raise RuntimeError('dataset base checkout failed')
   check=env.execute({'command':'git rev-parse HEAD'})
   if check['output'].strip()!=task['base_commit']:raise RuntimeError('checkout mismatch')
-  agent=DefaultAgent(NativeModel(publication),env,system_template=SYSTEM,instance_template='Fix this issue:\n{{task}}',step_limit=STEPS,cost_limit=0,wall_time_limit_seconds=SECONDS,max_consecutive_format_errors=5,output_path=out/'trajectory.json')
+  agent=DefaultAgent(NativeModel(publication,text_memory),env,system_template=SYSTEM,instance_template='Fix this issue:\n{{task}}',step_limit=STEPS,cost_limit=0,wall_time_limit_seconds=SECONDS,max_consecutive_format_errors=5,output_path=out/'trajectory.json')
   info=agent.run(task['problem_statement']);patch=env.execute({'command':'git diff --no-ext-diff --binary HEAD'})['output']
   row.update(status='predicted',exit_status=info.get('exit_status'),steps=agent.n_calls,model_patch=patch)
  except Exception as e:row.update(status='agent_error',error=repr(e),model_patch='')
