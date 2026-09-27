@@ -39,4 +39,9 @@ if p.returncode:
 save({'status':'validating_candidate_client'})
 with (ROOT/'candidate-client.log').open('w') as log:
  p=subprocess.run(['pct','exec','110','--','python3','/opt/aimee-client/live_client_runtime.py','--launcher','/opt/aimee-client/bin/aimee-native-candidate-test','--root','/opt/aimee-client/native-candidate-6','--query','What are the native release verification vault code, project, and drink?','--expect','28461','--expect','Juniper','--expect','hibiscus','--output','/opt/aimee-client/release-evidence/candidate-6-runtime.json','--repeat','2'],stdout=log,stderr=subprocess.STDOUT)
-save({'status':'passed' if p.returncode==0 else 'failed','stage':'candidate_client','returncode':p.returncode,'image':image})
+if p.returncode:
+ save({'status':'failed','stage':'candidate_client','returncode':p.returncode,'image':image});raise SystemExit(p.returncode)
+save({'status':'checking_served_preparation_dtype'})
+with (ROOT/'preparation-dtype-check.log').open('w') as log:
+ p=subprocess.run(['python3','/root/aimee-check-preparation-dtype-20260928.py'],stdout=log,stderr=subprocess.STDOUT)
+save({'status':'passed' if p.returncode==0 else 'failed','stage':'served_preparation_dtype','returncode':p.returncode,'image':image})

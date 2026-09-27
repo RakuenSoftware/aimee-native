@@ -20,7 +20,7 @@ def service(*args):
 state = json.loads(subprocess.check_output(['pct', 'exec', '113', '--', 'cat', '/opt/swe-native/source-learning-20260927/status.json']))
 if state['status'] != 'complete':
     raise RuntimeError('learning must finish before compiler replacement')
-report = {'status': 'incomplete', 'compute_dtype': 'float32', 'encoding_revision': 'native-negative-v2-fp32'}
+report = {'status': 'incomplete', 'started':time.time(), 'compute_dtype': 'float32', 'encoding_revision': 'native-negative-v2-fp32'}
 backup_created = False
 try:
     ct_script(101, '''import pathlib,shutil,json
@@ -59,6 +59,7 @@ st=p.stat();d['encoding_revision']='native-negative-v2-fp32';q=p.with_suffix('.r
 ''')
     # The preparer reads its config per request. No account/authority change.
     report['status'] = 'deployed_pending_client_validation'
+    report['deployed_at'] = time.time()
 except BaseException as error:
     report.update(status='failed', error=str(error))
     if backup_created:

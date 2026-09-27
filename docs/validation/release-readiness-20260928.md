@@ -164,3 +164,13 @@ solution during the current campaign. Agent wall time was 109.6 seconds, which
 includes tool execution and is not memory-application latency. Later rounds and
 the other tasks remain pending. Raw control, acquisition, native trajectory and
 official outcome are in `artifacts/source-learning-20260927/first-native-gain.tar.gz`.
+
+The final queued preparation check requires actual compiler job telemetry after
+the service migration and passing client probe. It rejects an empty log, BF16
+computation, or a window containing only reused preparation with no newly
+evaluated tokens. The live diagnostic compiler confirms the expected telemetry
+fields (`compute_dtype`, `evaluated_tokens`) exist. Three isolated acceptance/
+rejection checks pass, and the two migration/rollback checks still pass. This is
+an operator-side evidence check, outside the inference hot path. Its live result
+is pending. The pinned `runtime_commit` remains the unchanged upstream vLLM
+commit; the immutable candidate image separately identifies the corrected kernels.
