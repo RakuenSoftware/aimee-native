@@ -18,13 +18,12 @@ not a declaration that the release gates have passed.
 
 ## Active jobs
 
-CT113 `/opt/swe-native/lesson-fidelity-20260927` finishes the fixed eight-cell
-single-task diagnostic. Its preparation outage is archived independently and
+CT113 `/opt/swe-native/lesson-fidelity-20260927` completed the fixed eight-cell
+single-task diagnostic (six resolved, two failed). Its preparation outage is archived independently and
 was resolved by restoring the same diagnostic FP32 resident compiler. It is not
 counted as a failed model attempt.
 
-CT113 `/opt/swe-native/source-learning-20260927` waits for that diagnostic, then
-runs 64 attempts with two concurrent agents and automatic source-backed capture.
+CT113 `/opt/swe-native/source-learning-20260927` is running 64 attempts with two concurrent agents and automatic source-backed capture.
 A no-memory control and three native-learning rounds use identical inference
 budgets and editing tools. Successful historical calibration learn-1 experiences
 are explicitly identified as prior experience. The experiment does not claim
@@ -80,3 +79,19 @@ the operator queue runs standard image certification, the 32-record workload,
 and the enrolled candidate client's three-canary model-answer probe, in that
 order. It stops on a failed stage. This queue does not sign or promote a release;
 normal signed installation, update and rollback still follow successful gates.
+
+## Automatic acquisition replay check
+
+The separate CPU-only check recovered both successful calibration trajectories
+without hand-selecting their commands. Flask's executed edit replayed exactly
+on the first trial. Matplotlib required three replay trials and used the full
+own-patch fallback; its resulting diff matched the previously successful patch
+exactly. No generated summary or reference solution was used. These are two
+acquisition checks, not two new model solves or a general learning success rate.
+The raw source-experience records, replay observations and report are preserved
+in `artifacts/swe-lesson-fidelity-20260927/source-acquisition-check.tar.gz`.
+
+After eight scored campaign attempts, neither of the first two tasks resolved
+in control or any native round. No infrastructure errors were recorded. Those
+results remain failures; successful procedure acquisition alone does not prove
+that the model will use a record effectively. The remaining pairs are running.

@@ -11,6 +11,10 @@ while True:
  state=json.loads(p.stdout)
  if state['status']=='complete':break
  if state['status']=='failed':save({'status':'blocked_by_learning_failure','error':state.get('error')});raise SystemExit(1)
+ # A stale status file must not leave the release queue waiting indefinitely.
+ probe=subprocess.run(['pct','exec','113','--','python3','-c',"import pathlib; r=pathlib.Path('/opt/swe-native/source-learning-20260927'); pid=int((r/'pid').read_text().strip()); cmd=(pathlib.Path('/proc')/str(pid)/'cmdline').read_bytes(); assert b'source_learning.py' in cmd"],capture_output=True,text=True)
+ if probe.returncode:
+  save({'status':'blocked_by_worker_exit','error':probe.stderr,'last_learning_state':state});raise SystemExit(1)
  time.sleep(30)
 save({'status':'stopping_completed_learning_server'})
 p=subprocess.run(['pct','exec','101','--','podman','stop','--time','60','aimee-swe-learning'],capture_output=True,text=True)
