@@ -194,3 +194,10 @@ model failures. Its paired-outcome check passes. The first live snapshot covers
 24 completed attempts: one unique gain retained in all three rounds, no losses,
 and zero successful controls. The absence of a loss in that snapshot therefore
 does not establish regression safety. Later tasks must supply that comparison.
+
+The Matplotlib input audit confirms that the control and all three native rounds
+started with the same message SHA-256 and 980 prompt tokens. No text memory was
+supplied in any arm. Every native call carried its native publication, while
+all control calls omitted it. Subsequent histories naturally differ as actions
+diverge; the equality claim concerns the initial request only. The derived audit
+is retained beside the full raw trajectories in `matplotlib-input-audit.json`.
