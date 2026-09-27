@@ -102,3 +102,20 @@ independent three-record banks, native/text delivery, and prompt targets of
 inference usage must agree. All three selected values must be recalled in each
 answer. These probes are queued, not yet passed; merely configuring an 8192-token
 server does not certify behavior near that limit.
+
+## Preparation-path mismatch found and staged correction
+
+The source-learning campaign uses the diagnostic FP32 resident compiler and
+`native-swe-v2-fp32`. The enrolled live client still used the production BF16
+compiler and `native-negative-v1`. A corrected consumer image alone therefore
+does not reproduce the combined repair exercised by the learning campaign.
+
+The queued operator upgrade runs only after learning and both image checks pass.
+It backs up the original service files/configuration, stops the two resident
+copies before loading production FP32, updates the one-shot fallback as well,
+and changes live preparation to `native-negative-v2-fp32`. This changes cache
+identity without changing source authority or account bindings. Failures restore
+the prior compiler and preparation configuration. Two isolated tests cover the
+upgrade and rollback paths; actual service migration and client validation remain
+pending. The queue must not count the old BF16 client route as combined-repair
+validation. Implementation remains private in `distribution/tests/upgrade_preparation.py`.

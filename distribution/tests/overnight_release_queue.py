@@ -31,6 +31,11 @@ with (ROOT/'wide-certification.log').open('w') as log:
  p=subprocess.run(['pct','exec','101','--','python3','/opt/aimee-memory-lab/aimee-qwen/distribution/vllm/tests/wide_image_certification.py','--image',image,'--output','/opt/aimee-memory-lab/release-candidate-20260927/wide-image-certification','--stream','--context-tokens','8192','--gpu-utilization','0.8'],stdout=log,stderr=subprocess.STDOUT)
 if p.returncode:
  save({'status':'failed','stage':'wide','returncode':p.returncode,'image':image});raise SystemExit(p.returncode)
+save({'status':'upgrading_preparation'})
+with (ROOT/'preparation-upgrade.log').open('w') as log:
+ p=subprocess.run(['python3','/root/aimee-upgrade-preparation-20260928.py'],stdout=log,stderr=subprocess.STDOUT)
+if p.returncode:
+ save({'status':'failed','stage':'preparation_upgrade','returncode':p.returncode,'image':image});raise SystemExit(p.returncode)
 save({'status':'validating_candidate_client'})
 with (ROOT/'candidate-client.log').open('w') as log:
  p=subprocess.run(['pct','exec','110','--','python3','/opt/aimee-client/live_client_runtime.py','--launcher','/opt/aimee-client/bin/aimee-native-candidate-test','--root','/opt/aimee-client/native-candidate-6','--query','What are the native release verification vault code, project, and drink?','--expect','28461','--expect','Juniper','--expect','hibiscus','--output','/opt/aimee-client/release-evidence/candidate-6-runtime.json','--repeat','2'],stdout=log,stderr=subprocess.STDOUT)
