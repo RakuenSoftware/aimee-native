@@ -742,3 +742,24 @@ arms produced no patch after 40 calls. Inspection of their recorded trajectories
 shows repeated code-inspection commands, not transport failures. The second
 native SymPy outcome is still pending, so its paired case is not included in
 the three-case complete archive or aggregate above.
+
+
+## Qwen SymPy gain retained on both native reuses
+
+SymPy 20590 passed official grading on both native attempts. Its fresh control
+and matched-text arms each reached the 40-call limit while repeating inspection
+commands and produced no patch. The four now-complete paired Qwen tasks yield:
+
+| Condition | Successful tasks | Completed paired tasks |
+|---|---:|---:|
+| No-memory control | 3 | 4 |
+| Matched text memory | 3 | 4 |
+| Native reuse 1 | 4 | 4 |
+| Native reuse 2 | 4 | 4 |
+
+All three control successes were retained in both native rounds, and SymPy was
+an additional success in each. This is a selected source-backed reuse result
+with frozen accepted procedures, not new acquisition between rounds or a
+population-level effect estimate. Matplotlib and Requests remain unfinished;
+these counts are not the final six-case campaign score.
+[All four complete task records](artifacts/larger-qwen27-complete-tasks-20260928/).
