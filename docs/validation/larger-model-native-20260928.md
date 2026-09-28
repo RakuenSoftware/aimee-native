@@ -676,3 +676,19 @@ source memories, prompts and grading allowances remain unchanged. The agent
 budget is checked between calls, so an in-flight call may overshoot it. This
 transport change must accompany any reported retry outcome.
 [Continuation recipe and immutable source hashes](artifacts/larger-gemma26-generation-retry-20260928/).
+
+
+## Qwen signed update installed after origin timeout correction
+
+The isolated sequence-2 network update completed after the release origin's
+send-timeout correction. The signed installer committed the new active release
+with high-water sequence 2 and retained sequence 1 as previous. Both truncated
+transfer attempts remain preserved. [Terminal installation evidence](artifacts/qwen-signed-update-installed-20260928/).
+
+The Qwen coding campaign has started producing model responses. A separate
+coordinator is queued on the shared GPU lock for Qwen's installed update,
+rollback and restore recall probes, followed by Gemma's current signed release.
+These probes use the separately built model-aware launcher and the deployed
+three-model account binding, with no per-model account rebinding. The recipe
+records each phase separately and checks that the binding remains unchanged.
+Passing installation is not yet a pass for those queued GPU probes.
