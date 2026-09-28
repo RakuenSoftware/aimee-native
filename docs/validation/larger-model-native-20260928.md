@@ -1,10 +1,22 @@
 # Larger-model native validation — 2026-09-28
 
-Neither larger model is release-ready. Gemma 26B Q8 now passes baseline 4/4
-and the first native comparison 5/5 after selecting the supported Triton GGUF
-matrix backend. Qwen's initial native result was 3/5; a separate negative-position comparison
-now passes 5/5, matching text memory. The 12B evidence remains
-separate and unchanged.
+Neither larger model is release-ready. Both pass the recorded 5/5 native smoke
+comparison, complete-record preparation and 64-request conversation/concurrency
+checks. Gemma 26B has completed all four signed lifecycle phases (8/8 native
+canary queries). Qwen 27B has passed fresh signed installation (2/2); its update,
+rollback and restore remain outstanding.
+
+Gemma's four fully paired coding cases currently yield 2/4 control, 3/4 text,
+3/4 first native reuse and 4/4 second native reuse. Two cases are not fully
+paired yet; these selected partial results are not the final six-case score.
+The interrupted original campaign is preserved, the unchanged Requests text
+patch passed independent regrading, and four remaining agent attempts are in
+a separate continuation. Qwen's coding campaign is queued. Deployed selection
+of all three models under one enrolled account also remains unvalidated.
+
+The 12B evidence remains separate. The dated work record below preserves
+failures and intermediate states; later completed outcomes supersede their
+then-pending status without rewriting the original evidence.
 
 ## Signed delivery and regression follow-up
 
