@@ -5,67 +5,32 @@ not a declaration that the release gates have passed.
 
 ## Current recommendation
 
-The 12B signed candidate has passed the recorded runtime, source-memory
-regression and signed install/update/rollback/restore checks. These support a
-limited private preview of that tested candidate, with the measured learning
-scope stated explicitly. They do not establish general SWE-bench improvement:
-the original broader study remains 5/32 control versus 4/32 native, with its
-one lost case subsequently repaired in a separate targeted experiment.
+Recommend the three tested candidates for the controlled private preview. All
+normal lifecycle campaigns are complete: 8/8 canaries per model, with the 12B
+campaign starting at sequence 5 and updating/restoring sequence 6. Both larger
+campaigns tested fresh sequence 1, update to 2, rollback and restore. The final
+coordinator record confirms unchanged authority bindings and restored compiler
+service.
 
-The requested three-model release is **not ready**. Both larger models have
-passed packaged native/text consumption and live preparation, reuse, expiry,
-withdrawal, disconnection and recovery checks. Their six coding memories passed
-complete-source token audits.
+The ordinary controlled channels now serve Gemma 12B sequence 6, Gemma 26B
+sequence 2 and Qwen 27B sequence 2. The bootstrap serves the tested model-aware
+launcher. Recipient TLS downloads, signatures, hashes and launcher execution
+passed. See the [final recommendation](three-model-release-recommendation-20260928.md)
+for exact identities, model-specific task results, limitations and unmet
+external-distribution items.
 
-Qwen 27B's six-task coding comparison is complete: control 5/6, matched text
-4/6, and both native reuse rounds 6/6, retaining every control success. Gemma
-26B completed all six tasks: control 2/6, text 4/6, and both native rounds
-4/6. Both control successes were retained, but Requests passed only native
-round 1 and Flask passed only native round 2. These are frozen accepted
-procedure reuse comparisons, not fresh acquisition between rounds.
+The primary acquisition study, targeted source repair and selected retention
+checks are complete. Qwen's selected comparison is 5/6 control versus 6/6 in
+both native reuse rounds; Gemma's is 2/6 versus 4/6 in both rounds, with different
+additional successes. The broader original 12B result remains 5/32 versus 4/32;
+its later targeted repair does not replace that population result. No general
+coding-improvement or model-weight reasoning claim is made.
 
-Gemma 26B's signed fresh/update/rollback/restore lifecycle passed 8/8 native
-canary responses. Qwen's fresh/update/rollback/restore lifecycle also passed
-8/8, with the final three phases using the model-aware authority. The newly
-deployed model-aware authority passed bootstrap, artifact-fetch and lease
-isolation checks. Installed consumption through the updated launcher passed for both larger
-models. Normal-feature 12B restoration/recovery also passed. Larger-bank
-activation measurements passed fidelity for all twelve banks. Cold medians
-remain 3.73–14.80 ms for Gemma and 1.62–4.40 ms for Qwen, so the microsecond
-cold-application target remains unmet. **The user clarified on 2026-09-28
-that this target is aspirational, not a release blocker.** Further latency
-optimization is not a prerequisite for release staging. The upstream/private
-source-identity concern has been resolved. The
-[explicit package gate review](larger-release-gate-review-20260928.md) identifies
-normal larger lifecycle completion and external source/notice fulfillment as unfinished,
-with measured latency retained as a disclosed limitation, not a failed release gate. The exact larger dependency-delta review is
-complete and carries forward the earlier controlled-infrastructure limitations.
-
-Normal-format Gemma fresh installation, update, rollback and restore have passed
-2/2 native canaries each (8/8 total). Qwen normal installation is running. These repeat the same
-three-fact fixture to validate lifecycle behavior. Both Qwen normal sequences
-are signed and independently verified. Fresh installation activated the
-expected sequence-1 manifest and its runtime probe passed 2/2. The signed
-sequence-2 update and its runtime probe also passed 2/2. Qwen rollback passed
-2/2, preserving the high-water mark; restore remains pending.
-
-Automatic source acquisition is implemented in the benchmark harness and has
-replay-validated evidence in the primary and broader studies. This is distinct
-from proving generally reliable task improvement or providing a turnkey
-production learning workflow. The original broader-study regression is retained;
-the later literal-source repair recovered Requests and the selected five-task
-retention check passed 10/10. The observed native/text repetition difference
-remains an unresolved limitation. No broad automatic-learning release claim is
-supported by the current evidence.
-
-See the [model release plan](../model-release-plan-20260928.md),
-[larger-model validation report](larger-model-native-20260928.md), and
-[model-aware authority record](model-selection-20260928.md).
-The normal published channel remains at sequence 5.
-
-Completed evidence: [10/10 selected regression attempts](artifacts/retained-success-validation-20260928/status.json),
-[8/8 signed lifecycle queries](artifacts/normal-signed-lifecycle-20260928/lifecycle-summary.json),
-and [targeted Requests comparison](artifacts/requests-literal-task-20260928/final-status.json).
+Microsecond cold application remains aspirational, not a release blocker.
+Measured latency is disclosed. Notices and collected sources are delivered and
+verified on the controlled origin; external source/notice fulfillment remains
+under review. The following sections preserve historical checkpoints rather
+than overriding this final disposition.
 
 ## Completed primary study and current handoff
 
@@ -82,7 +47,7 @@ original results are preserved alongside the targeted Requests repair and
 selected retained-success checks. No release promotion has occurred.
 The historical sections below preserve earlier checkpoints and interventions.
 
-## Current release candidate
+## Earlier 12B candidate checkpoint
 
 Image: `7303c9e9b0785a8574885594aafe87d8f65b54acdf3a3c20a003901be5f40605`.
 Registry digest: `sha256:1fc9a828331c42da146be2a9fcd1171e67c67dc8bf5167052c854ee7916822ea`.

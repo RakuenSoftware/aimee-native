@@ -1,9 +1,9 @@
-# Three-model private preview — release candidate
+# Three-model controlled private preview
 
-The 12B and Gemma 26B candidates have completed their recorded normal signed
-lifecycle checks. Qwen 27B is undergoing normal signed lifecycle validation. This
-is the intended user workflow, not a claim that pending checks have passed or
-that public distribution is open.
+All three normal lifecycle campaigns passed their recorded checks. The controlled
+origin serves Gemma 12B sequence 6, Gemma 26B sequence 2 and Qwen 27B sequence 2,
+with the tested model-aware launcher. This is the controlled private preview;
+external-distribution fulfillment remains under review.
 
 ## Installation
 
@@ -16,7 +16,7 @@ model per installation directory:
 | Gemma4 26B A4B | `gemma4-26b-q8-native` | Q8_0 GGUF, 29,135,275,488 bytes |
 | Qwen3.8 27B | `qwen3.8-27b-q8-native` | Q8_0 GGUF, 29,047,084,448 bytes; projector sidecar 1,842,940,064 bytes |
 
-For example, once the larger candidate is approved:
+For example:
 
 ```sh
 aimee-native install gemma4-26b-q8-native
@@ -57,8 +57,9 @@ private memory from shared support logs.
 
 The larger runtimes completed native/text integration checks, model-aware
 delivery, full-source procedural memory audits and laboratory signed lifecycle
-checks. Gemma normal-channel validation passed all four phases (8/8 canaries);
-Qwen normal-channel validation remains pending. Exact evidence and candidate
+checks. Both larger normal-channel campaigns passed all four phases (8/8
+canaries each). The 12B campaign tested fresh sequence 5 and update/rollback/restore
+through sequence 6; it is not described as a fresh sequence-6 test. Exact evidence and candidate
 identities are in the [release plan](../../docs/model-release-plan-20260928.md).
 
 The selected six-task Qwen comparison passed 5/6 without memory, 4/6 with matched

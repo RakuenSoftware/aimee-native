@@ -14,10 +14,10 @@ superseded by this clarification, without changing their experimental results.
 
 The first normal Gemma 26B manifest is signed and independently verified.
 Its normal fresh-install, update, rollback and restore canaries passed (2/2 each).
-Qwen normal fresh-runtime, signed-update and rollback validation passed 2/2
-each; restore remains unfinished. Both Qwen normal sequences are signed
-and their signatures independently verified; the runtime artifacts are identical. Existing laboratory lifecycle
-results establish the component path, not those pending distribution checks.
+Qwen normal fresh-runtime, signed-update, rollback and restore validation passed
+2/2 each (8/8 total). Both Qwen normal sequences are signed
+and their signatures independently verified; the runtime artifacts are identical.
+The normal lifecycle results are separate from the retained laboratory campaign.
 
 The remaining review work is identified below. Broader population-level coding
 improvement is a claim limitation, not an additional release requirement.
@@ -34,9 +34,9 @@ being introduced as a new requirement.
 | `revision_withdrawal` | Recorded preparation lifecycle rejects expired/withdrawn/disconnected authority and recovers reuse. Installed signed update/rollback/restore passed. These are separate pieces of evidence; preparation-cache rejection alone does not prove immediate GPU revocation. |
 | `cold_warm_latency` | **Measurement requirement complete; microseconds are aspirational, not a release blocker.** All twelve banks passed tensor fidelity. Cold medians are 3.73–14.80 ms for Gemma and 1.62–4.40 ms for Qwen. Disclose these limits; resident lookup is a different measurement. Further optimization is not a prerequisite for release staging. |
 | `reusable_preparation` | Both models passed fresh preparation, repeat reuse and lifecycle checks. Fresh preparation remains seconds; reuse is separate from request-time application. This component behavior is evidenced. |
-| `clean_install` | Larger laboratory fresh/update/rollback/restore passed, including updated model-aware installed consumption. Normal-feature launcher build and 12B recovery passed. **Normal Gemma fresh installation, signed update, rollback and restore each passed 2/2 runtime queries (8/8 total). Qwen fresh-runtime, signed-update and rollback validation each passed 2/2; restore remains pending.** |
+| `clean_install` | Larger laboratory fresh/update/rollback/restore passed, including updated model-aware installed consumption. Normal-feature launcher build and 12B recovery passed. **Normal Gemma fresh installation, signed update, rollback and restore each passed 2/2 runtime queries (8/8 total). Qwen fresh-runtime, signed-update, rollback and restore validation each passed 2/2 (8/8 total).** |
 | `binary_disclosure_audit` | Client source exclusion, exported-symbol/debug/private-marker inspection and exact library hashes passed their recorded checks. Private wheel retained-source comparison matches 16 files. This is evidence of source exclusion, not secrecy against disassembly. |
-| `authenticated_delivery` | Live model-aware bootstrap, artifact fetching, scoped leases and installed consumption passed. Channel promotion remains unperformed. This component path is evidenced. |
+| `authenticated_delivery` | Live model-aware bootstrap, artifact fetching, scoped leases and installed consumption passed. Controlled channels and the model-aware bootstrap are promoted and verified. This component path is evidenced. |
 | `license_dependency_audit` | Completed dependency-delta reconciliation: 278 Python metadata/license-file records, 591 OS records, both Rust lockfiles and six common notices per model are unchanged. Model-specific notices are separately recorded. This preserves the earlier controlled-infrastructure disposition and known limits. **The external-distribution corresponding-source/notice fulfillment bundle remains unfinished.** |
 
 ## Provenance correction
@@ -126,5 +126,14 @@ Rollback and restore remain pending.
 
 Qwen's [normal rollback probe](artifacts/larger-normal-lifecycle-20260928/qwen27/rollback1.json)
 passed 2/2 after returning to sequence 1. The high-water mark remains at 2.
-The final sequence-2 restore runtime probe is running. These are repeated
+The final sequence-2 restore runtime probe also passed 2/2. These are repeated
 three-fact lifecycle canaries, not independent learning trials.
+
+## Final controlled-preview disposition
+
+Both normal larger lifecycles are complete. The coordinator restored the 12B
+compiler and verified unchanged authority bindings. The [candidate inventory](artifacts/candidate-evidence-review-20260928/report.json)
+checks signatures and exact lifecycle states. [Controlled promotion](artifacts/controlled-promotion-20260928/)
+and recipient downloads passed. Recommend the scoped private preview described
+in the [final recommendation](three-model-release-recommendation-20260928.md);
+external-distribution source/notice fulfillment remains explicitly unfinished.

@@ -1,78 +1,33 @@
-# Controlled native-memory beta
+# Controlled native-memory preview
 
-This page records the existing sequence-5 beta. For the newer three-model
-candidates and their current validation status, see the
-[three-model preview guide](three-model-preview.md) and
-[release plan](../../docs/model-release-plan-20260928.md). Do not use the older
-image and manifest below as identifiers for the newer validated candidates.
+The current preview includes Gemma4 12B, Gemma4 26B A4B and Qwen3.8 27B. Use the
+[three-model guide](three-model-preview.md) for supported hardware, package sizes,
+results and limitations, and the [release recommendation](../../docs/validation/three-model-release-recommendation-20260928.md)
+for exact tested identities.
 
-The private beta uses the signed `gemma4-12b-q8-native` release, sequence 5.
-Its manifest SHA-256 is
-`d56c92bfade06bf91ad6cb713d04fe791815b65350f4414f91cd82514554960b`.
-The immutable runtime digest is
-`sha256:4d901b1cc0e5a203dcd0b19d53aa4a2dc852e6027f6c48c80af1637822cb4831`.
+Obtain the signed model-aware launcher, pinned release trust and enrolled Aimee
+account from the operator. The tested client uses Linux x86-64, Podman and two
+RX 7900 XTXs with the pinned ROCm/vLLM runtime.
 
-## Supported profile
-
-Linux x86-64, the certified ROCm 7.2.3 runtime/host combination, two RX 7900 XTXs,
-Gemma 4 12B Q8_0, tensor parallelism 2, Podman and the signed runtime profile.
-The container has a 48-GiB host-memory limit. Reserve additional host memory for
-Podman, download/unpack and the OS. This profile is not certification for other
-GPUs, CUDA, macOS, Windows, arbitrary models or arbitrary vLLM versions.
-The original delivery profile uses a 2,048-position conversation; the 8,192-position
-SWE experiment is a separately tested engineering configuration, not an automatic
-change to the signed beta profile.
-
-## User workflow
-
-Obtain the enrolled launcher, pinned release trust and approved account identity
-from the operator. The server-side compiler is not installed on the client.
-
-```
+```sh
 aimee-native install gemma4-12b-q8-native
 aimee-native connect https://YOUR-AIMEE-ENDPOINT
 aimee-native run
 ```
 
-`connect` reads the account bearer from stdin. Use `--ca-file` and
-`--client-identity` for an operator-issued private CA/mTLS enrollment, where
-required. Do not put credentials in command arguments or shared configuration.
-The launcher owns authenticated delivery, container startup and the memory broker.
-Serve the text API on loopback; remote access needs the application's authenticated
-front end. Clients receive only the operator-approved publication, not the whole KB.
+Choose `gemma4-26b-q8-native` or `qwen3.8-27b-q8-native` in the install command
+for the larger models. Use a separate installation root for each model.
+`connect` reads the scoped bearer token from standard input. Where enrollment
+requires them, use `--ca-file` and `--client-identity` for the operator-issued
+private CA and mTLS identity. Keep credentials out of command arguments and
+shared reports. The private compiler is not installed on the client.
 
-Run `aimee-native install gemma4-12b-q8-native` for a signed update;
-`aimee-native rollback` restores the prior installed release. Rollback does not
-lower the release-sequence high-water mark or restore withdrawn memory authority.
-Stop the launcher before changing runtime versions. Keep the previous artifact
-set until update and canary checks pass.
+The launcher manages authenticated memory delivery and the model runtime; vLLM
+is not forked. Serve the text API on loopback behind the application's
+permissions. Stop the launcher before installing a signed update or running
+`aimee-native rollback`. Rollback preserves the release-sequence high-water mark
+and does not restore withdrawn memory permissions.
 
-## Acceptance and support
-
-- Exact release: 352/352 serving checks, 6/6 signed installation/update/rollback
-  canaries; all source tensor bytes retained.
-- Additional real-model comparison: 336/336 answers, native/text median response
-  308/664 ms and first content 66/377 ms. Fixed synthetic fixture; no universal
-  latency promise.
-- Cold loading remains milliseconds: 3.50 ms small, 31.44 ms wide in the follow-up.
-  Resident lookup and native activation are different timings.
-- Native state uses memory/device resources although it consumes no prompt tokens.
-  New selections may need server-side preparation; first-use latency includes it.
-- Admission pressure may return HTTP 429; retry with bounded backoff. Lost authority,
-  inconsistent refresh or poisoned worker state must fail closed. Restart the
-  managed runtime after a required-restart state; do not bypass authority checks.
-
-Collect release ID, runtime image digest, sanitized error type, timestamps and
-aggregate metrics for support. Keep private questions, memory contents, bearer
-credentials and model artifacts out of shared reports.
-
-## Distribution boundary
-
-The existing restricted binary package excludes encoding/compiler implementations,
-source databases, identity credentials and signing keys. vLLM is unmodified.
-Packaging cannot prevent a recipient from inspecting binaries or usable tensors.
-
-This is controlled private-preview documentation, not public redistribution
-clearance. The dependency review below records the remaining external-release
-requirements explicitly. No new endpoint, public repository, or public model
-artifact was published by this work.
+The current controlled channels are 12B sequence 6 and both larger sequence 2.
+The [old sequence-5 beta record](sequence5-beta-20260926.md) is historical.
+Public redistribution fulfillment is separate and remains under review.

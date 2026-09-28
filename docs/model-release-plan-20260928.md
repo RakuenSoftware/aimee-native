@@ -49,14 +49,14 @@ For each larger model:
 | Candidate | Normal signed runtime lifecycle | Coding evidence | Release decision |
 |---|---|---|---|
 | Gemma4 12B | Fresh, update, rollback and restore passed; 8/8 native canary queries | Original studies and selected source-repair/retention checks complete | Supports the documented scoped private preview; broader learning improvement remains unproven |
-| Gemma4 26B | Normal fresh/update/rollback/restore passed; 8/8 canaries with model-aware authority | All six cases complete: control 2/6, text 4/6, both native reuse rounds 4/6; both control successes retained, Requests lost between native rounds | Not yet ready |
-| Qwen3.8 27B | Normal fresh install/runtime, update and rollback each passed 2/2; restore pending. Earlier laboratory lifecycle passed 8/8; that is separate evidence | All six cases complete: control 5/6, text 4/6, both native reuse rounds 6/6; all control successes retained | Not yet ready |
+| Gemma4 26B | Normal fresh/update/rollback/restore passed; 8/8 canaries with model-aware authority | All six cases complete: control 2/6, text 4/6, both native reuse rounds 4/6; both control successes retained, Requests lost between native rounds | Supports controlled private preview; external distribution fulfillment remains open |
+| Qwen3.8 27B | Normal fresh install/runtime, update, rollback and restore each passed 2/2 (8/8 total) | All six cases complete: control 5/6, text 4/6, both native reuse rounds 6/6; all control successes retained | Supports controlled private preview; external distribution fulfillment remains open |
 
 Both larger models have separately passed native/text smoke comparisons,
 conversation/concurrency checks and the recorded private preparation lifecycle.
 The coding and laboratory signed-client campaigns are now complete; exact
-normal-channel validation is underway. Gemma 26B fresh installation, signed update, rollback and restore each passed 2/2
-native runtime queries (8/8 total); Qwen normal lifecycle is running. The larger coding protocol reuses frozen accepted source procedures;
+normal-channel validation is complete. Gemma 26B fresh installation, signed update, rollback and restore each passed 2/2
+native runtime queries (8/8 total); Qwen also passed all four phases (8/8). The larger coding protocol reuses frozen accepted source procedures;
 it does not measure newly acquired learning between its two native rounds.
 
 The three-model account binding, query-forwarding frontend and delivery service
@@ -64,18 +64,17 @@ are deployed and healthy. The same enrolled account passed 10/10 live bootstrap
 authorization checks and 6/6 fresh/repeated artifact fetches across all three
 models. Installed GPU consumption through the model-aware launcher passed all eight
 larger-model queries. The 12B compiler was restored for normal-feature installed
-consumption and interrupted-request recovery, which passed. It is temporarily
-stopped again during the current larger lifecycle campaign; the coordinator
-restores it on exit. All twelve larger-bank activation
+consumption and interrupted-request recovery, which passed. It was temporarily stopped during the larger lifecycle campaign and is now
+restored; the completed coordinator verified unchanged authority bindings. All twelve larger-bank activation
 cases passed tensor fidelity; measured cold application remains in milliseconds.
-The larger normal channels are being exercised on the controlled local release
-origin. This is not public release promotion. The published 12B sequence-5
-channel remains unchanged; its newer tested sequence-6 candidate uses a separate
-validation route.
+The controlled normal channels now serve 12B sequence 6 and both larger
+sequence-2 packages. The model-aware bootstrap launcher is promoted. All three
+served manifests and the launcher passed recipient TLS/signature/hash checks.
+This is controlled private-preview promotion, not public redistribution approval.
 
 See the [larger-model report](validation/larger-model-native-20260928.md) and
 [model-selection deployment record](validation/model-selection-20260928.md) for
-exact artifacts and outstanding checks. The chronological sections below
+exact artifacts and evidence. The [final release recommendation](validation/three-model-release-recommendation-20260928.md) identifies remaining external-distribution work. The chronological sections below
 preserve earlier findings and failures.
 
 
