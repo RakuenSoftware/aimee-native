@@ -789,3 +789,16 @@ that the requested microsecond cold-application target has been met. Full
 serving and preparation costs remain separate. This stage is queued, not passed.
 Only the waiting operator queue was replaced (PID 2678592); the study continues
 unchanged. The replacement record is archived with the GPU-handoff evidence.
+
+## Diagnostic guard aligned with CPU-only grading overlap
+
+A coverage review found that the residual-repetition diagnostic still required
+both study controllers to report completion, which would reject the queue's
+new early GPU handoff while the final CPU grade runs. Its guard now invokes
+the same `swe_gpu_handoff.py` audit: primary completion, 63 graded outcomes
+and final Requests native submission (or all 64 graded outcomes). Failed
+studies and active inference remain rejected. All grades are still required
+by the queue before successful completion. The diagnostic also uses the
+repaired 600-second generation deadline and 1320-second publication deadline.
+Ten handoff/guard tests pass, and the deployed script hash matches the source.
+The live study and waiting queue were not restarted for this change.

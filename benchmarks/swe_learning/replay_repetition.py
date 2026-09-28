@@ -1,4 +1,4 @@
-"""Matched replay of one preserved response; run only after both studies end."""
+"""Matched replay of one preserved response; run only after both studies finish inference."""
 import argparse
 import copy
 import hashlib
@@ -6,8 +6,26 @@ import json
 import pathlib
 import re
 import subprocess
+import sys
 import time
 import urllib.request
+
+
+def require_inference_complete(root):
+    primary = json.loads((root/'source-learning-20260927/status.json').read_text())
+    if primary['status'] != 'complete':
+        raise RuntimeError('primary study must finish before diagnostic publication')
+    broader = root/'broader-source-learning-20260928'
+    state = json.loads((broader/'status.json').read_text())
+    if state['status'] == 'failed':
+        raise RuntimeError('broader study failed before diagnostic publication')
+    # Use the same audited 63-graded-plus-final-submission boundary as the
+    # operator queue. The final CPU grade is still mandatory for release.
+    handoff = json.loads(subprocess.check_output(
+        [sys.executable, str(root/'swe_gpu_handoff.py'), str(broader)], text=True))
+    if not handoff['gpu_ready']:
+        raise RuntimeError('broader inference must finish before diagnostic publication')
+    return handoff
 
 
 def main():
@@ -17,9 +35,7 @@ def main():
     p.add_argument('--root', default='/opt/swe-native')
     a = p.parse_args()
     root = pathlib.Path(a.root)
-    for study in ('source-learning-20260927', 'broader-source-learning-20260928'):
-        if json.loads((root/study/'status.json').read_text())['status'] != 'complete':
-            raise RuntimeError('study must finish before diagnostic publication: ' + study)
+    handoff = require_inference_complete(root)
     target = pathlib.Path(a.output)
     if target.exists():
         raise ValueError('preserve prior diagnostic; output already exists')
@@ -32,17 +48,18 @@ def main():
     def api(path, body=None):
         req = urllib.request.Request(base+path, data=None if body is None else json.dumps(body).encode(),
                                      headers={'Content-Type': 'application/json'})
-        with urllib.request.urlopen(req, timeout=180) as response:
+        with urllib.request.urlopen(req, timeout=600) as response:
             return json.load(response)
     model = api('/v1/models')['data'][0]['id']
     source = fixture['source']
     fact = source['complete_fact']
     pub = json.loads(subprocess.check_output(
         ['ssh', '-F', str(root/'source-learning-20260927/ssh.conf'), 'native-gpu'],
-        input=json.dumps({'op': 'publish', 'facts': [fact], 'retain': []}).encode(), timeout=660))
+        input=json.dumps({'op': 'publish', 'facts': [fact], 'retain': []}).encode(), timeout=1320))
     if pub['publication'] != source['publication'] or pub['records'] != 1:
         raise ValueError('replay must use the original publication identity')
     report = dict(status='running', scope='Post-hoc replay of one known problematic prompt. No task-grade or population claim; isolated replay may differ from concurrent scheduling.',
+                  inference_handoff=handoff, generation_timeout_seconds=600,
                   fixture_sha256=hashlib.sha256(pathlib.Path(a.fixture).read_bytes()).hexdigest(),
                   publication=pub['publication'], rows=[])
     def save():
