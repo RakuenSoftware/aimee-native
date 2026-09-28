@@ -316,3 +316,10 @@ completion of the in-progress attempts. The full audit is
 `artifacts/source-learning-20260927/delivery-audit-1790552807.json`; the operator
 script is `distribution/tests/audit_source_delivery.py`. It makes no model calls
 and does not change either catalog or study records.
+
+
+All eight remaining task images are available before their pairs begin. Seven
+were fetched ahead of the running experiment, with a disk-reserve guard and
+without changing task definitions, model requests or grader commands. Their
+Docker image identities are retained in
+`artifacts/source-learning-20260927/remaining-image-readiness.json`.
