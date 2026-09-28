@@ -55,3 +55,10 @@ corresponding-source bundle. No source version was substituted.
 
 [Publication records and source URLs](artifacts/larger-launchpad-source-plan-20260928/report.json).
 Reproduction: `distribution/release/resolve-launchpad-sources.py`.
+
+A separate collector is now fetching those five exact historical/PPA source
+sets at `/opt/aimee-large-release-validation/launchpad-source-download-r1`
+(CT101 process 379510 at launch). It checks the DSC source identity/version and
+its SHA-256 entries for dependent files. DSC OpenPGP signatures are retained but
+not verified by this collector; this distinction stays explicit in its report.
+No source is unpacked or executed. Results are pending.
