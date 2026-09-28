@@ -55,9 +55,13 @@ def audit(root):
         rows.append({'instance_id':iid, 'outcomes':outcomes, 'gained_rounds':gained,
                      'lost_rounds':lost, 'all_native_rounds_passed':all(outcomes[a]['status']=='passed' for a in ARMS[1:]),
                      'prior_accepted_success_sources':prior_sources})
+    infrastructure_errors = sum(row['infrastructure_errors'] for row in arms.values())
+    status = 'partial'
+    if completed == len(tasks)*len(ARMS) and not partial_files:
+        status = 'incomplete_grading' if infrastructure_errors else 'complete'
     return {'scope':'Same-task source-experience reuse; repeated rounds are not independent tasks. Partial attempts are not failures.',
             'scheduled_attempts':len(tasks)*len(ARMS), 'completed_attempts':completed,
-            'status':'complete' if completed==len(tasks)*len(ARMS) and not partial_files else 'partial',
+            'status':status, 'graded_attempts':completed-infrastructure_errors,
             'pending_write_files':partial_files, 'arms':arms,
             'successful_control_tasks':[r['instance_id'] for r in rows if r['outcomes']['source-control']['status']=='passed'],
             'unique_gained_tasks':[r['instance_id'] for r in rows if r['gained_rounds']],

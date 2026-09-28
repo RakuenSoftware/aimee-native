@@ -22,4 +22,17 @@ class PairedAudit(unittest.TestCase):
             self.assertEqual(len(result['pending_write_files']),1)
             self.assertEqual(result['completed_attempts'],8)
 
+    def test_all_files_present_does_not_mean_grading_completed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=pathlib.Path(tmp);(root/'tasks.json').write_text(json.dumps([{'instance_id':'a'}]))
+            for arm in ARMS:
+                path=root/'results'/arm/'a'/'result.json';path.parent.mkdir(parents=True)
+                path.write_text(json.dumps({'arm':arm,'instance_id':'a','resolved':None if arm==ARMS[-1] else False}))
+            result=audit(root)
+            self.assertEqual(result['completed_attempts'],4)
+            self.assertEqual(result['graded_attempts'],3)
+            self.assertEqual(result['status'],'incomplete_grading')
+            row=json.loads(path.read_text());row['resolved']=False;path.write_text(json.dumps(row))
+            self.assertEqual(audit(root)['status'],'complete')
+
 if __name__=='__main__':unittest.main()
