@@ -125,3 +125,20 @@ policy source hashes, Go build information and the build command are retained
 in [service evidence](artifacts/model-selection-service-20260928/).
 All seven actual C bridge / authorization fixtures pass against this exact
 candidate binary. It is not yet deployed; the active service remains unchanged.
+
+## Three-model binding staged without changing the active account
+
+The private candidate is `/etc/aimee-native/bindings.three-models.candidate.json`
+on CT100. It keeps the original 12B default and adds the two larger signed native
+identities under the same recipient, using their existing private preparation
+templates. Model configuration digests were checked against sequence-2 signed
+package contents. The active binding's bytes were verified unchanged.
+
+Before applying it, require the lifecycle coordinator to finish and restore the
+original binding SHA-256
+`b9441137dedcc2ecc0f362317e6d0d4201c7ae84b41f7a6b20b5c46040312a83`.
+The candidate SHA-256 is
+`4bda33b9f6ded080077dd83a070ae6404609da61452c93212ff7cb0778048205`.
+Only its noncredential manifest is archived; the binding itself stays private on
+the authority host. Frontend/service rollout and live enrolled-account checks
+remain prerequisites to claiming deployed model switching.
