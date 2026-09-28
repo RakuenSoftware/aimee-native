@@ -228,3 +228,27 @@ This was a test resource failure, not an inference outcome. A retry with a
 the idle 12B preparation service and restores it afterward, rather than loading
 both CPU allocations simultaneously. The first failed attempt is preserved.
 [Memory failure evidence](validation/artifacts/gemma26-bf16-reference-20260928/kernel-memory-failure.log).
+
+
+## Qwen real-model baseline passed; larger preparation integrated
+
+The Qwen 27B Q8 package loaded on both XTXs and answered all four baseline
+prompts exactly: Paris, 42, Juniper and 21. These are smoke checks, not a broad
+accuracy estimate or native-memory validation.
+[Actual GPU responses](validation/artifacts/qwen27-baseline-20260928/responses.json).
+
+The private resident compiler now has an explicit `bounded_text_fp32` backend.
+Its default 12B backend remains unchanged. The larger backend uses original
+Transformers text models and Accelerate offload hooks, exports every selected
+position from each applicable attention layer, and rejects incomplete working
+sets, missing positions and nonfinite state. Qwen's recurrent layers are not
+misrepresented as K/V attention layers. Every preparation is a full FP32 pass.
+
+Reduced real Gemma MoE and Qwen hybrid export tests passed: three selected
+records all reached encoding; every applicable layer's BF16 exported K/V
+exactly matched the resident FP32 reference. Existing resident transport tests
+also passed after supplying a missing sibling fixture script to the isolated
+test directory; the initial fixture failure is preserved. The live 12B service
+has not been switched to this backend. A full Qwen checkpoint, three-record
+preparation is queued after the Gemma BF16 reference releases resources.
+[Export and transport checks](validation/artifacts/bounded-preparation-20260928/).

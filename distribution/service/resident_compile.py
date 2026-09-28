@@ -35,7 +35,7 @@ def handle(client, config, compiler):
                 'computation': {k:v for k,v in getattr(compiler, 'last_metrics', {}).items()
                                 if k in ('tokens', 'reused_prefix_tokens', 'evaluated_tokens',
                                          'compute_dtype', 'reuse_policy', 'input_seconds', 'forward_seconds',
-                                         'export_seconds', 'publish_seconds')}}
+                                         'export_seconds', 'publish_seconds', 'weight_policy', 'weight_reads')}}
 
 
 def serve(config, path, compiler):
@@ -76,9 +76,17 @@ def main():
     config = owned_config(a.config)
     os.environ['AIMEE_NATIVE_LIBRARY'] = config['library']
     os.environ['HF_HUB_OFFLINE'] = '1'
-    from gemma_compile import GemmaCompiler
     started = time.perf_counter()
-    compiler = GemmaCompiler(config['model'], config.get('max_memory_tokens', 1024), config.get('threads', 12), config.get('reuse_library'), config.get('compute_dtype','bfloat16'))
+    backend = config.get('preparation_backend', 'gemma_unified')
+    if backend == 'gemma_unified':
+        from gemma_compile import GemmaCompiler as Compiler
+        default_dtype = 'bfloat16'
+    elif backend == 'bounded_text_fp32':
+        from bounded_compile import BoundedTextCompiler as Compiler
+        default_dtype = 'float32'
+    else:
+        raise ValueError('unsupported preparation backend')
+    compiler = Compiler(config['model'], config.get('max_memory_tokens', 1024), config.get('threads', 12), config.get('reuse_library'), config.get('compute_dtype',default_dtype))
     compiler.load()
     print(json.dumps({'event': 'model_loaded', 'seconds': round(time.perf_counter() - started, 6)}), flush=True)
     serve(config, a.socket, compiler)
