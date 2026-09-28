@@ -522,3 +522,23 @@ rendered a 363-character feedback record. The amendment, source hashes, and
 zero-attempt precondition are recorded in the broader manifest. The prior
 manifest and code are backed up remotely. Only the waiting follow-up worker
 was replaced; the fixed primary study remains unchanged.
+
+
+## First fresh acquisition in the broader study
+
+Flask-4169 passes both conditions: control uses 6 calls and about 61 seconds;
+native reuse uses 2 calls and about 13 seconds. Both produce the identical
+successful patch from identical initial prompts, with no text memory. The
+control's executed edit was replay-validated on the first trial and published
+automatically for the native attempt. No earlier memory was supplied. This is
+one fresh within-run acquisition/retention pair, not an independent replication,
+a serving-latency measurement, or a broad success-rate estimate.
+
+Raw evidence and a derived audit are in
+`artifacts/broader-source-learning-20260928/first-flask-pair.tar.gz` and
+`first-flask-pair.json`; every archived file was verified after transfer.
+The delivery auditor now supports either study and retries partially written
+trajectory snapshots. Its first broader snapshot passed for 52 observed calls,
+six trajectories (including ongoing controls), and one native publication.
+The complete prepared source equals the captured fact and all observed calls
+use the intended publication. Accuracy claims still depend on the official grader.
