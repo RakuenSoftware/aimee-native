@@ -1,0 +1,4 @@
+FROM 79d7f03eedc74943f2ffd9c1271141086ea0813bcd3f697c718e09501908cf58
+COPY wheels/aimee_vllm-0.1.0-cp312-cp312-linux_x86_64.whl /tmp/aimee_vllm-0.1.0-cp312-cp312-linux_x86_64.whl
+RUN python -m pip install --no-deps --force-reinstall /tmp/aimee_vllm-0.1.0-cp312-cp312-linux_x86_64.whl && rm /tmp/aimee_vllm-0.1.0-cp312-cp312-linux_x86_64.whl
+COPY kernels/ /opt/aimee/kernels/

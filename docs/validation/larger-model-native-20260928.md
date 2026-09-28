@@ -2,8 +2,8 @@
 
 Neither larger model is release-ready. Gemma 26B Q8 now passes baseline 4/4
 and the first native comparison 5/5 after selecting the supported Triton GGUF
-matrix backend. Qwen's first native comparison exposes two quality failures;
-a separate position-policy comparison is running. The 12B evidence remains
+matrix backend. Qwen's initial native result was 3/5; a separate negative-position comparison
+now passes 5/5, matching text memory. The 12B evidence remains
 separate and unchanged.
 
 ## Gemma 26B quantized backend repair and native comparison
@@ -51,6 +51,34 @@ is release-owned; users need not tune it. Launcher tests pass (16 unit tests
 and one signed lifecycle integration test); two CLI tests pass. The lifecycle
 fixture verifies backend/projector propagation and cleanup on rollback. These
 are configuration tests, not a larger-model signed GPU lifecycle pass.
+
+## Qwen 27B position-policy comparison
+
+The independent follow-up changed only preparation's memory-position policy
+from nonnegative positions to negative positions. Model weights, all three
+source records, questions, scoring and runtime remained unchanged. The private
+compiler exposes an explicit policy; the previous default remains unchanged
+until the release profile is bound to its tested policy. Publication identity
+includes the policy so incompatible prepared artifacts are not reused.
+
+The follow-up passed **5/5 native, 5/5 text, 1/5 control**, resolving both the
+standalone project-name miss and combined-answer miss. Native prompt counts
+again match control; text adds 43 tokens for each question. Reduced real-model
+architecture tests also check both Qwen position policies against independently
+evaluated reference caches. This result identifies a working preparation policy
+for the synthetic fixture; it does not establish broader accuracy or learning.
+The initial 3/5 result below remains part of the record.
+[Follow-up responses and device statistics](artifacts/qwen27-position-ablation-20260928/qwen27-result.json).
+
+A compiled client wheel and combined private GPU binary bank are assembled in
+image `56e44a78b4ddbb228d5728311a709ee8118acc51f685b9f0e428a809b5ad2935`
+(seven kernel profiles). The 64-request Gemma packaged HTTP validation is running. That next check uses the actual serving CLI,
+conversation growth, longer prompts, streaming and concurrent requests, with no
+private Python or kernel source mounted into serving. Its outcome is pending.
+The initial image build failed on this Podman version's `--pull never` argument
+syntax; `--pull=never` fixed the invocation. That failed build and the corrected
+build are preserved separately. No model or memory result was changed.
+[Completed image build](artifacts/larger-binary-client-20260928-r2/build.json).
 
 ## Full-checkpoint preparation
 

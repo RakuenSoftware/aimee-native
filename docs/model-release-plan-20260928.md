@@ -33,7 +33,8 @@ Current status: Gemma4 12B passed the recorded selected regression and signed
 lifecycle checks, supporting a scoped private preview. Qwen 27B Q8 passed four
 baseline smoke checks. Gemma 26B Q8 now passes baseline 4/4 and native smoke 5/5 using the supported
 Triton matrix backend; its initial failed Q8 results remain recorded. Qwen
-native smoke is 3/5, with a separate position-policy comparison running. Both
+native smoke improved from 3/5 to 5/5 in a separately recorded negative-position
+comparison. Both
 larger models still require broader native-memory and signed lifecycle validation. The chronological sections below preserve earlier work.
 
 

@@ -16,7 +16,8 @@ The requested three-model release is **not ready**. Gemma 26B Q8 now passes
 baseline 4/4 and native smoke 5/5 using the supported Triton matrix backend.
 Qwen 27B Q8 passed its four packaged GPU baseline smoke checks.
 Qwen's first native/text/control smoke completed at 3/5, 5/5 and 1/5 respectively;
-it exposes two native quality failures. Neither larger model has completed
+a separate negative-position comparison now passes 5/5 native and 5/5 text.
+Both original misses remain recorded. Neither larger model has completed
 release native-memory or signed lifecycle validation. See the
 [larger-model validation report](larger-model-native-20260928.md).
 The normal published channel remains at sequence 5.

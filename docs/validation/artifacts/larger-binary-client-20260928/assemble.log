@@ -1,0 +1,15 @@
+Traceback (most recent call last):
+  File "/opt/aimee-memory-lab/larger-binary-client-20260928/assemble_larger_client.py", line 63, in <module>
+    main()
+    ~~~~^^
+  File "/opt/aimee-memory-lab/larger-binary-client-20260928/assemble_larger_client.py", line 50, in main
+    subprocess.run(['podman', 'build', '--network', 'none', '--pull', 'never',
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    '--iidfile', str(ROOT / 'image.id'), '-f', str(ROOT / 'Containerfile'), str(ROOT)],
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                   stdout=log, stderr=subprocess.STDOUT, check=True)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['podman', 'build', '--network', 'none', '--pull', 'never', '--iidfile', '/opt/aimee-memory-lab/larger-binary-client-20260928/image.id', '-f', '/opt/aimee-memory-lab/larger-binary-client-20260928/Containerfile', '/opt/aimee-memory-lab/larger-binary-client-20260928']' returned non-zero exit status 125.

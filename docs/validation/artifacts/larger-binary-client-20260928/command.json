@@ -1,0 +1,21 @@
+[
+  "podman",
+  "run",
+  "-d",
+  "--name",
+  "aimee-larger-client-build-20260928",
+  "--network",
+  "none",
+  "--memory",
+  "8g",
+  "--memory-swap",
+  "8g",
+  "-v",
+  "/opt/aimee-memory-lab/larger-binary-client-20260928:/build",
+  "--entrypoint",
+  "python",
+  "79d7f03eedc74943f2ffd9c1271141086ea0813bcd3f697c718e09501908cf58",
+  "/build/distribution/release/build-vllm-wheel.py",
+  "--output",
+  "/build/wheels"
+]
