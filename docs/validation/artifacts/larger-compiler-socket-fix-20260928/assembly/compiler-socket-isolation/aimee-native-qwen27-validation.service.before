@@ -1,0 +1,18 @@
+[Unit]
+Description=Private qwen27 bounded native preparation validation
+After=aimee-native-compiler.service
+[Service]
+User=aimee-compiler
+Group=aimee-compiler
+UMask=0077
+Environment=HF_HUB_OFFLINE=1
+Environment=TOKENIZERS_PARALLELISM=false
+ExecStart=/opt/aimee-memory-lab/venv/bin/python /opt/aimee-native-compiler/larger-20260928/resident_compile.py --config /opt/aimee-native-compiler/larger-20260928/qwen27-resident.json --socket /run/aimee-native-compiler/qwen27.sock
+MemoryMax=8G
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/aimee-compiler/larger-qwen27 /run/aimee-native-compiler
+TimeoutStopSec=15
+KillMode=control-group

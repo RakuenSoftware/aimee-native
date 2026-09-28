@@ -41,6 +41,24 @@ string. The runner now uses the actual configured context budget; nine protocol
 tests pass, including preserving the initial issue during history trimming.
 [Preflight, runner tests, and failed installation evidence](artifacts/larger-release-followup-20260928/).
 
+Stopping the idle 12B compiler exposed a deployment lifecycle defect: both
+larger services had placed their sockets inside the 12B service's systemd-owned
+runtime directory. Its cleanup unlinked those sockets while their processes
+remained alive. The first coding-memory preparation therefore failed before
+encoding any procedure. Each larger service now owns a distinct runtime
+directory, and its worker configuration references that private socket. Both
+services restarted successfully while the 12B service remained stopped; the
+new preparation run is producing complete-token-count-checked memories.
+The original failure and before/after unit configurations are
+[preserved](artifacts/larger-compiler-socket-fix-20260928/).
+
+The [frozen coding protocol](../protocols/larger-source-regression-20260928.md)
+plans 24 attempts per larger model: six selected cases with fresh no-memory
+and matched-text controls, then two native reuses of the accepted procedure.
+The host coordinator waits for the signed lifecycle and complete preparation
+before starting Gemma and then Qwen on the paired GPUs. Queueing is not a pass;
+no new coding outcomes are claimed here.
+
 ## Gemma 26B quantized backend repair and native comparison
 
 Paired full-checkpoint activation traces agreed closely through layer 25
