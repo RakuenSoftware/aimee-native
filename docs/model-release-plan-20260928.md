@@ -32,3 +32,29 @@ For each larger model:
 Current status: Gemma4 12B candidate runtime checks passed, full-task regression
 validation pending, normal signed lifecycle pending. Gemma4 26B and Qwen3.8
 27B artifact discovery, builds and validation are not yet complete.
+
+
+## Existing checkpoint inventory
+
+A header-only inventory found both larger checkpoints already present in CT101.
+The Gemma checkpoint reports `Gemma4ForConditionalGeneration`, 30 layers,
+128 experts, and approximately 25.806 billion stored tensor elements. Its two
+BF16 shards total 51,612,009,916 bytes. Its local configuration download metadata
+records revision `4d7ae4984b7db7de8f8457170b3f1a419ee76d52`.
+
+The Qwen checkpoint reports `Qwen3_5ForConditionalGeneration` (the architecture
+identifier recorded in its configuration), 64 layers comprising 48 linear
+and 16 full-attention layers, and approximately 27.781 billion stored tensor
+elements. Its eighteen BF16 shards total 55,563,006,776 bytes. Configuration
+metadata records revision `1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0`, matching the
+previous Qwen experiment's pinned checkpoint. Architecture class identifiers
+must not be silently rewritten to match marketing names.
+
+These are stored tensor element counts, not active MoE parameter counts.
+Expanding all stored weights to FP32 alone would require approximately 103.2 GB
+and 111.1 GB respectively, before working memory. The existing Gemma 12B CPU
+preparation process cannot simply load these alongside itself. Establish a
+bounded-memory preparation profile after releasing the current compiler.
+The 26B checkpoint directory has no local LICENSE file; retrieve and verify
+its model terms before packaging. Weight-payload hashes and serving fit remain
+unverified. [Inventory evidence](validation/artifacts/larger-model-inventory-20260928/inventory.json).

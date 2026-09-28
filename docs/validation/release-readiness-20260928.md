@@ -1051,3 +1051,21 @@ conditions. Its official task outcomes remain pending.
 The user additionally requires Gemma4 26B and Qwen3.8 27B releases after the
 current Gemma4 12B validation. These are outstanding deliverables, not covered
 by the 12B candidate checks. See the [release plan](../model-release-plan-20260928.md).
+
+
+## Full-agent literal-memory submissions — grades pending
+
+Both memory conditions submitted the exact previously passing Requests patch
+`181591653cb01e3e90ad3065a0f6570f45856e40733dfb3ddbfe6629503f4a27`.
+Native used 7 model calls; text used 10. The source was acquired automatically
+through replay-checked capture, with publication identity checked against the
+literal diagnostic. Both official grading containers are live. These are
+submitted-patch observations, not yet official task pass outcomes. The fresh
+no-memory condition remains queued behind the two occupied grading pipelines.
+
+[Initial submission checkpoint](artifacts/requests-literal-task-20260928/initial-submissions.json).
+Generation-call totals were 45.2 s native and 57.2 s text under concurrent
+execution. Aggregate prompt tokens were 5,428 versus 12,580, with differing
+call counts and trajectories; these are not a controlled per-call token-saving
+estimate. Acquisition/preparation and tool execution are not included in those
+generation totals. Keep those scope distinctions when reporting final results.
