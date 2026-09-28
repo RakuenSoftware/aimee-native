@@ -1145,3 +1145,18 @@ Fresh read-only bootstrap checks passed on the enrolled client: HTTP 200 with
 the expected recipient; invalid bearer, absent bearer and absent client
 certificate each returned HTTP 401. This is bootstrap authority evidence, not a
 substitute for GPU grant/revocation checks. [Report](artifacts/current-bootstrap-authority-20260928/report.json).
+
+
+## Requests native full-task recovery officially passed
+
+The literal-native Requests 2193 attempt passed its official grader after 7
+agent calls and 46.8 seconds of agent execution, excluding preparation and
+grading. It submitted the exact previously passing own patch. This establishes
+recovery of this specific lost task under the corrected automatic source
+representation. It does not retroactively revise the original 4/32 native
+score or establish a new overall effect size. The text arm's grading, fresh
+control and queued five-task retained-success validation remain pending.
+
+[Official native result](artifacts/requests-literal-task-20260928/native-result.json),
+[grader record](artifacts/requests-literal-task-20260928/native-grade.json),
+[complete trajectory](artifacts/requests-literal-task-20260928/native-trajectory.json).
