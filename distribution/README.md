@@ -141,5 +141,10 @@ external-distribution gate. [The vLLM comparison](../docs/validation/vllm-stream
 records 336/336 paired responses and separated activation timing.
 [Load and connected validation](../docs/validation/beta-validation-20260926.md)
 adds 2,048 concurrent pressure answers and 64 live Aimee answers.
-The [SWE learning protocol](../benchmarks/swe_learning/PROTOCOL.md) is an ongoing
-150-task repeated-experience study, not yet a scored release claim.
+The original [SWE learning protocol](../benchmarks/swe_learning/PROTOCOL.md)
+and its stopped run are preserved. The repaired 16-task, three-round study is
+complete; a separate 32-task paired follow-up is running. The
+[current release work record](../docs/validation/release-readiness-20260928.md)
+identifies the corrected candidate, runtime recovery changes, exact evidence
+and outstanding GPU/installed-client/signing gates. Earlier signed-release
+results do not by themselves certify this replacement candidate.

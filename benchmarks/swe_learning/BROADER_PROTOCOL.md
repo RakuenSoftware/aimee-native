@@ -61,3 +61,37 @@ The option is enabled with `SWE_CAPTURE_FORMAT_FEEDBACK=1`; it defaults off and
 is not enabled in the fixed primary campaign. The manifest records the amended
 source hashes. Original files are preserved in `before-format-feedback` on the
 worker, which was replaced only while waiting with zero model attempts.
+
+## Recorded infrastructure amendments during execution
+
+The original protocol above remains the prospective design. Subsequent repairs
+are recorded separately rather than presented as preplanned:
+
+- A publication drain exceeded the original 60-second timeout and incorrectly
+  poisoned unchanged workers. The repaired runtime permits a 600-second drain
+  and preserves retryability before worker mutation. Caller deadlines were
+  aligned; health and withdrawal remain responsive while draining. Five valid
+  grades were retained at the first recovery.
+- One native generation exceeded the client's 180-second transport read timeout.
+  It was recorded as ungraded infrastructure failure. Twenty valid grades whose
+  agent execution finished before that outage were retained. Interrupted
+  attempts and associated grading output were archived before rerunning them.
+  The generation read deadline is now 600 seconds; token, call and agent
+  wall-time settings are unchanged. The wall-time check runs between steps, so
+  a final in-flight generation can exceed the nominal task wall-time budget.
+- Requests-2193's saved control patch exceeded the 900-second official grading
+  allowance because its tests use external HTTP services. The same patch passed
+  all 133 required tests under a 3600-second deadline, with no model rerun. That
+  task's pending native condition uses the same 3600-second grading allowance;
+  all other graders retain 900 seconds. An unchanged-base diagnostic passed all
+  125 preservation tests and failed the specific connection-error target fixed
+  by the control patch. It is excluded from model-attempt totals.
+
+Recovery manifests identify executed source hashes, environment settings and
+runtime images. These changes affect orchestration/control, not the model
+checkpoint or attention kernel; compare final candidate image evidence
+separately. No infrastructure interruption is converted into a task failure.
+The independent report reads actual result files rather than relying on a
+controller counter that can lag an externally completed regrade. See the
+[release work record](../../docs/validation/release-readiness-20260928.md) and its
+linked raw evidence for the amendments and retained original failures.
