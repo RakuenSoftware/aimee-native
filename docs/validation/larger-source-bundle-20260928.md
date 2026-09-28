@@ -74,3 +74,31 @@ successfully. The retry runs at `launchpad-source-download-r2` (CT101 process
 error in each file record. Curl and Python 3.12 have no validated fallback yet.
 No newer source version is substituted and no signature-verification claim is
 added. The retry remains in progress at this checkpoint.
+
+
+## Completed available-source collection
+
+Both the main download and the historical retrieval attempts are now terminal.
+All 805 Ubuntu source files were downloaded and verified against their indexed
+strong hashes, totaling 1,175,432,948 bytes. The exact GCC 13, GCC 16, PyJWT and
+curl source sets add 200,915,368 bytes. Curl was retrieved from Ubuntu's
+2026-09-23 snapshot after its removal from the active package pool. Historical
+DSC identity/version and dependent-file checks passed; DSC signature verification
+is still not claimed. Python 3.12's tested Launchpad download endpoint returned
+HTTP 503 and its package-pool location returned HTTP 404.
+
+A partial source tar was assembled with 818 source files and rechecked against
+all collected file hashes during assembly. It is 1,377,300,480 bytes, SHA-256
+`09ef5f33a2245f8250145d99f47403c55e8b5fabedfb70024bce8613046ea515`.
+Host location:
+`/opt/aimee-large-release-validation/third-party-source-partial-20260928.tar`.
+It contains no private Aimee implementation and has an explicit partial-status
+README. The source archive itself is not stored in Git.
+
+This accounts for 263 of 342 installed OS source-package/version pairs. The
+remaining 79 pairs, other component obligations, and notice reconciliation
+prevent this being called a complete external-distribution bundle. No release
+approval follows from collection. All download failures remain in the retained
+reports; successful later retrievals do not rewrite them.
+
+[Final collection manifests and partial bundle hash](artifacts/larger-source-collection-20260928/).

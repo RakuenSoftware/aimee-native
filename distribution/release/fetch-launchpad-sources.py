@@ -17,6 +17,7 @@ import urllib.error
 p=argparse.ArgumentParser(description=__doc__)
 p.add_argument('--plan',type=Path,required=True)
 p.add_argument('--output',type=Path,required=True)
+p.add_argument('--source',action='append',help='Collect only named sources, preserving earlier reports')
 a=p.parse_args();a.output.mkdir(exist_ok=False)
 if shutil.disk_usage(a.output).free < 12*1024**3:raise RuntimeError('insufficient storage reserve')
 plan=json.loads(a.plan.read_text())
@@ -31,7 +32,7 @@ def download(url,destination,maximum,fallback=None):
  except urllib.error.HTTPError as error:
   if not fallback or error.code not in (404,502,503,504):raise
   errors.append(dict(url=url,error=repr(error)))
-  assert urllib.parse.urlsplit(fallback).scheme=='https' and urllib.parse.urlsplit(fallback).hostname in ('archive.ubuntu.com','ppa.launchpadcontent.net')
+  assert urllib.parse.urlsplit(fallback).scheme=='https' and urllib.parse.urlsplit(fallback).hostname in ('archive.ubuntu.com','ppa.launchpadcontent.net','snapshot.ubuntu.com')
   response=urllib.request.urlopen(fallback,timeout=60)
   url=fallback
  partial=destination.with_name(destination.name+'.partial');size=0;sha=hashlib.sha256()
@@ -49,7 +50,8 @@ def fetch(row):
   out=a.output/row['source'];out.mkdir()
   urls={urllib.parse.unquote(urllib.parse.urlsplit(u).path.rsplit('/',1)[-1]):u for u in row['files']}
   assert all(Path(name).name==name for name in urls)
-  pools={'gcc-13':'https://ppa.launchpadcontent.net/ubuntu-toolchain-r/test/ubuntu/pool/main/g/gcc-13/',
+  pools={'curl':'https://snapshot.ubuntu.com/ubuntu/20260923T000000Z/pool/main/c/curl/',
+         'gcc-13':'https://ppa.launchpadcontent.net/ubuntu-toolchain-r/test/ubuntu/pool/main/g/gcc-13/',
          'gcc-16':'https://ppa.launchpadcontent.net/ubuntu-toolchain-r/test/ubuntu/pool/main/g/gcc-16/',
          'pyjwt':'https://archive.ubuntu.com/ubuntu/pool/main/p/pyjwt/'}
   def fallback(filename):
@@ -82,9 +84,12 @@ def fetch(row):
   result['status']='identity_and_file_checksums_matched'
  except Exception as error:result.update(status='failed',error=repr(error))
  return result
+selected=[row for row in plan['results'] if row['status']=='publication_located' and (not a.source or row['source'] in a.source)]
+if not selected:raise ValueError('no matching source publications')
+report['selected_sources']=[r['source'] for r in selected]
 save()
 with ThreadPoolExecutor(max_workers=3) as pool:
- futures=[pool.submit(fetch,row) for row in plan['results'] if row['status']=='publication_located']
+ futures=[pool.submit(fetch,row) for row in selected]
  for future in as_completed(futures):report['results'].append(future.result());save()
 report['status']='collected' if all(r['status']=='identity_and_file_checksums_matched' for r in report['results']) else 'incomplete'
 save();print(json.dumps({k:report[k] for k in ['status']}))
