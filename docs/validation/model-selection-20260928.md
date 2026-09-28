@@ -217,3 +217,12 @@ They are not GPU application latency measurements.
 [Sanitized results and executed recipes](artifacts/model-selection-live-fetch-20260928/).
 The queued installed-runtime probes still need to prove GPU consumption through
 the new model-aware launcher; the broader coding comparisons are also unfinished.
+
+
+The 12B follow-up is now queued on the same GPU lock after the existing larger
+jobs. It restores the paused resident compiler, waits for its ready socket,
+and runs the already installed signed sequence-6 runtime through the model-aware
+launcher. Two normal three-fact recalls and an interrupted-stream recovery
+with fresh authorization are required. The compiler is left running after this
+check so default-model preparation is restored. This is queued work, not a pass.
+[Executed coordinator recipe](artifacts/model-selection-12b-followup-20260928/).
