@@ -108,3 +108,9 @@ notice collection, not corresponding-source fulfillment. The [OS package payload
 inspection](artifacts/os-notice-relationships-20260928/) distinguishes headers,
 samples and metadata from compiled binaries; absent notice filenames alone are
 not treated as additional source-distribution requirements.
+
+Qwen's normal sequence-1 installer has now activated manifest
+`660e1df1754a9ef2b6eedd19647ab1dd1e0a3e9e70e7ad916c7355e9dce123a2`.
+The [installer receipt](artifacts/larger-normal-lifecycle-20260928/qwen27/install1.log)
+and active state are retained. Runtime canaries remain pending; successful
+package activation is not substituted for model-consumption evidence.
