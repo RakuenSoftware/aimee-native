@@ -81,8 +81,32 @@ def resident_worker(config, raw):
             sys.stdout.buffer.flush()
 
 
+def worker_profile(config, raw):
+    # Only operator-owned paths are selectable. A request names a model, never
+    # a config path, executable or socket. The legacy/default profile is stable.
+    if len(raw) > MAX_REQUEST:
+        raise ValueError('compiler request too large')
+    identity = json.loads(raw).get('identity')
+    if not isinstance(identity, str):
+        raise ValueError('compiler identity rejected')
+    validate_wire(raw, identity)
+    if identity == config.get('model_revision'):
+        return config
+    profiles = config.get('profiles', {})
+    if not isinstance(profiles, dict) or identity not in profiles:
+        raise ValueError('compiler model not enrolled')
+    path = profiles[identity]
+    if not isinstance(path, str) or not pathlib.Path(path).is_absolute():
+        raise ValueError('invalid compiler profile path')
+    selected = owned_config(path)
+    if selected.get('model_revision') != identity or 'profiles' in selected:
+        raise ValueError('compiler profile identity mismatch')
+    return selected
+
+
 def worker(config):
     raw=sys.stdin.buffer.read(MAX_REQUEST+1)
+    config=worker_profile(config, raw)
     wire=validate_wire(raw,config['model_revision'])
     if config.get('resident_socket'):
         resident_worker(config,raw)

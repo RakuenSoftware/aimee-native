@@ -124,6 +124,31 @@ authorization. Preparation overlapped GPU startup work and is not an isolated
 latency benchmark. The first operator attempt used an incorrect fixture-directory
 name and failed before preparation; the corrected run has a separate evidence root.
 
+## Live canary preparation and reuse
+
+Both larger profiles now complete preparation from the existing live Aimee
+canary through the scoped gateway, pinned SSH transport, private resident
+compiler and Rust publisher. Each selected all three approved records and
+reused the same key and ordered record references on a subsequent request.
+Gemma's first preparation took about 47 seconds and reuse about 43 ms; Qwen's
+first preparation took about 65 seconds and reuse about 51 ms. These are
+end-to-end authorization/preparation operations, not native attention application
+or isolated latency measurements.
+[Live preparation report](artifacts/larger-live-preparation-20260928/report.json).
+
+The root-owned private worker now supports explicit model-to-profile routes,
+while preserving the existing 12B default. Requests name an enrolled identity;
+they cannot supply configuration paths, sockets or commands. Seven transport
+tests and four resident tests pass, including full subprocess artifact transport
+through a selected profile. The two larger resident services are staged
+separately; account bootstrap remains on its existing model until enrollment
+and signed runtime validation are complete. Both profiles passed canary expiry, withdrawal, disconnection and recovery:
+cached preparations were denied while authority was unavailable and reused
+after restoration. These exercise preparation authorization, not the
+client-to-GPU route. The first lifecycle operator script failed to parse before
+changing policy; the corrected operator and both logs are retained.
+[Lifecycle outcomes](artifacts/larger-live-preparation-20260928/lifecycle-status.json).
+
 ## Release assembly follow-through
 
 The Python release assembler now accepts the same optional matrix-backend and

@@ -218,3 +218,19 @@ on ROCm) with its signed projector GGUF. The launcher verifies projector
 membership in the release manifest and resolves its installed path. These
 settings belong to the release; the user only chooses the model and connects
 to Aimee. They do not imply that all larger-model release gates have passed.
+
+### Multiple private preparation profiles
+
+The fixed SSH worker may retain its existing `model_revision` and
+`resident_socket` while adding a `profiles` map from exact model identity to an
+absolute, operator-owned worker configuration path. Each selected configuration
+must carry the same model identity and cannot contain another routing map.
+Unknown identities, writable configurations and mismatched identities are
+rejected before contacting a compiler. Requests cannot supply paths or commands.
+The existing default model follows the original route.
+
+This routes private preparation only. It neither grants memory access nor
+changes account enrollment: the Aimee release policy, preparer template and
+bootstrap profile must still agree on the selected model. Stage new profiles
+with isolated cache roots and validate approved preparation and reuse before
+changing a live account binding.
