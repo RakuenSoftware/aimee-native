@@ -859,3 +859,18 @@ with Requests still outstanding. Those unequal denominators must not be
 presented as a completed six-case effect. The next two native attempts test
 whether the new control success is retained.
 [Exact control result, grade and trajectory](artifacts/larger-qwen27-requests-control-20260928/).
+
+
+## Qwen first native round complete: 6/6, retaining every control success
+
+Requests 2193 passed official grading with native memory on the first reuse.
+The complete six-case first-round comparison is now control **5/6**, matched
+text **4/6**, and native reuse 1 **6/6**. Native retained every fresh control
+success and additionally resolved SymPy 20590, where control produced no patch.
+
+The second native round is 5/5 on its completed cases; its Requests attempt has
+started and is not yet graded. The completed first-round result is a selected,
+frozen source-procedure reuse comparison, not new acquisition between rounds
+or an estimate of general SWE-bench improvement. The second round remains a
+separate pending retention check.
+[Exact Requests native result, grade and trajectory](artifacts/larger-qwen27-requests-native1-20260928/).
