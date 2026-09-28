@@ -268,3 +268,24 @@ rollback through the deployed model-aware launcher; the two repeated queries
 use the same three canary facts. Raw results are preserved in
 `artifacts/model-selection-installed-results-20260928/qwen27-rollback1.json`.
 The coordinator has advanced to restored sequence 2; that phase remains pending.
+
+## Normal-feature model-aware launcher built
+
+The same model-aware source now has a normal-feature optimized build at
+`model-selection-normal-launcher/aimee-native`, SHA-256
+`a7ebbb5d0f9493f205ca355fab640f56e31cc686219aa038ac348de4ac4727e6`.
+It omits the lab-release feature, uses the existing release public key/CA and
+normal HTTPS origin, and retains rejection of lab-only packages. Normal-feature
+unit and signed-lifecycle/TLS-bootstrap tests passed before compilation.
+Build logs and exact source/trust hashes are preserved in
+`artifacts/model-selection-normal-launcher-20260928/`.
+
+The build helper now supports an explicit normal edition, requiring an HTTPS
+release URL and using two Cargo jobs. Existing lab defaults remain intact.
+The waiting 12B recovery worker was replaced before GPU acquisition with the
+same protocol selecting this binary. The replacement receipt records both PIDs
+and the script/binary hashes. Its output is
+`model-selection-12b-normal-restore-probe`; the earlier waiting-only directory
+is retained unchanged. GPU recovery validation of this normal binary is pending,
+and no public channel was changed. Qwen/Gemma lab packages continue with the
+lab launcher during their already-active checks.
