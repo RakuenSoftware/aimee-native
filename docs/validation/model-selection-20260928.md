@@ -1,5 +1,12 @@
 # Approved model selection for one Aimee account
 
+Current acceptance clarification (2026-09-28): the user confirmed that
+microsecond memory application is an aspirational target, **not a release
+blocker**. Preserve measured cold/warm/resident latency and its scope in release
+notes. Proceed with normal package installation and lifecycle validation;
+further latency optimization does not gate that work. Historical measurements
+and earlier checkpoint reports below remain unchanged.
+
 The installed signed runtime selects its native model identity automatically.
 An operator can approve Gemma 12B, Gemma 26B and Qwen 27B under the same account
 without rebinding that account each time the user switches installations.

@@ -32,10 +32,13 @@ isolation checks. Installed consumption through the updated launcher passed for 
 models. Normal-feature 12B restoration/recovery also passed. Larger-bank
 activation measurements passed fidelity for all twelve banks. Cold medians
 remain 3.73–14.80 ms for Gemma and 1.62–4.40 ms for Qwen, so the microsecond
-cold-application target remains unmet. The upstream/private source-identity concern has been resolved. The
+cold-application target remains unmet. **The user clarified on 2026-09-28
+that this target is aspirational, not a release blocker.** Further latency
+optimization is not a prerequisite for release staging. The upstream/private
+source-identity concern has been resolved. The
 [explicit package gate review](larger-release-gate-review-20260928.md) identifies
 normal larger installation and external source/notice fulfillment as unfinished,
-alongside the failed latency target. The exact larger dependency-delta review is
+with measured latency retained as a disclosed limitation, not a failed release gate. The exact larger dependency-delta review is
 complete and carries forward the earlier controlled-infrastructure limitations.
 
 Automatic source acquisition is implemented in the benchmark harness and has

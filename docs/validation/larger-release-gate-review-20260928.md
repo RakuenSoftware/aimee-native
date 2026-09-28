@@ -6,11 +6,15 @@ It is not a set of synthetic passing reports for the package assembler.
 
 ## Decision
 
-Do not promote either candidate as meeting the requested release requirements.
-The measured cold/warm microsecond application requirement fails. The normal
-larger-model manifests have not been signed or installed through the normal
-channel. Existing laboratory lifecycle results establish the component path,
-not that unexecuted final distribution step.
+The user clarified on 2026-09-28 that microsecond application is an
+aspirational target, not a release blocker. Measured cold/warm latency therefore
+does not prevent release staging; retain the measurements and their scope in
+release notes. Earlier records treating that target as a hard requirement are
+superseded by this clarification, without changing their experimental results.
+
+Normal larger-model manifests have not yet been signed or installed through
+the normal channel. Existing laboratory lifecycle results establish the
+component path, not that unexecuted final distribution step.
 
 The remaining review work is identified below. Broader population-level coding
 improvement is a claim limitation, not an additional release requirement.
@@ -25,7 +29,7 @@ being introduced as a new requirement.
 | `long_conversation` | Separate packaged model reports include conversation, long-prompt, streaming and concurrent requests. These use the fixed synthetic facts; they establish integration behavior within those tested settings. |
 | `tenant_session_isolation` | Model-aware authority completed 30 paced lease-isolation checks with model/policy binding. Runtime authorization results and their scopes remain in the model-selection record. Do not relabel the unpaced service failure as a passed check. |
 | `revision_withdrawal` | Recorded preparation lifecycle rejects expired/withdrawn/disconnected authority and recovers reuse. Installed signed update/rollback/restore passed. These are separate pieces of evidence; preparation-cache rejection alone does not prove immediate GPU revocation. |
-| `cold_warm_latency` | **Fails the requested target.** All twelve bank cold medians exceed 1 ms. The completed controlled path comparison rejects direct-file placement and bulk upload as fixes for the largest Gemma bank. Resident lookup is a different measurement. |
+| `cold_warm_latency` | **Measurement requirement complete; microseconds are aspirational, not a release blocker.** All twelve banks passed tensor fidelity. Cold medians are 3.73–14.80 ms for Gemma and 1.62–4.40 ms for Qwen. Disclose these limits; resident lookup is a different measurement. Further optimization is not a prerequisite for release staging. |
 | `reusable_preparation` | Both models passed fresh preparation, repeat reuse and lifecycle checks. Fresh preparation remains seconds; reuse is separate from request-time application. This component behavior is evidenced. |
 | `clean_install` | Larger laboratory fresh/update/rollback/restore passed, including updated model-aware installed consumption. Normal-feature launcher build and 12B recovery passed. **Exact normal-format larger installation is still unexecuted.** |
 | `binary_disclosure_audit` | Client source exclusion, exported-symbol/debug/private-marker inspection and exact library hashes passed their recorded checks. Private wheel retained-source comparison matches 16 files. This is evidence of source exclusion, not secrecy against disassembly. |

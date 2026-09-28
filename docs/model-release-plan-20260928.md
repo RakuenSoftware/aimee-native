@@ -1,5 +1,12 @@
 # Required model releases — 2026-09-28
 
+Current acceptance clarification (2026-09-28): the user confirmed that
+microsecond memory application is an aspirational target, **not a release
+blocker**. Preserve measured cold/warm/resident latency and its scope in release
+notes. Proceed with normal package installation and lifecycle validation;
+further latency optimization does not gate that work. Historical measurements
+and earlier checkpoint reports below remain unchanged.
+
 Release scope now includes Gemma4 12B (current validation candidate), Gemma4
 26B, and Qwen3.8 27B. Complete the current regression investigation first;
 then build and validate each larger model as a separate deliverable. Keep

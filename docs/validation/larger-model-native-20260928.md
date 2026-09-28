@@ -1,5 +1,12 @@
 # Larger-model native validation — 2026-09-28
 
+Current acceptance clarification (2026-09-28): the user confirmed that
+microsecond memory application is an aspirational target, **not a release
+blocker**. Preserve measured cold/warm/resident latency and its scope in release
+notes. Proceed with normal package installation and lifecycle validation;
+further latency optimization does not gate that work. Historical measurements
+and earlier checkpoint reports below remain unchanged.
+
 Neither larger model is release-ready. Both pass the recorded 5/5 native smoke
 comparison, complete-record preparation and 64-request conversation/concurrency
 checks. Gemma 26B has completed all four signed lifecycle phases (8/8 native
