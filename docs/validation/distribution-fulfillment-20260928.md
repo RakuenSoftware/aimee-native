@@ -64,5 +64,6 @@ archive digests before exposing them at `/third-party/20260928/` on the existing
 controlled TLS origin. It leaves signed model manifests and channels unchanged.
 `verify-distribution-addenda.py` checks the served manifest against the local
 staged bytes, then downloads every archive with certificate validation and
-checks its complete size and SHA-256. The delivery test is running; successful
-staging alone is not recorded as a passed recipient-download check.
+checks its complete size and SHA-256. The [delivery test passed](artifacts/distribution-addenda-delivery-20260928/delivery-verification.json)
+for all three complete archives (1,444,925,152 bytes total). This proves recipient
+access on the controlled origin, not completeness of the collected material.
