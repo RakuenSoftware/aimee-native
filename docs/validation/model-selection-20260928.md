@@ -113,3 +113,15 @@ and remains lab-only, with no production-channel promotion.
 `build_larger_launcher.py` now accepts separate source, build, evidence and binary
 snapshot paths. Exclusive log/binary creation prevents overwriting a prior
 candidate; defaults retain the existing larger-model build recipe.
+
+## Private delivery-service candidate
+
+A separate `CGO_ENABLED=0`, trimmed and stripped Go delivery-service binary is
+staged at `/opt/aimee-large-release-validation/model-selection-service/aimee-native-delivery`,
+SHA-256 `14649f9e09dbe0eed44f8b02752f681334e7c1cae44d3b326a428bf1e971c43c`.
+Before building, every non-test nativepublication source and the command entry
+point was checked against the local committed source hash. Module and execution
+policy source hashes, Go build information and the build command are retained
+in [service evidence](artifacts/model-selection-service-20260928/).
+All seven actual C bridge / authorization fixtures pass against this exact
+candidate binary. It is not yet deployed; the active service remains unchanged.
