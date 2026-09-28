@@ -635,3 +635,13 @@ it changes no implementation or test file. This diagnostic is excluded from
 model-attempt totals. It will help distinguish external-service/pass-to-pass
 failures from prediction-specific failures. Both it and the saved-patch regrade
 are pending.
+
+The Requests-2193 original control patch subsequently passed official grading
+with the extended deadline: 8/8 FAIL_TO_PASS and 125/125 PASS_TO_PASS tests. The
+regrade took approximately 1583 seconds, and used patch SHA-256
+`181591653cb01e3e90ad3065a0f6570f45856e40733dfb3ddbfe6629503f4a27`.
+No extra model attempt was made. The original timeout, original result, saved
+trajectory, retry metadata, and official grader report/logs are preserved in
+`artifacts/broader-source-learning-20260928/requests-control-regrade-evidence.tar.gz`.
+This is a second passing control in the broader study; its native condition
+still needs to run. The independent unchanged-base diagnostic remains pending.
