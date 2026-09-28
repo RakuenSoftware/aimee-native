@@ -835,19 +835,22 @@ remain the appropriate comparison; no six-case aggregate is claimed.
 
 ## Source-revision metadata correction for future assembly
 
-The historical lab manifests inherited `runtime_commit=ced6857...` from the
-base build, while the larger compiled wheel and kernel bank were added later.
-That field alone is therefore insufficient to identify the complete larger
-runtime source. The immutable image digest, signed artifact hashes, wheel hash
-and kernel-manifest hash remain the identities of the bytes actually tested;
-historical manifests and test records are unchanged.
+`runtime_commit=ced6857afa0ea7b2e3f0846a62e1394e90f15607` identifies the
+**upstream vLLM revision**, as declared by `distribution/vllm/runtime.lock.json`.
+It is a real [upstream commit](https://github.com/vllm-project/vllm/commit/ced6857afa0ea7b2e3f0846a62e1394e90f15607).
+An earlier audit incorrectly treated it as an aimee-qwen source revision. Its
+absence from the private repository and the later addition of integration code
+do not make this upstream field stale. No historical signed manifest needs
+rewriting on that basis.
 
-Future lab assembly now requires an explicit full `--runtime-commit` instead of
-silently copying that base revision. Missing and malformed revisions are rejected
-before packaging. Supplying a valid SHA is not proof of source-to-binary provenance:
-final packaging must reconcile that revision with the recorded build inputs and
-retain the exact tested artifact identities. This metadata correction does not
-rebuild or replace the live candidates.
+Future assembly requires separate explicit upstream `--runtime-commit` and
+private `--integration-commit` values. The latter is recorded in the private
+assembly report, not substituted into the signed upstream field. Both reject
+malformed revisions before packaging. Neither a valid SHA nor upstream commit
+existence establishes source-to-binary correspondence: exact image, artifact,
+wheel, kernel and build-input hashes remain the evidence for tested components.
+The retained wheel source comparison below independently covers the private
+integration modules. This clarification does not rebuild any live candidate.
 
 
 ## Qwen Requests control passed; native retention still pending
@@ -929,8 +932,9 @@ This establishes correspondence of the retained directory with repository
 sources. It is a post-build comparison, not a build-time attestation or proof
 that rebuilding produces the same wheel. Base-image, native-library, compiled
 kernel and toolchain provenance remain separate inputs. Historical signed
-manifests retain their original bytes; this comparison does not correct their
-inherited source revision or promote a candidate.
+manifests retain their original bytes. Their runtime_commit is the upstream
+vLLM revision, separate from this private integration comparison; neither
+this comparison nor the metadata clarification promotes a candidate.
 
 ### Gemma Requests first native attempt passed official grading
 

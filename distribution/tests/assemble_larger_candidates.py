@@ -17,10 +17,14 @@ ORIGIN = Path('/opt/aimee-native-release')
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--runtime-commit', required=True,
-                        help='Audited source revision for the candidate, not an inherited base-image revision')
+                        help='Pinned upstream vLLM revision (runtime.lock.json), not the private integration revision')
+    parser.add_argument('--integration-commit', required=True,
+                        help='Private aimee-qwen source revision; recorded separately from upstream runtime')
     args = parser.parse_args()
     if not re.fullmatch(r'[0-9a-f]{40}', args.runtime_commit):
         parser.error('--runtime-commit must be a full lowercase Git commit SHA')
+    if not re.fullmatch(r'[0-9a-f]{40}', args.integration_commit):
+        parser.error('--integration-commit must be a full lowercase Git commit SHA')
     build = ROOT / 'assembly'
     identity = json.loads((ORIGIN / 'identity.json').read_text())
     digest = (build / 'image-digest.txt').read_text().strip()
@@ -50,7 +54,7 @@ def main():
          'qwen27-release-20260928/qwen27-q8.gguf', 'cuda',
          'Qwen/Qwen3.8-27B', '1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0'),
     ]
-    report = {'status': 'building', 'scope': 'Signed lab-only packages; production release gates remain incomplete',
+    report = {'status': 'building', 'integration_commit': args.integration_commit, 'scope': 'Signed lab-only packages; production release gates remain incomplete',
               'image': identity['registry'] + '/aimee-native@' + digest, 'profiles': []}
     def save():
         (build / 'packages.json').write_text(json.dumps(report, indent=2) + '\n')
