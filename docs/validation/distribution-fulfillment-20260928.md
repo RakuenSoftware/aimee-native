@@ -56,3 +56,13 @@ This work is separate from the GPU/runtime functional gates and from the
 aspirational microsecond performance target. Normal signed lifecycle evidence
 supports the controlled private candidate; this record does not announce public
 availability or claim completed external fulfillment.
+
+## Controlled-origin staging
+
+`distribution/release/stage-distribution-addenda.py` verifies the three fixed
+archive digests before exposing them at `/third-party/20260928/` on the existing
+controlled TLS origin. It leaves signed model manifests and channels unchanged.
+`verify-distribution-addenda.py` checks the served manifest against the local
+staged bytes, then downloads every archive with certificate validation and
+checks its complete size and SHA-256. The delivery test is running; successful
+staging alone is not recorded as a passed recipient-download check.
