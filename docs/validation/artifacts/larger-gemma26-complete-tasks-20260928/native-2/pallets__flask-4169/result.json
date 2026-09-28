@@ -1,0 +1,17 @@
+{
+  "instance_id": "pallets__flask-4169",
+  "arm": "native-2",
+  "publication": "74000cd1df408472624a1859dc4175a56142ff42b9100e376ef052d2db8c79bf",
+  "text_memory_sha256": null,
+  "status": "predicted",
+  "started": 1790598036.9296556,
+  "image_inspect": "sha256:e74e5e2c4a5ceb8837630c5d8814f435362b805cd90687ce3e3d2dc76e305e19",
+  "exit_status": "TimeExceeded",
+  "steps": 9,
+  "model_patch": "diff --git a/src/flask/cli.py b/src/flask/cli.py\nindex d9e810da..bf2e71ca 100644\n--- a/src/flask/cli.py\n+++ b/src/flask/cli.py\n@@ -339,7 +339,7 @@ class DispatchingApp:\n         exc_info = self._bg_loading_exc_info\n         if exc_info is not None:\n             self._bg_loading_exc_info = None\n-            raise exc_info\n+            raise exc_info[1]\n \n     def _load_unlocked(self):\n         __traceback_hide__ = True  # noqa: F841\n",
+  "agent_seconds": 625.2148873806,
+  "grade_timeout_seconds": 300,
+  "resolved": true,
+  "grade_status": "graded",
+  "finished": 1790598691.0902052
+}

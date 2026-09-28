@@ -451,3 +451,26 @@ The other five tasks and the Qwen coding campaign remain incomplete.
 
 All four trajectories, submitted patches, and official grading records are
 preserved in [the completed-task archive](artifacts/larger-gemma26-complete-tasks-20260928/).
+
+## Second complete Gemma task: Flask native-only success
+
+`pallets__flask-4169` is now complete across the four frozen conditions:
+
+| Condition | Officially resolved | Agent calls | Agent elapsed seconds |
+| --- | --- | ---: | ---: |
+| No memory | no | 10 | 674 |
+| Same-record text | no | 7 | 697 |
+| Native reuse 1 | no | 7 | 625 |
+| Native reuse 2 | yes | 9 | 625 |
+
+All four attempts reached their time limit. The second native attempt produced a
+patch that passed official grading and therefore counts as a success, following
+the same rule used for the Pytest control. This is a native-only success on one
+selected task, with the Pytest control success retained in both native rounds.
+Both native attempts consumed the same frozen accepted procedure: no new lesson
+was acquired between these two attempts. Do not interpret the change between
+rounds as a measured learning effect. The four remaining tasks are incomplete,
+and the two completed tasks do not establish a population success rate.
+
+The [completed-task archive](artifacts/larger-gemma26-complete-tasks-20260928/)
+now includes both tasks with trajectories, patches and available grading files.
