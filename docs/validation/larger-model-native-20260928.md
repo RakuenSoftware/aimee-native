@@ -99,6 +99,14 @@ share that lock. Gemma's coding server is starting while its sequence-two
 package downloads. Remaining update/rollback/restore gates still apply.
 [Scheduling and lock evidence](artifacts/larger-first-installed-20260928/assembly/).
 
+All four lab-only signed packages are now built: sequences one and two for
+Gemma and Qwen, with their runtime descriptors and model-specific tokenizer
+sidecars. Qwen's first CPU-only installation has been started early into the
+same dedicated client root, while Gemma owns the GPUs. The installer update
+lock serializes any later overlapping invocation; its lifecycle coordinator
+will still perform the required installed-answer, update and rollback probes.
+[Immutable manifests and runtime descriptors](artifacts/larger-signed-packages-20260928/).
+
 ## Gemma 26B quantized backend repair and native comparison
 
 Paired full-checkpoint activation traces agreed closely through layer 25
