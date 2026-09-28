@@ -917,3 +917,17 @@ successes in this set. These totals include the Matplotlib failure; it is not
 removed or substituted. The Requests first-native patch is in official grading,
 and its second-native attempt remains outstanding.
 [All five complete case records](artifacts/larger-gemma26-complete-tasks-20260928/).
+
+### Larger wheel source-directory reconciliation
+
+The retained wheel build directory was compared with committed sources at
+`33735a9b0bbf0795f6f7f011fa74ba66d4bc2d4f`: all 16 enumerated source files
+(the wheel builder and 15 vLLM integration modules) matched byte-for-byte.
+The comparison and hashes are preserved in
+`artifacts/larger-build-source-comparison-20260928/`.
+This establishes correspondence of the retained directory with repository
+sources. It is a post-build comparison, not a build-time attestation or proof
+that rebuilding produces the same wheel. Base-image, native-library, compiled
+kernel and toolchain provenance remain separate inputs. Historical signed
+manifests retain their original bytes; this comparison does not correct their
+inherited source revision or promote a candidate.
