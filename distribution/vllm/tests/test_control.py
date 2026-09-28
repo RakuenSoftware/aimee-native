@@ -76,3 +76,38 @@ class ControlTests(unittest.IsolatedAsyncioTestCase):
         o.load_banks=bad
         with self.assertRaises(ValueError):await operate(o,None,{'op':'refresh'})
         self.assertTrue(o.paused);self.assertFalse(o.poisoned);self.assertEqual(o.banks,{'old':1})
+
+    async def test_withdrawal_during_worker_refresh_cannot_reopen_admission(self):
+        o=self.owner();started=asyncio.Event();finish=asyncio.Event()
+        async def rpc(*args,**kwargs):
+            started.set();await finish.wait()
+            return [{'publications':1,'pinned_requests':0,'catalog_digest':'new'}]*2
+        pending=asyncio.create_task(operate(o,NS(collective_rpc=rpc),{'op':'refresh'}))
+        await started.wait();await operate(o,None,{'op':'withdraw'});finish.set()
+        with self.assertRaisesRegex(RuntimeError,'superseded'):await pending
+        self.assertTrue(o.paused);self.assertFalse(o.poisoned)
+
+    async def test_socket_health_and_withdrawal_remain_responsive_during_drain(self):
+        import json,pathlib,tempfile
+        from aimee_vllm.control import start
+        with tempfile.TemporaryDirectory() as tmp:
+            o=self.owner();o.idle.clear();o.config['control_socket']=str(pathlib.Path(tmp)/'control.sock')
+            server=await start(o,None)
+            async def call(op):
+                reader,writer=await asyncio.open_unix_connection(o.config['control_socket'])
+                try:
+                    writer.write(json.dumps({'op':op}).encode()+b'\n');await writer.drain()
+                    return json.loads(await asyncio.wait_for(reader.readline(),1))
+                finally:writer.close();await writer.wait_closed()
+            try:
+                pending=asyncio.create_task(call('refresh'))
+                for _ in range(100):
+                    if o.paused:break
+                    await asyncio.sleep(.001)
+                self.assertTrue(o.paused)
+                self.assertEqual((await call('status'))['state'],'paused')
+                self.assertEqual((await call('withdraw'))['state'],'withdrawn')
+                o.idle.set()
+                self.assertIn('error',await pending)
+                self.assertTrue(o.paused);self.assertFalse(o.poisoned)
+            finally:server.close();await server.wait_closed()

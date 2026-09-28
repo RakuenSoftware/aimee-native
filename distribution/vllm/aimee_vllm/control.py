@@ -14,7 +14,11 @@ async def start(owner, engine):
             _,uid,_=struct.unpack('3i',sock.getsockopt(socket.SOL_SOCKET,socket.SO_PEERCRED,12))
             if uid!=os.geteuid():raise RuntimeError('publisher UID mismatch')
             request=json.loads(await asyncio.wait_for(reader.readline(),10))
-            async with lock:result=await operate(owner,engine,request)
+            # Health and withdrawal must not queue behind a long drain.
+            if request in ({'op':'status'},{'op':'withdraw'}):
+                result=await operate(owner,engine,request)
+            else:
+                async with lock:result=await operate(owner,engine,request)
         except Exception:
             logging.getLogger(__name__).exception('Native control operation failed')
             result={'error':'native control operation failed; admission remains stopped'}
@@ -47,19 +51,25 @@ async def operate(owner,engine,request):
     if owner.poisoned:raise RuntimeError('worker restart required')
     # Draining and local validation cannot leave worker ranks at mixed revisions.
     # Keep admission paused on timeout/cancellation, but allow a publisher retry.
+    generation=getattr(owner,'generation',0)
     await asyncio.wait_for(owner.idle.wait(),owner.config.get('refresh_drain_timeout_seconds',600))
+    if generation!=getattr(owner,'generation',0):raise RuntimeError('superseded publication activation')
     banks=await asyncio.to_thread(owner.load_banks)
+    if generation!=getattr(owner,'generation',0):raise RuntimeError('superseded publication activation')
     try:
         results=await engine.collective_rpc('aimee_refresh_catalog',timeout=60)
         expected=owner.config.get('serve',{}).get('tensor_parallel_size',1)
         if len(results)!=expected or any(r['publications']!=len(banks) or r['pinned_requests']!=0 or r.get('catalog_digest')!=owner.pending_digest for r in results):
             raise RuntimeError('inconsistent worker refresh')
-        owner.banks=banks
-        owner.catalog_digest=owner.pending_digest
-        owner.paused=False
-        return {'state':'active','publications':len(banks),'workers':len(results)}
     except BaseException:
         # A failed collective refresh may leave ranks at different revisions.
         # No request is allowed through until a consistent worker restart.
         owner.poisoned=True
         raise
+    # Ranks are consistent, but a newer withdrawal can supersede this activation.
+    # Keep admission closed and permit the next authorized refresh.
+    if generation!=getattr(owner,'generation',0):raise RuntimeError('superseded publication activation')
+    owner.banks=banks
+    owner.catalog_digest=owner.pending_digest
+    owner.paused=False
+    return {'state':'active','publications':len(banks),'workers':len(results)}

@@ -19,20 +19,41 @@ fallback. The release queue now waits for that study, then runs the residual
 repetition diagnostic and candidate validation. No release promotion has occurred.
 The historical sections below preserve earlier checkpoints and interventions.
 
+## Current release candidate
+
+Image: `7303c9e9b0785a8574885594aafe87d8f65b54acdf3a3c20a003901be5f40605`.
+Registry digest: `sha256:1fc9a828331c42da146be2a9fcd1171e67c67dc8bf5167052c854ee7916822ea`.
+Artifact set: `d58990c72626e3d657fc02f68d424d78315030b03aee5aa4b4986d4112cfc082`.
+
+This supersedes the candidate IDs in the chronological work record below. It
+includes the corrected attention bank, retryable long refresh drains, aligned
+caller deadlines, and responsive health/withdrawal during refresh. Generation
+checks prevent a superseded refresh from reopening admission, including when
+withdrawal arrives during the worker RPC. All 27 compiled runtime checks pass.
+The client candidate verifies all 18 artifact hashes and uses the rebuilt Rust
+lab launcher. GPU certification, hosted preparation migration/reuse, installed
+model-answer validation, and signed lifecycle remain pending.
+
+The broader campaign recovered from the archived publication timeout. It has
+nine scored attempts: one passing pair, three failing pairs, and one additional
+failed control. No gained or lost task in the four completed pairs yet. The
+Requests control's identical saved patch is undergoing separate extended grading
+after an external-HTTP-dependent timeout; it remains required for completion.
+
 ## Required closure
 
 | Requirement | Current authoritative evidence | Remaining work |
 |---|---|---|
-| Automatic learning preserves successful source experience | `source_experience.py`, six checks; exact-patch replay gate | Complete sixteen-task, three-native-round campaign and inspect paired gains/losses |
-| Generated summaries do not silently replace working procedures | Success and failure summarization disabled in source campaign; prior acceptance preserved | Inspect actual published records and attempt trajectories |
-| Native memory adds usable capability | Prior procedural results; preserved-command Flask diagnostic passes in 3 model calls with 59 existing tests plus official grading | Demonstrate gains and retention through automatic acquisition across tasks; no broad claim from Flask alone |
-| All selected records consumed, no silent truncation | Complete-record publication and explicit preparation-size gate | Inspect campaign publications and exact-image multirecord gates |
+| Automatic learning preserves successful source experience | `source_experience.py`, exact-patch replay gate; primary 64/64 outcomes complete | Complete additional 32-task study and inspect gains/losses |
+| Generated summaries do not silently replace working procedures | Source records retained without generated summaries; primary delivery audit passed | Continue auditing follow-up publications and trajectories |
+| Native memory adds usable capability | Primary one unique gain retained across three rounds; sole control pass preserved | Complete broader study; existing result does not establish broad learning success |
+| All selected records consumed, no silent truncation | Primary 1,474-call delivery audit passed; follow-up audit in progress | Complete follow-up audit and exact-image multirecord gates |
 | Corrected attention ships in the artifact | Candidate built from release-5 image with corrected compiled bank, original dependency set | Exact-image serving, isolation, long context, pressure, lifecycle and disclosure checks |
 | Signed install/update/rollback works | Existing release-5 live lifecycle evidence | Validate the new candidate and sign/promote only after its gates pass |
-| Private implementation remains private | Code in aimee-qwen; compiled consumer and hosted preparation | Re-audit candidate contents and artifact identity |
+| Private implementation remains private | Final installed package source audit and 18-artifact client verification passed | Preserve binding to final signed artifacts |
 | Results are reviewable | Frozen protocols, hashes, raw trajectories and official outcomes | Archive completed evidence, update recommendation and push |
 
-## Active jobs
+## Initial job configuration (historical)
 
 CT113 `/opt/swe-native/lesson-fidelity-20260927` completed the fixed eight-cell
 single-task diagnostic (six resolved, two failed). Its preparation outage is archived independently and
@@ -587,3 +608,14 @@ The matching production callers were also corrected: the Rust broker and private
 Both release and lab Rust launchers rebuilt successfully; 14 launcher library tests passed, as did four private-supervisor and three selector tests. The client candidate was restaged with all 18 hashes verified, and its separate lab launcher was updated. The normal signed release and normal installed launcher have not been promoted.
 
 The final caller-fixed image passed 18 compiled control/state/CLI/stream checks and seven additional Rust-backed admission checks (25 total, none skipped across the two invocations). Its installed native package contains no private source files; its kernel directory contains exactly the four manifest-referenced binaries and metadata. These packaging checks do not establish resistance to binary reverse engineering. Build logs, exact-image packaging audit, launcher hashes and client staging report are archived in `artifacts/refresh-callers-20260928/`. A resumed-study delivery audit passed across 173 calls, 10 trajectories and four publications; that audit is routing/source-fidelity evidence, not an accuracy result.
+
+## Publication ordering after long-drain repair
+
+Health and withdrawal formerly queued behind the refresh lock. With a long
+drain this could time out health polling or delay a newer withdrawal. The final
+control revision lets those two operations proceed immediately and checks the
+activation generation after draining, after local catalog loading, and after
+worker acknowledgement. A newer withdrawal leaves admission closed; a failed
+worker collective still requires restart. Both new race tests pass in the
+compiled runtime, including the actual Unix control socket. Final build and
+installed-package audit evidence are in `artifacts/refresh-control-order-20260928/`.
