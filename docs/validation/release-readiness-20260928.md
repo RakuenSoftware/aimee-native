@@ -12,8 +12,9 @@ scope stated explicitly. They do not establish general SWE-bench improvement:
 the original broader study remains 5/32 control versus 4/32 native, with its
 one lost case subsequently repaired in a separate targeted experiment.
 
-The requested three-model release is **not ready**. Gemma 26B currently fails
-baseline inference; Qwen 27B passed its four packaged GPU baseline smoke checks.
+The requested three-model release is **not ready**. Gemma 26B Q8 currently fails
+baseline inference, while its original BF16 checkpoint passed all four checks.
+Qwen 27B Q8 passed its four packaged GPU baseline smoke checks.
 Neither larger model has completed native-memory or signed lifecycle validation.
 The normal published channel remains at sequence 5.
 

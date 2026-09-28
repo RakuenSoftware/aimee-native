@@ -29,9 +29,11 @@ For each larger model:
    any unmet gates independently. All three models must be accounted for
    before declaring the expanded release objective complete.
 
-Current status: Gemma4 12B candidate runtime checks passed, full-task regression
-validation pending, normal signed lifecycle pending. Gemma4 26B and Qwen3.8
-27B artifact discovery, builds and validation are not yet complete.
+Current status: Gemma4 12B passed the recorded selected regression and signed
+lifecycle checks, supporting a scoped private preview. Qwen 27B Q8 passed four
+baseline smoke checks. Gemma 26B BF16 passed four baseline checks, while its Q8
+package failed. Both larger models still require native-memory and signed
+lifecycle validation. The chronological sections below preserve earlier work.
 
 
 ## Existing checkpoint inventory
@@ -252,3 +254,44 @@ test directory; the initial fixture failure is preserved. The live 12B service
 has not been switched to this backend. A full Qwen checkpoint, three-record
 preparation is queued after the Gemma BF16 reference releases resources.
 [Export and transport checks](validation/artifacts/bounded-preparation-20260928/).
+
+
+## Corrected trained-buffer preparation and healthy Gemma BF16 reference
+
+The original Gemma 26B BF16 checkpoint passed all four deterministic baseline
+checks under the private image with unchanged upstream vLLM, after increasing
+the container host-memory allowance from 36 to 64 GiB and stopping the idle
+12B compiler during the run. CPU offload remained 8 GiB per GPU worker. The
+compiler was restored afterward. This isolates the unhealthy Q8 package from
+a healthy full-checkpoint runtime reference; it does not certify native memory.
+[BF16 reference evidence](validation/artifacts/gemma26-bf16-reference-20260928-memory-r2/).
+
+Separately, the new bounded CPU preparation path omitted trained persistent
+buffers from Accelerate's weight loading. Gemma stores its learned per-layer
+scalar in a buffer; leaving constructor values there corrupts computation.
+The preparation path now loads persistent buffers, while the supported hooks
+retain generated nonpersistent buffers. Strengthened reduced-model tests use
+nondefault learned scalars and match the ordinary FP32 reference exactly. All
+four test methods passed, including both architecture families and delivery
+of all three selected records to exported attention banks.
+
+The corrected full Gemma checkpoint next-token diagnostic now predicts `4`
+for `17 + 25`, with finite nonsaturated logits, instead of the prior saturated
+output. This diagnostic checks the first token, not the complete answer. It
+read 658 tensors and released all parameters after the pass. Its approximately
+62-second CPU duration is offline full-checkpoint preparation/reference work,
+not resident memory application latency. Existing 12B production preparation
+was not changed. [Fix evidence](validation/artifacts/bounded-buffer-fix-20260928/).
+
+The initial full Qwen preparation also exposed incorrect chat framing: its
+template rejects a system-only conversation. The corrected path retains the
+existing Qwen independent raw-memory-text protocol. A test now explicitly
+rejects any use of its chat template. The failed first full attempt is retained
+[here](validation/artifacts/bounded-preparation-20260928/qwen27-full.log).
+The corrected full-checkpoint Qwen preparation passed: all three selected
+records produced 38 positions in each of its 16 full-attention layers. Banks
+were finite and every layer retained all positions. The full FP32 forward
+took approximately 66 seconds, with approximately 4 ms for export; these are
+offline preparation measurements, not serving latency. All parameters were
+released after preparation. The corresponding full Gemma memory preparation
+is running next. Native answer quality and lifecycle validation remain open.

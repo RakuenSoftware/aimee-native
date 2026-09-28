@@ -49,7 +49,7 @@ class BoundedTextCompiler(GemmaCompiler):
             raise ValueError('checkpoint missing text-model tensors: ' + repr(absent))
         weights = CheckpointWeights(self.model_path, aliases=aliases)
         try:
-            cpu_offload(model, execution_device=torch.device('cpu'), state_dict=weights,
+            cpu_offload(model, execution_device=torch.device('cpu'), offload_buffers=True, state_dict=weights,
                 preload_module_classes=['Qwen3_5GatedDeltaNet'] if self.config.model_type == 'qwen3_5' else [])
         except BaseException:
             weights.close()
@@ -68,9 +68,13 @@ class BoundedTextCompiler(GemmaCompiler):
             raise ValueError('unsupported fact content')
         if sum(len(s.encode()) for s in contents) > 1024**2:
             raise ValueError('selected content exceeds preparation budget')
-        framed = self.tokenizer.apply_chat_template(
-            [{'role': 'system', 'content': 'Authoritative memory:\n' + '\n'.join(contents)}],
-            tokenize=False, add_generation_prompt=False, enable_thinking=False)
+        framed = 'Authoritative memory:\n' + '\n'.join(contents)
+        if self.config.model_type == 'gemma4':
+            framed = self.tokenizer.apply_chat_template(
+                [{'role': 'system', 'content': framed}],
+                tokenize=False, add_generation_prompt=False, enable_thinking=False)
+        # Qwen research encodes the independent memory text directly. Its chat
+        # template requires a user turn; inventing one changes that protocol.
         tokens = self.tokenizer.encode(framed, add_special_tokens=False)
         if not 0 < len(tokens) <= self.max_memory_tokens:
             raise ValueError('selected memory exceeds preparation positions')

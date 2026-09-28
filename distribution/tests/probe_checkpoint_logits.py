@@ -51,7 +51,7 @@ prompt = tokenizer.apply_chat_template([{'role': 'user', 'content': 'Compute 17 
 ids = tokenizer.encode(prompt, add_special_tokens=False)
 assert 0 < len(ids) <= 128
 with CheckpointWeights(a.model, aliases=aliases) as weights:
-    cpu_offload(model, execution_device=torch.device('cpu'), state_dict=weights,
+    cpu_offload(model, execution_device=torch.device('cpu'), offload_buffers=True, state_dict=weights,
                 preload_module_classes=['Qwen3_5GatedDeltaNet'] if config.model_type == 'qwen3_5' else [])
     with torch.inference_mode():
         result = model(input_ids=torch.tensor([ids]), attention_mask=torch.ones((1, len(ids)), dtype=torch.long),

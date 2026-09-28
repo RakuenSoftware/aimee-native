@@ -33,6 +33,9 @@ class ExportParity(unittest.TestCase):
                 torch.manual_seed(20260928)
                 config._attn_implementation = 'eager'
                 reference = cls(config).eval()
+                for number, layer in enumerate(reference.layers):
+                    if hasattr(layer, 'layer_scalar'):
+                        layer.layer_scalar.fill_(0.375 + number * 0.25)
                 state = {n: p.bfloat16() if p.is_floating_point() else p for n,p in reference.state_dict().items()}
                 reference.load_state_dict(state)
                 root = Path(directory)
@@ -43,6 +46,8 @@ class ExportParity(unittest.TestCase):
                 tokenizer.pre_tokenizer = pre_tokenizers.Whitespace()
                 tokenizer = PreTrainedTokenizerFast(tokenizer_object=tokenizer,unk_token='[UNK]')
                 tokenizer.chat_template = "{{ messages[0]['content'] }}"
+                if family == 'qwen3_5':
+                    tokenizer.chat_template = "{{ raise_exception('Qwen memory must use the raw independent text path') }}"
                 compiler = BoundedTextCompiler.__new__(BoundedTextCompiler)
                 compiler.model_path = directory
                 compiler.max_memory_tokens = 32

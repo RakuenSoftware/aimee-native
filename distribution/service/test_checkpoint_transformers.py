@@ -41,6 +41,9 @@ class TransformerPreparationParity(unittest.TestCase):
                 torch.manual_seed(20260928)
                 config._attn_implementation = 'eager'
                 reference = cls(config).eval()
+                for number, layer in enumerate(reference.layers):
+                    if hasattr(layer, 'layer_scalar'):
+                        layer.layer_scalar.fill_(0.375 + number * 0.25)
                 # Match checkpoint BF16 values while leaving computed rotary
                 # buffers at their original FP32 precision.
                 state = {name: (value.bfloat16() if value.is_floating_point() else value)
@@ -56,7 +59,7 @@ class TransformerPreparationParity(unittest.TestCase):
                     lazy = cls(config).eval()
                 aliases = {name: prefix + name for name in state}
                 with CheckpointWeights(root, aliases=aliases) as weights:
-                    cpu_offload(lazy, execution_device=torch.device('cpu'),
+                    cpu_offload(lazy, execution_device=torch.device('cpu'), offload_buffers=True,
                                 state_dict=weights, preload_module_classes=preload)
                     for length in (5, 11):
                         ids = torch.arange(3, 3 + length).unsqueeze(0)

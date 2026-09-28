@@ -37,7 +37,7 @@ class LazyPreparationWeights(unittest.TestCase):
             with init_empty_weights():
                 lazy = Network().eval()
             with CheckpointWeights(root, max_open_shards=1) as weights:
-                cpu_offload(lazy, execution_device=torch.device('cpu'), state_dict=weights)
+                cpu_offload(lazy, execution_device=torch.device('cpu'), offload_buffers=True, state_dict=weights)
                 for batch in (1, 7, 3):
                     values = torch.randn(batch, 16)
                     with torch.inference_mode():
