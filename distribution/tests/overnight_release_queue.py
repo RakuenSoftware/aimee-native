@@ -20,19 +20,28 @@ while True:
 p=subprocess.run(['pct','exec','113','--','python3','-c',"import json,pathlib,sys; r=pathlib.Path('/opt/swe-native/source-learning-20260927'); sys.path.insert(0,str(r)); from resume_campaign import validate_resume; tasks=json.loads((r/'tasks.json').read_text()); validate_resume(r,tasks,len(tasks))"],capture_output=True,text=True)
 if p.returncode:
  save({'status':'blocked_by_incomplete_learning_results','error':p.stderr});raise SystemExit(1)
-save({'status':'waiting_for_broader_source_learning'})
-while True:
- p=subprocess.run(['pct','exec','113','--','cat','/opt/swe-native/broader-source-learning-20260928/status.json'],capture_output=True,text=True)
- if p.returncode:save({'status':'failed','stage':'broader_status','error':p.stderr});raise SystemExit(1)
- broader=json.loads(p.stdout)
- if broader['status']=='complete':break
- if broader['status']=='failed':save({'status':'blocked_by_broader_learning_failure','error':broader.get('error'),'errors':broader.get('errors')});raise SystemExit(1)
- probe=subprocess.run(['pct','exec','113','--','python3','-c',"import pathlib; r=pathlib.Path('/opt/swe-native/broader-source-learning-20260928'); pid=int((r/'pid').read_text()); cmd=(pathlib.Path('/proc')/str(pid)/'cmdline').read_bytes(); assert b'broader_source_learning.py' in cmd"],capture_output=True,text=True)
- if probe.returncode:save({'status':'blocked_by_broader_worker_exit','error':probe.stderr});raise SystemExit(1)
- time.sleep(30)
-# Check the actual two-condition result set, not just the controller's status.
-probe=subprocess.run(['pct','exec','113','--','python3','-c',"import pathlib,json; r=pathlib.Path('/opt/swe-native/broader-source-learning-20260928'); tasks=json.loads((r/'tasks.json').read_text()); assert len(tasks)==32; rows=[(t['instance_id'],a,json.loads((r/'results'/a/t['instance_id']/'result.json').read_text())) for t in tasks for a in ('source-control','source-learn-1')]; assert all(row['instance_id']==iid and row['arm']==arm and type(row.get('resolved')) is bool for iid,arm,row in rows)"],capture_output=True,text=True)
-if probe.returncode:save({'status':'blocked_by_incomplete_broader_results','error':probe.stderr});raise SystemExit(1)
+def wait_for_broader(require_grades):
+ save({'status':'waiting_for_broader_grading' if require_grades else 'waiting_for_broader_source_learning'})
+ while True:
+  p=subprocess.run(['pct','exec','113','--','cat','/opt/swe-native/broader-source-learning-20260928/status.json'],capture_output=True,text=True)
+  if p.returncode:raise RuntimeError('could not inspect broader controller: '+p.stderr)
+  broader=json.loads(p.stdout)
+  if broader['status']=='failed':raise RuntimeError('broader controller failed: '+json.dumps(broader.get('errors',broader.get('error'))))
+  probe=subprocess.run(['pct','exec','113','--','python3','/opt/swe-native/swe_gpu_handoff.py','/opt/swe-native/broader-source-learning-20260928'],capture_output=True,text=True)
+  if probe.returncode:
+   if 'JSONDecodeError' in probe.stderr:time.sleep(2);continue
+   raise RuntimeError('broader handoff audit failed: '+probe.stderr)
+  handoff=json.loads(probe.stdout)
+  if broader['status']!='complete':
+   live=subprocess.run(['pct','exec','113','--','python3','-c',"import pathlib; r=pathlib.Path('/opt/swe-native/broader-source-learning-20260928'); pid=int((r/'pid').read_text()); cmd=(pathlib.Path('/proc')/str(pid)/'cmdline').read_bytes(); assert b'broader_source_learning.py' in cmd"],capture_output=True,text=True)
+   if live.returncode:raise RuntimeError('broader worker exited: '+live.stderr)
+  if handoff['grades_complete'] or (not require_grades and handoff['gpu_ready']):return handoff
+  time.sleep(30)
+try:
+ handoff=wait_for_broader(False)
+ (ROOT/'broader-gpu-handoff.json').write_text(json.dumps(dict(handoff,observed_at=time.time()),indent=2)+'\n')
+except Exception as error:
+ save({'status':'failed','stage':'broader_gpu_handoff','error':repr(error)});raise
 save({'status':'replaying_residual_repetition'})
 with (ROOT/'repetition-replay.log').open('w') as log:
  p=subprocess.run(['pct','exec','113','--','python3','/opt/swe-native/replay_repetition_20260928.py','--fixture','/opt/swe-native/pytest-repetition-replay.json','--output','/opt/swe-native/pytest-repetition-replay-result.json'],stdout=log,stderr=subprocess.STDOUT)
@@ -78,4 +87,12 @@ if p.returncode:
 save({'status':'checking_served_preparation_dtype'})
 with (ROOT/'preparation-dtype-check.log').open('w') as log:
  p=subprocess.run(['python3','/root/aimee-check-preparation-dtype-20260928.py'],stdout=log,stderr=subprocess.STDOUT)
-save({'status':'passed' if p.returncode==0 else 'failed','stage':'served_preparation_dtype','returncode':p.returncode,'image':image})
+if p.returncode:
+ save({'status':'failed','stage':'served_preparation_dtype','returncode':p.returncode,'image':image});raise SystemExit(p.returncode)
+try:wait_for_broader(True)
+except Exception as error:
+ save({'status':'failed','stage':'broader_final_grades','error':repr(error)});raise
+# Check the actual two-condition result set, not just the controller's status.
+probe=subprocess.run(['pct','exec','113','--','python3','-c',"import pathlib,json; r=pathlib.Path('/opt/swe-native/broader-source-learning-20260928'); tasks=json.loads((r/'tasks.json').read_text()); assert len(tasks)==32; rows=[(t['instance_id'],a,json.loads((r/'results'/a/t['instance_id']/'result.json').read_text())) for t in tasks for a in ('source-control','source-learn-1')]; assert all(row['instance_id']==iid and row['arm']==arm and type(row.get('resolved')) is bool for iid,arm,row in rows)"],capture_output=True,text=True)
+if probe.returncode:save({'status':'blocked_by_incomplete_broader_results','error':probe.stderr});raise SystemExit(1)
+save({'status':'passed','stage':'all_candidate_checks_and_broader_grades','image':image})

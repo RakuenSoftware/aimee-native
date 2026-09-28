@@ -15,8 +15,10 @@ requests, 64 trajectories and 39 publications.
 
 The separate 32-task follow-up started automatically after the primary audit.
 Its four pipelines use the prospectively amended output budget and parser-feedback
-fallback. The release queue now waits for that study, then runs the residual
-repetition diagnostic and candidate validation. No release promotion has occurred.
+fallback. The release queue waits for all inference work, then runs the residual
+repetition diagnostic and candidate validation. The final deferred CPU-only
+grade may overlap certification; all 64 grades remain mandatory before the
+queue can pass. No release promotion has occurred.
 The historical sections below preserve earlier checkpoints and interventions.
 
 ## Current release candidate
@@ -719,3 +721,15 @@ The exact trajectory snapshot, call metadata, executed harness and recovery
 manifest are preserved in `artifacts/runtime-recovery-20260928/generation-over-180-seconds.tar.gz`.
 This is transport-completion evidence, not a task solve or memory-application
 latency measurement.
+
+## GPU handoff while the final CPU grade completes
+
+The Requests-2193 grader can take roughly half an hour after inference ends.
+The operator queue now permits certification to overlap only that final CPU
+grade: all other 63 results must be graded booleans with matching identities,
+and the final Requests native trajectory must end in a normal submission.
+Missing or active trajectories, other pending attempts, and infrastructure
+results prevent handoff. Final certification still requires all 64 grades.
+The live study and its inputs were not restarted or changed. Only the waiting
+release queue was replaced (PID 2370979); the prior queue and state were retained.
+Six targeted handoff tests pass; evidence is in `artifacts/gpu-handoff-20260928/`.
