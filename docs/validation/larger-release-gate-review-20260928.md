@@ -12,9 +12,10 @@ does not prevent release staging; retain the measurements and their scope in
 release notes. Earlier records treating that target as a hard requirement are
 superseded by this clarification, without changing their experimental results.
 
-Normal larger-model manifests have not yet been signed or installed through
-the normal channel. Existing laboratory lifecycle results establish the
-component path, not that unexecuted final distribution step.
+The first normal Gemma 26B manifest is signed and independently verified;
+its normal installation is running. Qwen normal packaging and both complete
+normal lifecycle campaigns remain unfinished. Existing laboratory lifecycle
+results establish the component path, not those pending distribution checks.
 
 The remaining review work is identified below. Broader population-level coding
 improvement is a claim limitation, not an additional release requirement.
@@ -74,3 +75,8 @@ canary consumption. The normal launcher, dedicated client roots and deployed
 model-aware authority are used without changing account bindings or the 12B
 channel. Immutable validation weight copies are deduplicated only after their
 bytes have been checked against the signed artifact digest.
+
+The [first normal Gemma signed manifest](artifacts/larger-normal-signed-20260928/)
+retains artifact set `c3f0d24983929829ccf4f853552fcea93234d5df9cc4f71068a9181e09eab957`.
+Its Ed25519 signature was independently verified with the retained public key.
+This records staging, not a completed normal installation or release approval.
