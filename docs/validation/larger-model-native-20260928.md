@@ -874,3 +874,29 @@ frozen source-procedure reuse comparison, not new acquisition between rounds
 or an estimate of general SWE-bench improvement. The second round remains a
 separate pending retention check.
 [Exact Requests native result, grade and trajectory](artifacts/larger-qwen27-requests-native1-20260928/).
+
+
+## Qwen six-case coding comparison complete
+
+The second native Requests 2193 patch passed official grading. All 24 attempts
+in the frozen six-case comparison now have final outcomes:
+
+| Condition | Resolved tasks | Total tasks |
+|---|---:|---:|
+| No-memory control | 5 | 6 |
+| Matched text memory | 4 | 6 |
+| Native reuse 1 | 6 | 6 |
+| Native reuse 2 | 6 | 6 |
+
+Both native rounds retained all five control successes and added SymPy 20590.
+Neither native round regressed a control success in this selected set. The
+control and text SymPy attempts, and text Matplotlib attempt, produced no patch;
+the other submitted patches passed official grading. All records, including
+unsuccessful attempts, remain in the [complete archive and derived summary](artifacts/larger-qwen27-complete-tasks-20260928/summary.json).
+
+This completes the Qwen selected coding retention/reuse comparison. It does
+not establish an independent population effect or learning acquisition between
+rounds: both rounds consumed the same frozen accepted source procedures. Qwen's
+coordinator finished normally and released the GPUs; the Gemma continuation
+started next. Signed model-aware runtime phases and application timings remain
+separate pending release requirements.
