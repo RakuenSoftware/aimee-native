@@ -822,3 +822,12 @@ Qwen additionally carries its source model license file. This complements the
 unchanged package-version inventory above. It is notice presence and artifact
 integrity evidence, not a fresh vulnerability assessment or public redistribution
 clearance. [Audit source, manifest identities and notice hashes](artifacts/larger-notice-audit-20260928/).
+
+
+## Qwen Requests text arm passed official grading
+
+The Requests 2193 matched-text patch passed the official grader after the long
+network-test run. The recorded result is now final for that arm. Control and both
+native arms are still outstanding, so the five fully paired case totals above
+remain the appropriate comparison; no six-case aggregate is claimed.
+[Exact result, grade and trajectory](artifacts/larger-qwen27-requests-text-20260928/).

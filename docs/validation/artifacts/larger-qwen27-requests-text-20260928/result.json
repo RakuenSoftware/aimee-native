@@ -1,0 +1,17 @@
+{
+  "instance_id": "psf__requests-2193",
+  "arm": "text",
+  "publication": null,
+  "text_memory_sha256": "25747f2e44dee5a910d3e21b1e3d6b11c280085198a4459d1b76d6f8185cc2ec",
+  "status": "predicted",
+  "started": 1790606255.7676961,
+  "image_inspect": "sha256:3059ae8969ec17d8324ac63f7ab086c16d5152adb0aa863b4e124d59af5c8fd0",
+  "exit_status": "Submitted",
+  "steps": 28,
+  "model_patch": "diff --git a/requests/adapters.py b/requests/adapters.py\nindex 3c1e979f..e50a1eef 100644\n--- a/requests/adapters.py\n+++ b/requests/adapters.py\n@@ -24,6 +24,7 @@ from .packages.urllib3.exceptions import HTTPError as _HTTPError\n from .packages.urllib3.exceptions import MaxRetryError\n from .packages.urllib3.exceptions import ProxyError as _ProxyError\n from .packages.urllib3.exceptions import ReadTimeoutError\n+from .packages.urllib3.exceptions import ProtocolError\n from .packages.urllib3.exceptions import SSLError as _SSLError\n from .cookies import extract_cookies_to_jar\n from .exceptions import (ConnectionError, ConnectTimeout, ReadTimeout, SSLError,\n@@ -417,6 +418,8 @@ class HTTPAdapter(BaseAdapter):\n                 raise SSLError(e, request=request)\n             elif isinstance(e, ReadTimeoutError):\n                 raise ReadTimeout(e, request=request)\n+            elif isinstance(e, ProtocolError):\n+                raise ConnectionError(e, request=request)\n             else:\n                 raise\n \n",
+  "agent_seconds": 330.6827039718628,
+  "grade_timeout_seconds": 3600,
+  "resolved": true,
+  "grade_status": "graded",
+  "finished": 1790608181.2645903
+}
