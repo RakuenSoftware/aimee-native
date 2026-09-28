@@ -1,0 +1,39 @@
+{
+  "scope": "Vendor repository source availability, not a licensing determination. Exact installed version is 235.2.86.0. No replacement version downloaded or installed.",
+  "results": [
+    {
+      "url": "https://packages.broadcom.com/artifactory/api/storage/ethernet-nic-debian-public/pool/main",
+      "http_status": 200,
+      "children": [
+        {
+          "uri": "/bnxt-en-dkms_1.10.3.235.2.86.0_all.deb",
+          "folder": false
+        },
+        {
+          "uri": "/bnxt-re-dkms_235.2.86.0_all.deb",
+          "folder": false
+        },
+        {
+          "uri": "/bnxt-rocelib-235.2.86.0-1_all.deb",
+          "folder": false
+        },
+        {
+          "uri": "/bnxt_re_conf_235.2.86.0-1_all.deb",
+          "folder": false
+        }
+      ]
+    },
+    {
+      "url": "https://packages.broadcom.com/artifactory/api/storage/ethernet-nic-rpm-public",
+      "http_status": 200,
+      "children": []
+    },
+    {
+      "url": "https://packages.broadcom.com/artifactory/ethernet-nic-debian-public/dists/jammy/main/source/Sources.gz",
+      "http_status": 404
+    }
+  ],
+  "finding": "The exposed Debian pool lists four binary debs; source index returns 404; exposed RPM repository has no listed children. Exact rocelib source archive is not obtained by these checks.",
+  "next_source_location": "Broadcom release notes identify bnxt_rocelib source in the combined Linux installer; exact matching release archive still needed.",
+  "release_notes": "https://docs.broadcom.com/doc/Release_Notes-235.1.160.0"
+}
