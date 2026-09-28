@@ -78,3 +78,18 @@ frozen memories remain unchanged. Existing completed outcomes are not rerun.
 A timeout still remains ungraded and cannot certify the campaign. The regrade
 helper records the original result hash and patch hash, and accepts only an
 infrastructure result with a nonempty saved patch.
+
+The continuation uses separate directories and coordinators. Gemma's resume
+copies completed results unchanged, preserves the original ungraded Requests
+result alongside its matching regrade supplement, and reuses cached completed
+attempts. Source-result and patch hashes must match before a supplement is
+accepted. The original campaign must be terminal before snapshotting it. The
+resume adds only missing attempts. A focused fixture verifies original-byte
+preservation, unchanged completed outcomes, mismatched-patch rejection and refusal
+to overwrite a prior resume directory.
+
+Qwen can proceed independently after its initial signed-runtime probe while the
+CPU-only Requests regrade runs. Both continuation coordinators first wait for
+the original coding coordinator to exit and share the existing GPU lock. This
+scheduling change does not change model inputs, budgets, task order within a
+model, or success criteria. Each model gets a distinct new evidence directory.
