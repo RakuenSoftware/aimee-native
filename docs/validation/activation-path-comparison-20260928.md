@@ -77,3 +77,27 @@ large native state. Further work needs to address that representation gap;
 neither token-ID byte counts nor resident-cache timings establish that it has
 been solved. No codec or serving candidate was changed by this diagnostic.
 [Raw result](artifacts/native-payload-compressibility-20260928/report.json).
+
+## Low-rank feasibility follow-up
+
+A CPU-only singular-value analysis covered every rank-zero K/V head matrix in
+the same bank (60 segments, 432 positions). Factor storage counts below assume
+BF16 factors; errors are the optimistic best-rank error before factor rounding.
+
+| Per-head rank | Factor bytes (MB) | Relative Frobenius error |
+|---|---:|---:|
+| 4 | 1.18 | 69.8% |
+| 8 | 2.35 | 64.0% |
+| 16 | 4.71 | 56.6% |
+| 32 | 9.41 | 47.0% |
+| 64 | 18.82 | 34.7% |
+| 128 | 37.64 | 19.4% |
+
+This does not measure answer accuracy, and it cannot prove that every possible
+structured representation fails. It rejects an assumption that a simple small
+per-head factorization reconstructs these states with little error. There is no
+basis here for promoting it as preservation of the validated native behavior.
+No serving path changed. The first probe failed because this Torch build lacks
+CPU LAPACK; the retained corrected run used NumPy's SVD on exactly expanded BF16
+values. The failure and corrected result are both preserved in
+[the evidence archive](artifacts/native-low-rank-feasibility-20260928/).
