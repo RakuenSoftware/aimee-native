@@ -763,3 +763,24 @@ with frozen accepted procedures, not new acquisition between rounds or a
 population-level effect estimate. Matplotlib and Requests remain unfinished;
 these counts are not the final six-case campaign score.
 [All four complete task records](artifacts/larger-qwen27-complete-tasks-20260928/).
+
+
+## Five Qwen cases complete: both native rounds retain every control success
+
+Matplotlib 25340 passed official grading in the control and both native reuse
+conditions. Its text-memory attempt produced no patch. The five fully paired
+Qwen cases now yield:
+
+| Condition | Successful tasks | Completed paired tasks |
+|---|---:|---:|
+| No-memory control | 4 | 5 |
+| Matched text memory | 3 | 5 |
+| Native reuse 1 | 5 | 5 |
+| Native reuse 2 | 5 | 5 |
+
+Both native rounds retained all four control successes and added SymPy. These
+are the same five selected cases under the frozen source-reuse protocol; the
+two native rounds are not independent tasks or fresh memory acquisition.
+Requests is the only unfinished case: its text patch is in the official grader,
+and no final six-case score is assigned until all its conditions are graded.
+[Complete five-case records](artifacts/larger-qwen27-complete-tasks-20260928/).
