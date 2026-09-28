@@ -30,7 +30,10 @@ canary responses. Qwen's fresh/update/rollback/restore lifecycle also passed
 deployed model-aware authority passed bootstrap, artifact-fetch and lease
 isolation checks. Installed consumption through the updated launcher passed for both larger
 models. Normal-feature 12B restoration/recovery remains queued. Larger-bank
-activation timing and final release provenance review also remain outstanding.
+activation measurements passed fidelity for all twelve banks. Cold medians
+remain 3.73–14.80 ms for Gemma and 1.62–4.40 ms for Qwen, so the microsecond
+cold-application target remains unmet. Final release provenance review remains
+outstanding.
 
 Automatic source acquisition is implemented in the benchmark harness and has
 replay-validated evidence in the primary and broader studies. This is distinct

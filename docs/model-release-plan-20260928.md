@@ -55,8 +55,9 @@ The three-model account binding, query-forwarding frontend and delivery service
 are deployed and healthy. The same enrolled account passed 10/10 live bootstrap
 authorization checks and 6/6 fresh/repeated artifact fetches across all three
 models. Installed GPU consumption through the model-aware launcher passed all eight
-larger-model queries. Normal-feature 12B compiler restoration and interrupted-
-request recovery remain queued.
+larger-model queries. The 12B compiler is restored; normal-feature installed consumption and
+interrupted-request recovery are running. All twelve larger-bank activation
+cases passed tensor fidelity; measured cold application remains in milliseconds.
 No larger candidate has been promoted to the ordinary release channel.
 
 See the [larger-model report](validation/larger-model-native-20260928.md) and

@@ -988,3 +988,32 @@ and all 23 other completed outcomes. In this run grading finished first, so
 the supervisor reported `already_graded` and did not retire the coordinator.
 The original coordinator completed normally and released the GPUs. Qwen's
 model-aware installed update probe has now started.
+
+### All twelve larger-bank activation measurements completed
+
+Six frozen procedural banks per larger model completed 20 independently
+conditioned OS-cold trials, 100 OS-warm trials and 100 already-device-resident
+lookups each. All twelve cases passed exact byte verification against admitted
+source tensors (60 rank-zero segments per Gemma bank; 32 per Qwen bank).
+The report records the exact tested image and probe hash. Archived result hashes
+were independently checked against the terminal coordinator report after transfer.
+
+| Model | Range of bank median cold application | Range of bank median warm application | Range of bank median resident lookup |
+|---|---:|---:|---:|
+| Gemma 26B | 3.73–14.80 ms | 1.35–6.56 ms | 0.56–0.60 µs |
+| Qwen 27B | 1.62–4.40 ms | 0.55–1.76 ms | 0.56–0.81 µs |
+
+These are ranges across six per-bank medians, not confidence intervals or
+pooled percentiles. Complete samples and per-bank p95 values are retained in
+`artifacts/larger-activation-complete-20260928/measurements.tar.gz`; the terminal
+report and embedded-file checksums are adjacent. Measurements cover rank-zero
+application in a two-rank layout, including wrapping and completed device work.
+Preparation, initial integrity admission, authority traffic, model inference
+and answer generation are outside this timing boundary. Already-resident lookup
+does not perform the cold transfer again and must not be presented as equivalent.
+
+This completes measurement/fidelity validation, not the requested microsecond
+cold/warm performance goal: all cold medians exceed one millisecond, and several
+warm medians do as well. It does not establish a matched text-memory speedup.
+The GPU queue has advanced to normal-feature 12B installed consumption and
+interruption recovery; the previously paused 12B compiler is restored and active.
