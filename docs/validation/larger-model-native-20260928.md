@@ -900,3 +900,20 @@ rounds: both rounds consumed the same frozen accepted source procedures. Qwen's
 coordinator finished normally and released the GPUs; the Gemma continuation
 started next. Signed model-aware runtime phases and application timings remain
 separate pending release requirements.
+
+
+## Gemma Matplotlib retry completed without transport failure
+
+The Matplotlib 25340 second-native retry completed six agent calls and reached
+the agent time budget without producing a patch. It is an unsuccessful task
+attempt (`TimeExceeded` with an empty prediction), not an official test-suite
+failure or transport timeout. The earlier excluded 600-second HTTP timeout is
+still preserved separately. Control, text and first-native Matplotlib attempts
+also produced no patch before their time budgets expired.
+
+Five Gemma cases are now fully paired: control **2/5**, text **3/5**, native reuse
+1 **3/5**, and native reuse 2 **4/5**. Both native rounds retain the two control
+successes in this set. These totals include the Matplotlib failure; it is not
+removed or substituted. The Requests first-native patch is in official grading,
+and its second-native attempt remains outstanding.
+[All five complete case records](artifacts/larger-gemma26-complete-tasks-20260928/).
