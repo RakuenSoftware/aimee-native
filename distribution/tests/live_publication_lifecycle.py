@@ -60,12 +60,23 @@ def service(action):
 
 try:
     await_state(True)
+    # Availability means current authorization, not an already populated cache.
+    # A new encoding revision legitimately requires one fresh preparation.
+    first = prepare()
+    if first.returncode:
+        raise RuntimeError('initial approved preparation failed')
+    initial = json.loads(first.stdout)
+    assert len(initial['records']) == a.expected_records, 'partial initial working set'
+    results['initial_preparation'] = {'passed': True, 'reused': initial['reused'],
+                                      'records': len(initial['records']), 'key': initial['key']}
     started = time.perf_counter()
     result = prepare()
     if result.returncode:
         raise RuntimeError('approved preparation failed')
     prepared = json.loads(result.stdout)
     assert len(prepared['records']) == a.expected_records, 'partial working set'
+    assert prepared['key'] == initial['key'], 'unchanged preparation identity drifted'
+    assert prepared['records'] == initial['records'], 'unchanged selected records drifted'
     assert prepared['reused'] is True, 'previous real preparation was not reused'
     results['reuse'] = {'passed': True, 'records': len(prepared['records']),
                         'elapsed_ms': round((time.perf_counter() - started) * 1000, 3),

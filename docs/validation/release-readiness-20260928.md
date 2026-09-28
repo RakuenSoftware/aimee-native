@@ -1069,3 +1069,24 @@ execution. Aggregate prompt tokens were 5,428 versus 12,580, with differing
 call counts and trajectories; these are not a controlled per-call token-saving
 estimate. Acquisition/preparation and tool execution are not included in those
 generation totals. Keep those scope distinctions when reporting final results.
+
+
+## Current preparation/publication lifecycle revalidated
+
+The dedicated live canary passed complete three-record reuse, expiry denial,
+withdrawal denial, authority-disconnect denial and recovery against the updated
+preparation service. The policy is restored active, its publisher is running,
+and authorized prepared access is available. The second unchanged preparation
+had the same record set and artifact key, and reported reuse.
+
+The first probe incorrectly assumed the new profile already had a cached
+artifact. It stopped on a fresh preparation before exercising withdrawal; its
+finally block restored the policy and publisher. The corrected probe explicitly
+establishes the artifact, then demands identity-preserving reuse before testing
+revocation. The initial failure and both executed probes are preserved.
+
+[Current lifecycle evidence](artifacts/current-publication-lifecycle-20260928/).
+This closes the fresh preparation/publication revocation check. It does not
+replace frontend authentication, GPU revocation, signed-client lifecycle or
+learning-effect validation. The Requests native/text official graders remain
+live; their submitted patches match the previously passing patch.
