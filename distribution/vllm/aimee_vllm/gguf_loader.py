@@ -1,5 +1,6 @@
 """Explicit loader registration; never invoke upstream GGUF monkey-patch hooks.
-Private experimental Gemma4Unified text-serving profile. Pin the GGUF dependency.
+Private model profiles use the pinned upstream GGUF adapters.
+Profile availability is not model-specific release certification.
 """
 from copy import copy
 from pathlib import Path
@@ -29,8 +30,13 @@ class UnifiedGGUFLoader(GGUFModelLoader):
         return super()._prepare_model_files(model_config)
 
     def _prepare_adapter(self, model_config):
-        if model_config.hf_config.model_type!='gemma4_unified':
-            raise RuntimeError('uncertified GGUF architecture')
+        model_type=model_config.hf_config.model_type
+        if model_type in ('gemma4', 'qwen3_5'):
+            # Preserve upstream MoE tensor splitting and hybrid-attention weight
+            # layouts. Do not apply the Unified-only name mapping to these.
+            return super()._prepare_adapter(model_config)
+        if model_type!='gemma4_unified':
+            raise RuntimeError('unsupported private GGUF profile')
         files=self._prepare_model_files(model_config)
         adapter=Gemma4GGUFAdapter()
         names=get_gguf_tensor_names(files.all_files)

@@ -58,3 +58,20 @@ bounded-memory preparation profile after releasing the current compiler.
 The 26B checkpoint directory has no local LICENSE file; retrieve and verify
 its model terms before packaging. Weight-payload hashes and serving fit remain
 unverified. [Inventory evidence](validation/artifacts/larger-model-inventory-20260928/inventory.json).
+
+
+## Loader dispatch implemented
+
+The private GGUF loader now delegates `gemma4` and `qwen3_5` configurations to
+the pinned dependency's existing `Gemma4GGUFAdapter` and `Qwen35GGUFAdapter`.
+This preserves upstream MoE tensor transformations and hybrid-attention weight
+layouts. Gemma4Unified keeps its existing separate mapping path; unknown
+architectures are rejected. No upstream registration hook or source is patched.
+
+A CPU-only probe inside the exact current runtime image passed adapter
+availability and dispatch checks for both added profiles. It loaded the new
+private loader from a temporary file, without replacing installed package code
+or loading model weights. This proves dispatch wiring only. Quantized artifacts,
+actual model loads, attention-memory compatibility and release certification
+remain pending. The running 12B image was not rebuilt or changed.
+[Probe evidence](validation/artifacts/larger-model-inventory-20260928/loader-profile-probe.log).
