@@ -50,12 +50,18 @@ def package(plan, destination, signing_key, lab_only=False):
         raise ValueError('missing runtime/model artifacts')
     if 'runtime/image.json' in files:
         descriptor = json.loads(pathlib.Path(files['runtime/image.json']).read_text())
-        if set(descriptor) != {'image', 'model_config'}:
+        if not {'image', 'model_config'} <= descriptor.keys() or set(descriptor) - {'image', 'model_config', 'gguf_matrix_backend', 'mm_proj'}:
             raise ValueError('invalid runtime image descriptor')
         if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9/._:-]*/[A-Za-z0-9/._:-]+@sha256:[a-fA-F0-9]{64}', descriptor['image']):
             raise ValueError('runtime image must be digest-pinned')
         if descriptor['model_config'] not in files or not re.fullmatch(r'models/[A-Za-z0-9_.+-]*config\.json',descriptor['model_config']):
             raise ValueError('missing model configuration sidecar')
+        if descriptor.get('gguf_matrix_backend') not in (None, 'cuda', 'triton'):
+            raise ValueError('invalid GGUF matrix backend')
+        projector = descriptor.get('mm_proj')
+        if projector is not None and (not isinstance(projector, str) or not allowed(projector)
+                or not projector.startswith('models/') or not projector.endswith('.gguf') or projector not in files):
+            raise ValueError('missing signed GGUF projector artifact')
     target.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix='.release-', dir=target.parent) as tmp:
         stage = pathlib.Path(tmp)

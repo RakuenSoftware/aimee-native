@@ -37,6 +37,23 @@ class PackageTests(unittest.TestCase):
             lab_plan=dict(plan,manifest=dict(plan['manifest'],model='lab-test'))
             lab=pkg.package(lab_plan,root/'lab-release',key,lab_only=True)
             self.assertEqual(lab['gates'],['lab_only'])
+            settings=json.loads(descriptor.read_text())
+            settings.update(gguf_matrix_backend='triton',mm_proj='models/projector.gguf')
+            descriptor.write_text(json.dumps(settings))
+            with self.assertRaisesRegex(ValueError,'signed GGUF projector'):
+                pkg.package(lab_plan,root/'missing-projector',key,lab_only=True)
+            projector=root/'projector.gguf';projector.write_bytes(b'fixture projector')
+            files['models/projector.gguf']=str(projector)
+            larger=pkg.package(lab_plan,root/'larger-release',key,lab_only=True)
+            saved=json.loads((root/'larger-release/runtime/image.json').read_text())
+            self.assertEqual(saved['gguf_matrix_backend'],'triton')
+            self.assertIn('models/projector.gguf',[a['path'] for a in larger['artifacts']])
+            subprocess.run(['openssl','pkeyutl','-verify','-rawin','-pubin','-inkey',str(pub),'-in',str(root/'larger-release/manifest.json'),'-sigfile',str(root/'larger-release/manifest.sig')],check=True,capture_output=True)
+            for invalid in ({'gguf_matrix_backend':'typo'}, {'mm_proj':'models/../projector.gguf'}, {'extra':True}):
+                descriptor.write_text(json.dumps(dict(settings,**invalid)))
+                with self.assertRaises(ValueError):
+                    pkg.package(lab_plan,root/'invalid-settings',key,lab_only=True)
+            descriptor.write_text(json.dumps(settings))
             with self.assertRaisesRegex(ValueError,'lab model identity'):pkg.package(plan,root/'not-lab',key,lab_only=True)
             evidence.write_text(json.dumps({'status':'pending','runtime_commit':'a'*40,'model':'test'}))
             with self.assertRaises(ValueError):pkg.package(plan,root/'rejected',key)

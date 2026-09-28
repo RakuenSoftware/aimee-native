@@ -105,6 +105,23 @@ authorization. Preparation overlapped GPU startup work and is not an isolated
 latency benchmark. The first operator attempt used an incorrect fixture-directory
 name and failed before preparation; the corrected run has a separate evidence root.
 
+## Release assembly follow-through
+
+The Python release assembler now accepts the same optional matrix-backend and
+projector fields as the Rust launcher. Previously it rejected the larger-model
+descriptor before packaging. Tests sign and verify the resulting artifact set,
+check projector inclusion, and reject absent projectors, invalid backends,
+escaping paths and unknown fields. Existing exact-artifact gate binding remains
+unchanged; these tests do not authorize a production release.
+
+Remaining model-specific work includes completing the packaged GPU runs,
+live-authority selection and revision/withdrawal checks, procedural reuse and
+retained-success checks, dependency/model notice assembly, and signed
+installation/update/rollback/restore. The existing live account binding selects
+one preparation profile. Installing another model must not silently reuse its
+12B preparation binding; the tested larger profile must be explicitly enrolled
+and matched at bootstrap. The normal published channel remains unchanged.
+
 ## Full-checkpoint preparation
 
 The corrected private FP32 preparation path loads learned persistent buffers
