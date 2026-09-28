@@ -33,8 +33,9 @@ caller deadlines, and responsive health/withdrawal during refresh. Generation
 checks prevent a superseded refresh from reopening admission, including when
 withdrawal arrives during the worker RPC. All 27 compiled runtime checks pass.
 The client candidate verifies all 18 artifact hashes and uses the rebuilt Rust
-lab launcher. GPU certification, hosted preparation migration/reuse, installed
-model-answer validation, and signed lifecycle remain pending.
+lab launcher. Standard and 32-record GPU certification passed, and hosted FP32 preparation
+is deployed pending client validation. FP32 reuse, installed model-answer
+validation/recovery, and signed lifecycle remain pending.
 
 The broader campaign is now **complete: 64/64 scored attempts**. Control passed
 **5/32**, native reuse passed **4/32**: four both-pass, twenty-seven both-fail,
@@ -837,3 +838,35 @@ executed on a fresh benchmark checkout after replaying the same original
 pre-edit actions. The outcome is equality to the already verified own patch,
 not official task accuracy. Completed study outcomes will not be overwritten.
 The compact procedure passed that exact setup/replay path before scheduling.
+
+## Wide certification, activation, and preparation handoff
+
+The exact image passed all **112/112 streamed answers** with 32 selected native
+records. [Raw wide report](artifacts/final-image-certification-20260928/wide-report.json).
+No single-record selection or encoding shortcut was used.
+
+The exact-image activation probe completed 20 independently OS-page-cold,
+100 warm-page, and 100 already-resident samples for each fixture, with tensor
+segment byte equality checks. These are rank-zero application measurements,
+not end-to-end model latency, retrieval latency, or new-record preparation.
+Already-resident measurements time the existing-device fast path without a
+new transfer; they must not be presented as cold application performance.
+
+| Working set | Cold median | Warm OS-cache median | Already-device-resident median |
+|---|---:|---:|---:|
+| Three records | 3.46 ms | 1.23 ms | 0.57 µs |
+| Thirty-two records | 31.32 ms | 11.02 ms | 0.57 µs |
+
+[Probe report](artifacts/final-image-certification-20260928/activation-report.json),
+[small raw samples](artifacts/final-image-certification-20260928/activation-three.json),
+[wide raw samples](artifacts/final-image-certification-20260928/activation-wide.json).
+Passing this probe means measurement and fidelity completed; the cold
+microsecond target remains unmet.
+
+The hosted compiler was migrated to FP32 with the new encoding revision,
+retaining rollback files. Its status is explicitly
+`deployed_pending_client_validation`, not release-approved. The isolated
+nine-case FP32 prefix-reuse validation now owns the CPU model; the normal
+resident service restarts automatically afterwards. Installed client canary,
+interruption recovery and served-dtype checks are queued next.
+[Migration evidence](artifacts/final-image-certification-20260928/preparation-upgrade.json).
