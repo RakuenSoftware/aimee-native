@@ -448,3 +448,5 @@ The primary worker is running the remaining four tasks. The broader worker
 and release queue are both live and waiting on their declared dependencies.
 All 32 broader task images are ready. No release certification or promotion
 is inferred from those readiness checks.
+
+The completed twelve-task block is also preserved in `artifacts/source-learning-20260927/first-twelve-tasks.tar.gz`, including raw trajectories, submitted patches, grading and acquisition artifacts. Every archived file was checked against the embedded SHA-256 manifest after transfer.
