@@ -450,3 +450,14 @@ All 32 broader task images are ready. No release certification or promotion
 is inferred from those readiness checks.
 
 The completed twelve-task block is also preserved in `artifacts/source-learning-20260927/first-twelve-tasks.tar.gz`, including raw trajectories, submitted patches, grading and acquisition artifacts. Every archived file was checked against the embedded SHA-256 manifest after transfer.
+
+
+A later delivery audit covers 1,182 observed requests across 52 trajectories
+(including two ongoing attempts) and 31 publications. Captured complete facts
+match prepared source records, record revisions and publication identities;
+every observed request uses its intended publication, and no text memory is
+supplied. The audit passed and is preserved as
+`artifacts/source-learning-20260927/delivery-audit-1790558986.json`.
+This establishes source fidelity and request routing, not independent tensor
+semantics or an accuracy gain. The current failure memories contain actual
+executed commands and observed errors; they do not supply a known correction.
