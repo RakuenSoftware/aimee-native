@@ -64,8 +64,13 @@ def main():
             license_expression=dist.metadata.get('License-Expression'), license_metadata=dist.metadata.get('License'),
             declared_license_files=dist.metadata.get_all('License-File', []), notices=files,
             source_archives='not_collected'))
+    # Debian copyright files often refer to these full license texts instead
+    # of embedding them. Retain them even when base-files has its own copyright.
+    common_licenses = [retain(path) for path in sorted(Path('/usr/share/common-licenses').iterdir())
+                       if path.is_file()]
     report = dict(schema=1, status='collected_with_gaps', scope=__doc__,
                   os_packages=os_rows, python_packages=python_rows,
+                  common_licenses=common_licenses,
                   gaps=dict(os_without_notice=[r['binary'] for r in os_rows if r['notice']['status'] != 'collected' and not any(n['status'] == 'collected' for n in r['alternative_notices'])],
                     python_without_notice=[r['name'] for r in python_rows if not any(n['status'] == 'collected' for n in r['notices'])]),
                   public_redistribution_cleared=False)
