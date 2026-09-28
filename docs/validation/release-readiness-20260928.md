@@ -45,8 +45,9 @@ Normal-format Gemma fresh installation, update, rollback and restore have passed
 2/2 native canaries each (8/8 total). Qwen normal installation is running. These repeat the same
 three-fact fixture to validate lifecycle behavior. Both Qwen normal sequences
 are signed and independently verified. Fresh installation activated the
-expected sequence-1 manifest and its runtime probe passed 2/2. Qwen update,
-rollback and restore remain pending.
+expected sequence-1 manifest and its runtime probe passed 2/2. The signed
+sequence-2 update and its runtime probe also passed 2/2. Qwen rollback and
+restore remain pending.
 
 Automatic source acquisition is implemented in the benchmark harness and has
 replay-validated evidence in the primary and broader studies. This is distinct
