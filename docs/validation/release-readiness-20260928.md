@@ -770,3 +770,16 @@ leaving approximately 87.6 GiB free, above the 40 GiB operating reserve and
 with room for the next signed package and client lifecycle. The trim command's
 reported discarded range is not itself a measure of reclaimed pool capacity.
 Evidence and the executed script are in `artifacts/release-storage-20260928/`.
+
+## Final-image application timing coverage
+
+The queue now reruns the existing `activation_timing.py` against the final
+image, after serving certification and before preparation migration. Both the
+three-record and 32-record fixtures receive 20 independently conditioned cold
+trials, 100 page-cache-warm trials and 100 already-device-resident trials.
+The probe verifies actual OS page residency and exact transferred tensor bytes.
+Its successful completion is measurement/fidelity evidence, not a declaration
+that the requested microsecond cold-application target has been met. Full
+serving and preparation costs remain separate. This stage is queued, not passed.
+Only the waiting operator queue was replaced (PID 2678592); the study continues
+unchanged. The replacement record is archived with the GPU-handoff evidence.

@@ -63,6 +63,11 @@ with (ROOT/'wide-certification.log').open('w') as log:
  p=subprocess.run(['pct','exec','101','--','python3','/opt/aimee-memory-lab/aimee-qwen/distribution/vllm/tests/wide_image_certification.py','--image',image,'--output','/opt/aimee-memory-lab/release-candidate-20260927/wide-image-certification','--stream','--context-tokens','8192','--gpu-utilization','0.8'],stdout=log,stderr=subprocess.STDOUT)
 if p.returncode:
  save({'status':'failed','stage':'wide','returncode':p.returncode,'image':image});raise SystemExit(p.returncode)
+save({'status':'measuring_exact_image_activation'})
+with (ROOT/'activation-certification.log').open('w') as log:
+ p=subprocess.run(['pct','exec','101','--','python3','/opt/aimee-memory-lab/aimee-qwen/distribution/vllm/tests/certify_activation.py','--image',image,'--output','/opt/aimee-memory-lab/release-candidate-20260927/activation-certification'],stdout=log,stderr=subprocess.STDOUT)
+if p.returncode:
+ save({'status':'failed','stage':'activation','returncode':p.returncode,'image':image});raise SystemExit(p.returncode)
 save({'status':'upgrading_preparation'})
 with (ROOT/'preparation-upgrade.log').open('w') as log:
  p=subprocess.run(['python3','/root/aimee-upgrade-preparation-20260928.py'],stdout=log,stderr=subprocess.STDOUT)
