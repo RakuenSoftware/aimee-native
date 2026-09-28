@@ -85,3 +85,14 @@ native recall is separately undergoing exact-image certification. Automatic
 learning reliability is not release-cleared by those checks. The Requests
 regression and native/text repetition difference require corrective validation;
 they must remain visible in any release recommendation.
+
+## Subsequent repair and present scope
+
+The chronological pending statements above describe the original follow-up.
+A later literal-source Requests comparison completed: native and matched text
+both passed official grading; the fresh no-memory control failed. Five selected
+previously successful tasks then passed both native attempts (10/10). These
+results are recorded in the [release work record](release-readiness-20260928.md)
+and its linked immutable evidence. They support the targeted source-use repair
+and retention; they do not replace this study's 5/32 versus 4/32 outcome or
+resolve the separate native/text repetition diagnostic.

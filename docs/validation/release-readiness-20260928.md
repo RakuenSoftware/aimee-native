@@ -12,22 +12,37 @@ scope stated explicitly. They do not establish general SWE-bench improvement:
 the original broader study remains 5/32 control versus 4/32 native, with its
 one lost case subsequently repaired in a separate targeted experiment.
 
-The requested three-model release is **not ready**. Gemma 26B Q8 now passes
-baseline 4/4 and native smoke 5/5 using the supported Triton matrix backend.
-Its compiled-image HTTP check also passed all 60 memory-backed requests
-(46 native, 14 text); four no-memory controls lacked the synthetic facts.
-Qwen 27B Q8 passed its four packaged GPU baseline smoke checks.
-Qwen's first native/text/control smoke completed at 3/5, 5/5 and 1/5 respectively;
-a separate negative-position comparison now passes 5/5 native and 5/5 text.
-Both original misses remain recorded. Qwen's packaged HTTP validation now
-also passes all 60 memory-backed requests (46 native, 14 text). Both larger
-profiles pass live canary preparation, reuse, expiry, withdrawal, publisher
-disconnection and recovery checks. Gemma's initial signed installation and two
-installed native-answer probes now pass; both requests recall all three live
-canary facts. Both models' six coding memories also pass independent full-token
-audits. The larger-model coding comparisons and complete signed lifecycles
-remain outstanding. See the
-[larger-model validation report](larger-model-native-20260928.md).
+The requested three-model release is **not ready**. Both larger models have
+passed packaged native/text consumption and live preparation, reuse, expiry,
+withdrawal, disconnection and recovery checks. Their six coding memories passed
+complete-source token audits.
+
+Qwen 27B's six-task coding comparison is complete: control 5/6, matched text
+4/6, and both native reuse rounds 6/6, retaining every control success. Gemma
+26B has five fully paired tasks: control 2/5, text 3/5, native rounds 3/5 and
+4/5; its Requests native attempts remain unfinished. These are frozen accepted
+procedure reuse comparisons, not fresh acquisition between rounds.
+
+Gemma 26B's signed fresh/update/rollback/restore lifecycle passed 8/8 native
+canary responses. Qwen's fresh signed installation passed 2/2 and its signed
+update is installed; subsequent GPU lifecycle probes are queued. The newly
+deployed model-aware authority passed bootstrap, artifact-fetch and lease
+isolation checks. Installed consumption through the updated launcher remains
+queued for both larger models and for 12B restoration/recovery. Larger-bank
+activation timing and final release provenance review also remain outstanding.
+
+Automatic source acquisition is implemented in the benchmark harness and has
+replay-validated evidence in the primary and broader studies. This is distinct
+from proving generally reliable task improvement or providing a turnkey
+production learning workflow. The original broader-study regression is retained;
+the later literal-source repair recovered Requests and the selected five-task
+retention check passed 10/10. The observed native/text repetition difference
+remains an unresolved limitation. No broad automatic-learning release claim is
+supported by the current evidence.
+
+See the [model release plan](../model-release-plan-20260928.md),
+[larger-model validation report](larger-model-native-20260928.md), and
+[model-aware authority record](model-selection-20260928.md).
 The normal published channel remains at sequence 5.
 
 Completed evidence: [10/10 selected regression attempts](artifacts/retained-success-validation-20260928/status.json),
