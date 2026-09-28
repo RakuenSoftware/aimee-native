@@ -62,3 +62,15 @@ sets at `/opt/aimee-large-release-validation/launchpad-source-download-r1`
 its SHA-256 entries for dependent files. DSC OpenPGP signatures are retained but
 not verified by this collector; this distinction stays explicit in its report.
 No source is unpacked or executed. Results are pending.
+
+
+The first historical-source collector completed unsuccessfully: all five
+Launchpad file requests returned HTTP 503 before any source description was
+retrieved. Its [failure report](artifacts/larger-launchpad-download-failure-20260928/report.json)
+is preserved. A separate retry uses official package-pool fallbacks for the exact
+GCC 13, GCC 16 and PyJWT versions; their DSC endpoints were independently read
+successfully. The retry runs at `launchpad-source-download-r2` (CT101 process
+379529 at launch), preserving the original publication URL and any fallback
+error in each file record. Curl and Python 3.12 have no validated fallback yet.
+No newer source version is substituted and no signature-verification claim is
+added. The retry remains in progress at this checkpoint.

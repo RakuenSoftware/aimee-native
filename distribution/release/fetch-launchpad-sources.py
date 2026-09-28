@@ -12,6 +12,7 @@ from pathlib import Path
 import shutil
 import urllib.parse
 import urllib.request
+import urllib.error
 
 p=argparse.ArgumentParser(description=__doc__)
 p.add_argument('--plan',type=Path,required=True)
@@ -22,16 +23,25 @@ plan=json.loads(a.plan.read_text())
 report=dict(status='downloading',scope=__doc__,plan_sha256=hashlib.sha256(a.plan.read_bytes()).hexdigest(),results=[])
 def save():
  temp=a.output/'report.tmp';temp.write_text(json.dumps(report,indent=2)+'\n');temp.replace(a.output/'report.json')
-def download(url,destination,maximum):
+def download(url,destination,maximum,fallback=None):
  assert urllib.parse.urlsplit(url).scheme=='https' and urllib.parse.urlsplit(url).hostname=='launchpad.net'
+ errors=[]
+ try:
+  response=urllib.request.urlopen(url,timeout=60)
+ except urllib.error.HTTPError as error:
+  if not fallback or error.code not in (404,502,503,504):raise
+  errors.append(dict(url=url,error=repr(error)))
+  assert urllib.parse.urlsplit(fallback).scheme=='https' and urllib.parse.urlsplit(fallback).hostname in ('archive.ubuntu.com','ppa.launchpadcontent.net')
+  response=urllib.request.urlopen(fallback,timeout=60)
+  url=fallback
  partial=destination.with_name(destination.name+'.partial');size=0;sha=hashlib.sha256()
- with urllib.request.urlopen(url,timeout=60) as response,partial.open('xb') as out:
+ with response,partial.open('xb') as out:
   while chunk:=response.read(1024**2):
    size+=len(chunk)
    if size>maximum:raise ValueError('source file exceeds size bound')
    sha.update(chunk);out.write(chunk)
  partial.rename(destination)
- return dict(name=destination.name,bytes=size,sha256=sha.hexdigest(),url=url)
+ return dict(name=destination.name,bytes=size,sha256=sha.hexdigest(),url=url,prior_errors=errors)
 def fetch(row):
  result=dict(source=row['source'],version=row['version'],publication=row['publication'],files=[])
  try:
@@ -39,8 +49,13 @@ def fetch(row):
   out=a.output/row['source'];out.mkdir()
   urls={urllib.parse.unquote(urllib.parse.urlsplit(u).path.rsplit('/',1)[-1]):u for u in row['files']}
   assert all(Path(name).name==name for name in urls)
+  pools={'gcc-13':'https://ppa.launchpadcontent.net/ubuntu-toolchain-r/test/ubuntu/pool/main/g/gcc-13/',
+         'gcc-16':'https://ppa.launchpadcontent.net/ubuntu-toolchain-r/test/ubuntu/pool/main/g/gcc-16/',
+         'pyjwt':'https://archive.ubuntu.com/ubuntu/pool/main/p/pyjwt/'}
+  def fallback(filename):
+   return pools[row['source']]+filename if row['source'] in pools else None
   dscs=[n for n in urls if n.endswith('.dsc')];assert len(dscs)==1
-  name=dscs[0];record=download(urls[name],out/name,4*1024**2);record['verification']='HTTPS publication retrieval; signature unverified';result['files'].append(record)
+  name=dscs[0];record=download(urls[name],out/name,4*1024**2,fallback(name));record['verification']='HTTPS publication retrieval; signature unverified';result['files'].append(record)
   fields={};key=None
   for line in (out/name).read_text().splitlines():
    if line.startswith('-----BEGIN PGP SIGNATURE'):break
@@ -61,7 +76,7 @@ def fetch(row):
   assert checks
   for filename,(digest,size) in checks.items():
    assert filename in urls and Path(filename).name==filename
-   item=download(urls[filename],out/filename,size)
+   item=download(urls[filename],out/filename,size,fallback(filename))
    assert item['bytes']==size and item['sha256']==digest
    item['verification']='matched DSC SHA-256';result['files'].append(item)
   result['status']='identity_and_file_checksums_matched'
