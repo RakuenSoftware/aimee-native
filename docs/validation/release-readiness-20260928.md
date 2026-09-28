@@ -1119,3 +1119,29 @@ and this comparison is not a new vulnerability scan or public redistribution
 clearance. Previously documented advisory and distribution limits still apply.
 
 [Exact inventories and delta review](artifacts/current-dependency-review-20260928/).
+
+
+## Signed candidate staged; channel remains sequence 5
+
+The normal-edition sequence-6 package has been assembled and its Ed25519
+signature verified against the existing release public key. It contains 18
+artifacts with set digest `194784c3...`; signed manifest SHA-256 is
+`3577d8041f929ae5376160c276d8136f0ddc4a80247d33f27325f4899f1a8636`.
+The package is outside the origin web root and has not changed the published
+channel. Its component gates explicitly authorize staging only: learning
+regression approval and the normal signed installer lifecycle remain outstanding.
+
+The consumer entrypoint, native library, sidecars and notice files below the
+100 MiB comparison cutoff match sequence 5 byte for byte. The runtime image
+descriptor and resource profile changed. Weight bytes were verified during
+candidate preparation/package assembly, not by that small-artifact delta check.
+The separate outer launcher has changed and still needs normal signed lifecycle
+validation; do not describe it as unchanged.
+
+[Signed manifest, signature, component evidence and staging receipt](artifacts/signed-candidate-20260928/).
+[Artifact delta](artifacts/current-dependency-review-20260928/artifact-delta.json).
+
+Fresh read-only bootstrap checks passed on the enrolled client: HTTP 200 with
+the expected recipient; invalid bearer, absent bearer and absent client
+certificate each returned HTTP 401. This is bootstrap authority evidence, not a
+substitute for GPU grant/revocation checks. [Report](artifacts/current-bootstrap-authority-20260928/report.json).
