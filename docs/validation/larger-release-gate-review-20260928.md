@@ -57,3 +57,20 @@ concern is resolved at that stated scope.
 - [Notice inspection](artifacts/larger-notice-audit-20260928/report.json) and [dependency version comparison](artifacts/larger-runtime-inventory-20260928/comparison.json)
 
 [Reproducible larger dependency-delta review](artifacts/larger-dependency-delta-review-20260928/report.json) binds both exact artifact sets to the retained baseline evidence. No normal release gate was signed by this review.
+
+## Normal-format staging after acceptance clarification
+
+[Component gate reports](artifacts/larger-normal-staging-20260928/) now bind
+the completed component evidence to each exact artifact set for controlled
+normal-format staging. They explicitly withhold final installation approval
+until normal signed lifecycle checks complete. The dependency report retains
+its controlled-infrastructure scope; it does not grant external redistribution
+clearance. This follows the existing 12B staging procedure.
+
+The builder reuses the tested sequence-2 component bytes unchanged. Two new
+normal-format sequence numbers exercise installation, update, rollback and
+restore; their runtime artifacts are identical. Each phase must pass native
+canary consumption. The normal launcher, dedicated client roots and deployed
+model-aware authority are used without changing account bindings or the 12B
+channel. Immutable validation weight copies are deduplicated only after their
+bytes have been checked against the signed artifact digest.
