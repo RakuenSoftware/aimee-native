@@ -539,3 +539,17 @@ allowance. The original and continuation queue recipes now retain that per-task
 override. This correction changes grading time only. The new Gemma text patch
 has the same SHA-256 as that earlier passing patch, but its current outcome stays
 ungraded until this independent regrade completes.
+
+## Gemma signed update passed
+
+The installed Gemma 26B update from signed sequence 1 to sequence 2 passed both
+native-memory canary queries, each recalling all three required facts. The
+active manifest is `e0d29115793bd1ac6fc6de492c83e09264dd4a82d98e48dadca242baccc16108`,
+with the sequence-1 manifest retained as previous and high-water sequence 2.
+The runtime was unprivileged with its declared 36 GiB container limit.
+
+Requests used 27 prompt tokens and 40 completion tokens. End-to-end request
+durations were approximately 89.6 seconds for the first request and 7.70 seconds
+for the repeat; the first includes cold kernel work and neither measures native
+memory application alone. The rollback and restore probes are still pending.
+[Completed update evidence](artifacts/larger-gemma26-signed-update-20260928/).
