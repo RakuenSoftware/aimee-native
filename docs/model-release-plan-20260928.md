@@ -5,6 +5,14 @@ Release scope now includes Gemma4 12B (current validation candidate), Gemma4
 then build and validate each larger model as a separate deliverable. Keep
 private implementation in aimee-qwen and retain the fork-free vLLM approach.
 
+Source-card check on 2026-09-28: the official
+[Gemma 4 26B A4B instruction-tuned card](https://huggingface.co/google/gemma-4-26B-A4B-it)
+and [Qwen3.8 27B card](https://huggingface.co/Qwen/Qwen3.8-27B) both identify
+Apache-2.0. These match the candidate model notices. Qwen's card also explicitly
+describes its Qwen3.5 architectural foundation, consistent with the checkpoint's
+`qwen3_5` configuration type. Keep product/checkpoint identity distinct from the
+implementation class name; this metadata check is not a runtime validation.
+
 For each larger model:
 
 1. Locate and verify the exact checkpoint, architecture/configuration,
