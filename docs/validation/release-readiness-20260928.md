@@ -461,3 +461,24 @@ supplied. The audit passed and is preserved as
 This establishes source fidelity and request routing, not independent tensor
 semantics or an accuracy gain. The current failure memories contain actual
 executed commands and observed errors; they do not supply a known correction.
+
+
+## Output limits and residual repetition
+
+Across the first twelve complete tasks, control responses hit the 512-token
+limit 39/318 times. Native rounds hit it 47/261, 46/301 and 23/220 times.
+These observations support investigating the output allowance; they do not
+establish that increasing it will solve the failed tasks. The larger follow-up
+was already prospectively configured for 1536 tokens in both conditions.
+Counts are preserved in `artifacts/source-learning-20260927/output-budget-twelve-task-audit.json`.
+
+The audit also found a residual full-response repetition in Pytest round two,
+call index 2: 128 occurrences of “thought”, reaching the output limit. The
+next response recovered valid command format, but the task ultimately failed.
+Its memory contained only the generic failed-evaluation notice, with no
+generated summary or repeated text. This means the corrected path is not
+free of repetitive-output failures; neither memory causation nor its absence
+is established for this case. The exact request was reconstructed and matched
+to the recorded prompt hash, and the response hash was verified. The replay
+fixture is `artifacts/source-learning-20260927/pytest-repetition-replay.json`.
+A matched native/text/no-memory replay remains pending GPU availability.
