@@ -80,3 +80,21 @@ restart is part of this build; the image is built, while deployed runtime switch
 Completed image: `sha256:a97d2436f4a264acb96eb328bcf44931cd69ecd0720eabafa3b2ea049c4032f0`.
 The full build log, recipe and terminal result are preserved with the local
 prerequisite failures. The running frontend has not been replaced.
+
+## Deployment candidate corrected to preserve the memory owner
+
+The first successful frontend build used the original release base, which lacks
+the subsequently deployed restricted-search memory-module fix. It is **not the
+deployment candidate**. Before deployment, the final stage was changed to use
+the exact currently deployed bridge.2 image, preserving that module.
+
+BuildKit interpreted a raw `FROM sha256:…` image ID as a registry tag and rejected
+the second build. The third build used a dedicated local tag bound to the same
+image ID and passed. Both logs and recipes are retained.
+
+The corrected candidate is `aimee-native-core:model-selection-816740e90-r3`,
+image `sha256:34b9aecbd4b21d868c50080a13ce5ae4e4f41b67e489e9e71678e6b6edec0243`.
+Running SHA-256 checks inside the old and new images with networking disabled
+confirmed identical memory-module bytes and different frontend bytes. This
+closes the packaging regression before deployment; it does not substitute for
+live authorization checks. No running frontend or GPU campaign was changed.
