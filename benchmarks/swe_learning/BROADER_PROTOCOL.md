@@ -38,3 +38,7 @@ Report paired gains and losses, passing-control retention, model calls, and
 actual task outcomes. One further attempt is not a three-round retention test;
 a gain here does not alone separate memory's causal effect from another attempt.
 The primary multi-round study and matched diagnostics provide distinct evidence.
+
+The operator-side prefetch script is `distribution/tests/prefetch_swe_images.py`.
+It runs on the designated Proxmox host, checks actual thin-pool capacity before
+each missing image, and mirrors readiness into the worker container.
