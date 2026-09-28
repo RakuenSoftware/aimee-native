@@ -3,6 +3,24 @@
 Target: Monday morning, 2026-09-28, Europe/Amsterdam. This is a live work record,
 not a declaration that the release gates have passed.
 
+## Current recommendation
+
+The 12B signed candidate has passed the recorded runtime, source-memory
+regression and signed install/update/rollback/restore checks. These support a
+limited private preview of that tested candidate, with the measured learning
+scope stated explicitly. They do not establish general SWE-bench improvement:
+the original broader study remains 5/32 control versus 4/32 native, with its
+one lost case subsequently repaired in a separate targeted experiment.
+
+The requested three-model release is **not ready**. Gemma 26B currently fails
+baseline inference; Qwen 27B is undergoing its first packaged GPU baseline.
+Neither larger model has completed native-memory or signed lifecycle validation.
+The normal published channel remains at sequence 5.
+
+Completed evidence: [10/10 selected regression attempts](artifacts/retained-success-validation-20260928/status.json),
+[8/8 signed lifecycle queries](artifacts/normal-signed-lifecycle-20260928/lifecycle-summary.json),
+and [targeted Requests comparison](artifacts/requests-literal-task-20260928/final-status.json).
+
 ## Completed primary study and current handoff
 
 The primary campaign completed all 64 scored attempts. Control passed 1/16;
@@ -13,12 +31,9 @@ outcome matrix and evidence links are in
 The 281-file archive is verified. The final delivery audit passed for 1,474
 requests, 64 trajectories and 39 publications.
 
-The separate 32-task follow-up started automatically after the primary audit.
-Its four pipelines use the prospectively amended output budget and parser-feedback
-fallback. The release queue waits for all inference work, then runs the residual
-repetition diagnostic and candidate validation. The final deferred CPU-only
-grade may overlap certification; all 64 grades remain mandatory before the
-queue can pass. No release promotion has occurred.
+The separate 32-task follow-up and all official grades are complete. The
+original results are preserved alongside the targeted Requests repair and
+selected retained-success checks. No release promotion has occurred.
 The historical sections below preserve earlier checkpoints and interventions.
 
 ## Current release candidate
@@ -38,7 +53,9 @@ The client candidate verifies all 18 artifact hashes and uses the rebuilt Rust
 lab launcher. Standard and 32-record GPU certification passed, and hosted FP32 preparation
 is deployed pending client validation. All nine corrected FP32 reuse cases passed. Installed model-answer validation,
 automatic restart recovery, and served FP32 computation audit also passed.
-The learning regression and normal signed lifecycle remain unresolved.
+The targeted learning regression is repaired, all ten selected retained-success
+attempts passed, and the normal signed lifecycle passed all four phases. Larger
+model validation remains outstanding; these results apply to the 12B candidate.
 
 The broader campaign is now **complete: 64/64 scored attempts**. Control passed
 **5/32**, native reuse passed **4/32**: four both-pass, twenty-seven both-fail,

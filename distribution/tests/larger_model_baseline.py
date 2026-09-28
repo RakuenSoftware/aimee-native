@@ -13,6 +13,11 @@ ROOT = pathlib.Path('/opt/aimee-memory-lab/gemma26-baseline-20260928')
 IMAGE = '79d7f03eedc74943f2ffd9c1271141086ea0813bcd3f697c718e09501908cf58'
 NAME = 'aimee-gemma26-baseline-20260928'
 BASE = 'http://127.0.0.1:8174'
+MODEL = '/opt/aimee-memory-lab/gemma4-moe'
+WEIGHTS = '/opt/aimee-memory-lab/gemma26-release-20260928'
+GGUF = '/weights/gemma4-26b-q8.gguf'
+SERVED_MODEL = 'gemma4-26b-q8-baseline'
+MMPROJ = None
 
 
 def save(**data):
@@ -31,19 +36,20 @@ def main(reference_bf16=False):
     ROOT.mkdir(exist_ok=True)
     args = ['podman', 'run', '-d', '--name', NAME, '--network', 'host', '--ipc', 'host',
         '--device', '/dev/kfd', '--device', '/dev/dri/renderD128', '--device', '/dev/dri/renderD129',
-        '--memory', '36g', '--memory-swap', '36g',
-        '-v', '/opt/aimee-memory-lab/gemma4-moe:/model:ro',
-        '-v', '/opt/aimee-memory-lab/gemma26-release-20260928:/weights:ro',
+        '--memory', '64g' if reference_bf16 else '36g',
+        '--memory-swap', '64g' if reference_bf16 else '36g',
+        '-v', MODEL + ':/model:ro',
+        '-v', WEIGHTS + ':/weights:ro',
         '-e', 'VLLM_PLUGINS=aimee_native', '-e', 'AIMEE_GGUF_ENABLE=1',
         '-e', 'VLLM_USE_V2_MODEL_RUNNER=0', '-e', 'VLLM_ROCM_USE_AITER=0',
         '--entrypoint', 'vllm', IMAGE, 'serve', '/model', '--host', '127.0.0.1', '--port', BASE.rsplit(':',1)[1],
-        '--served-model-name', 'gemma4-26b-q8-baseline', '--dtype', 'bfloat16',
+        '--served-model-name', SERVED_MODEL, '--dtype', 'bfloat16',
         '--tensor-parallel-size', '2', '--max-model-len', '4096', '--max-num-seqs', '2',
         '--max-num-batched-tokens', '256', '--gpu-memory-utilization', '.85',
         '--enforce-eager', '--no-enable-prefix-caching', '--no-async-scheduling',
         '--disable-custom-all-reduce', '--load-format', 'aimee_gguf_unified',
         '--quantization', 'gguf', '--model-loader-extra-config',
-        json.dumps({'gguf_weights': '/weights/gemma4-26b-q8.gguf'}),
+        json.dumps(dict(gguf_weights=GGUF, **({'mm_proj': MMPROJ} if MMPROJ else {}))),
         '--limit-mm-per-prompt', '{"image":0,"audio":0,"video":0}']
     if reference_bf16:
         for option in ['--load-format', '--quantization', '--model-loader-extra-config']:
@@ -102,11 +108,29 @@ def main(reference_bf16=False):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--reference-bf16', action='store_true')
+    parser.add_argument('--profile', choices=['gemma26','qwen27'], default='gemma26')
+    parser.add_argument('--run-suffix', default='')
     options = parser.parse_args()
+    if options.run_suffix and not all(c.isalnum() or c == '-' for c in options.run_suffix):
+        parser.error('run suffix must be alphanumeric with optional hyphens')
+    if options.profile == 'qwen27':
+        if options.reference_bf16:
+            parser.error('BF16 reference profile currently applies to Gemma only')
+        ROOT = pathlib.Path('/opt/aimee-memory-lab/qwen27-baseline-20260928')
+        NAME = 'aimee-qwen27-baseline-20260928'
+        BASE = 'http://127.0.0.1:8176'
+        MODEL = '/opt/aimee-memory-lab/model'
+        WEIGHTS = '/opt/aimee-memory-lab/qwen27-release-20260928'
+        GGUF = '/weights/qwen27-q8.gguf'
+        MMPROJ = '/weights/qwen27-mmproj-f32.gguf'
+        SERVED_MODEL = 'qwen3.8-27b-q8-baseline'
     if options.reference_bf16:
         ROOT = pathlib.Path('/opt/aimee-memory-lab/gemma26-bf16-reference-20260928')
         NAME = 'aimee-gemma26-bf16-reference-20260928'
         BASE = 'http://127.0.0.1:8175'
+    if options.run_suffix:
+        ROOT = ROOT.with_name(ROOT.name + '-' + options.run_suffix)
+        NAME += '-' + options.run_suffix
     ROOT.mkdir(exist_ok=True)
     try:
         main(options.reference_bf16)

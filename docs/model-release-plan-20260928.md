@@ -210,3 +210,21 @@ Its outcomes remain pending.
 
 [Raw tokens](validation/artifacts/gemma26-baseline-20260928/raw-token-diagnostic.json)
 and [original-weight CPU diagnostic](validation/artifacts/bounded-preparation-20260928/gemma26-reference.json).
+
+
+## Verified provenance and revised BF16 reference budget
+
+The actual configuration, checkpoint index and both complete Gemma weight
+shards match independently fetched metadata for Google's pinned revision
+`4d7ae4984b7db7de8f8457170b3f1a419ee76d52`. The pinned repository metadata
+identifies Apache-2.0 licensing; required distribution notices still need to be
+assembled with the larger release.
+[Source hash verification](validation/artifacts/gemma26-conversion-20260928/origin-verification.json).
+
+The original BF16 vLLM reference failed while loading: the kernel explicitly
+records a worker killed at the diagnostic container's 36 GiB memory limit.
+This was a test resource failure, not an inference outcome. A retry with a
+64 GiB cap is queued after Qwen's independent Q8 baseline. It temporarily stops
+the idle 12B preparation service and restores it afterward, rather than loading
+both CPU allocations simultaneously. The first failed attempt is preserved.
+[Memory failure evidence](validation/artifacts/gemma26-bf16-reference-20260928/kernel-memory-failure.log).
