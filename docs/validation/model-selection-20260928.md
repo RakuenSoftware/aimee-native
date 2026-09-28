@@ -226,3 +226,20 @@ launcher. Two normal three-fact recalls and an interrupted-stream recovery
 with fresh authorization are required. The compiler is left running after this
 check so default-model preparation is restored. This is queued work, not a pass.
 [Executed coordinator recipe](artifacts/model-selection-12b-followup-20260928/).
+
+
+## Live model-scoped lease isolation passed
+
+The deployed enrolled-account route passed 30/30 paced lease checks across the
+three approved model identities: selection, own-model approval and index fetch,
+all six cross-model directions for approval/index/payload denial, and omitted
+selector behavior. The default model correctly permits its legacy selector-free
+approval; either larger model's lease is denied when routed to that default.
+No credentials or lease tokens are included in the reports.
+
+An initial unpaced run passed its first 13 checks, then received HTTP 503 instead
+of the expected 403 on a cross-model approval. It did not grant access and was
+not counted as a passing isolation check. A separate run with 0.5-second request
+spacing passed all expected statuses. The original 503's cause is not established;
+no authorization rule was relaxed or service configuration changed for the retry.
+[Both reports and executed recipes](artifacts/model-selection-live-lease-isolation-20260928/).
