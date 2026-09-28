@@ -168,3 +168,11 @@ consistent with slow startup but does not independently prove the full cause.
 The candidate remains unvalidated until the original service recovers and a
 subsequent deployment passes live authorization checks.
 [Failed rollout record](artifacts/release-io-startup-failures-20260928/).
+
+
+The original frontend subsequently reached healthy state with zero restarts
+under the 600-second allowance, and the restored account binding matched its
+original hash. [Recovery receipt](artifacts/release-io-startup-failures-20260928/recovery-result.json).
+A separate candidate rollout now retains that entrypoint allowance, uses a
+660-second external readiness window, and captures candidate logs before any
+rollback. Its live authorization outcome remains pending.
