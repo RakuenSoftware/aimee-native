@@ -640,3 +640,12 @@ settings. A separate CPU-only single update retry is running, preserving the
 failed record and leaving GPU scheduling independent. Its success would prove
 installation only; update/rollback/restore GPU probes would still be required.
 [Original failure and retry recipe](artifacts/qwen-update-transfer-failure-20260928/).
+
+
+The isolated Qwen update retry also stopped, after 7,291,158,197 weight bytes;
+its active installation bytes remained unchanged. Newly enabled origin logging
+identifies `client timed out ... while sending response to client`. The release
+virtual host now has a 300-second send timeout instead of its default 60 seconds;
+TLS and artifact verification are unchanged. A single new installation attempt
+is running with this correction. [Retry failure, origin diagnostic and corrected
+retry recipe](artifacts/release-io-startup-failures-20260928/).

@@ -149,3 +149,22 @@ The exact tested delivery binary is also staged on the authority host at
 executable. Its SHA-256 matches the build above. The active binary was verified
 unchanged and the current service remains active; no restart or account-binding
 change was made. [Staging receipt](artifacts/model-selection-service-20260928/authority-host-staging.json).
+
+
+## Authority rollout hit the entrypoint startup deadline
+
+After the larger signed lifecycle stopped and restored its original account
+binding, the staged frontend, delivery binary and three-model binding were
+applied with private rollback copies. The candidate exited before readiness;
+automatic rollback restored the original files and image, but that frontend
+also exited before readiness. Its entrypoint reported the server still running
+without its HTTP socket after the default 120 seconds. This is not a successful
+rollout or rollback-readiness result.
+
+The original frontend is being restored with the supported
+`AIMEE_WFE_SOCKET_WAIT_TENTHS=6000` startup allowance. Audit verification remains
+enabled. The host simultaneously showed substantial I/O pressure. That is
+consistent with slow startup but does not independently prove the full cause.
+The candidate remains unvalidated until the original service recovers and a
+subsequent deployment passes live authorization checks.
+[Failed rollout record](artifacts/release-io-startup-failures-20260928/).
