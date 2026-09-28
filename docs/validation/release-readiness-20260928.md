@@ -34,11 +34,15 @@ The client candidate verifies all 18 artifact hashes and uses the rebuilt Rust
 lab launcher. GPU certification, hosted preparation migration/reuse, installed
 model-answer validation, and signed lifecycle remain pending.
 
-The broader campaign recovered from the archived publication timeout. It has
-nine scored attempts: one passing pair, three failing pairs, and one additional
-failed control. No gained or lost task in the four completed pairs yet. The
-Requests control's identical saved patch is undergoing separate extended grading
-after an external-HTTP-dependent timeout; it remains required for completion.
+The broader campaign recovered from the archived publication timeout. Its
+03:39 UTC checkpoint has 16 scored attempts: controls 2 passed / 8 failed, native
+1 passed / 5 failed. Six pairs are complete (one both-pass, five both-fail), with
+no gained or lost task among those pairs. Requests-2193's original control patch
+passed extended official grading without a model rerun. Its native condition
+and the remaining tasks are pending. The scored checkpoint archives 77
+individually verified evidence/source files plus its checksum manifest; the
+contemporaneous delivery audit passed 347 calls across 20 trajectories and nine
+publications. See `artifacts/broader-source-learning-20260928/` for both reports.
 
 ## Required closure
 
