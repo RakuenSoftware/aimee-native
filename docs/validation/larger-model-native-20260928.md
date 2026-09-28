@@ -59,7 +59,7 @@ The host coordinator waits for the signed lifecycle and complete preparation
 before starting Gemma and then Qwen on the paired GPUs. Queueing is not a pass;
 no new coding outcomes are claimed here.
 
-An independent token-level audit now passes all six Gemma procedures: every
+Independent token-level audits now pass all six procedures for each model: every
 stored native-record token ID equals a fresh tokenizer encoding of the complete
 frozen source procedure, not just the same token count. The audit checks the
 source, request and index hashes as well. This verifies preparation fidelity;
@@ -68,6 +68,19 @@ stopped during import because a lab coordinator named `queue.py` shadowed the
 Python standard library. That file was renamed, the audit rerun with Python's
 safe-path option, and the original setup failure retained.
 [Token audit evidence](artifacts/larger-token-audit-20260928/).
+
+Gemma's full signed installation subsequently completed in `signed-lifecycle-r3`.
+The first startup probe failed because the test's copied enrollment configuration
+pointed at a memory directory the fixture had not created; ordinary `connect`
+creates it. The fixture now creates that private directory and resumes the
+already verified sequence-one installation without downloading the weights again.
+The next cold-client probe (`r4`) exposed a second lab-build omission: its HTTPS
+release CA was configured, but the embedded OCI registry trust variable was not.
+The checked-in build recipe now sets both `AIMEE_LAB_CA_FILE` and
+`AIMEE_RELEASE_CA_PEM`; all 18 unit tests and the lifecycle fixture pass.
+The `r5` runtime has successfully pulled the exact image with TLS verification
+enabled. Installed GPU answers and the complete lifecycle remain pending.
+[Completed preparation, signed installation, setup failures and corrected build](artifacts/larger-installed-followup-20260928/).
 
 ## Gemma 26B quantized backend repair and native comparison
 

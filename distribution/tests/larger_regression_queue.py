@@ -7,7 +7,7 @@ import time
 
 ROOT = Path('/var/lib/aimee-large-release-validation')
 REMOTE = Path('/opt/aimee-large-release-validation')
-OUT = ROOT / 'regression-runs'
+OUT = ROOT / 'regression-runs-r3'
 IMAGE = 'sha256:56e44a78b4ddbb228d5728311a709ee8118acc51f685b9f0e428a809b5ad2935'
 
 
@@ -39,7 +39,7 @@ def main():
         p = OUT / 'status.next'; p.write_text(json.dumps(state, indent=2) + '\n'); p.replace(OUT / 'status.json')
     save()
     try:
-        life = wait_host_report(ROOT / 'signed-lifecycle-r3/status.json', ROOT / 'assembly/signed-lifecycle-r3.pid', ('passed', 'failed'))
+        life = wait_host_report(ROOT / 'signed-lifecycle-r5/status.json', ROOT / 'assembly/signed-lifecycle-r5.pid', ('passed', 'failed'))
         assert life['status'] == 'passed', 'signed lifecycle prerequisite failed'
         state['status'] = 'waiting_for_preparation'; save()
         while True:
@@ -95,7 +95,7 @@ def main():
                 '--device', '/dev/kfd', '--device', '/dev/dri/renderD128', '--device', '/dev/dri/renderD129',
                 '--memory', '36g', '--memory-swap', '36g', '-v', str(release) + ':/release:ro',
                 '-v', str(REMOTE / 'regression/prepared-r2' / profile) + ':/fixture:ro',
-                '-v', str(REMOTE / 'regression-runs' / profile) + ':/evidence:ro', IMAGE, '--config', '/evidence/config.json']
+                '-v', str(REMOTE / OUT.name / profile) + ':/evidence:ro', IMAGE, '--config', '/evidence/config.json']
             (work / 'command.json').write_text(json.dumps(cmd, indent=2) + '\n')
             state.update(status='starting_' + profile); save()
             subprocess.run(['pct', 'exec', '101', '--', *cmd], check=True, stdout=(work / 'container.txt').open('w'))
