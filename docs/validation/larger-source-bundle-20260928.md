@@ -40,3 +40,18 @@ still require reconciliation. The collector does not grant release approval.
 Reproduction tools:
 `distribution/release/plan-os-sources.py` and
 `distribution/release/fetch-os-sources.py`.
+
+## Historical Ubuntu/PPA publication lookup
+
+Exact Launchpad publication records were found for five versions absent from
+the active Ubuntu source indexes: curl `7.81.0-1ubuntu1.27`, PyJWT
+`2.3.0-1ubuntu0.3`, GCC 13 `13.4.0-6ubuntu1~22~ppa2`, GCC 16
+`16-20260315-1ubuntu1~22~ppa1`, and Python 3.12 `3.12.13-1+jammy1`.
+The records come from Ubuntu primary, ubuntu-toolchain-r/test, and deadsnakes/ppa.
+Each returned source-package name and version was matched exactly; source file
+URLs were obtained from that publication's API. These five now have retrieval
+locations, but are not part of the 805-file APT-verified download or a completed
+corresponding-source bundle. No source version was substituted.
+
+[Publication records and source URLs](artifacts/larger-launchpad-source-plan-20260928/report.json).
+Reproduction: `distribution/release/resolve-launchpad-sources.py`.
