@@ -42,7 +42,7 @@ For each larger model:
 | Candidate | Signed runtime lifecycle | Coding evidence | Release decision |
 |---|---|---|---|
 | Gemma4 12B | Fresh, update, rollback and restore passed; 8/8 native canary queries | Original studies and selected source-repair/retention checks complete | Supports the documented scoped private preview; broader learning improvement remains unproven |
-| Gemma4 26B | All four phases passed; 8/8 native canary queries | Five fully paired cases complete: control 2/5, text 3/5, native reuse 1 3/5, native reuse 2 4/5; Requests native outcomes pending | Not yet ready |
+| Gemma4 26B | All four phases passed; 8/8 native canary queries | First native round complete: control 2/6, text 4/6, native reuse 1 4/6; native reuse 2 is 4/5 with Requests pending | Not yet ready |
 | Qwen3.8 27B | Fresh installation passed 2/2; signed update installed; update/rollback/restore GPU probes queued | All six cases complete: control 5/6, text 4/6, both native reuse rounds 6/6; all control successes retained | Not yet ready |
 
 Both larger models have separately passed native/text smoke comparisons,

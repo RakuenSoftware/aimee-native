@@ -931,3 +931,20 @@ that rebuilding produces the same wheel. Base-image, native-library, compiled
 kernel and toolchain provenance remain separate inputs. Historical signed
 manifests retain their original bytes; this comparison does not correct their
 inherited source revision or promote a candidate.
+
+### Gemma Requests first native attempt passed official grading
+
+The first native Requests attempt passed after eight model calls and 482.6
+seconds of agent execution; official grading used its declared 3,600-second
+limit and completed separately. This closes the first native six-task round:
+control 2/6, matched text 4/6, native 4/6. Native retained both control successes
+and added Astropy and Requests successes; Flask still failed in this first
+round.
+The second native round has four successes among five completed tasks; its
+Requests attempt remains pending. The campaign process remains live.
+
+The submitted patch contains duplicated/unreachable statements despite passing
+the official tests. This is a benchmark pass, not evidence of ideal patch
+quality. Full result, submitted patch, trajectory and grade are retained in
+`artifacts/larger-gemma26-requests-native1-20260928/`. These frozen-procedure
+reuse outcomes do not establish fresh acquisition between rounds.

@@ -19,8 +19,8 @@ complete-source token audits.
 
 Qwen 27B's six-task coding comparison is complete: control 5/6, matched text
 4/6, and both native reuse rounds 6/6, retaining every control success. Gemma
-26B has five fully paired tasks: control 2/5, text 3/5, native rounds 3/5 and
-4/5; its Requests native attempts remain unfinished. These are frozen accepted
+26B completed its first native round: control 2/6, text 4/6, native round 1
+4/6. Native round 2 is 4/5 with Requests still pending. These are frozen accepted
 procedure reuse comparisons, not fresh acquisition between rounds.
 
 Gemma 26B's signed fresh/update/rollback/restore lifecycle passed 8/8 native
