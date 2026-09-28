@@ -474,3 +474,22 @@ and the two completed tasks do not establish a population success rate.
 
 The [completed-task archive](artifacts/larger-gemma26-complete-tasks-20260928/)
 now includes both tasks with trajectories, patches and available grading files.
+
+## Third complete Gemma task: Astropy retained in both native rounds
+
+`astropy__astropy-7336` is complete across the frozen conditions:
+
+| Condition | Officially resolved | Agent calls | Agent elapsed seconds |
+| --- | --- | ---: | ---: |
+| control | no | 7 | 627 |
+| text | yes | 4 | 186 |
+| native-1 | yes | 4 | 119 |
+| native-2 | yes | 4 | 152 |
+
+Both native attempts and text memory pass where control fails. The first three
+completed tasks therefore yield control 1/3, text 2/3, native reuse 1 at 2/3, and
+native reuse 2 at 3/3, with the control success retained. These are interim
+selected-task outcomes; the remaining three tasks and Qwen campaign are still
+pending. Each native round reuses its frozen source procedure, with no acquisition
+between rounds. Full trajectories and official grades are in the completed-task
+archive, preserving the earlier tasks unchanged.
