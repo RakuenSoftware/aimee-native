@@ -34,15 +34,33 @@ The client candidate verifies all 18 artifact hashes and uses the rebuilt Rust
 lab launcher. GPU certification, hosted preparation migration/reuse, installed
 model-answer validation, and signed lifecycle remain pending.
 
-The broader campaign recovered from the archived publication timeout. Its
-03:39 UTC checkpoint has 16 scored attempts: controls 2 passed / 8 failed, native
-1 passed / 5 failed. Six pairs are complete (one both-pass, five both-fail), with
-no gained or lost task among those pairs. Requests-2193's original control patch
-passed extended official grading without a model rerun. Its native condition
-and the remaining tasks are pending. The scored checkpoint archives 77
-individually verified evidence/source files plus its checksum manifest; the
-contemporaneous delivery audit passed 347 calls across 20 trajectories and nine
-publications. See `artifacts/broader-source-learning-20260928/` for both reports.
+The broader campaign's 04:26 UTC checkpoint has **36/64 scored attempts**:
+controls 5 passed / 14 failed, native 3 passed / 14 failed. Seventeen pairs are
+complete (three both-pass, fourteen both-fail), with no gained or lost task
+among those pairs. The unequal arm totals include pending native reruns and
+must not be interpreted as a native regression. Requests-2193's original
+control patch passed extended official grading without a model rerun; its
+native condition remains pending. Both infrastructure interruptions and their
+recoveries remain preserved below.
+
+The current checkpoint archives 147 individually verified evidence/source
+files plus its checksum manifest. The contemporaneous delivery audit passed
+674 calls across 38 trajectories and 17 publications, including in-progress
+attempts. See `artifacts/broader-source-learning-20260928/scored-checkpoint-1790569573.json`,
+its matching archive, and `delivery-audit-1790569533.json`.
+
+The three completed successful pairs show procedure reuse:
+
+| Task | Control calls | Native calls | Control agent seconds | Native agent seconds |
+|---|---:|---:|---:|---:|
+| Flask-4169 | 6 | 2 | 61.2 | 13.4 |
+| Pytest-5808 | 22 | 4 | 300.3 | 27.5 |
+| Astropy-7336 | 6 | 5 | 70.7 | 43.7 |
+
+These are observed agent durations under concurrent load, excluding acquisition
+and memory preparation. They are not isolated application-latency measurements
+or evidence of additional solved tasks. No new no-memory retry condition has
+been run to isolate the effect of receiving a second attempt.
 
 ## Required closure
 
