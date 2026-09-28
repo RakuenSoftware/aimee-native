@@ -44,3 +44,22 @@ and deployed multi-model validation remain pending. These changes are not deploy
 into the running larger-model lifecycle or coding campaigns, which retain their
 pinned launcher and single-model canary bindings. After those campaigns finish,
 validate approved model switching through the actual frontend before release.
+
+## Live validation handoff
+
+`distribution/tests/live_bootstrap_authority.py` now accepts repeated `--model`
+arguments. Against one enrolled account, supply each approved native identity:
+
+```sh
+python3 distribution/tests/live_bootstrap_authority.py \
+  --config /private/client/config.json --recipient '<recipient>' \
+  --model '<12B-native-identity>' --model '<26B-native-identity>' \
+  --model '<27B-native-identity>' --output /private/model-bootstrap-report.json
+```
+
+It retains the enrolled, invalid/missing bearer and missing client-certificate
+checks, verifies each returned model/recipient, and requires denial of unknown
+models, duplicate selectors and recipient overrides. The helper only reads
+bootstrap state; it does not alter bindings, prepare memory or start inference.
+The extension is syntax-checked, but live multi-model execution is pending the
+new frontend and approved binding deployment after the pinned campaigns finish.

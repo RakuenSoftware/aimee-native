@@ -7,14 +7,14 @@ import socket
 import ssl
 import urllib.parse
 
-p=argparse.ArgumentParser();p.add_argument('--config',required=True);p.add_argument('--recipient',required=True);p.add_argument('--output',required=True);a=p.parse_args()
+p=argparse.ArgumentParser();p.add_argument('--config',required=True);p.add_argument('--recipient',required=True);p.add_argument('--output',required=True);p.add_argument('--model',action='append',default=[],help='approved model identity; repeat for each installed release');a=p.parse_args()
 config=json.loads(pathlib.Path(a.config).read_text())
 url=urllib.parse.urlsplit(config['endpoint'])
 if url.scheme!='https' or not url.hostname:raise ValueError('HTTPS authority required')
 token=pathlib.Path(config['token_file']).read_text().strip()
 report={'status':'incomplete','scope':'Read-only live bootstrap authority with enrolled client; not a lease/GPU isolation test','results':{}}
 
-def request(label,credential,identity=True):
+def request(label,credential,identity=True,query=None):
     context=ssl.create_default_context(cafile=config['ca_file'])
     if identity:context.load_cert_chain(config['client_identity'])
     address=config.get('connect_address')
@@ -25,12 +25,15 @@ def request(label,credential,identity=True):
     try:
         connection.sock=context.wrap_socket(socket.create_connection(target,timeout=20),server_hostname=url.hostname)
         headers={} if credential is None else {'Authorization':'Bearer '+credential}
-        connection.request('GET',url.path.rstrip('/')+'/v1/native/bootstrap',headers=headers)
+        path=url.path.rstrip('/')+'/v1/native/bootstrap'
+        if query is not None:path+='?'+urllib.parse.urlencode(query)
+        connection.request('GET',path,headers=headers)
         response=connection.getresponse();body=response.read(65537)
         result={'status':response.status}
-        if label=='enrolled':
+        if label=='enrolled' or label.startswith('model:'):
             data=json.loads(body)
             result['profile_matches']=data.get('schema')==1 and data.get('recipient')==a.recipient
+            if query is not None:result['model_matches']=data.get('model')==dict(query)['model']
         return result
     except ssl.SSLError as error:
         return {'tls_error':error.reason}
@@ -44,6 +47,21 @@ try:
         else:passed=result.get('status')==401
         result['passed']=passed
         if not passed:raise RuntimeError('authority case failed: '+label)
+    for model in a.model:
+        label='model:'+model
+        result=request(label,token,query=[('model',model)])
+        result['passed']=result.get('status')==200 and result.get('profile_matches') is True and result.get('model_matches') is True
+        report['results'][label]=result
+        if not result['passed']:raise RuntimeError('model bootstrap failed: '+model)
+    if a.model:
+        cases=[('unapproved_model',[('model','unapproved-release-validation-model')]),
+               ('duplicate_model',[('model',a.model[0]),('model',a.model[0])]),
+               ('recipient_override',[('model',a.model[0]),('recipient','unapproved')])]
+        for label,query in cases:
+            result=request(label,token,query=query)
+            result['passed']=result.get('status')==403
+            report['results'][label]=result
+            if not result['passed']:raise RuntimeError('model denial failed: '+label)
     report['status']='passed'
 except BaseException:
     report['status']='failed'
