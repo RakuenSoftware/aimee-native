@@ -146,3 +146,31 @@ installer behavior. A thin-pool reserve and host-memory check passed before
 conversion. Final artifact validation, real inference and native-memory checks
 are still pending.
 [Conversion plans and storage evidence](validation/artifacts/qwen27-preparation-20260928/).
+
+
+## Qwen artifacts completed; larger GPU baseline queued
+
+Qwen's text and vision conversions completed. The Q8 backbone is
+29,047,084,448 bytes and the F32 vision projector is 1,842,940,064 bytes.
+Both output files were fully hashed; identities are in the artifact record.
+The first actual Qwen loader-plan check rejected incomplete tensor mapping.
+The omitted names are being diagnosed before any Qwen GPU load; conversion
+success alone does not close this gate.
+[Artifact identities](validation/artifacts/qwen27-preparation-20260928/artifacts.json).
+
+The Gemma 26B real-model baseline is queued behind the signed 12B lifecycle and
+CPU conversion. It loads the actual Q8 artifact on both XTXs and runs four
+deterministic arithmetic, factual, instruction-following and code-output smoke
+checks. This is an initial loading/inference gate, not model accuracy or native
+memory certification. Its 36 GiB CPU cap and sequential GPU ownership avoid
+colliding with the existing compiler and signed runtime probes.
+
+
+The Qwen loading-plan discrepancy is resolved: the pinned adapter intentionally
+excludes the optional single MTP/speculative draft block from ordinary serving.
+All 15 excluded names match that complete block at index 64; all 1,185 main-model
+and vision tensors map, with 48 hybrid linear layouts registered. The validation
+explicitly requires the 64-layer main configuration and one optional draft layer;
+it does not accept arbitrary omissions. All 1,200 tensors remain in the GGUF
+files. Speculative draft decoding is not enabled or certified.
+[Actual compiled-loader result](validation/artifacts/qwen27-preparation-20260928/loader-plan.json).

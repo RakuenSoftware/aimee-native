@@ -1227,3 +1227,18 @@ needed origin-readable permissions. Both failures are preserved. The validation
 operator now exposes only the signed distribution artifacts with appropriate
 read permissions and can resume after the verified fresh-5 check. The resumed
 update, rollback and restore remain pending; the public channel remains at 5.
+
+
+## Signed update and rollback runtime checks passed
+
+The sequence-6 signed network update completed and its exact runtime answered
+both native-memory canary queries. Explicit rollback to sequence 5 also passed
+both queries, preserving sequence 6 as the high-water mark.
+
+The test script initially attempted to restore sequence 6 by network reinstall.
+The installer correctly rejected that equal-sequence request under its replay
+guard. The supported explicit local rollback toggle restores the already
+installed newer release; the corrected test now uses that operation. The
+rejection log is retained, and final restored-runtime validation remains pending.
+No installer security rule was relaxed to make this test pass.
+[Runtime outcomes and original failures](artifacts/normal-signed-lifecycle-20260928/).

@@ -38,7 +38,18 @@ def probe(label):
         '--port','8152','--output',OUTPUT+'/'+label+'.json'],label+'.log')
 
 
-def main(resume_after_fresh5=False):
+def restore(before, upgraded, rolled):
+    # The sequence high-water guard correctly rejects a network reinstall at
+    # sequence 6. The explicit local rollback command toggles the two already
+    # installed releases, including restoring the newer one.
+    command(['pct','exec','110','--',NORMAL,'--root',CLIENT,'rollback'],'restore6-local.log')
+    restored=active();assert restored['current']==upgraded['current'] and restored['high_water_sequence']==6
+    probe('restored6')
+    save(status='passed',fresh=before,updated=upgraded,rolled_back=rolled,restored=restored,
+        scope='Normal-edition signed installer via separate validation URL; production-URL normal launcher used for all GPU probes. Restore uses explicit local rollback toggle; sequence high-water remains 6. Published release channel unchanged. Learning gates are separate.')
+
+
+def main(resume_after_fresh5=False, resume_after_rollback=False):
     predecessor=pathlib.Path('/root/aimee-retained-success-20260928')
     save(status='waiting_for_retained_success_checks')
     while True:
@@ -49,6 +60,17 @@ def main(resume_after_fresh5=False):
             if d['status']!='complete':raise RuntimeError('predecessor exited incomplete')
             break
         time.sleep(15)
+    if resume_after_rollback:
+        checks=[]
+        for label in ['fresh5','updated6','rolled_back5']:
+            checked=json.loads(ct(110,'import pathlib;print(pathlib.Path('+repr(OUTPUT+'/'+label+'.json')+').read_text())'))
+            assert checked['status']=='passed' and len(checked['answers'])==2 and all(row['passed'] for row in checked['answers'])
+            checks.append(checked['active'])
+        before,upgraded,rolled=checks
+        assert active()==rolled and rolled['current']==before['current']
+        assert rolled['previous']==upgraded['current'] and rolled['high_water_sequence']==6
+        restore(before,upgraded,rolled)
+        return
     installation=json.loads(ct(110,'import pathlib;print(pathlib.Path('+repr(OUTPUT+'/install-state.json')+').read_text())'))
     if installation['status']!='installed_sequence5':raise RuntimeError('fresh signed install is not ready')
     before=active();assert before['high_water_sequence']==5 and before['previous'] is None
@@ -81,15 +103,11 @@ if str(link.resolve())!=d['candidate_target']:
     command(['pct','exec','110','--',NORMAL,'--root',CLIENT,'rollback'],'rollback.log')
     rolled=active();assert rolled['current']==before['current'] and rolled['high_water_sequence']==6
     probe('rolled_back5')
-    command(['pct','exec','110','--',STAGING,'--root',CLIENT,'install','gemma4-12b-q8-native'],'restore6.log')
-    restored=active();assert restored['current']==upgraded['current'] and restored['high_water_sequence']==6
-    probe('restored6')
-    save(status='passed',fresh=before,updated=upgraded,rolled_back=rolled,restored=restored,
-        scope='Normal-edition signed installer via separate validation URL; production-URL normal launcher used for all GPU probes. Published release channel unchanged. Learning gates are separate.')
+    restore(before,upgraded,rolled)
 
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('--resume-after-fresh5',action='store_true');args=parser.parse_args()
-    try:main(args.resume_after_fresh5)
+    parser=argparse.ArgumentParser();group=parser.add_mutually_exclusive_group();group.add_argument('--resume-after-fresh5',action='store_true');group.add_argument('--resume-after-rollback',action='store_true');args=parser.parse_args()
+    try:main(args.resume_after_fresh5,args.resume_after_rollback)
     except BaseException as error:
         save(status='failed',error=repr(error));raise
