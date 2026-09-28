@@ -412,3 +412,14 @@ ten tasks and continues into the Requests/Django pair. The broader follow-up
 waits behind it. The actual server configuration confirms a maximum of four
 sequences, TP2, 256 batched tokens and 0.8 GPU utilization; no server setting was
 changed to queue that follow-up.
+
+
+The follow-up budget was prospectively amended before any of its model attempts:
+both conditions now receive 1536 output tokens and 6376 input tokens. Complete
+captured procedures can approach 900 tokens, so the original 512-token output
+allowance could prevent faithfully emitting a whole procedure. All 32 initial
+prompts were tokenized without generation and fit; the maximum was 3107 tokens.
+The original manifest remains on the worker, and the current manifest records
+the amendment. The primary study retains its original 512-token allowance.
+The waiting worker was replaced only after confirming it had no results and was
+still waiting; the active primary worker was not interrupted.
