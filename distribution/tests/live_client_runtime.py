@@ -18,6 +18,7 @@ p.add_argument('--expect', action='append', required=True)
 p.add_argument('--output', required=True)
 p.add_argument('--port', type=int, default=8152)
 p.add_argument('--repeat', type=int, default=2)
+p.add_argument('--startup-timeout', type=int, default=420)
 p.add_argument('--interrupt-and-recover', action='store_true')
 a = p.parse_args()
 root = pathlib.Path(a.root)
@@ -27,7 +28,8 @@ log = output.with_suffix('.log').open('w')
 child = subprocess.Popen([a.launcher, '--root', str(root), 'run', '--port', str(a.port)], stdout=log, stderr=subprocess.STDOUT)
 base = f'http://127.0.0.1:{a.port}'
 try:
-    for _ in range(420):
+    deadline = time.monotonic() + a.startup_timeout
+    while time.monotonic() < deadline:
         if child.poll() is not None:
             raise RuntimeError('installed runtime exited before ready')
         try:

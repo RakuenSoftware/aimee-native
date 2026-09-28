@@ -11,9 +11,9 @@ spec=importlib.util.spec_from_file_location('release_package',script)
 pkg=importlib.util.module_from_spec(spec);spec.loader.exec_module(pkg)
 class PackageTests(unittest.TestCase):
     def test_only_client_files_allowed(self):
-        for p in ['src/encoding.rs','bin/aimee-prepare','lib/../private.so','models/key.pem','research/result.json']:
+        for p in ['src/encoding.rs','bin/aimee-prepare','lib/../private.so','models/key.pem','research/result.json','models/arbitrary.txt']:
             self.assertFalse(pkg.allowed(p),p)
-        for p in ['bin/aimee-vllm','lib/libaimee_native.so','lib/libamdhip64.so.7','models/gemma.gguf','licenses/vllm.txt','runtime/image.json']:
+        for p in ['bin/aimee-vllm','lib/libaimee_native.so','lib/libamdhip64.so.7','models/gemma.gguf','licenses/vllm.txt','runtime/image.json','models/merges.txt']:
             self.assertTrue(pkg.allowed(p),p)
     def test_signed_explicit_package_and_gates(self):
         with tempfile.TemporaryDirectory() as tmp:

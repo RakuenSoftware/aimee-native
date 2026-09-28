@@ -170,6 +170,34 @@ one preparation profile. Installing another model must not silently reuse its
 12B preparation binding; the tested larger profile must be explicitly enrolled
 and matched at bootstrap. The normal published channel remains unchanged.
 
+## Signed larger-model candidates (in progress)
+
+The validated compiled image is now present in the private registry at digest
+`sha256:b71da5a610b2871b2bb96ed05cf4d9de71036a78baa4d349aa9d87e1f23f5a9d`.
+A lab-edition installer was built from the larger-model launcher source, with
+17 unit tests and the signed lifecycle fixture passing. Its first build omitted
+the required lab CA input; the corrected builds and failure log are retained.
+[Build provenance](artifacts/larger-candidate-assembly-20260928/launcher-build.json).
+
+Qwen's `models/merges.txt` tokenizer sidecar is now explicitly admitted by both
+the package assembler and launcher. Arbitrary model-directory text files remain
+outside the artifact allowlist. The two package tests pass, including signed
+artifact and descriptor checks.
+
+Each model is being assembled as two signed **lab-only** packages, differing
+in the supported serving concurrency setting. The queued test covers fresh
+installation, update, explicit rollback and restoration, with two ordinary
+Aimee-backed queries at each step. It temporarily selects the larger profile
+for the dedicated canary account and restores the original binding on exit.
+No production gate report or ordinary release-channel promotion is implied.
+
+The existing thin pool was 92.29% full. Dedicated staging/client directories
+were therefore mounted into CT101 and CT110 from the host's separate root
+storage pool, without restarting either container or moving model/memory test
+data. Only verified immutable weight copies within the staged test packages
+are deduplicated; original checkpoint files are not linked or modified.
+[Storage scope](artifacts/larger-candidate-assembly-20260928/storage.json).
+
 ## Full-checkpoint preparation
 
 The corrected private FP32 preparation path loads learned persistent buffers

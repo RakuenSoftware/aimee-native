@@ -145,7 +145,8 @@ pub fn validate(m: &Manifest) -> Result<()> {
         let allowed = matches!(
             a.path.as_str(),
             "runtime/image.json" | "runtime/profile.json"
-        ) || a.path == "bin/aimee-vllm"
+        ) || a.path == "models/merges.txt"
+            || a.path == "bin/aimee-vllm"
             || a.path == "lib/libaimee_native.so"
             || (a.path.starts_with("lib/")
                 && a.path.split('/').count() == 2
@@ -549,6 +550,19 @@ mod tests {
             serde_json::from_slice(&fs::read(root.path().join("config.json")).unwrap()).unwrap();
         assert_eq!(config.connect_address, Some(address));
         assert_eq!(config.endpoint, "https://memory.example:8743/");
+    }
+    #[test]
+    fn signed_tokenizer_merges_are_allowed() {
+        let (mut m, _, _, _) = fixture(1);
+        m.artifacts.push(Artifact {
+            path: "models/merges.txt".into(),
+            bytes: 10,
+            sha256: "a".repeat(64),
+            executable: false,
+        });
+        assert!(validate(&m).is_ok());
+        m.artifacts.last_mut().unwrap().path = "models/arbitrary.txt".into();
+        assert!(validate(&m).is_err());
     }
     #[test]
     fn container_descriptor_rejects_mutable_tags_and_escape_paths() {
