@@ -649,3 +649,12 @@ trajectory, retry metadata, and official grader report/logs are preserved in
 `artifacts/broader-source-learning-20260928/requests-control-regrade-evidence.tar.gz`.
 This is a second passing control in the broader study; its native condition
 still needs to run. The independent unchanged-base diagnostic remains pending.
+
+The independent Requests environment check completed in approximately 497
+seconds: unchanged base passed 125/125 preservation tests and 7/8 failing-test
+targets; only `test_connection_error` failed. The saved control patch passed
+that test as well, with no preservation failures. This supports an actual
+issue-specific fix rather than a passing result caused by unrelated environment
+behavior. The unchanged-base run is a grader diagnostic, not an extra control
+model attempt. Its complete evidence is archived as
+`requests-environment-baseline-evidence.tar.gz` alongside the saved-patch regrade.
