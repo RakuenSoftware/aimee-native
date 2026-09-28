@@ -59,6 +59,16 @@ The host coordinator waits for the signed lifecycle and complete preparation
 before starting Gemma and then Qwen on the paired GPUs. Queueing is not a pass;
 no new coding outcomes are claimed here.
 
+An independent token-level audit now passes all six Gemma procedures: every
+stored native-record token ID equals a fresh tokenizer encoding of the complete
+frozen source procedure, not just the same token count. The audit checks the
+source, request and index hashes as well. This verifies preparation fidelity;
+it does not establish task success or GPU consumption. The first audit invocation
+stopped during import because a lab coordinator named `queue.py` shadowed the
+Python standard library. That file was renamed, the audit rerun with Python's
+safe-path option, and the original setup failure retained.
+[Token audit evidence](artifacts/larger-token-audit-20260928/).
+
 ## Gemma 26B quantized backend repair and native comparison
 
 Paired full-checkpoint activation traces agreed closely through layer 25

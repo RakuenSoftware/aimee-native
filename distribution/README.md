@@ -12,7 +12,7 @@ patches or monkey-patching.** The llama.cpp patch/provider are abandoned researc
 artifacts, not part of the distribution or implementation plan.
 
 The working private command is `aimee-vllm --config /path/config.json`.
-The longer-term signed installer experience remains:
+The signed installer flow is:
 
 ```
 aimee-native connect https://your-aimee-endpoint
@@ -147,10 +147,16 @@ complete (1/16 control, 2/16 in each of three native rounds). The separate
 32-task paired follow-up completed at 5/32 control versus 4/32 native, with one
 lost Requests success. A corrected source representation reproduced that
 previously passing patch in a full native agent run and passed its official
-grade. The matched text arm also passed; a fresh control and retained-success
-checks are still pending. This is not yet a broad learning
-improvement result or a cleared release regression. The
+grade. The matched text arm also passed, while the fresh control failed.
+All ten selected retained-success attempts passed. These targeted checks repair
+the observed source-reproduction regression; the original 32-task outcome
+remains unchanged and does not establish broad learning improvement. The
 [current release work record](../docs/validation/release-readiness-20260928.md)
 identifies the corrected candidate, runtime recovery changes, exact evidence
-and outstanding GPU/installed-client/signing gates. Earlier signed-release
+and outstanding release gates. The 12B candidate has completed its recorded
+signed installation/update/rollback checks. Separate Gemma4 26B and Qwen3.8
+27B release candidates are undergoing their own signed lifecycle and coding
+validation; 12B evidence does not certify them. See the
+[larger-model report](../docs/validation/larger-model-native-20260928.md).
+Earlier signed-release
 results do not by themselves certify this replacement candidate.
