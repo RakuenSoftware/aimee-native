@@ -63,3 +63,16 @@ models, duplicate selectors and recipient overrides. The helper only reads
 bootstrap state; it does not alter bindings, prepare memory or start inference.
 The extension is syntax-checked, but live multi-model execution is pending the
 new frontend and approved binding deployment after the pinned campaigns finish.
+
+## Full frontend build in progress
+
+The local GCC 16 default mode rejects pre-existing mutable uses of `strchr` on
+const-qualified CLI pointers. Explicit C17 proceeds past that code but the local
+host lacks `libpq-fe.h`. Neither failure is in the changed native bridge. Logs
+are preserved in [model-selection-build-20260928](artifacts/model-selection-build-20260928/).
+
+An isolated Docker build of Aimee commit `816740e90` is now running on CT100 under
+`/opt/aimee-model-selection-build-20260928`, using the existing pinned release
+base and dependency recipe, two build jobs, and a 3 GiB memory limit. Its image
+tag is `aimee-native-core:model-selection-816740e90`. No deployment or service
+restart is part of this build; completion and runtime switching remain pending.
