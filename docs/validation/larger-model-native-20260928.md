@@ -564,3 +564,19 @@ the installation's anti-rollback high-water state. First and repeated request
 durations were approximately 86.8 and 7.59 seconds, respectively; these are
 end-to-end request times, not memory-application latency. Restoration to sequence
 2 is now running. [Completed phase evidence](artifacts/larger-signed-lifecycle-completed-20260928/).
+
+## Gemma 26B signed lifecycle complete: 8/8 native queries
+
+Fresh signed installation, update to sequence 2, explicit rollback to sequence
+1, and restoration to sequence 2 all pass two three-fact native-memory queries
+each. Every query recalls the vault code, project and drink. Restoration returns
+to manifest `e0d29115793bd1ac6fc6de492c83e09264dd4a82d98e48dadca242baccc16108`
+with high-water sequence 2 intact. This closes the larger Gemma signed-client
+lifecycle gate in the isolated lab channel, not the remaining coding or deployed
+model-switching gates. The Qwen initial installed probe is now underway.
+
+[All four completed Gemma phase records](artifacts/larger-signed-lifecycle-completed-20260928/gemma26/)
+include the launcher logs, outputs, manifest states and container constraints.
+The repeated canary is one fixed three-fact working set, not eight independent
+knowledge cases. Restore request durations were approximately 85.7 and 7.62
+seconds; these include generation and cold request work.
