@@ -23,8 +23,13 @@ including regressions and both-fail cases. A selected pass does not erase an
 original broader-study regression.
 
 Use the signed-install candidate weights and their exact compiled client image
-with the supported GGUF plugin settings. Require signed lifecycle completion
-before allocating the paired GPUs to coding tests. This coding test admits
+with the supported GGUF plugin settings. Require that model's initial signed
+installation and installed native-answer probe to pass before allocating the
+paired GPUs to coding tests. A shared lock serializes coding and later lifecycle
+probes, while CPU-only package downloads may overlap coding. All signed lifecycle
+gates remain mandatory for release. This scheduling amendment was made before
+any larger-model coding outcomes, to avoid leaving GPUs idle during downloads;
+it changes no cases, conditions, scoring or agent budgets. This coding test admits
 public research fixtures directly; it does not independently prove live Aimee
 authorization. The live-authority lifecycle has separate evidence.
 
@@ -44,6 +49,8 @@ memory-token count against the complete preflight record. The corrected
 invalid attempts remain archived. The preparer must fail on any unexpected
 truncation. Two concurrent tasks and a 256 MiB device-memory budget are retained;
 resource failures must be diagnosed rather than scored as model failure.
+Record overlapping installation activity when interpreting timings: these are
+operational agent durations, not an isolated application-latency comparison.
 
 ## Interpretation
 

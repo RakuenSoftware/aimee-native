@@ -82,6 +82,23 @@ The `r5` runtime has successfully pulled the exact image with TLS verification
 enabled. Installed GPU answers and the complete lifecycle remain pending.
 [Completed preparation, signed installation, setup failures and corrected build](artifacts/larger-installed-followup-20260928/).
 
+The `r5` initial installed Gemma probe has now passed: both ordinary client
+requests correctly recalled all three live canary facts. Each used 27 prompt
+tokens and generated 40 tokens. The first took 90.9 seconds, including cold
+Triton compilation; the repeat took 7.70 seconds. These are complete request
+durations, not native-memory application latency. The tested container was
+unprivileged with a 36 GiB memory limit and the exact signed image digest.
+[Installed answers and complete startup log](artifacts/larger-first-installed-20260928/signed-lifecycle-r5/gemma26/).
+
+Before any coding outcomes, the queue was rescheduled to start each model's
+coding comparison after its initial installed probe, rather than waiting for
+both full signed lifecycles. The host and CT110 verified exclusive ownership of
+the same GPU-lock file: a competing nonblocking acquisition failed while held
+and succeeded after release. All subsequent lifecycle probes and coding runs
+share that lock. Gemma's coding server is starting while its sequence-two
+package downloads. Remaining update/rollback/restore gates still apply.
+[Scheduling and lock evidence](artifacts/larger-first-installed-20260928/assembly/).
+
 ## Gemma 26B quantized backend repair and native comparison
 
 Paired full-checkpoint activation traces agreed closely through layer 25

@@ -22,8 +22,11 @@ a separate negative-position comparison now passes 5/5 native and 5/5 text.
 Both original misses remain recorded. Qwen's packaged HTTP validation now
 also passes all 60 memory-backed requests (46 native, 14 text). Both larger
 profiles pass live canary preparation, reuse, expiry, withdrawal, publisher
-disconnection and recovery checks. Neither larger model has completed
-release native-memory or signed lifecycle validation. See the
+disconnection and recovery checks. Gemma's initial signed installation and two
+installed native-answer probes now pass; both requests recall all three live
+canary facts. Both models' six coding memories also pass independent full-token
+audits. The larger-model coding comparisons and complete signed lifecycles
+remain outstanding. See the
 [larger-model validation report](larger-model-native-20260928.md).
 The normal published channel remains at sequence 5.
 

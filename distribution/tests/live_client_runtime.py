@@ -4,6 +4,7 @@ Credentials must already have been enrolled with `connect`. Saves only the
 requested canary answers, token counts, active release and container limits.
 """
 import argparse
+import fcntl
 import json
 import pathlib
 import subprocess
@@ -19,8 +20,13 @@ p.add_argument('--output', required=True)
 p.add_argument('--port', type=int, default=8152)
 p.add_argument('--repeat', type=int, default=2)
 p.add_argument('--startup-timeout', type=int, default=420)
+p.add_argument('--gpu-lock', help='Shared lab lock to serialize GPU ownership across validation jobs')
 p.add_argument('--interrupt-and-recover', action='store_true')
 a = p.parse_args()
+gpu_lock = None
+if a.gpu_lock:
+    gpu_lock = open(a.gpu_lock, 'a')
+    fcntl.flock(gpu_lock, fcntl.LOCK_EX)
 root = pathlib.Path(a.root)
 output = pathlib.Path(a.output)
 report = {'status': 'incomplete', 'answers': [], 'active': json.loads((root / 'active.json').read_text())}
