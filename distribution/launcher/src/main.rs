@@ -354,6 +354,20 @@ fn run() -> Result<()> {
                     serving["gguf_weights"] =
                         serde_json::json!(fs::canonicalize(dir.join(&m.model_file))?);
                 }
+                // Runtime choices are part of the signed release, not user tuning.
+                serving["gguf_matrix_backend"] =
+                    serde_json::json!(image.gguf_matrix_backend.as_deref().unwrap_or("cuda"));
+                serving
+                    .as_object_mut()
+                    .context("invalid serving configuration")?
+                    .remove("mm_proj");
+                if let Some(projector) = &image.mm_proj {
+                    ensure!(
+                        m.artifacts.iter().any(|a| &a.path == projector),
+                        "missing signed GGUF projector artifact"
+                    );
+                    serving["mm_proj"] = serde_json::json!(fs::canonicalize(dir.join(projector))?);
+                }
                 serving["serve"]["port"] = serde_json::json!(port);
                 serving["serve"]["host"] = serde_json::json!("127.0.0.1");
                 let runtime_config = root.join("runtime.json");

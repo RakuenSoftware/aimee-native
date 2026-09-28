@@ -1,8 +1,56 @@
 # Larger-model native validation — 2026-09-28
 
-Neither larger model is release-ready. Qwen's first native comparison exposes
-two quality failures; Gemma's Q8 package still fails no-memory inference.
-The 12B evidence remains separate and unchanged.
+Neither larger model is release-ready. Gemma 26B Q8 now passes baseline 4/4
+and the first native comparison 5/5 after selecting the supported Triton GGUF
+matrix backend. Qwen's first native comparison exposes two quality failures;
+a separate position-policy comparison is running. The 12B evidence remains
+separate and unchanged.
+
+## Gemma 26B quantized backend repair and native comparison
+
+Paired full-checkpoint activation traces agreed closely through layer 25
+(cosine similarity 0.9994). The original Q8 runtime first produced NaNs at
+layer 26 on both GPU workers; the original FP32 reference stayed finite.
+Stored layer-26 quantization scales and nonquantized tensors were finite.
+This localizes the failure but does not establish its internal arithmetic cause.
+[Derived trace statistics](artifacts/gemma26-layer-trace-20260928/comparison.json).
+
+Keeping the image and Q8 weights unchanged, selecting the installed plugin's
+supported Triton matrix backend (`VLLM_GGUF_USE_CUDA=0`) repaired baseline
+inference: **4/4**, versus the original Q8 backend's **0/4**. This setting selects
+GGUF matrix/MoE kernels, independently of the attention backend. No upstream
+fork or runtime monkeypatch was introduced. First-request compilation took
+about 86 seconds; subsequent baseline requests took about 0.9–1.0 seconds.
+[Baseline responses](artifacts/gemma26-baseline-20260928-triton-r1/responses.json).
+
+The subsequent three-record comparison used the complete same memory and
+five questions as the initial Qwen comparison below:
+
+| Question | Control | Native | Text |
+|---|---|---|---|
+| Synthetic vault code | Miss | Pass | Pass |
+| Project name | Miss | Pass | Pass |
+| Drink | Miss | Pass | Pass |
+| All three facts together | Miss | Pass | Pass |
+| Unrelated arithmetic | Pass | Pass | Pass |
+| Total | 1/5 | 5/5 | 5/5 |
+
+Native prompt-token counts matched control for every question. Text added
+40 prompt tokens per question; native consumed 41 separately prepared memory
+positions. Those positions still require attention computation and storage.
+The run includes first-use compilation and different output lengths, so its
+end-to-end timings are not a controlled latency comparison. This is a small
+synthetic smoke test, not authorization, learning or release certification.
+[All responses, counts and cache statistics](artifacts/gemma26-native-smoke-20260928/result.json).
+
+The signed runtime descriptor now supports the validated matrix backend and
+an optional signed GGUF projector artifact. The launcher resolves these into
+serving configuration, and the CLI forwards them through existing plugin
+options. Existing descriptors retain their default backend. This configuration
+is release-owned; users need not tune it. Launcher tests pass (16 unit tests
+and one signed lifecycle integration test); two CLI tests pass. The lifecycle
+fixture verifies backend/projector propagation and cleanup on rollback. These
+are configuration tests, not a larger-model signed GPU lifecycle pass.
 
 ## Full-checkpoint preparation
 

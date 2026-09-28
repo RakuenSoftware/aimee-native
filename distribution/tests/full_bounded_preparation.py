@@ -10,6 +10,7 @@ p=argparse.ArgumentParser()
 p.add_argument('--source',required=True)
 p.add_argument('--model',required=True)
 p.add_argument('--output',required=True)
+p.add_argument('--memory-positions', choices=['negative', 'nonnegative'])
 p.add_argument('--wait-for-pid-file')
 p.add_argument('--wait-for-status-file')
 a=p.parse_args()
@@ -37,7 +38,7 @@ request={'response':{'facts':[
     {'content':'The release verification drink is hibiscus tea.'},
 ]},'identity':{'records':[{'id':i,'revision':1} for i in (5,6,7)]}}
 (output/'request.json').write_text(json.dumps(request,indent=2)+'\n')
-compiler=BoundedTextCompiler(a.model,threads=8)
+compiler=BoundedTextCompiler(a.model,threads=8,memory_positions=a.memory_positions)
 started=time.monotonic()
 try:
     tokens,banks=compiler.encode(request)

@@ -12,8 +12,8 @@ scope stated explicitly. They do not establish general SWE-bench improvement:
 the original broader study remains 5/32 control versus 4/32 native, with its
 one lost case subsequently repaired in a separate targeted experiment.
 
-The requested three-model release is **not ready**. Gemma 26B Q8 currently fails
-baseline inference, while its original BF16 checkpoint passed all four checks.
+The requested three-model release is **not ready**. Gemma 26B Q8 now passes
+baseline 4/4 and native smoke 5/5 using the supported Triton matrix backend.
 Qwen 27B Q8 passed its four packaged GPU baseline smoke checks.
 Qwen's first native/text/control smoke completed at 3/5, 5/5 and 1/5 respectively;
 it exposes two native quality failures. Neither larger model has completed

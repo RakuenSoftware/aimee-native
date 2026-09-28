@@ -17,11 +17,13 @@ from gemma_compile import GemmaCompiler
 
 class BoundedTextCompiler(GemmaCompiler):
     def __init__(self, model, max_memory_tokens=1024, threads=12, reuse_library=None,
-                 compute_dtype='float32'):
+                 compute_dtype='float32', memory_positions=None):
         if compute_dtype != 'float32':
             raise ValueError('bounded preparation requires FP32 compute')
         if reuse_library is not None:
             raise ValueError('bounded preparation currently performs full passes without prefix reuse')
+        if memory_positions not in (None, 'negative', 'nonnegative'):
+            raise ValueError('unsupported memory position policy')
         torch.set_num_threads(threads)
         self.model_path = model
         self.max_memory_tokens = max_memory_tokens
@@ -30,6 +32,7 @@ class BoundedTextCompiler(GemmaCompiler):
         self.config = AutoConfig.from_pretrained(model, local_files_only=True)
         if self.config.model_type not in ('gemma4', 'qwen3_5'):
             raise ValueError('unsupported bounded preparation architecture')
+        self.memory_positions = memory_positions or ('negative' if self.config.model_type == 'gemma4' else 'nonnegative')
         self.model = None
         self.weights = None
         self.last_metrics = {}
@@ -81,7 +84,7 @@ class BoundedTextCompiler(GemmaCompiler):
         self.load()
         ready = time.perf_counter()
         count = len(tokens)
-        positions = torch.arange(-count, 0) if self.config.model_type == 'gemma4' else torch.arange(count)
+        positions = torch.arange(-count, 0) if self.memory_positions == 'negative' else torch.arange(count)
         reads = self.weights.reads
         with torch.inference_mode():
             result = self.model(input_ids=torch.tensor([tokens]),
@@ -105,6 +108,7 @@ class BoundedTextCompiler(GemmaCompiler):
             'tokens': count, 'reused_prefix_tokens': 0, 'evaluated_tokens': count,
             'reuse_policy': 'full-pass', 'compute_dtype': str(self.compute_dtype),
             'weight_policy': 'checkpoint-on-demand', 'weight_reads': self.weights.reads - reads,
+            'memory_positions': self.memory_positions,
             'input_seconds': ready - started, 'forward_seconds': computed - ready,
             'export_seconds': time.perf_counter() - computed,
         }

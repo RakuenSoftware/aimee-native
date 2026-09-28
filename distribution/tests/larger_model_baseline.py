@@ -32,7 +32,7 @@ def request(path, data=None, timeout=180):
         return json.load(response)
 
 
-def main(reference_bf16=False):
+def main(reference_bf16=False, gguf_triton=False):
     ROOT.mkdir(exist_ok=True)
     args = ['podman', 'run', '-d', '--name', NAME, '--network', 'host', '--ipc', 'host',
         '--device', '/dev/kfd', '--device', '/dev/dri/renderD128', '--device', '/dev/dri/renderD129',
@@ -51,6 +51,8 @@ def main(reference_bf16=False):
         '--quantization', 'gguf', '--model-loader-extra-config',
         json.dumps(dict(gguf_weights=GGUF, **({'mm_proj': MMPROJ} if MMPROJ else {}))),
         '--limit-mm-per-prompt', '{"image":0,"audio":0,"video":0}']
+    if gguf_triton:
+        args[args.index('--entrypoint'):args.index('--entrypoint')] = ['-e', 'VLLM_GGUF_USE_CUDA=0']
     if reference_bf16:
         for option in ['--load-format', '--quantization', '--model-loader-extra-config']:
             index = args.index(option)
@@ -108,9 +110,12 @@ def main(reference_bf16=False):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--reference-bf16', action='store_true')
+    parser.add_argument('--gguf-triton', action='store_true', help='Use the installed GGUF plugin\'s supported Triton kernels')
     parser.add_argument('--profile', choices=['gemma26','qwen27'], default='gemma26')
     parser.add_argument('--run-suffix', default='')
     options = parser.parse_args()
+    if options.reference_bf16 and options.gguf_triton:
+        parser.error('GGUF kernel selection does not apply to the BF16 reference')
     if options.run_suffix and not all(c.isalnum() or c == '-' for c in options.run_suffix):
         parser.error('run suffix must be alphanumeric with optional hyphens')
     if options.profile == 'qwen27':
@@ -133,7 +138,7 @@ if __name__ == '__main__':
         NAME += '-' + options.run_suffix
     ROOT.mkdir(exist_ok=True)
     try:
-        main(options.reference_bf16)
+        main(options.reference_bf16, options.gguf_triton)
     except BaseException as error:
         save(status='failed', error=repr(error))
         raise

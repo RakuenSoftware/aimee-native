@@ -28,8 +28,10 @@ class ExportParity(unittest.TestCase):
                                  'mrope_section':[1,1,2],'mrope_interleaved':True})),
         ]
         torch.set_num_threads(2)
-        for family, cls, config in cases:
-            with self.subTest(family=family), tempfile.TemporaryDirectory() as directory:
+        policies = [(family, cls, config, policy) for family, cls, config in cases
+                    for policy in (['negative'] if family == 'gemma4' else ['nonnegative', 'negative'])]
+        for family, cls, config, policy in policies:
+            with self.subTest(family=family, policy=policy), tempfile.TemporaryDirectory() as directory:
                 torch.manual_seed(20260928)
                 config._attn_implementation = 'eager'
                 reference = cls(config).eval()
@@ -52,6 +54,7 @@ class ExportParity(unittest.TestCase):
                 compiler.model_path = directory
                 compiler.max_memory_tokens = 32
                 compiler.compute_dtype = torch.float32
+                compiler.memory_positions = policy
                 compiler.tokenizer = tokenizer
                 compiler.config = SimpleNamespace(model_type=family,get_text_config=lambda:config)
                 compiler.model = compiler.weights = None
@@ -63,7 +66,7 @@ class ExportParity(unittest.TestCase):
                     self.assertTrue({3,4,5}.issubset(tokens))
                     expected_layers={0,1} if family=='gemma4' else {1}
                     self.assertEqual(set(banks),expected_layers)
-                    n=len(tokens);positions=torch.arange(-n,0) if family=='gemma4' else torch.arange(n)
+                    n=len(tokens);positions=torch.arange(-n,0) if policy=='negative' else torch.arange(n)
                     with torch.inference_mode():
                         wanted=reference(input_ids=torch.tensor([tokens]),attention_mask=torch.ones((1,n),dtype=torch.long),
                                          position_ids=positions.unsqueeze(0),use_cache=True)
@@ -73,6 +76,7 @@ class ExportParity(unittest.TestCase):
                         self.assertTrue(torch.equal(values,wanted.past_key_values.layers[i].values.bfloat16()))
                     self.assertTrue(all(p.device.type=='meta' for p in compiler.model.parameters()))
                     self.assertEqual(compiler.last_metrics['evaluated_tokens'],n)
+                    self.assertEqual(compiler.last_metrics['memory_positions'],policy)
                     broken={'response':request['response'],'identity':{'records':[{'id':0}]}}
                     with self.assertRaisesRegex(ValueError,'incomplete selected'):
                         compiler.encode(broken)

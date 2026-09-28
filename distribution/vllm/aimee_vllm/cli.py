@@ -30,7 +30,15 @@ def command(config_path):
     env = {'AIMEE_VLLM_CONFIG': str(path), 'VLLM_USE_V2_MODEL_RUNNER': '0',
            'VLLM_PLUGINS': 'aimee_native', 'VLLM_ROCM_USE_AITER': '0', 'AIMEE_GGUF_ENABLE': '0'}
     if config.get('gguf_weights'):
-        args += ['--model-loader-extra-config',json.dumps({'gguf_weights':config['gguf_weights']}),'--load-format','aimee_gguf_unified','--quantization','gguf']
+        loader = {'gguf_weights': config['gguf_weights']}
+        if config.get('mm_proj'):
+            loader['mm_proj'] = config['mm_proj']
+        backend = config.get('gguf_matrix_backend', 'cuda')
+        if backend not in ('cuda', 'triton'):
+            raise ValueError('unsupported GGUF matrix backend')
+        env['VLLM_GGUF_USE_CUDA'] = '0' if backend == 'triton' else '1'
+        args += ['--model-loader-extra-config', json.dumps(loader), '--load-format',
+                 'aimee_gguf_unified', '--quantization', 'gguf']
         env['AIMEE_GGUF_ENABLE']='1'
     return args, env
 

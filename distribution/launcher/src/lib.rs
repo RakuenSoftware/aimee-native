@@ -190,6 +190,10 @@ pub fn validate(m: &Manifest) -> Result<()> {
 pub struct RuntimeImage {
     pub image: String,
     pub model_config: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub gguf_matrix_backend: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub mm_proj: Option<String>,
 }
 impl RuntimeImage {
     pub fn validate(&self) -> Result<()> {
@@ -214,6 +218,19 @@ impl RuntimeImage {
                 && self.model_config.ends_with("config.json"),
             "invalid model configuration sidecar"
         );
+        ensure!(
+            matches!(
+                self.gguf_matrix_backend.as_deref(),
+                None | Some("cuda") | Some("triton")
+            ),
+            "invalid GGUF matrix backend"
+        );
+        if let Some(path) = &self.mm_proj {
+            ensure!(
+                relative(path) && path.starts_with("models/") && path.ends_with(".gguf"),
+                "invalid GGUF projector path"
+            );
+        }
         Ok(())
     }
 }
@@ -538,8 +555,19 @@ mod tests {
         let mut d = RuntimeImage {
             image: format!("registry.example/aimee@sha256:{}", "a".repeat(64)),
             model_config: "models/config.json".into(),
+            gguf_matrix_backend: None,
+            mm_proj: None,
         };
         assert!(d.validate().is_ok());
+        d.gguf_matrix_backend = Some("triton".into());
+        d.mm_proj = Some("models/projector.gguf".into());
+        assert!(d.validate().is_ok());
+        d.mm_proj = Some("models/../projector.gguf".into());
+        assert!(d.validate().is_err());
+        d.mm_proj = None;
+        d.gguf_matrix_backend = Some("typo".into());
+        assert!(d.validate().is_err());
+        d.gguf_matrix_backend = None;
         d.image = "registry.example/aimee:latest".into();
         assert!(d.validate().is_err());
         d.image = format!("registry.example/aimee@sha256:{}", "a".repeat(64));

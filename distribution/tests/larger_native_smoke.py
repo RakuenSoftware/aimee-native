@@ -22,7 +22,8 @@ def prepare(a):
     saved = torch.load(Path(a.prepared) / 'native-state.pt', weights_only=True)
     report = json.loads((Path(a.prepared) / 'result.json').read_text())
     assert report['selected_records'] == 3 and len(saved['tokens']) == report['tokens']
-    identity = a.profile + '-full-fp32-synthetic-three-records-v1'
+    positions = report['metrics'].get('memory_positions', 'negative' if a.profile == 'gemma26' else 'nonnegative')
+    identity = a.profile + '-full-fp32-' + positions + '-synthetic-three-records-v1'
     publish(root / 'memory', identity, 'three', saved['tokens'], saved['banks'])
     catalog = {'model_config_sha256': hashlib.sha256((Path(a.model) / 'config.json').read_bytes()).hexdigest(),
                'recipient': 'larger-model-synthetic-validation',

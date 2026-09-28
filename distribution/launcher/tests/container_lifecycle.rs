@@ -15,6 +15,10 @@ fn release(sequence: u64) -> (Vec<u8>, Vec<u8>, [u8; 32], BTreeMap<String, Vec<u
         ("lib/libaimee_native.so".into(), b"fixture".to_vec()),
         ("models/config.json".into(), b"{}".to_vec()),
         (
+            "models/projector.gguf".into(),
+            b"fixture projector".to_vec(),
+        ),
+        (
             "models/model.gguf".into(),
             b"fixture weights, not a model".to_vec(),
         ),
@@ -23,6 +27,8 @@ fn release(sequence: u64) -> (Vec<u8>, Vec<u8>, [u8; 32], BTreeMap<String, Vec<u
             serde_json::to_vec(&native::RuntimeImage {
                 image,
                 model_config: "models/config.json".into(),
+                gguf_matrix_backend: (sequence == 2).then(|| "triton".into()),
+                mm_proj: (sequence == 2).then(|| "models/projector.gguf".into()),
             })
             .unwrap(),
         ),
@@ -139,8 +145,19 @@ printf '%s\n' "$@" > "$CAPTURE"
             .unwrap()
             .ends_with("models/model.gguf")
     );
+    assert_eq!(runtime["gguf_matrix_backend"], "triton");
+    assert!(
+        runtime["mm_proj"]
+            .as_str()
+            .unwrap()
+            .ends_with("models/projector.gguf")
+    );
     native::rollback(&root).unwrap();
     assert!(launch().contains(&format!("@sha256:{}", "1".repeat(64))));
+    let rollback: serde_json::Value =
+        serde_json::from_slice(&fs::read(root.join("runtime.json")).unwrap()).unwrap();
+    assert_eq!(rollback["gguf_matrix_backend"], "cuda");
+    assert!(rollback.get("mm_proj").is_none());
     let before = native::active(&root).unwrap();
     let (raw, mut sig, key, files) = release(3);
     sig[0] ^= 1;
