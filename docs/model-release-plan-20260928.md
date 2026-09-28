@@ -97,3 +97,15 @@ after trimming freed blocks from the verified client-model deduplication.
 Pretrained loading, inference/native-memory correctness, preparation profiling
 and release packaging remain outstanding.
 [Conversion plan and checks](validation/artifacts/gemma26-conversion-20260928/).
+
+
+## Completed Gemma 26B conversion
+
+The complete 1,013-tensor checkpoint conversion finished in 223.7 seconds in
+the CPU-only, two-core, 6 GiB-limited container. The resulting file is
+29,135,275,488 bytes, SHA-256
+`2b190fd2cd6d7ee93247159dffbd6bcb28aae97e002b52c9cf502536ac1a1f72`.
+GGUF readback checked tensor names and shapes. This completes conversion, not
+model-loading or native-memory certification. Both larger releases still need
+their own real-model runtime, preparation, quality and signed lifecycle checks.
+[Completed conversion report](validation/artifacts/gemma26-conversion-20260928/conversion.json).

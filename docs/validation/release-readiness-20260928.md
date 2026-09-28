@@ -1189,3 +1189,19 @@ The staging installer SHA-256 is
 The published channel remains sequence 5; only the separate validation route
 will advance during these checks. Normal runtime/update/rollback results are
 pending. [Installation and build evidence](artifacts/normal-signed-lifecycle-20260928/).
+
+
+## Completed Requests follow-up
+
+All three arms have official grades. Native memory passed with 7 calls and
+46.8 seconds of agent execution; text memory passed with 10 calls and 59.4
+seconds. The fresh no-memory control failed after 37 calls and 688.0 seconds
+(the 600-second agent budget is checked between calls). Grading time is separate.
+This is a targeted repair demonstration using the model's previously passing
+source, not a replacement for the original broader-study 4/32 native score.
+[Complete outcome record](artifacts/requests-literal-task-20260928/final-status.json).
+
+The retained-success follow-up has started; its first four officially graded
+attempts passed. Remaining regression checks and the queued signed GPU lifecycle
+still need completion. Gemma 26B conversion is complete; larger-model serving
+and native-memory validation remain outstanding.
