@@ -326,3 +326,16 @@ Exact report and executed coordinator are preserved in
 `artifacts/model-selection-normal-recovery-20260928/`. This closes the queued
 normal-binary recovery check. It does not assert broader learning reliability
 or promote the larger lab-only packages to normal release channels.
+
+## Normal larger-model package plans prepared
+
+Unsigned normal-format plans now exist for both larger models in
+`artifacts/larger-normal-package-review-20260928/`. They retain the exact tested
+sequence-2 component bytes and artifact-set identities; only proposed normal
+model identity, sequence and version metadata differ. Each plan includes a
+review record with hashed evidence references and distinct upstream-runtime
+and private-integration provenance. No artifact was signed or published by
+this preparation. Gate evidence is intentionally empty, so the release
+assembler rejects signing until explicit component dispositions exist.
+The cold-application target and broader learning reliability remain unmet;
+these cannot be turned into passing release criteria by package assembly.
