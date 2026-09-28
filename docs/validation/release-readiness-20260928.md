@@ -323,3 +323,23 @@ were fetched ahead of the running experiment, with a disk-reserve guard and
 without changing task definitions, model requests or grader commands. Their
 Docker image identities are retained in
 `artifacts/source-learning-20260927/remaining-image-readiness.json`.
+
+
+## First eight tasks completed
+
+All 32 conditions are now scored for the first eight tasks. The control solved
+0/8; each of the three native rounds solved 1/8, retaining the same Matplotlib
+success. That is one unique task gain, not three independent gains. The other
+seven tasks failed in every condition. No infrastructure results remain in
+this completed block after the documented official SymPy regrade. With no
+successful controls in this block, regression safety remains unestablished.
+
+SymPy's native rounds all produced empty predictions, and Seaborn likewise
+produced no patch across its rounds. These results do not demonstrate improved
+solving from failure observations. They remain in the evidence alongside the
+successful procedure reuse. The next pair, Flask and Astropy-14213, has started.
+
+The complete first-eight-task block, including all 32 trajectories/results,
+publication records, acquisition evidence and launch/resume source versions,
+is archived in `artifacts/source-learning-20260927/first-eight-tasks.tar.gz`.
+All 135 file hashes in its embedded manifest were verified after transfer.
