@@ -98,3 +98,18 @@ Running SHA-256 checks inside the old and new images with networking disabled
 confirmed identical memory-module bytes and different frontend bytes. This
 closes the packaging regression before deployment; it does not substitute for
 live authorization checks. No running frontend or GPU campaign was changed.
+
+## Separate model-aware launcher candidate
+
+The model-aware lab launcher is now built and snapshotted separately at
+`/opt/aimee-large-release-validation/model-selection-launcher/aimee-native-lab`,
+SHA-256 `f9402df450278e9798642d99f6e177ac7eb42751cdc36b654eb8763492cd2cb3`.
+Its lab-feature unit, signed lifecycle and TLS bootstrap tests pass; its source
+and trust-root hashes are preserved in [build evidence](artifacts/model-selection-launcher-20260928/).
+The running larger-model campaigns continue using their earlier assembly
+snapshot. This candidate is for the subsequent deployed model-switching check
+and remains lab-only, with no production-channel promotion.
+
+`build_larger_launcher.py` now accepts separate source, build, evidence and binary
+snapshot paths. Exclusive log/binary creation prevents overwriting a prior
+candidate; defaults retain the existing larger-model build recipe.
