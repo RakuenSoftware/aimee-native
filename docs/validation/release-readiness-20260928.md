@@ -733,3 +733,27 @@ results prevent handoff. Final certification still requires all 64 grades.
 The live study and its inputs were not restarted or changed. Only the waiting
 release queue was replaced (PID 2370979); the prior queue and state were retained.
 Six targeted handoff tests pass; evidence is in `artifacts/gpu-handoff-20260928/`.
+
+## Cost of reusing the four completed successful procedures
+
+The separate four-pair archive preserves the raw trajectories, results, grading
+reports and source publications. All four native runs reproduce the exact
+control patch. These rows describe the completed both-pass subset, not the
+whole campaign and not an additional-task success claim.
+
+| Task | Calls, control → native | Prompt tokens, control → native | Completion tokens, control → native | Agent seconds, control → native | Preparation seconds |
+|---|---:|---:|---:|---:|---:|
+| Astropy-7336 | 6 → 5 | 8,126 → 4,704 | 859 → 314 | 70.7 → 43.7 | 82.8 |
+| Sympy-20590 | 24 → 7 | 43,917 → 5,785 | 4,299 → 602 | 381.4 → 68.6 | 67.2 |
+| Flask-4169 | 6 → 2 | 6,559 → 966 | 655 → 65 | 61.2 → 13.4 | 81.8 |
+| Pytest-5808 | 22 → 4 | 90,369 → 5,251 | 2,783 → 213 | 300.3 → 27.5 | 93.1 |
+
+Preparation is reusable after publication, but is a real acquisition cost.
+Adding preparation to this first native agent run exceeds the control agent
+time for Astropy and Flask; that sum remains lower for Sympy and Pytest.
+Even this sum excludes source capture/replay, grading and publication waiting,
+so it is not a complete end-to-end cost comparison. API token totals do not
+measure the attention occupancy or compute cost of native memory. Concurrent
+load and the absence of a second no-memory attempt also limit causal timing
+claims. Evidence: `artifacts/broader-source-learning-20260928/four-successful-pairs.json`
+and its matching, individually hash-verified archive.
