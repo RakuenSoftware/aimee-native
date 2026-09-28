@@ -28,6 +28,8 @@ def main():
     if set(old) != set(new):
         raise ValueError('Python package versions changed')
     changes = {str(k): dict(previous=old[k], current=new[k]) for k in old if old[k] != new[k]}
+    if changes:
+        raise ValueError('Python metadata or license-file hashes changed; requires separate review')
     if baseline['os_packages'] != current['os_packages']:
         raise ValueError('OS inventory changed')
     for name, key in [('Cargo.lock', 'native_cargo_lock_sha256'), ('distribution/launcher/Cargo.lock', 'launcher_cargo_lock_sha256')]:
