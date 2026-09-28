@@ -32,7 +32,7 @@ verified on the controlled origin; external source/notice fulfillment remains
 under review. The following sections preserve historical checkpoints rather
 than overriding this final disposition.
 
-## Completed primary study and current handoff
+## Historical primary-study handoff
 
 The primary campaign completed all 64 scored attempts. Control passed 1/16;
 each native round passed 2/16, with one unique gain retained in all three
@@ -99,7 +99,7 @@ and memory preparation. They are not isolated application-latency measurements
 or evidence of additional solved tasks. No new no-memory retry condition has
 been run to isolate the effect of receiving a second attempt.
 
-## Required closure
+## Historical required-closure checkpoint
 
 | Requirement | Current authoritative evidence | Remaining work |
 |---|---|---|

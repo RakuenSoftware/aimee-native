@@ -89,3 +89,7 @@ now accounts for all 342 OS source/version pairs. The exact Broadcom compiled
 payload/source review remains open. That is an explicitly unmet
 external-distribution item, not hidden runtime failures or a reason to revive
 the aspirational latency threshold. No public redistribution approval is claimed.
+
+The [29 September requirement audit](release-completion-audit-20260929.md)
+rechecks the delivered identities and retained phase evidence, and records the
+remaining vendor information dependency.
