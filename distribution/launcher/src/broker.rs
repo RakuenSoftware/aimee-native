@@ -17,7 +17,9 @@ use std::{
 
 fn control(path: &Path, request: Value) -> Result<Value> {
     let mut s = UnixStream::connect(path)?;
-    s.set_read_timeout(Some(Duration::from_secs(150)))?;
+    // Refresh may drain for 600 seconds, then await worker acknowledgement.
+    let seconds = if request["op"] == "refresh" { 720 } else { 150 };
+    s.set_read_timeout(Some(Duration::from_secs(seconds)))?;
     s.set_write_timeout(Some(Duration::from_secs(10)))?;
     serde_json::to_writer(&mut s, &request)?;
     s.write_all(b"\n")?;

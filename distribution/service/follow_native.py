@@ -8,7 +8,8 @@ async def control(path,op):
     reader,writer=await asyncio.wait_for(asyncio.open_unix_connection(path),10)
     try:
         writer.write(json.dumps({'op':op} if isinstance(op,str) else op).encode()+b'\n');await writer.drain()
-        result=json.loads(await asyncio.wait_for(reader.readline(),120))
+        operation=op.get('op') if isinstance(op,dict) else op
+        result=json.loads(await asyncio.wait_for(reader.readline(),720 if operation=='refresh' else 120))
         if result.get('error'):raise RuntimeError('native control rejected update')
         return result
     finally:writer.close();await writer.wait_closed()
