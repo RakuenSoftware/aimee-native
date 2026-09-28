@@ -34,7 +34,7 @@ def handle(client, config, compiler):
                 'response_seconds': round(time.perf_counter() - prepared, 6), 'payload_bytes': sizes[1],
                 'computation': {k:v for k,v in getattr(compiler, 'last_metrics', {}).items()
                                 if k in ('tokens', 'reused_prefix_tokens', 'evaluated_tokens',
-                                         'compute_dtype', 'input_seconds', 'forward_seconds',
+                                         'compute_dtype', 'reuse_policy', 'input_seconds', 'forward_seconds',
                                          'export_seconds', 'publish_seconds')}}
 
 

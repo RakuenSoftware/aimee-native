@@ -18,5 +18,13 @@ class PreparedDtype(unittest.TestCase):
         job['computation']['reused_prefix_tokens']=0
         job['computation']['reuse_policy']='causal-prefix'
         with self.assertRaises(ValueError):module.prepared_jobs(json.dumps(job),'identical-complete-input')
+    def test_legacy_telemetry_must_still_prove_full_evaluation(self):
+        job={'event':'prepared','computation':{'compute_dtype':'torch.float32','evaluated_tokens':45,
+             'tokens':45,'reused_prefix_tokens':0}}
+        self.assertEqual(len(module.prepared_jobs(json.dumps(job),'identical-complete-input')),1)
+        job['computation']['evaluated_tokens']=5
+        with self.assertRaises(ValueError):module.prepared_jobs(json.dumps(job),'identical-complete-input')
+        job['computation']['reused_prefix_tokens']=40
+        with self.assertRaises(ValueError):module.prepared_jobs(json.dumps(job),'identical-complete-input')
 
 if __name__=='__main__':unittest.main()

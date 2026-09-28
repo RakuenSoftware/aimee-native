@@ -36,8 +36,9 @@ checks prevent a superseded refresh from reopening admission, including when
 withdrawal arrives during the worker RPC. All 27 compiled runtime checks pass.
 The client candidate verifies all 18 artifact hashes and uses the rebuilt Rust
 lab launcher. Standard and 32-record GPU certification passed, and hosted FP32 preparation
-is deployed pending client validation. All nine corrected FP32 reuse cases passed. Installed model-answer
-validation/recovery and signed lifecycle remain pending.
+is deployed pending client validation. All nine corrected FP32 reuse cases passed. Installed model-answer validation,
+automatic restart recovery, and served FP32 computation audit also passed.
+The learning regression and normal signed lifecycle remain unresolved.
 
 The broader campaign is now **complete: 64/64 scored attempts**. Control passed
 **5/32**, native reuse passed **4/32**: four both-pass, twenty-seven both-fail,
@@ -960,3 +961,37 @@ three facts, and only then requires healthy admission. It does not bypass or
 weaken authorization. The full installed-client probe is rerunning against the
 same immutable candidate. This changes the test sequence, not runtime code or
 release artifacts.
+
+## Installed candidate validation completed
+
+The corrected installed candidate passed two ordinary Aimee-selected native
+queries and an interrupted-stream recovery. Each query returned all three
+facts (28461, Juniper, hibiscus) with 27 prompt tokens. After the interruption,
+the launcher remained alive, replaced its owned runtime container, obtained
+fresh selection authorization, and answered correctly again; healthy admission
+was checked after that query. Recovery took 163.5 seconds, including container
+startup and kernel warmup. This is availability/recovery evidence, not a claim
+of instant restart or persistent authorization across restart.
+
+[Installed-client report](artifacts/installed-candidate-20260928/client-runtime.json).
+The normal signed release remains version 5; this is the separate lab candidate
+with manifest `b05aff4b...`. Signing, normal launcher delivery, and the normal
+install/update/rollback lifecycle still require closure.
+
+The first served-preparation audit rejected absent `reuse_policy` telemetry.
+The resident logger's explicit field whitelist omitted that new label. The
+actual served job records **45 evaluated tokens, zero reused tokens, FP32
+computation**. The checker now validates those counts and the deployed compiler
+hash, rejects any partial reuse or contradictory reported policy, and preserves
+a missing legacy label rather than inventing it. Five checker tests pass.
+The resident whitelist now includes the policy label, and its two transport
+tests pass. The hosted service was restarted to load the telemetry change;
+its encoding computation is unchanged.
+
+[Passed served-computation audit](artifacts/installed-candidate-20260928/preparation-dtype-check.json),
+[original telemetry rejection](artifacts/installed-candidate-20260928/preparation-dtype-check-before-telemetry-correction.json).
+The candidate queue has [completed](artifacts/installed-candidate-20260928/status.json).
+That status means its explicit candidate checks and all 64 broader grades
+completed, not that the broader study showed a gain or that every release gate
+is cleared. The Requests procedure diagnostic has now started its server
+handoff after the candidate released the GPUs. Its outcomes remain pending.

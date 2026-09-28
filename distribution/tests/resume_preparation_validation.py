@@ -25,9 +25,10 @@ def run(name, command):
 def main():
     state = json.loads((ROOT / 'status.json').read_text())
     client_only = state.get('stage') == 'validating_candidate_client'
-    if state.get('stage') not in ('fp32_preparation_reuse', 'validating_candidate_client') or state['status'] != 'failed':
+    dtype_only = state.get('stage') == 'checking_served_preparation_dtype'
+    if state.get('stage') not in ('fp32_preparation_reuse', 'validating_candidate_client', 'checking_served_preparation_dtype') or state['status'] != 'failed':
         raise ValueError('expected preserved FP32 partial-reuse failure')
-    (ROOT / ('status-before-client-correction-'+str(time.time_ns())+'.json' if client_only else 'status-before-fp32-reuse-correction.json')).write_text(json.dumps(state, indent=2) + '\n')
+    (ROOT / ('status-before-client-correction-'+str(time.time_ns())+'.json' if client_only or dtype_only else 'status-before-fp32-reuse-correction.json')).write_text(json.dumps(state, indent=2) + '\n')
     source = r'''import pathlib,json
 r=pathlib.Path('/opt/aimee-memory-lab/release-candidate-20260927')
 for name in ('exact-image-certification','wide-image-certification','activation-certification'):
@@ -36,7 +37,7 @@ assert json.loads(pathlib.Path('/opt/aimee-native-compiler/resident.json').read_
 assert 'identical-complete-input' in pathlib.Path('/opt/aimee-native-compiler/gemma_compile.py').read_text()
 '''
     subprocess.run(['pct', 'exec', '101', '--', 'python3', '-'], input=source, text=True, check=True)
-    if not client_only:
+    if not (client_only or dtype_only):
         save(status='checking_fp32_preparation_reuse_corrected')
         subprocess.run(['pct', 'exec', '101', '--', 'systemctl', 'stop', 'aimee-native-compiler'], check=True)
         try:
@@ -50,15 +51,19 @@ assert 'identical-complete-input' in pathlib.Path('/opt/aimee-native-compiler/ge
     else:
         subprocess.run(['pct','exec','101','--','python3','-c',
             "import pathlib,json; d=json.loads(pathlib.Path('/opt/aimee-memory-lab/release-candidate-20260927/fp32-preparation-reuse-corrected/report.json').read_text()); assert d['status']=='passed' and len(d['rows'])==9 and all(r['exact'] for r in d['rows'])"],check=True)
-    save(status='validating_candidate_client')
-    if client_only:
+    if not dtype_only:
+        save(status='validating_candidate_client')
+        if client_only:
+            subprocess.run(['pct','exec','110','--','python3','-c',
+                "import pathlib,json,time; r=pathlib.Path('/opt/aimee-client/release-evidence'); p=r/'candidate-6-runtime.json'; assert not p.exists() or json.loads(p.read_text())['status']!='passed'; stamp=str(time.time_ns()); [(q.rename(q.with_name(q.stem+'-before-retry-'+stamp+q.suffix))) for q in [p,p.with_suffix('.log')] if q.exists()]"],check=True)
+        run('candidate-client-profile-corrected' if client_only else 'candidate-client', ['pct', 'exec', '110', '--', 'python3', '/opt/aimee-client/live_client_runtime.py',
+            '--launcher', '/opt/aimee-client/bin/aimee-native-candidate-test', '--root', '/opt/aimee-client/native-candidate-6',
+            '--query', 'What are the native release verification vault code, project, and drink?',
+            '--expect', '28461', '--expect', 'Juniper', '--expect', 'hibiscus',
+            '--output', '/opt/aimee-client/release-evidence/candidate-6-runtime.json', '--repeat', '2', '--interrupt-and-recover'])
+    else:
         subprocess.run(['pct','exec','110','--','python3','-c',
-            "import pathlib,json,time; r=pathlib.Path('/opt/aimee-client/release-evidence'); p=r/'candidate-6-runtime.json'; assert not p.exists() or json.loads(p.read_text())['status']!='passed'; stamp=str(time.time_ns()); [(q.rename(q.with_name(q.stem+'-before-retry-'+stamp+q.suffix))) for q in [p,p.with_suffix('.log')] if q.exists()]"],check=True)
-    run('candidate-client-profile-corrected' if client_only else 'candidate-client', ['pct', 'exec', '110', '--', 'python3', '/opt/aimee-client/live_client_runtime.py',
-        '--launcher', '/opt/aimee-client/bin/aimee-native-candidate-test', '--root', '/opt/aimee-client/native-candidate-6',
-        '--query', 'What are the native release verification vault code, project, and drink?',
-        '--expect', '28461', '--expect', 'Juniper', '--expect', 'hibiscus',
-        '--output', '/opt/aimee-client/release-evidence/candidate-6-runtime.json', '--repeat', '2', '--interrupt-and-recover'])
+            "import pathlib,json; r=pathlib.Path('/opt/aimee-client'); d=json.loads((r/'release-evidence/candidate-6-runtime.json').read_text()); assert d['status']=='passed' and len(d['answers'])==2 and all(x['passed'] for x in d['answers']); assert d['interrupted_request_recovery']['status']=='passed'; assert d['active']==json.loads((r/'native-candidate-6/active.json').read_text())"],check=True)
     save(status='checking_served_preparation_dtype')
     run('preparation-dtype-check', ['python3', '/root/aimee-check-preparation-dtype-20260928.py'])
     run('broader-final-grades', ['pct', 'exec', '113', '--', 'python3', '-c',
