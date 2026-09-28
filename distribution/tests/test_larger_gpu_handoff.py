@@ -55,3 +55,20 @@ class HandoffTests(unittest.TestCase):
         p = self.final / 'result.json'
         d = json.loads(p.read_text());d['arm'] = 'control';p.write_text(json.dumps(d))
         with self.assertRaises(ValueError):inspect(self.root)
+
+    def test_terminal_budget_exit_can_handoff_after_inference(self):
+        self.submitted()
+        p = self.final / 'trajectory.json'
+        d = json.loads(p.read_text())
+        d['info']['exit_status'] = 'TimeExceeded'
+        d['messages'][-1]['extra']['exit_status'] = 'TimeExceeded'
+        p.write_text(json.dumps(d))
+        self.assertTrue(inspect(self.root)['gpu_ready'])
+
+    def test_conflicting_terminal_status_is_rejected(self):
+        self.submitted()
+        p = self.final / 'trajectory.json'
+        d = json.loads(p.read_text())
+        d['info']['exit_status'] = 'TimeExceeded'
+        p.write_text(json.dumps(d))
+        self.assertFalse(inspect(self.root)['gpu_ready'])

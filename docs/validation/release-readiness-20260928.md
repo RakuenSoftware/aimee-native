@@ -19,8 +19,9 @@ complete-source token audits.
 
 Qwen 27B's six-task coding comparison is complete: control 5/6, matched text
 4/6, and both native reuse rounds 6/6, retaining every control success. Gemma
-26B completed its first native round: control 2/6, text 4/6, native round 1
-4/6. Native round 2 is 4/5 with Requests still pending. These are frozen accepted
+26B completed all six tasks: control 2/6, text 4/6, and both native rounds
+4/6. Both control successes were retained, but Requests passed only native
+round 1 and Flask passed only native round 2. These are frozen accepted
 procedure reuse comparisons, not fresh acquisition between rounds.
 
 Gemma 26B's signed fresh/update/rollback/restore lifecycle passed 8/8 native

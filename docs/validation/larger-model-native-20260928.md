@@ -966,3 +966,25 @@ other unfinished attempts, infrastructure outcomes and mismatched identities.
 The supervisor has been started; no early handoff is claimed before its guard
 passes. Installed-runtime and timing workers already waiting on the same lock
 can then run while the final CPU grade finishes.
+
+### Gemma six-case comparison complete; installed validation started
+
+All 24 scored attempts are complete: control 2/6, text 4/6 and both native
+rounds 4/6. Both native rounds retain the two control successes. Astropy is
+gained in both native rounds; Requests is gained only in round 1, and Flask
+only in round 2. Equal aggregate scores therefore conceal a Requests loss
+between rounds. This does not demonstrate monotonically improving behavior.
+
+The final Requests/native-2 attempt made nine calls and reached its time
+budget after 609.6 seconds. Its patch failed official grading. Inspection shows
+an empty exception-handler body and duplicated branches in the submitted
+adapters.py patch. The complete raw evidence and derived six-case summary are
+in `artifacts/larger-gemma26-complete-tasks-20260928/`. No failed outcome was
+replaced by the earlier passing attempt.
+
+The handoff guard was extended to matching terminal `TimeExceeded` states
+with eight passing tests; its supervisor still requires the exact live grader
+and all 23 other completed outcomes. In this run grading finished first, so
+the supervisor reported `already_graded` and did not retire the coordinator.
+The original coordinator completed normally and released the GPUs. Qwen's
+model-aware installed update probe has now started.

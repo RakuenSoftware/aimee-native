@@ -30,7 +30,8 @@ def inspect(root):
         p = root / 'results/native-2/psf__requests-2193/trajectory.json'
         if p.exists():
             t = json.loads(p.read_text()); messages = t.get('messages', [])
-            report['gpu_ready'] = bool(t.get('info', {}).get('exit_status') == 'Submitted'
+            terminal = t.get('info', {}).get('exit_status')
+            report['gpu_ready'] = bool(terminal in ('Submitted', 'TimeExceeded')
                 and messages and messages[-1].get('role') == 'exit'
-                and messages[-1].get('extra', {}).get('exit_status') == 'Submitted')
+                and messages[-1].get('extra', {}).get('exit_status') == terminal)
     return report
