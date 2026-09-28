@@ -1242,3 +1242,16 @@ installed newer release; the corrected test now uses that operation. The
 rejection log is retained, and final restored-runtime validation remains pending.
 No installer security rule was relaxed to make this test pass.
 [Runtime outcomes and original failures](artifacts/normal-signed-lifecycle-20260928/).
+
+
+## Signed lifecycle complete
+
+All four signed lifecycle phases passed: fresh sequence 5, network update to
+sequence 6, explicit local rollback to 5, and explicit local restore to 6. Each
+phase answered both native-memory queries, for 8/8 correct canary responses.
+Sequence 6 remained the high-water mark across rollback and restore. The
+published channel remains unchanged; this used its separate validation URL.
+The first operator summary reused `updated` for both a phase state and timestamp;
+individual phase records preserve the full states, and future summaries use
+`updated_release`. No raw evidence was rewritten.
+[Verified lifecycle summary](artifacts/normal-signed-lifecycle-20260928/lifecycle-summary.json).

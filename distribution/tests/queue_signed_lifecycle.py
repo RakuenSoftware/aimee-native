@@ -45,7 +45,7 @@ def restore(before, upgraded, rolled):
     command(['pct','exec','110','--',NORMAL,'--root',CLIENT,'rollback'],'restore6-local.log')
     restored=active();assert restored['current']==upgraded['current'] and restored['high_water_sequence']==6
     probe('restored6')
-    save(status='passed',fresh=before,updated=upgraded,rolled_back=rolled,restored=restored,
+    save(status='passed',fresh=before,updated_release=upgraded,rolled_back=rolled,restored=restored,
         scope='Normal-edition signed installer via separate validation URL; production-URL normal launcher used for all GPU probes. Restore uses explicit local rollback toggle; sequence high-water remains 6. Published release channel unchanged. Learning gates are separate.')
 
 

@@ -174,3 +174,23 @@ explicitly requires the 64-layer main configuration and one optional draft layer
 it does not accept arbitrary omissions. All 1,200 tensors remain in the GGUF
 files. Speculative draft decoding is not enabled or certified.
 [Actual compiled-loader result](validation/artifacts/qwen27-preparation-20260928/loader-plan.json).
+
+
+## Gemma 26B real-model baseline failed
+
+The quantized 26B model loaded across both XTXs, with the runtime reporting
+12.91 GiB of model allocation per worker. All four baseline prompts returned
+empty visible answers and exhausted their 128-token budgets (0/4 exact). This
+is a real release blocker; successful loading does not establish correct
+inference. Raw-token diagnostics are running before any native-memory test.
+[Original baseline outcomes](validation/artifacts/gemma26-baseline-20260928/responses.json).
+
+A private preparation-only lazy checkpoint mapping now supports FP32 tensor
+expansion through Accelerate's existing offload hooks. It passed exact output
+comparison and parameter-release tests, plus reduced real Gemma MoE and Qwen
+hybrid architectures at two sequence lengths each. Hidden states and exported
+K/V caches exactly matched resident FP32 references using the same BF16
+checkpoint values. These are mechanics tests, not full-checkpoint certification;
+production compiler integration and actual larger-model preparation remain open.
+The serving hot path does not import this mapping.
+[Preparation fixture evidence](validation/artifacts/bounded-preparation-20260928/).
