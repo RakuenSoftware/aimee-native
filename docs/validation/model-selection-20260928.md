@@ -142,3 +142,10 @@ The candidate SHA-256 is
 Only its noncredential manifest is archived; the binding itself stays private on
 the authority host. Frontend/service rollout and live enrolled-account checks
 remain prerequisites to claiming deployed model switching.
+
+
+The exact tested delivery binary is also staged on the authority host at
+`/opt/aimee-native/bin/aimee-native-delivery.model-selection`, root-owned and
+executable. Its SHA-256 matches the build above. The active binary was verified
+unchanged and the current service remains active; no restart or account-binding
+change was made. [Staging receipt](artifacts/model-selection-service-20260928/authority-host-staging.json).
