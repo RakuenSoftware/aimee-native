@@ -58,7 +58,7 @@ class NativeModel:
   return {'role':'assistant','content':text,'extra':{'actions':actions,'cost':0.0}}
  def format_observation_messages(self,message,outputs,template_vars=None):
   return format_observation_messages(outputs,observation_template='<returncode>{{output.returncode}}</returncode>\n{{output.output[:5000]}}',template_vars=template_vars)
-def bridge(body):return json.loads(subprocess.check_output(SSH,input=json.dumps(body).encode(),timeout=660))
+def bridge(body):return json.loads(subprocess.check_output(SSH,input=json.dumps(body).encode(),timeout=1320))
 def image(task):return 'docker.io/swebench/sweb.eval.x86_64.'+task['instance_id'].replace('__','_1776_').lower()+':latest'
 def attempt(task,arm,publication,text_memory=None):
  iid=task['instance_id'];out=ROOT/'results'/arm/iid;out.mkdir(parents=True,exist_ok=True)

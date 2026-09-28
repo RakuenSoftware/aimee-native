@@ -44,7 +44,7 @@ p=subprocess.run(['pct','exec','101','--','podman','stop','--time','60','aimee-s
 (ROOT/'server-stop.log').write_text(p.stdout+p.stderr)
 if p.returncode:save({'status':'failed','error':'could not stop learning server cleanly'});raise SystemExit(1)
 save({'status':'certifying'})
-image='8f4503539e29413520e27638f957c573c2e09e99fe219119a921f63deb1ac119'
+image='3dd4c184270627bc3724fea622eb7e4edd3b7b1ad2ebd90190b5dbbaeb595acc'
 with (ROOT/'certification.log').open('w') as log:
  p=subprocess.run(['pct','exec','101','--','python3','/opt/aimee-memory-lab/aimee-qwen/distribution/vllm/tests/image_certification.py','--image',image,'--output','/opt/aimee-memory-lab/release-candidate-20260927/exact-image-certification','--profiles','q8','--requests','128','--context-tokens','8192','--gpu-utilization','0.8'],stdout=log,stderr=subprocess.STDOUT)
 if p.returncode:

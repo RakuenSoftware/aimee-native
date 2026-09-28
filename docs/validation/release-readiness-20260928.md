@@ -573,3 +573,11 @@ for the resumed harness; inference budgets and output allowances stay declared.
 The original candidate's pending certification cannot certify this new image.
 Candidate staging, evidence binding and queue configuration must be updated
 before promotion.
+
+## Live refresh recovery (03:06 UTC)
+
+The repaired compiled runtime `3dd4c184270627bc3724fea622eb7e4edd3b7b1ad2ebd90190b5dbbaeb595acc` passed a live drain test: an intentionally forced 4096-token generation lasted 237.90 seconds, refresh waited 237.75 seconds, both workers acknowledged the publication, and a subsequent short request succeeded. Admission correctly returned 503 during draining. This is service recovery evidence, not task accuracy or memory-application latency. The first short probe did not cross the old 60-second boundary and is not counted as that test. Raw evidence is in `artifacts/refresh-drain-20260928/forced-long-drain.json`.
+
+The broader study resumed with its five completed grades preserved. Failed infrastructure attempts and the original controller sources are archived under the remote study's interruption directory. Admission retry is 660 seconds; the SSH publication bridge permits 660 seconds for refresh and its caller permits 1320 seconds for preparation plus refresh. The controller cancels unstarted tasks on an infrastructure failure instead of allowing cascading errors.
+
+Requests-2193 remains one of the fixed 32 tasks. Its existing generated control patch timed out during official grading against an external HTTP dependency; it is retained unchanged and retried separately with a 3600-second grading deadline. Other task pipelines proceed meanwhile. The controller cannot mark the study complete until this deferred task also has two scored outcomes. This deadline amendment is not an extra model attempt. The old candidate image is superseded; certification and client staging must bind to the repaired image before release.
