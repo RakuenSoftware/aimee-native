@@ -337,5 +337,7 @@ review record with hashed evidence references and distinct upstream-runtime
 and private-integration provenance. No artifact was signed or published by
 this preparation. Gate evidence is intentionally empty, so the release
 assembler rejects signing until explicit component dispositions exist.
-The cold-application target and broader learning reliability remain unmet;
-these cannot be turned into passing release criteria by package assembly.
+The requested cold-application target remains unmet and cannot be turned into
+a passing criterion by package assembly. Broad learning reliability is a claim
+limit, not an added requirement to run a population-scale benchmark before
+release; the requested selected-task gains/regressions have been measured.
