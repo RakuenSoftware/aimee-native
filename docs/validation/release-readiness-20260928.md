@@ -36,25 +36,22 @@ The client candidate verifies all 18 artifact hashes and uses the rebuilt Rust
 lab launcher. GPU certification, hosted preparation migration/reuse, installed
 model-answer validation, and signed lifecycle remain pending.
 
-The broader campaign's 04:53 UTC checkpoint has **48/64 scored attempts**:
-controls 5 passed / 21 failed, native 4 passed / 18 failed. Twenty-two pairs are
-complete (four both-pass, eighteen both-fail), with no gained or lost task
-among those pairs. The unequal arm totals include pending native reruns and
-must not be interpreted as a native regression. Requests-2193's original
-control patch passed extended official grading without a model rerun; its
-native condition remains pending. Both infrastructure interruptions and their
-recoveries remain preserved below.
+The broader campaign is now **complete: 64/64 scored attempts**. Control passed
+**5/32**, native reuse passed **4/32**: four both-pass, twenty-seven both-fail,
+one control-only pass and no native-only pass. The regression is
+`psf__requests-2193`. This follow-up does not demonstrate a task-success gain;
+it identifies a remaining source-procedure reproduction failure. It remains a
+release blocker for the learning claim, regardless of passing recall checks.
 
-The current checkpoint archives 193 individually verified evidence/source
-files plus its checksum manifest. The contemporaneous delivery audit passed
-887 calls across 50 trajectories and 23 publications, including in-progress
-attempts. See `artifacts/broader-source-learning-20260928/scored-checkpoint-1790571225.json`,
-its matching archive, and `delivery-audit-1790571225.json`.
+The final archive contains 252 individually verified evidence/source files plus
+its checksum manifest. The final delivery audit passed **1,233 calls across
+64 trajectories and 31 publications**, without memory text in the model prompts.
+See [the final report](source-learning-broader-20260928.md). Historical interim
+checkpoints, original infrastructure failures, and regrades remain preserved.
 
-![All frozen follow-up tasks at the 48-attempt checkpoint; pending rows are explicit.](artifacts/broader-source-learning-20260928/checkpoint-48-outcomes.png)
+![All 32 frozen tasks after final grading.](artifacts/broader-source-learning-20260928/final-outcomes.png)
 
-[Vector PDF of this interim outcome matrix](artifacts/broader-source-learning-20260928/checkpoint-48-outcomes.pdf).
-The dated checkpoint is preserved; the final matrix will be generated separately.
+[Vector PDF of the final outcome matrix](artifacts/broader-source-learning-20260928/final-outcomes.pdf).
 
 The four completed successful pairs show procedure reuse:
 
@@ -74,10 +71,10 @@ been run to isolate the effect of receiving a second attempt.
 
 | Requirement | Current authoritative evidence | Remaining work |
 |---|---|---|
-| Automatic learning preserves successful source experience | `source_experience.py`, exact-patch replay gate; primary 64/64 outcomes complete | Complete additional 32-task study and inspect gains/losses |
-| Generated summaries do not silently replace working procedures | Source records retained without generated summaries; primary delivery audit passed | Continue auditing follow-up publications and trajectories |
-| Native memory adds usable capability | Primary one unique gain retained across three rounds; sole control pass preserved | Complete broader study; existing result does not establish broad learning success |
-| All selected records consumed, no silent truncation | Primary 1,474-call delivery audit passed; follow-up audit in progress | Complete follow-up audit and exact-image multirecord gates |
+| Automatic learning preserves successful source experience | `source_experience.py`, exact-patch replay gate; primary 64/64 outcomes complete | Completed: one lost task, no new gains; correct and validate procedure reproduction |
+| Generated summaries do not silently replace working procedures | Source records retained without generated summaries; primary delivery audit passed | Final follow-up audit passed 1,233 calls; investigate generation-level corruption |
+| Native memory adds usable capability | Primary one unique gain retained across three rounds; sole control pass preserved | Broader study complete, 5/32 control versus 4/32 native; learning release claim not cleared |
+| All selected records consumed, no silent truncation | Primary 1,474-call and follow-up 1,233-call delivery audits passed | Complete exact-image multirecord gates |
 | Corrected attention ships in the artifact | Candidate built from release-5 image with corrected compiled bank, original dependency set | Exact-image serving, isolation, long context, pressure, lifecycle and disclosure checks |
 | Signed install/update/rollback works | Existing release-5 live lifecycle evidence | Validate the new candidate and sign/promote only after its gates pass |
 | Private implementation remains private | Final installed package source audit and 18-artifact client verification passed | Preserve binding to final signed artifacts |

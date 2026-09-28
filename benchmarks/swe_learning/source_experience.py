@@ -39,13 +39,69 @@ def patch_command(patch):
     return "git apply <<'"+marker+"'\n"+patch.rstrip('\n')+'\n'+marker
 
 
+def compact_patch_command(patch):
+    """Lossless line edits for ordinary text patches; acceptance still needs replay.
+
+    No model summary or semantic rewrite. Unsupported patch features retain the
+    original git-apply fallback. Coordinates refer only to the scoped clean base.
+    """
+    if '\r' in patch or '\\ No newline' in patch:return None
+    lines=patch.splitlines(keepends=True);files={};path=None;i=0
+    while i<len(lines):
+        line=lines[i]
+        if line.startswith('diff --git '):path=None
+        elif line.startswith('+++ b/'):
+            path=line[6:].rstrip('\n')
+            if not path or path.startswith('/') or '..' in path.split('/'):return None
+            files.setdefault(path,[])
+        elif line.startswith('@@ '):
+            match=re.match(r'@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@',line)
+            if not match or path is None:return None
+            start,old_count,_,new_count=match.groups()
+            old_count=int(old_count) if old_count is not None else 1
+            new_count=int(new_count) if new_count is not None else 1
+            pos=int(start)-(old_count!=0);old_seen=new_seen=0;block=None;i+=1
+            def flush():
+                nonlocal block
+                if block is not None:files[path].append(block);block=None
+            while i<len(lines) and lines[i][:1] in (' ','+','-'):
+                item=lines[i];kind=item[0]
+                if kind==' ':
+                    flush();pos+=1;old_seen+=1;new_seen+=1
+                else:
+                    if block is None:block=[pos,pos,[]]
+                    if kind=='-':pos+=1;block[1]=pos;old_seen+=1
+                    else:block[2].append(item[1:]);new_seen+=1
+                i+=1
+            flush()
+            if old_seen!=old_count or new_seen!=new_count:return None
+            continue
+        elif not line.startswith(('index ','--- a/')):return None
+        i+=1
+    if not files or not any(files.values()):return None
+    program=['from pathlib import Path']
+    for path,edits in files.items():
+        if not edits:continue
+        ordered=sorted(edits,key=lambda edit:edit[0])
+        if any(a[1]>b[0] for a,b in zip(ordered,ordered[1:])):return None
+        program+=['p=Path('+repr(path)+');s=p.read_text().splitlines(True)']
+        for start,end,new in reversed(ordered):
+            program.append('s['+str(start)+':'+str(end)+']='+repr(new))
+        program.append("p.write_text(''.join(s))")
+    marker='AIMEE_EDIT_'+digest(patch)[:24]
+    command="python3 <<'"+marker+"'\n"+'\n'.join(program)+'\n'+marker
+    return command if len(command)<len(patch_command(patch)) else None
+
+
 def accept_success(task,row,trajectory,replay):
     if row.get('resolved') is not True:raise ValueError('successful outcome required')
     patch=row.get('model_patch','')
     if not patch.strip():raise ValueError('successful procedure requires a nonempty own patch')
     trials=[]
     # Replay returns the independently observed diff from a fresh base checkout.
-    for command in edit_candidates(patch,trajectory)+[patch_command(patch)]:
+    compact=compact_patch_command(patch)
+    fallbacks=([compact] if compact else [])+[patch_command(patch)]
+    for command in edit_candidates(patch,trajectory)+fallbacks:
         observation=replay(command)
         match=observation.get('returncode')==0 and observation.get('patch','').strip()==patch.strip()
         trials.append({'command':command,'observation':observation,'matches_successful_patch':match})
