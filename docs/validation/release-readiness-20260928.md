@@ -1029,3 +1029,25 @@ package and four declared kernel files. No private source extensions were
 found in that package beyond package initialization files. This is a scoped
 binary-content check, not a guarantee against reverse engineering or a claim
 about every image path. [Audit](artifacts/final-image-certification-20260928/content-audit.json).
+
+
+## Literal representation diagnostic completed
+
+Native literal-newline memory reconstructed the successful own patch in 2/2
+calls; native escaped-line memory did so in 0/2. Escaped text memory passed
+2/2; literal text memory produced multiple-command responses in both calls,
+failing the declared one-command rule. Every replay used the corrected testbed
+environment and checked the intended original failure message. These reversed
+order deterministic calls are diagnostic evidence of representation sensitivity,
+not independent replications or full-task solve outcomes.
+
+[Full preserved results](artifacts/source-procedure-literal-20260928/result.json).
+The separately declared full-agent Requests comparison is starting, using
+automatic capture from the original graded source and three clean-checkout
+conditions. Its official task outcomes remain pending.
+
+## Additional required model releases
+
+The user additionally requires Gemma4 26B and Qwen3.8 27B releases after the
+current Gemma4 12B validation. These are outstanding deliverables, not covered
+by the 12B candidate checks. See the [release plan](../model-release-plan-20260928.md).

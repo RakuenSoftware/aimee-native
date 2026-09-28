@@ -1,0 +1,841 @@
+{
+  "status": "complete",
+  "started": 1790579203.8371449,
+  "fixture_sha256": "4a4beb3f671863bfd41f644ea38826429d036204edd2fbac9636c3c8d9de0c19",
+  "scope": "Post-hoc frozen pre-edit prompt; single-response source-patch fidelity, not official task accuracy. Two reversed-order deterministic repeats are not independent replications.",
+  "max_tokens": 1536,
+  "seed": 20260926,
+  "encoding_revision": "native-swe-v3-fp32-full",
+  "representation_labels": {
+    "original": "escaped-lines",
+    "compact": "literal-blocks"
+  },
+  "historical_publication": "631aaff70c1e68857c9012d5c2e2f5c30b12909af84643a89e37e59638a406bc",
+  "publications": {
+    "original": {
+      "publication": "7eaa5fcc6fe3e2c5709acac2fecc4269db8731d8eec2c76e863192af98b14c6e",
+      "records": 1,
+      "prepared_seconds": 0.08127481897827238,
+      "refresh": {
+        "state": "active",
+        "publications": 1,
+        "workers": 2
+      },
+      "payload_bytes": 134534684
+    },
+    "compact": {
+      "publication": "0610a0c04493ab6da2d7c7d7214afa1a0d291f60c542734975b532b62e5c7c16",
+      "records": 1,
+      "prepared_seconds": 34.42403509898577,
+      "refresh": {
+        "state": "active",
+        "publications": 2,
+        "workers": 2
+      },
+      "payload_bytes": 134190616
+    }
+  },
+  "rows": [
+    {
+      "mode": "native-original",
+      "repetition": 1,
+      "request": {
+        "model": "/opt/aimee-memory-lab/gemma4",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a software engineer fixing a repository issue in /testbed. Use exactly one fenced bash command per response, with at most two brief sentences before it. Read relevant code, implement the fix, and run relevant existing tests or your own reproduction. Do not modify existing tests or commit. You may have native memory from earlier attempts: use its concrete feedback, but verify against this clean checkout. To finish, run exactly: echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT && git diff --no-ext-diff .\nExample:\n```bash\nls\n```"
+          },
+          {
+            "role": "user",
+            "content": "Fix this issue:\n[regression] urllib3.exceptions.ProtocolError not wrapped\n``` py\n>>> requests.__version__\n'2.4.0'\n>>> requests.get('http://localhost:1')\n# ... stacktrace\nrequests.packages.urllib3.exceptions.ProtocolError: ('Connection aborted.', ConnectionRefusedError(111, 'Connection refused'))\n```\n\n"
+          },
+          {
+            "role": "assistant",
+            "content": "I will start by exploring the codebase and identifying the relevant files for handling `urllib3.exceptions.ProtocolError`.\n\n```bash\ngrep -r \"ProtocolError\" requests/\n```"
+          },
+          {
+            "role": "user",
+            "content": "<returncode>0</returncode>\ngrep: requests/__pycache__/models.cpython-39.pyc: binary file matches\nrequests/models.py:    DecodeError, ReadTimeoutError, ProtocolError)\nrequests/models.py:                except ProtocolError as e:\nrequests/packages/urllib3/connectionpool.py:    ProtocolError,\nrequests/packages/urllib3/connectionpool.py:                e = ProtocolError('Connection aborted.', e)\ngrep: requests/packages/urllib3/__pycache__/connectionpool.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/exceptions.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/response.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/util/__pycache__/retry.cpython-39.pyc: binary file matches\nrequests/packages/urllib3/response.py:from .exceptions import ProtocolError, DecodeError, ReadTimeoutError\nrequests/packages/urllib3/response.py:                raise ProtocolError('Connection broken: %r' % e, e)\nrequests/packages/urllib3/exceptions.py:class ProtocolError(HTTPError):\nrequests/packages/urllib3/exceptions.py:#: Renamed to ProtocolError but aliased for backwards compatibility.\nrequests/packages/urllib3/exceptions.py:ConnectionError = ProtocolError\nrequests/packages/urllib3/util/retry.py:    ProtocolError,\nrequests/packages/urllib3/util/retry.py:        return isinstance(err, (ReadTimeoutError, ProtocolError))\n"
+          },
+          {
+            "role": "assistant",
+            "content": "I will create a reproduction script to confirm that `ProtocolError` is not being wrapped as a `ConnectionError`.\n\n```bash\ncat <<EOF > reproduce_issue.py\nimport requests\nfrom requests.packages.urllib3.exceptions import ProtocolError\n\ntry:\n    requests.get('http://localhost:1')\nexcept ProtocolError:\n    print(\"Caught ProtocolError (Fail)\")\n    exit(1)\nexcept requests.exceptions.ConnectionError:\n    print(\"Caught ConnectionError (Success)\")\n    exit(0)\nexcept Exception as e:\n    print(f\"Caught {type(e)} (Fail)\")\n    exit(1)\nEOF\npython3 reproduce_issue.py\n```"
+          },
+          {
+            "role": "user",
+            "content": "<returncode>1</returncode>\nCaught ProtocolError (Fail)\n"
+          }
+        ],
+        "temperature": 0,
+        "seed": 20260926,
+        "max_tokens": 1536,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        },
+        "vllm_xargs": {
+          "aimee_publication": "7eaa5fcc6fe3e2c5709acac2fecc4269db8731d8eec2c76e863192af98b14c6e"
+        }
+      },
+      "response": {
+        "id": "chatcmpl-86b4fe8333503a3c",
+        "object": "chat.completion",
+        "created": 1790579238,
+        "model": "/opt/aimee-memory-lab/gemma4",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "I will now apply the fix by importing `ProtocolError` and updating the exception handling in `requests/adapters.py` to wrap `ProtocolError` into `requests.exceptions.ConnectionError`.\n\n```bash\npython3 <<'AIMEE_EDIT_181591653cb01e3e90ad3065'\nfrom pathlib import Path\np=Path('requests/adapters.py');s=p.read_text().splitlines(True)\ns[413:415]=['        except (_SSLError, _HTTPError, ProtocolError) as e:\\n', '            if isinstance(e, _SSLError):\\n', '                raise SSLError(e, request=request)\\n', '            elif isinstance(e, ReadTimeoutError):\\n', '                raise ReadTimeout(e, request=request)\\n', '            elif isinstance(e, ProtocolError):\\n', '                raise ConnectionError(e, request=request)\\n', '            else:\\\n', '                raise ConnectionError(e, request=request)\\\n']\ns[22:22]=['from .packages.urllib3.exceptions import ProtocolError\\n']\np.write_text(''.join(s))\np=Path('requests/models.py');s=p.read_text().splitlines(True)\ns[640:640]=['                    raise ConnectionError(e)\\n', '                    raise ConnectionError(e)\\\n']\np.write_text(''.join(s))\nAIMEE_EDIT_181591653cb01e3e90ad3065\n```",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "stop",
+            "stop_reason": 106,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.0-tp2-0eec029e",
+        "usage": {
+          "prompt_tokens": 837,
+          "total_tokens": 1207,
+          "completion_tokens": 370,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      },
+      "generation_seconds": 18.190031436970457,
+      "input_tokens": 837,
+      "single_command": true,
+      "replay": {
+        "setup": [
+          {
+            "returncode": 0,
+            "stdout": "requests/models.py:    DecodeError, ReadTimeoutError, ProtocolError)\nrequests/models.py:                except ProtocolError as e:\nrequests/packages/urllib3/connectionpool.py:    ProtocolError,\nrequests/packages/urllib3/connectionpool.py:                e = ProtocolError('Connection aborted.', e)\nrequests/packages/urllib3/response.py:from .exceptions import ProtocolError, DecodeError, ReadTimeoutError\nrequests/packages/urllib3/response.py:                raise ProtocolError('Connection broken: %r' % e, e)\nrequests/packages/urllib3/exceptions.py:class ProtocolError(HTTPError):\nrequests/packages/urllib3/exceptions.py:#: Renamed to ProtocolError but aliased for backwards compatibility.\nrequests/packages/urllib3/exceptions.py:ConnectionError = ProtocolError\nrequests/packages/urllib3/util/retry.py:    ProtocolError,\nrequests/packages/urllib3/util/retry.py:        return isinstance(err, (ReadTimeoutError, ProtocolError))\n",
+            "stderr": "grep: requests/__pycache__/models.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/connectionpool.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/exceptions.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/response.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/util/__pycache__/retry.cpython-39.pyc: binary file matches\n"
+          },
+          {
+            "returncode": 1,
+            "stdout": "Caught ProtocolError (Fail)\n",
+            "stderr": ""
+          }
+        ],
+        "observation": {
+          "returncode": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "patch": "diff --git a/requests/adapters.py b/requests/adapters.py\nindex 3c1e979f..da6fec1a 100644\n--- a/requests/adapters.py\n+++ b/requests/adapters.py\n@@ -20,6 +20,7 @@ from .utils import (DEFAULT_CA_BUNDLE_PATH, get_encoding_from_headers,\n                     prepend_scheme_if_needed, get_auth_from_url)\n from .structures import CaseInsensitiveDict\n from .packages.urllib3.exceptions import ConnectTimeoutError\n+from .packages.urllib3.exceptions import ProtocolError\n from .packages.urllib3.exceptions import HTTPError as _HTTPError\n from .packages.urllib3.exceptions import MaxRetryError\n from .packages.urllib3.exceptions import ProxyError as _ProxyError\n@@ -411,12 +412,17 @@ class HTTPAdapter(BaseAdapter):\n \n         except _ProxyError as e:\n             raise ProxyError(e)\n-\n-        except (_SSLError, _HTTPError) as e:\n+        except (_SSLError, _HTTPError, ProtocolError) as e:\n             if isinstance(e, _SSLError):\n                 raise SSLError(e, request=request)\n             elif isinstance(e, ReadTimeoutError):\n                 raise ReadTimeout(e, request=request)\n+            elif isinstance(e, ProtocolError):\n+                raise ConnectionError(e, request=request)\n+            else:                raise ConnectionError(e, request=request)            if isinstance(e, _SSLError):\n+                raise SSLError(e, request=request)\n+            elif isinstance(e, ReadTimeoutError):\n+                raise ReadTimeout(e, request=request)\n             else:\n                 raise\n \ndiff --git a/requests/models.py b/requests/models.py\nindex 03ff627a..521d4adf 100644\n--- a/requests/models.py\n+++ b/requests/models.py\n@@ -638,7 +638,8 @@ class Response(object):\n                     for chunk in self.raw.stream(chunk_size, decode_content=True):\n                         yield chunk\n                 except ProtocolError as e:\n-                    raise ChunkedEncodingError(e)\n+                    raise ConnectionError(e)\n+                    raise ConnectionError(e)                    raise ChunkedEncodingError(e)\n                 except DecodeError as e:\n                     raise ContentDecodingError(e)\n                 except ReadTimeoutError as e:\n",
+        "exact_source_patch": false,
+        "patch_sha256": "1a4f90ee7140671800b386e4b0fe7671953709d836d18fceb46bd03902a1a5e4"
+      }
+    },
+    {
+      "mode": "native-compact",
+      "repetition": 1,
+      "request": {
+        "model": "/opt/aimee-memory-lab/gemma4",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a software engineer fixing a repository issue in /testbed. Use exactly one fenced bash command per response, with at most two brief sentences before it. Read relevant code, implement the fix, and run relevant existing tests or your own reproduction. Do not modify existing tests or commit. You may have native memory from earlier attempts: use its concrete feedback, but verify against this clean checkout. To finish, run exactly: echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT && git diff --no-ext-diff .\nExample:\n```bash\nls\n```"
+          },
+          {
+            "role": "user",
+            "content": "Fix this issue:\n[regression] urllib3.exceptions.ProtocolError not wrapped\n``` py\n>>> requests.__version__\n'2.4.0'\n>>> requests.get('http://localhost:1')\n# ... stacktrace\nrequests.packages.urllib3.exceptions.ProtocolError: ('Connection aborted.', ConnectionRefusedError(111, 'Connection refused'))\n```\n\n"
+          },
+          {
+            "role": "assistant",
+            "content": "I will start by exploring the codebase and identifying the relevant files for handling `urllib3.exceptions.ProtocolError`.\n\n```bash\ngrep -r \"ProtocolError\" requests/\n```"
+          },
+          {
+            "role": "user",
+            "content": "<returncode>0</returncode>\ngrep: requests/__pycache__/models.cpython-39.pyc: binary file matches\nrequests/models.py:    DecodeError, ReadTimeoutError, ProtocolError)\nrequests/models.py:                except ProtocolError as e:\nrequests/packages/urllib3/connectionpool.py:    ProtocolError,\nrequests/packages/urllib3/connectionpool.py:                e = ProtocolError('Connection aborted.', e)\ngrep: requests/packages/urllib3/__pycache__/connectionpool.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/exceptions.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/response.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/util/__pycache__/retry.cpython-39.pyc: binary file matches\nrequests/packages/urllib3/response.py:from .exceptions import ProtocolError, DecodeError, ReadTimeoutError\nrequests/packages/urllib3/response.py:                raise ProtocolError('Connection broken: %r' % e, e)\nrequests/packages/urllib3/exceptions.py:class ProtocolError(HTTPError):\nrequests/packages/urllib3/exceptions.py:#: Renamed to ProtocolError but aliased for backwards compatibility.\nrequests/packages/urllib3/exceptions.py:ConnectionError = ProtocolError\nrequests/packages/urllib3/util/retry.py:    ProtocolError,\nrequests/packages/urllib3/util/retry.py:        return isinstance(err, (ReadTimeoutError, ProtocolError))\n"
+          },
+          {
+            "role": "assistant",
+            "content": "I will create a reproduction script to confirm that `ProtocolError` is not being wrapped as a `ConnectionError`.\n\n```bash\ncat <<EOF > reproduce_issue.py\nimport requests\nfrom requests.packages.urllib3.exceptions import ProtocolError\n\ntry:\n    requests.get('http://localhost:1')\nexcept ProtocolError:\n    print(\"Caught ProtocolError (Fail)\")\n    exit(1)\nexcept requests.exceptions.ConnectionError:\n    print(\"Caught ConnectionError (Success)\")\n    exit(0)\nexcept Exception as e:\n    print(f\"Caught {type(e)} (Fail)\")\n    exit(1)\nEOF\npython3 reproduce_issue.py\n```"
+          },
+          {
+            "role": "user",
+            "content": "<returncode>1</returncode>\nCaught ProtocolError (Fail)\n"
+          }
+        ],
+        "temperature": 0,
+        "seed": 20260926,
+        "max_tokens": 1536,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        },
+        "vllm_xargs": {
+          "aimee_publication": "0610a0c04493ab6da2d7c7d7214afa1a0d291f60c542734975b532b62e5c7c16"
+        }
+      },
+      "response": {
+        "id": "chatcmpl-b156b06d6c34a795",
+        "object": "chat.completion",
+        "created": 1790579257,
+        "model": "/opt/aimee-memory-lab/gemma4",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "I will now apply the fix by importing `ProtocolError` and updating the exception handling in `requests/adapters.py` and `requests/models.py` to ensure it is wrapped in a `ConnectionError`.\n\n```bash\npython3 <<'AIMEE_EDIT_181591653cb01e3e90ad3065'\nfrom pathlib import Path\np=Path('requests/adapters.py');s=p.read_text().splitlines(True)\ns[413:415]=r\"\"\"        except (_SSLError, _HTTPError, ProtocolError) as e:\n            if isinstance(e, _SSLError):\n                raise SSLError(e, request=request)\n            elif isinstance(e, ReadTimeoutError):\n                raise ReadTimeout(e, request=request)\n            elif isinstance(e, ProtocolError):\n                raise ConnectionError(e, request=request)\n            else:\n                raise ConnectionError(e, request=request)\n\"\"\".splitlines(True)\ns[22:22]=r\"\"\"from .packages.urllib3.exceptions import ProtocolError\n\"\"\".splitlines(True)\np.write_text(''.join(s))\np=Path('requests/models.py');s=p.read_text().splitlines(True)\ns[640:640]=r\"\"\"                    raise ConnectionError(e)\n                    raise ConnectionError(e)\n\"\"\".splitlines(True)\np.write_text(''.join(s))\nAIMEE_EDIT_181591653cb01e3e90ad3065\n```",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "stop",
+            "stop_reason": 106,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.0-tp2-0eec029e",
+        "usage": {
+          "prompt_tokens": 837,
+          "total_tokens": 1210,
+          "completion_tokens": 373,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      },
+      "generation_seconds": 18.01631478802301,
+      "input_tokens": 837,
+      "single_command": true,
+      "replay": {
+        "setup": [
+          {
+            "returncode": 0,
+            "stdout": "requests/models.py:    DecodeError, ReadTimeoutError, ProtocolError)\nrequests/models.py:                except ProtocolError as e:\nrequests/packages/urllib3/connectionpool.py:    ProtocolError,\nrequests/packages/urllib3/connectionpool.py:                e = ProtocolError('Connection aborted.', e)\nrequests/packages/urllib3/response.py:from .exceptions import ProtocolError, DecodeError, ReadTimeoutError\nrequests/packages/urllib3/response.py:                raise ProtocolError('Connection broken: %r' % e, e)\nrequests/packages/urllib3/exceptions.py:class ProtocolError(HTTPError):\nrequests/packages/urllib3/exceptions.py:#: Renamed to ProtocolError but aliased for backwards compatibility.\nrequests/packages/urllib3/exceptions.py:ConnectionError = ProtocolError\nrequests/packages/urllib3/util/retry.py:    ProtocolError,\nrequests/packages/urllib3/util/retry.py:        return isinstance(err, (ReadTimeoutError, ProtocolError))\n",
+            "stderr": "grep: requests/__pycache__/models.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/connectionpool.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/exceptions.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/response.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/util/__pycache__/retry.cpython-39.pyc: binary file matches\n"
+          },
+          {
+            "returncode": 1,
+            "stdout": "Caught ProtocolError (Fail)\n",
+            "stderr": ""
+          }
+        ],
+        "observation": {
+          "returncode": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "patch": "diff --git a/requests/adapters.py b/requests/adapters.py\nindex 3c1e979f..84d36d66 100644\n--- a/requests/adapters.py\n+++ b/requests/adapters.py\n@@ -20,6 +20,7 @@ from .utils import (DEFAULT_CA_BUNDLE_PATH, get_encoding_from_headers,\n                     prepend_scheme_if_needed, get_auth_from_url)\n from .structures import CaseInsensitiveDict\n from .packages.urllib3.exceptions import ConnectTimeoutError\n+from .packages.urllib3.exceptions import ProtocolError\n from .packages.urllib3.exceptions import HTTPError as _HTTPError\n from .packages.urllib3.exceptions import MaxRetryError\n from .packages.urllib3.exceptions import ProxyError as _ProxyError\n@@ -411,8 +412,15 @@ class HTTPAdapter(BaseAdapter):\n \n         except _ProxyError as e:\n             raise ProxyError(e)\n-\n-        except (_SSLError, _HTTPError) as e:\n+        except (_SSLError, _HTTPError, ProtocolError) as e:\n+            if isinstance(e, _SSLError):\n+                raise SSLError(e, request=request)\n+            elif isinstance(e, ReadTimeoutError):\n+                raise ReadTimeout(e, request=request)\n+            elif isinstance(e, ProtocolError):\n+                raise ConnectionError(e, request=request)\n+            else:\n+                raise ConnectionError(e, request=request)\n             if isinstance(e, _SSLError):\n                 raise SSLError(e, request=request)\n             elif isinstance(e, ReadTimeoutError):\ndiff --git a/requests/models.py b/requests/models.py\nindex 03ff627a..6251e56e 100644\n--- a/requests/models.py\n+++ b/requests/models.py\n@@ -638,6 +638,8 @@ class Response(object):\n                     for chunk in self.raw.stream(chunk_size, decode_content=True):\n                         yield chunk\n                 except ProtocolError as e:\n+                    raise ConnectionError(e)\n+                    raise ConnectionError(e)\n                     raise ChunkedEncodingError(e)\n                 except DecodeError as e:\n                     raise ContentDecodingError(e)\n",
+        "exact_source_patch": true,
+        "patch_sha256": "181591653cb01e3e90ad3065a0f6570f45856e40733dfb3ddbfe6629503f4a27"
+      }
+    },
+    {
+      "mode": "text-original",
+      "repetition": 1,
+      "request": {
+        "model": "/opt/aimee-memory-lab/gemma4",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a software engineer fixing a repository issue in /testbed. Use exactly one fenced bash command per response, with at most two brief sentences before it. Read relevant code, implement the fix, and run relevant existing tests or your own reproduction. Do not modify existing tests or commit. You may have native memory from earlier attempts: use its concrete feedback, but verify against this clean checkout. To finish, run exactly: echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT && git diff --no-ext-diff .\nExample:\n```bash\nls\n```\n\nAuthoritative memory:\nObserved successful edit for this exact issue on a clean checkout, in /testbed:\n```bash\npython3 <<'AIMEE_EDIT_181591653cb01e3e90ad3065'\nfrom pathlib import Path\np=Path('requests/adapters.py');s=p.read_text().splitlines(True)\ns[413:415]=['        except (_SSLError, _HTTPError, ProtocolError) as e:\\n', '            if isinstance(e, _SSLError):\\n', '                raise SSLError(e, request=request)\\n', '            elif isinstance(e, ReadTimeoutError):\\n', '                raise ReadTimeout(e, request=request)\\n', '            elif isinstance(e, ProtocolError):\\n', '                raise ConnectionError(e, request=request)\\n', '            else:\\n', '                raise ConnectionError(e, request=request)\\n']\ns[22:22]=['from .packages.urllib3.exceptions import ProtocolError\\n']\np.write_text(''.join(s))\np=Path('requests/models.py');s=p.read_text().splitlines(True)\ns[640:640]=['                    raise ConnectionError(e)\\n', '                    raise ConnectionError(e)\\n']\np.write_text(''.join(s))\nAIMEE_EDIT_181591653cb01e3e90ad3065\n```\nThis exact edit independently reproduces the patch from a successful attempt. Inspect the checkout before applying; do not repeat an already-applied edit. Run relevant existing tests."
+          },
+          {
+            "role": "user",
+            "content": "Fix this issue:\n[regression] urllib3.exceptions.ProtocolError not wrapped\n``` py\n>>> requests.__version__\n'2.4.0'\n>>> requests.get('http://localhost:1')\n# ... stacktrace\nrequests.packages.urllib3.exceptions.ProtocolError: ('Connection aborted.', ConnectionRefusedError(111, 'Connection refused'))\n```\n\n"
+          },
+          {
+            "role": "assistant",
+            "content": "I will start by exploring the codebase and identifying the relevant files for handling `urllib3.exceptions.ProtocolError`.\n\n```bash\ngrep -r \"ProtocolError\" requests/\n```"
+          },
+          {
+            "role": "user",
+            "content": "<returncode>0</returncode>\ngrep: requests/__pycache__/models.cpython-39.pyc: binary file matches\nrequests/models.py:    DecodeError, ReadTimeoutError, ProtocolError)\nrequests/models.py:                except ProtocolError as e:\nrequests/packages/urllib3/connectionpool.py:    ProtocolError,\nrequests/packages/urllib3/connectionpool.py:                e = ProtocolError('Connection aborted.', e)\ngrep: requests/packages/urllib3/__pycache__/connectionpool.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/exceptions.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/response.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/util/__pycache__/retry.cpython-39.pyc: binary file matches\nrequests/packages/urllib3/response.py:from .exceptions import ProtocolError, DecodeError, ReadTimeoutError\nrequests/packages/urllib3/response.py:                raise ProtocolError('Connection broken: %r' % e, e)\nrequests/packages/urllib3/exceptions.py:class ProtocolError(HTTPError):\nrequests/packages/urllib3/exceptions.py:#: Renamed to ProtocolError but aliased for backwards compatibility.\nrequests/packages/urllib3/exceptions.py:ConnectionError = ProtocolError\nrequests/packages/urllib3/util/retry.py:    ProtocolError,\nrequests/packages/urllib3/util/retry.py:        return isinstance(err, (ReadTimeoutError, ProtocolError))\n"
+          },
+          {
+            "role": "assistant",
+            "content": "I will create a reproduction script to confirm that `ProtocolError` is not being wrapped as a `ConnectionError`.\n\n```bash\ncat <<EOF > reproduce_issue.py\nimport requests\nfrom requests.packages.urllib3.exceptions import ProtocolError\n\ntry:\n    requests.get('http://localhost:1')\nexcept ProtocolError:\n    print(\"Caught ProtocolError (Fail)\")\n    exit(1)\nexcept requests.exceptions.ConnectionError:\n    print(\"Caught ConnectionError (Success)\")\n    exit(0)\nexcept Exception as e:\n    print(f\"Caught {type(e)} (Fail)\")\n    exit(1)\nEOF\npython3 reproduce_issue.py\n```"
+          },
+          {
+            "role": "user",
+            "content": "<returncode>1</returncode>\nCaught ProtocolError (Fail)\n"
+          }
+        ],
+        "temperature": 0,
+        "seed": 20260926,
+        "max_tokens": 1536,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "response": {
+        "id": "chatcmpl-9d42f79ac8a87c36",
+        "object": "chat.completion",
+        "created": 1790579277,
+        "model": "/opt/aimee-memory-lab/gemma4",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "I will now apply the fix by updating `requests/adapters.py` to catch `ProtocolError` and wrap it in `ConnectionError`, and also ensure `ProtocolError` is imported correctly.\n\n```bash\npython3 <<'AIMEE_EDIT_181591653cb01e3e90ad3065'\nfrom pathlib import Path\np=Path('requests/adapters.py');s=p.read_text().splitlines(True)\ns[413:415]=['        except (_SSLError, _HTTPError, ProtocolError) as e:\\n', '            if isinstance(e, _SSLError):\\n', '                raise SSLError(e, request=request)\\n', '            elif isinstance(e, ReadTimeoutError):\\n', '                raise ReadTimeout(e, request=request)\\n', '            elif isinstance(e, ProtocolError):\\n', '                raise ConnectionError(e, request=request)\\n', '            else:\\n', '                raise ConnectionError(e, request=request)\\n']\ns[22:22]=['from .packages.urllib3.exceptions import ProtocolError\\n']\np.write_text(''.join(s))\np=Path('requests/models.py');s=p.read_text().splitlines(True)\ns[640:640]=['                    raise ConnectionError(e)\\n', '                    raise ConnectionError(e)\\n']\np.write_text(''.join(s))\nAIMEE_EDIT_181591653cb01e3e90ad3065\n```",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "stop",
+            "stop_reason": 106,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.0-tp2-0eec029e",
+        "usage": {
+          "prompt_tokens": 1223,
+          "total_tokens": 1593,
+          "completion_tokens": 370,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      },
+      "generation_seconds": 19.554397391038947,
+      "input_tokens": 1223,
+      "single_command": true,
+      "replay": {
+        "setup": [
+          {
+            "returncode": 0,
+            "stdout": "requests/models.py:    DecodeError, ReadTimeoutError, ProtocolError)\nrequests/models.py:                except ProtocolError as e:\nrequests/packages/urllib3/connectionpool.py:    ProtocolError,\nrequests/packages/urllib3/connectionpool.py:                e = ProtocolError('Connection aborted.', e)\nrequests/packages/urllib3/response.py:from .exceptions import ProtocolError, DecodeError, ReadTimeoutError\nrequests/packages/urllib3/response.py:                raise ProtocolError('Connection broken: %r' % e, e)\nrequests/packages/urllib3/exceptions.py:class ProtocolError(HTTPError):\nrequests/packages/urllib3/exceptions.py:#: Renamed to ProtocolError but aliased for backwards compatibility.\nrequests/packages/urllib3/exceptions.py:ConnectionError = ProtocolError\nrequests/packages/urllib3/util/retry.py:    ProtocolError,\nrequests/packages/urllib3/util/retry.py:        return isinstance(err, (ReadTimeoutError, ProtocolError))\n",
+            "stderr": "grep: requests/__pycache__/models.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/connectionpool.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/exceptions.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/response.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/util/__pycache__/retry.cpython-39.pyc: binary file matches\n"
+          },
+          {
+            "returncode": 1,
+            "stdout": "Caught ProtocolError (Fail)\n",
+            "stderr": ""
+          }
+        ],
+        "observation": {
+          "returncode": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "patch": "diff --git a/requests/adapters.py b/requests/adapters.py\nindex 3c1e979f..84d36d66 100644\n--- a/requests/adapters.py\n+++ b/requests/adapters.py\n@@ -20,6 +20,7 @@ from .utils import (DEFAULT_CA_BUNDLE_PATH, get_encoding_from_headers,\n                     prepend_scheme_if_needed, get_auth_from_url)\n from .structures import CaseInsensitiveDict\n from .packages.urllib3.exceptions import ConnectTimeoutError\n+from .packages.urllib3.exceptions import ProtocolError\n from .packages.urllib3.exceptions import HTTPError as _HTTPError\n from .packages.urllib3.exceptions import MaxRetryError\n from .packages.urllib3.exceptions import ProxyError as _ProxyError\n@@ -411,8 +412,15 @@ class HTTPAdapter(BaseAdapter):\n \n         except _ProxyError as e:\n             raise ProxyError(e)\n-\n-        except (_SSLError, _HTTPError) as e:\n+        except (_SSLError, _HTTPError, ProtocolError) as e:\n+            if isinstance(e, _SSLError):\n+                raise SSLError(e, request=request)\n+            elif isinstance(e, ReadTimeoutError):\n+                raise ReadTimeout(e, request=request)\n+            elif isinstance(e, ProtocolError):\n+                raise ConnectionError(e, request=request)\n+            else:\n+                raise ConnectionError(e, request=request)\n             if isinstance(e, _SSLError):\n                 raise SSLError(e, request=request)\n             elif isinstance(e, ReadTimeoutError):\ndiff --git a/requests/models.py b/requests/models.py\nindex 03ff627a..6251e56e 100644\n--- a/requests/models.py\n+++ b/requests/models.py\n@@ -638,6 +638,8 @@ class Response(object):\n                     for chunk in self.raw.stream(chunk_size, decode_content=True):\n                         yield chunk\n                 except ProtocolError as e:\n+                    raise ConnectionError(e)\n+                    raise ConnectionError(e)\n                     raise ChunkedEncodingError(e)\n                 except DecodeError as e:\n                     raise ContentDecodingError(e)\n",
+        "exact_source_patch": true,
+        "patch_sha256": "181591653cb01e3e90ad3065a0f6570f45856e40733dfb3ddbfe6629503f4a27"
+      }
+    },
+    {
+      "mode": "text-compact",
+      "repetition": 1,
+      "request": {
+        "model": "/opt/aimee-memory-lab/gemma4",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a software engineer fixing a repository issue in /testbed. Use exactly one fenced bash command per response, with at most two brief sentences before it. Read relevant code, implement the fix, and run relevant existing tests or your own reproduction. Do not modify existing tests or commit. You may have native memory from earlier attempts: use its concrete feedback, but verify against this clean checkout. To finish, run exactly: echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT && git diff --no-ext-diff .\nExample:\n```bash\nls\n```\n\nAuthoritative memory:\nObserved successful edit for this exact issue on a clean checkout, in /testbed:\n```bash\npython3 <<'AIMEE_EDIT_181591653cb01e3e90ad3065'\nfrom pathlib import Path\np=Path('requests/adapters.py');s=p.read_text().splitlines(True)\ns[413:415]=r\"\"\"        except (_SSLError, _HTTPError, ProtocolError) as e:\n            if isinstance(e, _SSLError):\n                raise SSLError(e, request=request)\n            elif isinstance(e, ReadTimeoutError):\n                raise ReadTimeout(e, request=request)\n            elif isinstance(e, ProtocolError):\n                raise ConnectionError(e, request=request)\n            else:\n                raise ConnectionError(e, request=request)\n\"\"\".splitlines(True)\ns[22:22]=r\"\"\"from .packages.urllib3.exceptions import ProtocolError\n\"\"\".splitlines(True)\np.write_text(''.join(s))\np=Path('requests/models.py');s=p.read_text().splitlines(True)\ns[640:640]=r\"\"\"                    raise ConnectionError(e)\n                    raise ConnectionError(e)\n\"\"\".splitlines(True)\np.write_text(''.join(s))\nAIMEE_EDIT_181591653cb01e3e90ad3065\n```\nThis exact edit independently reproduces the patch from a successful attempt. Inspect the checkout before applying; do not repeat an already-applied edit. Run relevant existing tests."
+          },
+          {
+            "role": "user",
+            "content": "Fix this issue:\n[regression] urllib3.exceptions.ProtocolError not wrapped\n``` py\n>>> requests.__version__\n'2.4.0'\n>>> requests.get('http://localhost:1')\n# ... stacktrace\nrequests.packages.urllib3.exceptions.ProtocolError: ('Connection aborted.', ConnectionRefusedError(111, 'Connection refused'))\n```\n\n"
+          },
+          {
+            "role": "assistant",
+            "content": "I will start by exploring the codebase and identifying the relevant files for handling `urllib3.exceptions.ProtocolError`.\n\n```bash\ngrep -r \"ProtocolError\" requests/\n```"
+          },
+          {
+            "role": "user",
+            "content": "<returncode>0</returncode>\ngrep: requests/__pycache__/models.cpython-39.pyc: binary file matches\nrequests/models.py:    DecodeError, ReadTimeoutError, ProtocolError)\nrequests/models.py:                except ProtocolError as e:\nrequests/packages/urllib3/connectionpool.py:    ProtocolError,\nrequests/packages/urllib3/connectionpool.py:                e = ProtocolError('Connection aborted.', e)\ngrep: requests/packages/urllib3/__pycache__/connectionpool.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/exceptions.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/response.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/util/__pycache__/retry.cpython-39.pyc: binary file matches\nrequests/packages/urllib3/response.py:from .exceptions import ProtocolError, DecodeError, ReadTimeoutError\nrequests/packages/urllib3/response.py:                raise ProtocolError('Connection broken: %r' % e, e)\nrequests/packages/urllib3/exceptions.py:class ProtocolError(HTTPError):\nrequests/packages/urllib3/exceptions.py:#: Renamed to ProtocolError but aliased for backwards compatibility.\nrequests/packages/urllib3/exceptions.py:ConnectionError = ProtocolError\nrequests/packages/urllib3/util/retry.py:    ProtocolError,\nrequests/packages/urllib3/util/retry.py:        return isinstance(err, (ReadTimeoutError, ProtocolError))\n"
+          },
+          {
+            "role": "assistant",
+            "content": "I will create a reproduction script to confirm that `ProtocolError` is not being wrapped as a `ConnectionError`.\n\n```bash\ncat <<EOF > reproduce_issue.py\nimport requests\nfrom requests.packages.urllib3.exceptions import ProtocolError\n\ntry:\n    requests.get('http://localhost:1')\nexcept ProtocolError:\n    print(\"Caught ProtocolError (Fail)\")\n    exit(1)\nexcept requests.exceptions.ConnectionError:\n    print(\"Caught ConnectionError (Success)\")\n    exit(0)\nexcept Exception as e:\n    print(f\"Caught {type(e)} (Fail)\")\n    exit(1)\nEOF\npython3 reproduce_issue.py\n```"
+          },
+          {
+            "role": "user",
+            "content": "<returncode>1</returncode>\nCaught ProtocolError (Fail)\n"
+          }
+        ],
+        "temperature": 0,
+        "seed": 20260926,
+        "max_tokens": 1536,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "response": {
+        "id": "chatcmpl-8f7aed3969741aaf",
+        "object": "chat.completion",
+        "created": 1790579297,
+        "model": "/opt/aimee-memory-lab/gemma4",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "I will now apply the fix by importing `ProtocolError` and updating the exception handling in `requests/adapters.py` and `requests/models.py` to wrap `ProtocolError` into `requests.exceptions.ConnectionError`.\n\n```python\npython3 <<'AIMEE_EDIT_181591653cb01e3e90ad3065'\nfrom pathlib import Path\np=Path('requests/adapters.py');s=p.read_text().splitlines(True)\ns[413:415]=r\"\"\"        except (_SSLError, _HTTPError, ProtocolError) as e:\n            if isinstance(e, _SSLError):\n                raise SSLError(e, request=request)\n            elif isinstance(e, ReadTimeoutError):\n                raise ReadTimeout(e, request=request)\n            elif isinstance(e, ProtocolError):\n                raise ConnectionError(e, request=request)\n            else:\n                raise ConnectionError(e, request=request)\n\"\"\".splitlines(True)\ns[22:22]=r\"\"\"from .packages.urllib3.exceptions import ProtocolError\n\"\"\".splitlines(True)\np.write_text(''.join(s))\np=Path('requests/models.py');s=p.read_text().splitlines(True)\ns[640:640]=r\"\"\"                    raise ConnectionError(e)\n                    raise ConnectionError(e)\n\"\"\".splitlines(True)\np.write_text(''.join(s))\nAIMEE_EDIT_181591653cb01e3e90ad3065\n```",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "stop",
+            "stop_reason": 106,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.0-tp2-0eec029e",
+        "usage": {
+          "prompt_tokens": 1222,
+          "total_tokens": 1599,
+          "completion_tokens": 377,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      },
+      "generation_seconds": 20.482525250990875,
+      "input_tokens": 1222,
+      "single_command": false
+    },
+    {
+      "mode": "text-compact",
+      "repetition": 2,
+      "request": {
+        "model": "/opt/aimee-memory-lab/gemma4",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a software engineer fixing a repository issue in /testbed. Use exactly one fenced bash command per response, with at most two brief sentences before it. Read relevant code, implement the fix, and run relevant existing tests or your own reproduction. Do not modify existing tests or commit. You may have native memory from earlier attempts: use its concrete feedback, but verify against this clean checkout. To finish, run exactly: echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT && git diff --no-ext-diff .\nExample:\n```bash\nls\n```\n\nAuthoritative memory:\nObserved successful edit for this exact issue on a clean checkout, in /testbed:\n```bash\npython3 <<'AIMEE_EDIT_181591653cb01e3e90ad3065'\nfrom pathlib import Path\np=Path('requests/adapters.py');s=p.read_text().splitlines(True)\ns[413:415]=r\"\"\"        except (_SSLError, _HTTPError, ProtocolError) as e:\n            if isinstance(e, _SSLError):\n                raise SSLError(e, request=request)\n            elif isinstance(e, ReadTimeoutError):\n                raise ReadTimeout(e, request=request)\n            elif isinstance(e, ProtocolError):\n                raise ConnectionError(e, request=request)\n            else:\n                raise ConnectionError(e, request=request)\n\"\"\".splitlines(True)\ns[22:22]=r\"\"\"from .packages.urllib3.exceptions import ProtocolError\n\"\"\".splitlines(True)\np.write_text(''.join(s))\np=Path('requests/models.py');s=p.read_text().splitlines(True)\ns[640:640]=r\"\"\"                    raise ConnectionError(e)\n                    raise ConnectionError(e)\n\"\"\".splitlines(True)\np.write_text(''.join(s))\nAIMEE_EDIT_181591653cb01e3e90ad3065\n```\nThis exact edit independently reproduces the patch from a successful attempt. Inspect the checkout before applying; do not repeat an already-applied edit. Run relevant existing tests."
+          },
+          {
+            "role": "user",
+            "content": "Fix this issue:\n[regression] urllib3.exceptions.ProtocolError not wrapped\n``` py\n>>> requests.__version__\n'2.4.0'\n>>> requests.get('http://localhost:1')\n# ... stacktrace\nrequests.packages.urllib3.exceptions.ProtocolError: ('Connection aborted.', ConnectionRefusedError(111, 'Connection refused'))\n```\n\n"
+          },
+          {
+            "role": "assistant",
+            "content": "I will start by exploring the codebase and identifying the relevant files for handling `urllib3.exceptions.ProtocolError`.\n\n```bash\ngrep -r \"ProtocolError\" requests/\n```"
+          },
+          {
+            "role": "user",
+            "content": "<returncode>0</returncode>\ngrep: requests/__pycache__/models.cpython-39.pyc: binary file matches\nrequests/models.py:    DecodeError, ReadTimeoutError, ProtocolError)\nrequests/models.py:                except ProtocolError as e:\nrequests/packages/urllib3/connectionpool.py:    ProtocolError,\nrequests/packages/urllib3/connectionpool.py:                e = ProtocolError('Connection aborted.', e)\ngrep: requests/packages/urllib3/__pycache__/connectionpool.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/exceptions.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/response.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/util/__pycache__/retry.cpython-39.pyc: binary file matches\nrequests/packages/urllib3/response.py:from .exceptions import ProtocolError, DecodeError, ReadTimeoutError\nrequests/packages/urllib3/response.py:                raise ProtocolError('Connection broken: %r' % e, e)\nrequests/packages/urllib3/exceptions.py:class ProtocolError(HTTPError):\nrequests/packages/urllib3/exceptions.py:#: Renamed to ProtocolError but aliased for backwards compatibility.\nrequests/packages/urllib3/exceptions.py:ConnectionError = ProtocolError\nrequests/packages/urllib3/util/retry.py:    ProtocolError,\nrequests/packages/urllib3/util/retry.py:        return isinstance(err, (ReadTimeoutError, ProtocolError))\n"
+          },
+          {
+            "role": "assistant",
+            "content": "I will create a reproduction script to confirm that `ProtocolError` is not being wrapped as a `ConnectionError`.\n\n```bash\ncat <<EOF > reproduce_issue.py\nimport requests\nfrom requests.packages.urllib3.exceptions import ProtocolError\n\ntry:\n    requests.get('http://localhost:1')\nexcept ProtocolError:\n    print(\"Caught ProtocolError (Fail)\")\n    exit(1)\nexcept requests.exceptions.ConnectionError:\n    print(\"Caught ConnectionError (Success)\")\n    exit(0)\nexcept Exception as e:\n    print(f\"Caught {type(e)} (Fail)\")\n    exit(1)\nEOF\npython3 reproduce_issue.py\n```"
+          },
+          {
+            "role": "user",
+            "content": "<returncode>1</returncode>\nCaught ProtocolError (Fail)\n"
+          }
+        ],
+        "temperature": 0,
+        "seed": 20260926,
+        "max_tokens": 1536,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "response": {
+        "id": "chatcmpl-84388a60c1b6f70c",
+        "object": "chat.completion",
+        "created": 1790579318,
+        "model": "/opt/aimee-memory-lab/gemma4",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "I will now apply the fix by importing `ProtocolError` and updating the exception handling in `requests/adapters.py` and `requests/models.py` to wrap `ProtocolError` into `requests.exceptions.ConnectionError`.\n\n```python\npython3 <<'AIMEE_EDIT_181591653cb01e3e90ad3065'\nfrom pathlib import Path\np=Path('requests/adapters.py');s=p.read_text().splitlines(True)\ns[413:415]=r\"\"\"        except (_SSLError, _HTTPError, ProtocolError) as e:\n            if isinstance(e, _SSLError):\n                raise SSLError(e, request=request)\n            elif isinstance(e, ReadTimeoutError):\n                raise ReadTimeout(e, request=request)\n            elif isinstance(e, ProtocolError):\n                raise ConnectionError(e, request=request)\n            else:\n                raise ConnectionError(e, request=request)\n\"\"\".splitlines(True)\ns[22:22]=r\"\"\"from .packages.urllib3.exceptions import ProtocolError\n\"\"\".splitlines(True)\np.write_text(''.join(s))\np=Path('requests/models.py');s=p.read_text().splitlines(True)\ns[640:640]=r\"\"\"                    raise ConnectionError(e)\n                    raise ConnectionError(e)\n\"\"\".splitlines(True)\np.write_text(''.join(s))\nAIMEE_EDIT_181591653cb01e3e90ad3065\n```",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "stop",
+            "stop_reason": 106,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.0-tp2-0eec029e",
+        "usage": {
+          "prompt_tokens": 1222,
+          "total_tokens": 1599,
+          "completion_tokens": 377,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      },
+      "generation_seconds": 19.869578332058154,
+      "input_tokens": 1222,
+      "single_command": false
+    },
+    {
+      "mode": "text-original",
+      "repetition": 2,
+      "request": {
+        "model": "/opt/aimee-memory-lab/gemma4",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a software engineer fixing a repository issue in /testbed. Use exactly one fenced bash command per response, with at most two brief sentences before it. Read relevant code, implement the fix, and run relevant existing tests or your own reproduction. Do not modify existing tests or commit. You may have native memory from earlier attempts: use its concrete feedback, but verify against this clean checkout. To finish, run exactly: echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT && git diff --no-ext-diff .\nExample:\n```bash\nls\n```\n\nAuthoritative memory:\nObserved successful edit for this exact issue on a clean checkout, in /testbed:\n```bash\npython3 <<'AIMEE_EDIT_181591653cb01e3e90ad3065'\nfrom pathlib import Path\np=Path('requests/adapters.py');s=p.read_text().splitlines(True)\ns[413:415]=['        except (_SSLError, _HTTPError, ProtocolError) as e:\\n', '            if isinstance(e, _SSLError):\\n', '                raise SSLError(e, request=request)\\n', '            elif isinstance(e, ReadTimeoutError):\\n', '                raise ReadTimeout(e, request=request)\\n', '            elif isinstance(e, ProtocolError):\\n', '                raise ConnectionError(e, request=request)\\n', '            else:\\n', '                raise ConnectionError(e, request=request)\\n']\ns[22:22]=['from .packages.urllib3.exceptions import ProtocolError\\n']\np.write_text(''.join(s))\np=Path('requests/models.py');s=p.read_text().splitlines(True)\ns[640:640]=['                    raise ConnectionError(e)\\n', '                    raise ConnectionError(e)\\n']\np.write_text(''.join(s))\nAIMEE_EDIT_181591653cb01e3e90ad3065\n```\nThis exact edit independently reproduces the patch from a successful attempt. Inspect the checkout before applying; do not repeat an already-applied edit. Run relevant existing tests."
+          },
+          {
+            "role": "user",
+            "content": "Fix this issue:\n[regression] urllib3.exceptions.ProtocolError not wrapped\n``` py\n>>> requests.__version__\n'2.4.0'\n>>> requests.get('http://localhost:1')\n# ... stacktrace\nrequests.packages.urllib3.exceptions.ProtocolError: ('Connection aborted.', ConnectionRefusedError(111, 'Connection refused'))\n```\n\n"
+          },
+          {
+            "role": "assistant",
+            "content": "I will start by exploring the codebase and identifying the relevant files for handling `urllib3.exceptions.ProtocolError`.\n\n```bash\ngrep -r \"ProtocolError\" requests/\n```"
+          },
+          {
+            "role": "user",
+            "content": "<returncode>0</returncode>\ngrep: requests/__pycache__/models.cpython-39.pyc: binary file matches\nrequests/models.py:    DecodeError, ReadTimeoutError, ProtocolError)\nrequests/models.py:                except ProtocolError as e:\nrequests/packages/urllib3/connectionpool.py:    ProtocolError,\nrequests/packages/urllib3/connectionpool.py:                e = ProtocolError('Connection aborted.', e)\ngrep: requests/packages/urllib3/__pycache__/connectionpool.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/exceptions.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/response.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/util/__pycache__/retry.cpython-39.pyc: binary file matches\nrequests/packages/urllib3/response.py:from .exceptions import ProtocolError, DecodeError, ReadTimeoutError\nrequests/packages/urllib3/response.py:                raise ProtocolError('Connection broken: %r' % e, e)\nrequests/packages/urllib3/exceptions.py:class ProtocolError(HTTPError):\nrequests/packages/urllib3/exceptions.py:#: Renamed to ProtocolError but aliased for backwards compatibility.\nrequests/packages/urllib3/exceptions.py:ConnectionError = ProtocolError\nrequests/packages/urllib3/util/retry.py:    ProtocolError,\nrequests/packages/urllib3/util/retry.py:        return isinstance(err, (ReadTimeoutError, ProtocolError))\n"
+          },
+          {
+            "role": "assistant",
+            "content": "I will create a reproduction script to confirm that `ProtocolError` is not being wrapped as a `ConnectionError`.\n\n```bash\ncat <<EOF > reproduce_issue.py\nimport requests\nfrom requests.packages.urllib3.exceptions import ProtocolError\n\ntry:\n    requests.get('http://localhost:1')\nexcept ProtocolError:\n    print(\"Caught ProtocolError (Fail)\")\n    exit(1)\nexcept requests.exceptions.ConnectionError:\n    print(\"Caught ConnectionError (Success)\")\n    exit(0)\nexcept Exception as e:\n    print(f\"Caught {type(e)} (Fail)\")\n    exit(1)\nEOF\npython3 reproduce_issue.py\n```"
+          },
+          {
+            "role": "user",
+            "content": "<returncode>1</returncode>\nCaught ProtocolError (Fail)\n"
+          }
+        ],
+        "temperature": 0,
+        "seed": 20260926,
+        "max_tokens": 1536,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "response": {
+        "id": "chatcmpl-847123a5daaf961c",
+        "object": "chat.completion",
+        "created": 1790579338,
+        "model": "/opt/aimee-memory-lab/gemma4",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "I will now apply the fix by updating `requests/adapters.py` to catch `ProtocolError` and wrap it in `ConnectionError`, and also ensure `ProtocolError` is imported correctly.\n\n```bash\npython3 <<'AIMEE_EDIT_181591653cb01e3e90ad3065'\nfrom pathlib import Path\np=Path('requests/adapters.py');s=p.read_text().splitlines(True)\ns[413:415]=['        except (_SSLError, _HTTPError, ProtocolError) as e:\\n', '            if isinstance(e, _SSLError):\\n', '                raise SSLError(e, request=request)\\n', '            elif isinstance(e, ReadTimeoutError):\\n', '                raise ReadTimeout(e, request=request)\\n', '            elif isinstance(e, ProtocolError):\\n', '                raise ConnectionError(e, request=request)\\n', '            else:\\n', '                raise ConnectionError(e, request=request)\\n']\ns[22:22]=['from .packages.urllib3.exceptions import ProtocolError\\n']\np.write_text(''.join(s))\np=Path('requests/models.py');s=p.read_text().splitlines(True)\ns[640:640]=['                    raise ConnectionError(e)\\n', '                    raise ConnectionError(e)\\n']\np.write_text(''.join(s))\nAIMEE_EDIT_181591653cb01e3e90ad3065\n```",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "stop",
+            "stop_reason": 106,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.0-tp2-0eec029e",
+        "usage": {
+          "prompt_tokens": 1223,
+          "total_tokens": 1593,
+          "completion_tokens": 370,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      },
+      "generation_seconds": 20.02350716397632,
+      "input_tokens": 1223,
+      "single_command": true,
+      "replay": {
+        "setup": [
+          {
+            "returncode": 0,
+            "stdout": "requests/models.py:    DecodeError, ReadTimeoutError, ProtocolError)\nrequests/models.py:                except ProtocolError as e:\nrequests/packages/urllib3/connectionpool.py:    ProtocolError,\nrequests/packages/urllib3/connectionpool.py:                e = ProtocolError('Connection aborted.', e)\nrequests/packages/urllib3/response.py:from .exceptions import ProtocolError, DecodeError, ReadTimeoutError\nrequests/packages/urllib3/response.py:                raise ProtocolError('Connection broken: %r' % e, e)\nrequests/packages/urllib3/exceptions.py:class ProtocolError(HTTPError):\nrequests/packages/urllib3/exceptions.py:#: Renamed to ProtocolError but aliased for backwards compatibility.\nrequests/packages/urllib3/exceptions.py:ConnectionError = ProtocolError\nrequests/packages/urllib3/util/retry.py:    ProtocolError,\nrequests/packages/urllib3/util/retry.py:        return isinstance(err, (ReadTimeoutError, ProtocolError))\n",
+            "stderr": "grep: requests/__pycache__/models.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/connectionpool.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/exceptions.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/response.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/util/__pycache__/retry.cpython-39.pyc: binary file matches\n"
+          },
+          {
+            "returncode": 1,
+            "stdout": "Caught ProtocolError (Fail)\n",
+            "stderr": ""
+          }
+        ],
+        "observation": {
+          "returncode": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "patch": "diff --git a/requests/adapters.py b/requests/adapters.py\nindex 3c1e979f..84d36d66 100644\n--- a/requests/adapters.py\n+++ b/requests/adapters.py\n@@ -20,6 +20,7 @@ from .utils import (DEFAULT_CA_BUNDLE_PATH, get_encoding_from_headers,\n                     prepend_scheme_if_needed, get_auth_from_url)\n from .structures import CaseInsensitiveDict\n from .packages.urllib3.exceptions import ConnectTimeoutError\n+from .packages.urllib3.exceptions import ProtocolError\n from .packages.urllib3.exceptions import HTTPError as _HTTPError\n from .packages.urllib3.exceptions import MaxRetryError\n from .packages.urllib3.exceptions import ProxyError as _ProxyError\n@@ -411,8 +412,15 @@ class HTTPAdapter(BaseAdapter):\n \n         except _ProxyError as e:\n             raise ProxyError(e)\n-\n-        except (_SSLError, _HTTPError) as e:\n+        except (_SSLError, _HTTPError, ProtocolError) as e:\n+            if isinstance(e, _SSLError):\n+                raise SSLError(e, request=request)\n+            elif isinstance(e, ReadTimeoutError):\n+                raise ReadTimeout(e, request=request)\n+            elif isinstance(e, ProtocolError):\n+                raise ConnectionError(e, request=request)\n+            else:\n+                raise ConnectionError(e, request=request)\n             if isinstance(e, _SSLError):\n                 raise SSLError(e, request=request)\n             elif isinstance(e, ReadTimeoutError):\ndiff --git a/requests/models.py b/requests/models.py\nindex 03ff627a..6251e56e 100644\n--- a/requests/models.py\n+++ b/requests/models.py\n@@ -638,6 +638,8 @@ class Response(object):\n                     for chunk in self.raw.stream(chunk_size, decode_content=True):\n                         yield chunk\n                 except ProtocolError as e:\n+                    raise ConnectionError(e)\n+                    raise ConnectionError(e)\n                     raise ChunkedEncodingError(e)\n                 except DecodeError as e:\n                     raise ContentDecodingError(e)\n",
+        "exact_source_patch": true,
+        "patch_sha256": "181591653cb01e3e90ad3065a0f6570f45856e40733dfb3ddbfe6629503f4a27"
+      }
+    },
+    {
+      "mode": "native-compact",
+      "repetition": 2,
+      "request": {
+        "model": "/opt/aimee-memory-lab/gemma4",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a software engineer fixing a repository issue in /testbed. Use exactly one fenced bash command per response, with at most two brief sentences before it. Read relevant code, implement the fix, and run relevant existing tests or your own reproduction. Do not modify existing tests or commit. You may have native memory from earlier attempts: use its concrete feedback, but verify against this clean checkout. To finish, run exactly: echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT && git diff --no-ext-diff .\nExample:\n```bash\nls\n```"
+          },
+          {
+            "role": "user",
+            "content": "Fix this issue:\n[regression] urllib3.exceptions.ProtocolError not wrapped\n``` py\n>>> requests.__version__\n'2.4.0'\n>>> requests.get('http://localhost:1')\n# ... stacktrace\nrequests.packages.urllib3.exceptions.ProtocolError: ('Connection aborted.', ConnectionRefusedError(111, 'Connection refused'))\n```\n\n"
+          },
+          {
+            "role": "assistant",
+            "content": "I will start by exploring the codebase and identifying the relevant files for handling `urllib3.exceptions.ProtocolError`.\n\n```bash\ngrep -r \"ProtocolError\" requests/\n```"
+          },
+          {
+            "role": "user",
+            "content": "<returncode>0</returncode>\ngrep: requests/__pycache__/models.cpython-39.pyc: binary file matches\nrequests/models.py:    DecodeError, ReadTimeoutError, ProtocolError)\nrequests/models.py:                except ProtocolError as e:\nrequests/packages/urllib3/connectionpool.py:    ProtocolError,\nrequests/packages/urllib3/connectionpool.py:                e = ProtocolError('Connection aborted.', e)\ngrep: requests/packages/urllib3/__pycache__/connectionpool.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/exceptions.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/response.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/util/__pycache__/retry.cpython-39.pyc: binary file matches\nrequests/packages/urllib3/response.py:from .exceptions import ProtocolError, DecodeError, ReadTimeoutError\nrequests/packages/urllib3/response.py:                raise ProtocolError('Connection broken: %r' % e, e)\nrequests/packages/urllib3/exceptions.py:class ProtocolError(HTTPError):\nrequests/packages/urllib3/exceptions.py:#: Renamed to ProtocolError but aliased for backwards compatibility.\nrequests/packages/urllib3/exceptions.py:ConnectionError = ProtocolError\nrequests/packages/urllib3/util/retry.py:    ProtocolError,\nrequests/packages/urllib3/util/retry.py:        return isinstance(err, (ReadTimeoutError, ProtocolError))\n"
+          },
+          {
+            "role": "assistant",
+            "content": "I will create a reproduction script to confirm that `ProtocolError` is not being wrapped as a `ConnectionError`.\n\n```bash\ncat <<EOF > reproduce_issue.py\nimport requests\nfrom requests.packages.urllib3.exceptions import ProtocolError\n\ntry:\n    requests.get('http://localhost:1')\nexcept ProtocolError:\n    print(\"Caught ProtocolError (Fail)\")\n    exit(1)\nexcept requests.exceptions.ConnectionError:\n    print(\"Caught ConnectionError (Success)\")\n    exit(0)\nexcept Exception as e:\n    print(f\"Caught {type(e)} (Fail)\")\n    exit(1)\nEOF\npython3 reproduce_issue.py\n```"
+          },
+          {
+            "role": "user",
+            "content": "<returncode>1</returncode>\nCaught ProtocolError (Fail)\n"
+          }
+        ],
+        "temperature": 0,
+        "seed": 20260926,
+        "max_tokens": 1536,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        },
+        "vllm_xargs": {
+          "aimee_publication": "0610a0c04493ab6da2d7c7d7214afa1a0d291f60c542734975b532b62e5c7c16"
+        }
+      },
+      "response": {
+        "id": "chatcmpl-91ae0a226fce6807",
+        "object": "chat.completion",
+        "created": 1790579359,
+        "model": "/opt/aimee-memory-lab/gemma4",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "I will now apply the fix by importing `ProtocolError` and updating the exception handling in `requests/adapters.py` and `requests/models.py` to ensure it is wrapped in a `ConnectionError`.\n\n```bash\npython3 <<'AIMEE_EDIT_181591653cb01e3e90ad3065'\nfrom pathlib import Path\np=Path('requests/adapters.py');s=p.read_text().splitlines(True)\ns[413:415]=r\"\"\"        except (_SSLError, _HTTPError, ProtocolError) as e:\n            if isinstance(e, _SSLError):\n                raise SSLError(e, request=request)\n            elif isinstance(e, ReadTimeoutError):\n                raise ReadTimeout(e, request=request)\n            elif isinstance(e, ProtocolError):\n                raise ConnectionError(e, request=request)\n            else:\n                raise ConnectionError(e, request=request)\n\"\"\".splitlines(True)\ns[22:22]=r\"\"\"from .packages.urllib3.exceptions import ProtocolError\n\"\"\".splitlines(True)\np.write_text(''.join(s))\np=Path('requests/models.py');s=p.read_text().splitlines(True)\ns[640:640]=r\"\"\"                    raise ConnectionError(e)\n                    raise ConnectionError(e)\n\"\"\".splitlines(True)\np.write_text(''.join(s))\nAIMEE_EDIT_181591653cb01e3e90ad3065\n```",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "stop",
+            "stop_reason": 106,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.0-tp2-0eec029e",
+        "usage": {
+          "prompt_tokens": 837,
+          "total_tokens": 1210,
+          "completion_tokens": 373,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      },
+      "generation_seconds": 16.39623459498398,
+      "input_tokens": 837,
+      "single_command": true,
+      "replay": {
+        "setup": [
+          {
+            "returncode": 0,
+            "stdout": "requests/models.py:    DecodeError, ReadTimeoutError, ProtocolError)\nrequests/models.py:                except ProtocolError as e:\nrequests/packages/urllib3/connectionpool.py:    ProtocolError,\nrequests/packages/urllib3/connectionpool.py:                e = ProtocolError('Connection aborted.', e)\nrequests/packages/urllib3/response.py:from .exceptions import ProtocolError, DecodeError, ReadTimeoutError\nrequests/packages/urllib3/response.py:                raise ProtocolError('Connection broken: %r' % e, e)\nrequests/packages/urllib3/exceptions.py:class ProtocolError(HTTPError):\nrequests/packages/urllib3/exceptions.py:#: Renamed to ProtocolError but aliased for backwards compatibility.\nrequests/packages/urllib3/exceptions.py:ConnectionError = ProtocolError\nrequests/packages/urllib3/util/retry.py:    ProtocolError,\nrequests/packages/urllib3/util/retry.py:        return isinstance(err, (ReadTimeoutError, ProtocolError))\n",
+            "stderr": "grep: requests/__pycache__/models.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/connectionpool.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/exceptions.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/response.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/util/__pycache__/retry.cpython-39.pyc: binary file matches\n"
+          },
+          {
+            "returncode": 1,
+            "stdout": "Caught ProtocolError (Fail)\n",
+            "stderr": ""
+          }
+        ],
+        "observation": {
+          "returncode": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "patch": "diff --git a/requests/adapters.py b/requests/adapters.py\nindex 3c1e979f..84d36d66 100644\n--- a/requests/adapters.py\n+++ b/requests/adapters.py\n@@ -20,6 +20,7 @@ from .utils import (DEFAULT_CA_BUNDLE_PATH, get_encoding_from_headers,\n                     prepend_scheme_if_needed, get_auth_from_url)\n from .structures import CaseInsensitiveDict\n from .packages.urllib3.exceptions import ConnectTimeoutError\n+from .packages.urllib3.exceptions import ProtocolError\n from .packages.urllib3.exceptions import HTTPError as _HTTPError\n from .packages.urllib3.exceptions import MaxRetryError\n from .packages.urllib3.exceptions import ProxyError as _ProxyError\n@@ -411,8 +412,15 @@ class HTTPAdapter(BaseAdapter):\n \n         except _ProxyError as e:\n             raise ProxyError(e)\n-\n-        except (_SSLError, _HTTPError) as e:\n+        except (_SSLError, _HTTPError, ProtocolError) as e:\n+            if isinstance(e, _SSLError):\n+                raise SSLError(e, request=request)\n+            elif isinstance(e, ReadTimeoutError):\n+                raise ReadTimeout(e, request=request)\n+            elif isinstance(e, ProtocolError):\n+                raise ConnectionError(e, request=request)\n+            else:\n+                raise ConnectionError(e, request=request)\n             if isinstance(e, _SSLError):\n                 raise SSLError(e, request=request)\n             elif isinstance(e, ReadTimeoutError):\ndiff --git a/requests/models.py b/requests/models.py\nindex 03ff627a..6251e56e 100644\n--- a/requests/models.py\n+++ b/requests/models.py\n@@ -638,6 +638,8 @@ class Response(object):\n                     for chunk in self.raw.stream(chunk_size, decode_content=True):\n                         yield chunk\n                 except ProtocolError as e:\n+                    raise ConnectionError(e)\n+                    raise ConnectionError(e)\n                     raise ChunkedEncodingError(e)\n                 except DecodeError as e:\n                     raise ContentDecodingError(e)\n",
+        "exact_source_patch": true,
+        "patch_sha256": "181591653cb01e3e90ad3065a0f6570f45856e40733dfb3ddbfe6629503f4a27"
+      }
+    },
+    {
+      "mode": "native-original",
+      "repetition": 2,
+      "request": {
+        "model": "/opt/aimee-memory-lab/gemma4",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a software engineer fixing a repository issue in /testbed. Use exactly one fenced bash command per response, with at most two brief sentences before it. Read relevant code, implement the fix, and run relevant existing tests or your own reproduction. Do not modify existing tests or commit. You may have native memory from earlier attempts: use its concrete feedback, but verify against this clean checkout. To finish, run exactly: echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT && git diff --no-ext-diff .\nExample:\n```bash\nls\n```"
+          },
+          {
+            "role": "user",
+            "content": "Fix this issue:\n[regression] urllib3.exceptions.ProtocolError not wrapped\n``` py\n>>> requests.__version__\n'2.4.0'\n>>> requests.get('http://localhost:1')\n# ... stacktrace\nrequests.packages.urllib3.exceptions.ProtocolError: ('Connection aborted.', ConnectionRefusedError(111, 'Connection refused'))\n```\n\n"
+          },
+          {
+            "role": "assistant",
+            "content": "I will start by exploring the codebase and identifying the relevant files for handling `urllib3.exceptions.ProtocolError`.\n\n```bash\ngrep -r \"ProtocolError\" requests/\n```"
+          },
+          {
+            "role": "user",
+            "content": "<returncode>0</returncode>\ngrep: requests/__pycache__/models.cpython-39.pyc: binary file matches\nrequests/models.py:    DecodeError, ReadTimeoutError, ProtocolError)\nrequests/models.py:                except ProtocolError as e:\nrequests/packages/urllib3/connectionpool.py:    ProtocolError,\nrequests/packages/urllib3/connectionpool.py:                e = ProtocolError('Connection aborted.', e)\ngrep: requests/packages/urllib3/__pycache__/connectionpool.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/exceptions.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/response.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/util/__pycache__/retry.cpython-39.pyc: binary file matches\nrequests/packages/urllib3/response.py:from .exceptions import ProtocolError, DecodeError, ReadTimeoutError\nrequests/packages/urllib3/response.py:                raise ProtocolError('Connection broken: %r' % e, e)\nrequests/packages/urllib3/exceptions.py:class ProtocolError(HTTPError):\nrequests/packages/urllib3/exceptions.py:#: Renamed to ProtocolError but aliased for backwards compatibility.\nrequests/packages/urllib3/exceptions.py:ConnectionError = ProtocolError\nrequests/packages/urllib3/util/retry.py:    ProtocolError,\nrequests/packages/urllib3/util/retry.py:        return isinstance(err, (ReadTimeoutError, ProtocolError))\n"
+          },
+          {
+            "role": "assistant",
+            "content": "I will create a reproduction script to confirm that `ProtocolError` is not being wrapped as a `ConnectionError`.\n\n```bash\ncat <<EOF > reproduce_issue.py\nimport requests\nfrom requests.packages.urllib3.exceptions import ProtocolError\n\ntry:\n    requests.get('http://localhost:1')\nexcept ProtocolError:\n    print(\"Caught ProtocolError (Fail)\")\n    exit(1)\nexcept requests.exceptions.ConnectionError:\n    print(\"Caught ConnectionError (Success)\")\n    exit(0)\nexcept Exception as e:\n    print(f\"Caught {type(e)} (Fail)\")\n    exit(1)\nEOF\npython3 reproduce_issue.py\n```"
+          },
+          {
+            "role": "user",
+            "content": "<returncode>1</returncode>\nCaught ProtocolError (Fail)\n"
+          }
+        ],
+        "temperature": 0,
+        "seed": 20260926,
+        "max_tokens": 1536,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        },
+        "vllm_xargs": {
+          "aimee_publication": "7eaa5fcc6fe3e2c5709acac2fecc4269db8731d8eec2c76e863192af98b14c6e"
+        }
+      },
+      "response": {
+        "id": "chatcmpl-8fabc5683e91cefd",
+        "object": "chat.completion",
+        "created": 1790579376,
+        "model": "/opt/aimee-memory-lab/gemma4",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "I will now apply the fix by importing `ProtocolError` and updating the exception handling in `requests/adapters.py` to wrap `ProtocolError` into `requests.exceptions.ConnectionError`.\n\n```bash\npython3 <<'AIMEE_EDIT_181591653cb01e3e90ad3065'\nfrom pathlib import Path\np=Path('requests/adapters.py');s=p.read_text().splitlines(True)\ns[413:415]=['        except (_SSLError, _HTTPError, ProtocolError) as e:\\n', '            if isinstance(e, _SSLError):\\n', '                raise SSLError(e, request=request)\\n', '            elif isinstance(e, ReadTimeoutError):\\n', '                raise ReadTimeout(e, request=request)\\n', '            elif isinstance(e, ProtocolError):\\n', '                raise ConnectionError(e, request=request)\\n', '            else:\\\n', '                raise ConnectionError(e, request=request)\\\n']\ns[22:22]=['from .packages.urllib3.exceptions import ProtocolError\\n']\np.write_text(''.join(s))\np=Path('requests/models.py');s=p.read_text().splitlines(True)\ns[640:640]=['                    raise ConnectionError(e)\\n', '                    raise ConnectionError(e)\\\n']\np.write_text(''.join(s))\nAIMEE_EDIT_181591653cb01e3e90ad3065\n```",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "stop",
+            "stop_reason": 106,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.0-tp2-0eec029e",
+        "usage": {
+          "prompt_tokens": 837,
+          "total_tokens": 1207,
+          "completion_tokens": 370,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      },
+      "generation_seconds": 16.511280153063126,
+      "input_tokens": 837,
+      "single_command": true,
+      "replay": {
+        "setup": [
+          {
+            "returncode": 0,
+            "stdout": "requests/models.py:    DecodeError, ReadTimeoutError, ProtocolError)\nrequests/models.py:                except ProtocolError as e:\nrequests/packages/urllib3/connectionpool.py:    ProtocolError,\nrequests/packages/urllib3/connectionpool.py:                e = ProtocolError('Connection aborted.', e)\nrequests/packages/urllib3/response.py:from .exceptions import ProtocolError, DecodeError, ReadTimeoutError\nrequests/packages/urllib3/response.py:                raise ProtocolError('Connection broken: %r' % e, e)\nrequests/packages/urllib3/exceptions.py:class ProtocolError(HTTPError):\nrequests/packages/urllib3/exceptions.py:#: Renamed to ProtocolError but aliased for backwards compatibility.\nrequests/packages/urllib3/exceptions.py:ConnectionError = ProtocolError\nrequests/packages/urllib3/util/retry.py:    ProtocolError,\nrequests/packages/urllib3/util/retry.py:        return isinstance(err, (ReadTimeoutError, ProtocolError))\n",
+            "stderr": "grep: requests/__pycache__/models.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/connectionpool.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/exceptions.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/__pycache__/response.cpython-39.pyc: binary file matches\ngrep: requests/packages/urllib3/util/__pycache__/retry.cpython-39.pyc: binary file matches\n"
+          },
+          {
+            "returncode": 1,
+            "stdout": "Caught ProtocolError (Fail)\n",
+            "stderr": ""
+          }
+        ],
+        "observation": {
+          "returncode": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "patch": "diff --git a/requests/adapters.py b/requests/adapters.py\nindex 3c1e979f..da6fec1a 100644\n--- a/requests/adapters.py\n+++ b/requests/adapters.py\n@@ -20,6 +20,7 @@ from .utils import (DEFAULT_CA_BUNDLE_PATH, get_encoding_from_headers,\n                     prepend_scheme_if_needed, get_auth_from_url)\n from .structures import CaseInsensitiveDict\n from .packages.urllib3.exceptions import ConnectTimeoutError\n+from .packages.urllib3.exceptions import ProtocolError\n from .packages.urllib3.exceptions import HTTPError as _HTTPError\n from .packages.urllib3.exceptions import MaxRetryError\n from .packages.urllib3.exceptions import ProxyError as _ProxyError\n@@ -411,12 +412,17 @@ class HTTPAdapter(BaseAdapter):\n \n         except _ProxyError as e:\n             raise ProxyError(e)\n-\n-        except (_SSLError, _HTTPError) as e:\n+        except (_SSLError, _HTTPError, ProtocolError) as e:\n             if isinstance(e, _SSLError):\n                 raise SSLError(e, request=request)\n             elif isinstance(e, ReadTimeoutError):\n                 raise ReadTimeout(e, request=request)\n+            elif isinstance(e, ProtocolError):\n+                raise ConnectionError(e, request=request)\n+            else:                raise ConnectionError(e, request=request)            if isinstance(e, _SSLError):\n+                raise SSLError(e, request=request)\n+            elif isinstance(e, ReadTimeoutError):\n+                raise ReadTimeout(e, request=request)\n             else:\n                 raise\n \ndiff --git a/requests/models.py b/requests/models.py\nindex 03ff627a..521d4adf 100644\n--- a/requests/models.py\n+++ b/requests/models.py\n@@ -638,7 +638,8 @@ class Response(object):\n                     for chunk in self.raw.stream(chunk_size, decode_content=True):\n                         yield chunk\n                 except ProtocolError as e:\n-                    raise ChunkedEncodingError(e)\n+                    raise ConnectionError(e)\n+                    raise ConnectionError(e)                    raise ChunkedEncodingError(e)\n                 except DecodeError as e:\n                     raise ContentDecodingError(e)\n                 except ReadTimeoutError as e:\n",
+        "exact_source_patch": false,
+        "patch_sha256": "1a4f90ee7140671800b386e4b0fe7671953709d836d18fceb46bd03902a1a5e4"
+      }
+    }
+  ],
+  "updated": 1790579394.3126185
+}
