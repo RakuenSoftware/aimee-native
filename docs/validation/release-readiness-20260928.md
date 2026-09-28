@@ -430,3 +430,21 @@ recorded in `benchmarks/swe_learning/broader-image-readiness-20260928.json`.
 Prefetch completed without error and left about 59 GiB free in the actual host
 thin pool, above the 40 GiB reserve. This is environment readiness only; the
 broader GPU study is still waiting for the primary campaign to finish.
+
+
+## Twelve-task checkpoint
+
+The first 12 tasks now have all 48 official outcomes. Control passes 1/12;
+each native round passes 2/12. Flask retains the successful control in all
+three rounds, and Matplotlib-25340 is the sole additional successful task,
+also retained across all three rounds. The other ten tasks fail in all four
+conditions. There are no grading infrastructure errors in this completed
+prefix. These results demonstrate two retained successful procedures, not
+broad task improvement or a reliable estimate of regression safety from
+only one successful control.
+
+The paired snapshot is `artifacts/source-learning-20260927/twelve-task-checkpoint.json`.
+The primary worker is running the remaining four tasks. The broader worker
+and release queue are both live and waiting on their declared dependencies.
+All 32 broader task images are ready. No release certification or promotion
+is inferred from those readiness checks.
