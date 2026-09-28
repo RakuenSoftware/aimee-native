@@ -75,3 +75,25 @@ or loading model weights. This proves dispatch wiring only. Quantized artifacts,
 actual model loads, attention-memory compatibility and release certification
 remain pending. The running 12B image was not rebuilt or changed.
 [Probe evidence](validation/artifacts/larger-model-inventory-20260928/loader-profile-probe.log).
+
+
+## Bounded-memory Gemma 26B conversion underway
+
+A new two-pass writer plans tensor metadata from the checkpoint headers, then
+writes one encoded tensor at a time using the pinned GGUF quantizer. Quantization
+uses small source chunks, so it does not retain a full FP32 model or duplicate
+the output in a temporary file. The full checkpoint is retained, including
+vision weights; no unmapped tensors are silently omitted.
+
+All 1,013 source tensors map through the installed upstream Gemma adapter,
+including 60 stacked expert tensors. Dense/expert chunked Q8 payloads and scalar/
+router F32 payloads passed a CPU fixture against the pinned quantizer and an
+independent GGUFReader readback. This is format/mechanics evidence, not accuracy.
+
+The planned payload is 29,135,212,856 bytes; the largest encoded tensor is
+784,334,848 bytes. The full conversion is running in a separate container with
+no GPU devices, two CPUs, and a 6 GiB memory limit. Storage reserve was checked
+after trimming freed blocks from the verified client-model deduplication.
+Pretrained loading, inference/native-memory correctness, preparation profiling
+and release packaging remain outstanding.
+[Conversion plan and checks](validation/artifacts/gemma26-conversion-20260928/).
