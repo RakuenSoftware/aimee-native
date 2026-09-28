@@ -948,3 +948,21 @@ the official tests. This is a benchmark pass, not evidence of ideal patch
 quality. Full result, submitted patch, trajectory and grade are retained in
 `artifacts/larger-gemma26-requests-native1-20260928/`. These frozen-procedure
 reuse outcomes do not establish fresh acquisition between rounds.
+
+### Guarded final-grade GPU handoff
+
+The existing Gemma coordinator held its GPU lock through CPU-only official
+grading. A separate supervisor now waits for all other 23 outcomes to have
+boolean grades, the final Requests/native-2 trajectory to end in normal
+submission, and that exact official grader container to be running. Only then
+it stops the owned inference server and retires the waiting host coordinator,
+releasing the shared GPU lock. The CT113 campaign and grader remain running;
+the supervisor separately collects their terminal report. This changes scheduling,
+not inputs, generation, patches, budgets or grading. The original coordinator
+status and server log are preserved under `gemma-final-grade-handoff` on the lab
+host; that supervisor becomes authoritative for final campaign completion if
+handoff occurs. Six guard tests pass, including rejection of active generation,
+other unfinished attempts, infrastructure outcomes and mismatched identities.
+The supervisor has been started; no early handoff is claimed before its guard
+passes. Installed-runtime and timing workers already waiting on the same lock
+can then run while the final CPU grade finishes.
