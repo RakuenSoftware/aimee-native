@@ -1,0 +1,90 @@
+{
+  "status": "delta_review_complete",
+  "scope": "Reconcile retained dependency and notice evidence, without granting release approval.",
+  "python_packages": 278,
+  "os_packages": 591,
+  "python_metadata_changes": {},
+  "packages": {
+    "gemma26": {
+      "artifact_set_sha256": "c3f0d24983929829ccf4f853552fcea93234d5df9cc4f71068a9181e09eab957",
+      "common_notices_unchanged": [
+        "licenses/Aimee-Native-NOTICE.txt",
+        "licenses/Apache-2.0.txt",
+        "licenses/launcher-target-notices.txt",
+        "licenses/native-target-notices.txt",
+        "licenses/vllm-gguf-plugin.txt",
+        "licenses/vllm.txt"
+      ],
+      "model_specific_notices": [
+        {
+          "path": "licenses/model-NOTICE.txt",
+          "bytes": 331,
+          "sha256": "56f677fa633588d4b4242fe60b0cee95dba3cd45d704f75ee0168b4cdeb7d206"
+        }
+      ]
+    },
+    "qwen27": {
+      "artifact_set_sha256": "4e51bab0f150adea281054d12853ae720d70bfb2dcfba240cd4f73b1dd5ebaf7",
+      "common_notices_unchanged": [
+        "licenses/Aimee-Native-NOTICE.txt",
+        "licenses/Apache-2.0.txt",
+        "licenses/launcher-target-notices.txt",
+        "licenses/native-target-notices.txt",
+        "licenses/vllm-gguf-plugin.txt",
+        "licenses/vllm.txt"
+      ],
+      "model_specific_notices": [
+        {
+          "path": "licenses/model-LICENSE.txt",
+          "bytes": 11544,
+          "sha256": "bbedc3fda3305820b977265f01b8619d87570a6739de3a5582c3464840f1e57a"
+        },
+        {
+          "path": "licenses/model-NOTICE.txt",
+          "bytes": 322,
+          "sha256": "c7e5b9dac16ec7f07bbf33e0c03873aa3ae2aedd5e766d243971a2f515ad8cd6"
+        }
+      ]
+    }
+  },
+  "known_limitations": [
+    "Pinned Torch still crashes on the isolated TorchScript class reproducer; this is outside the certified text-serving interface, not a patched vulnerability",
+    "Setuptools 79.0.1 remains pinned for upstream compatibility; private package builds use an explicit ASCII file list and do not publish an sdist",
+    "Installed flash-attention training advisory modules are absent; a separate torch.load call exists outside the certified loader",
+    "OS scan retains 207 medium/low non-header entries and 3865 kernel-header entries; no available Ubuntu fix and no non-header high/critical entry remained in r13",
+    "External redistribution requires its own complete review of container source/notice obligations; this record does not approve a public release"
+  ],
+  "public_redistribution_cleared": false,
+  "release_approved": false,
+  "interpretation": "Unchanged dependency versions, license metadata, lockfiles and common notice bytes preserve the earlier controlled-infrastructure review scope. Model-specific notices are separately identified. This does not fulfill the still-outstanding external source/notice distribution obligations or create a new vulnerability scan.",
+  "evidence": [
+    {
+      "path": "docs/validation/artifacts/native-production-20260926/inventory-r13.json",
+      "sha256": "4b89d613fed1828655325d96f0d5b6f7034cf918575387fe67baa1a409dc2c2b"
+    },
+    {
+      "path": "docs/validation/artifacts/larger-runtime-inventory-20260928/inventory.json",
+      "sha256": "4b89d613fed1828655325d96f0d5b6f7034cf918575387fe67baa1a409dc2c2b"
+    },
+    {
+      "path": "docs/validation/artifacts/current-dependency-review-20260928/review.json",
+      "sha256": "47f6055e404db372dabf2c7ee36440642ab8d7f652785f9bcf6c93ba8cde03a3"
+    },
+    {
+      "path": "docs/validation/artifacts/native-live-release-20260926/package-review.json",
+      "sha256": "c03840abd38740241bb456b7bb3502540512963def8be77978e92ed50c3c1cf2"
+    },
+    {
+      "path": "docs/validation/artifacts/larger-notice-audit-20260928/report.json",
+      "sha256": "ce1ec75c2774dd66dd31e14efa1367c87210f53011ea8b3d97180b5308dabf5d"
+    },
+    {
+      "path": "docs/validation/artifacts/larger-normal-package-review-20260928/gemma26/review.json",
+      "sha256": "7d6e750ba66ea0b4972b1aa50c80ddb2afc5c0b6c0e54201aadaa020e1444a63"
+    },
+    {
+      "path": "docs/validation/artifacts/larger-normal-package-review-20260928/qwen27/review.json",
+      "sha256": "c031a37ecd6db4e0b1e1cfdc235b13dadb0cc5a1b26b621d9686a4cebbc33753"
+    }
+  ]
+}

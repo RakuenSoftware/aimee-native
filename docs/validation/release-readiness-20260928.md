@@ -34,8 +34,9 @@ activation measurements passed fidelity for all twelve banks. Cold medians
 remain 3.73–14.80 ms for Gemma and 1.62–4.40 ms for Qwen, so the microsecond
 cold-application target remains unmet. The upstream/private source-identity concern has been resolved. The
 [explicit package gate review](larger-release-gate-review-20260928.md) identifies
-normal larger installation and the exact dependency redistribution disposition
-as unfinished, alongside the failed latency target.
+normal larger installation and external source/notice fulfillment as unfinished,
+alongside the failed latency target. The exact larger dependency-delta review is
+complete and carries forward the earlier controlled-infrastructure limitations.
 
 Automatic source acquisition is implemented in the benchmark harness and has
 replay-validated evidence in the primary and broader studies. This is distinct

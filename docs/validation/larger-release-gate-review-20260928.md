@@ -30,7 +30,7 @@ being introduced as a new requirement.
 | `clean_install` | Larger laboratory fresh/update/rollback/restore passed, including updated model-aware installed consumption. Normal-feature launcher build and 12B recovery passed. **Exact normal-format larger installation is still unexecuted.** |
 | `binary_disclosure_audit` | Client source exclusion, exported-symbol/debug/private-marker inspection and exact library hashes passed their recorded checks. Private wheel retained-source comparison matches 16 files. This is evidence of source exclusion, not secrecy against disassembly. |
 | `authenticated_delivery` | Live model-aware bootstrap, artifact fetching, scoped leases and installed consumption passed. Channel promotion remains unperformed. This component path is evidenced. |
-| `license_dependency_audit` | Exact signed notice files and unchanged dependency-version inventory are recorded. Model cards were separately checked. **Those reports alone are not a completed redistribution/dependency disposition.** The earlier dependency audit must be explicitly reconciled with this exact artifact set before signing this gate. |
+| `license_dependency_audit` | Completed dependency-delta reconciliation: 278 Python metadata/license-file records, 591 OS records, both Rust lockfiles and six common notices per model are unchanged. Model-specific notices are separately recorded. This preserves the earlier controlled-infrastructure disposition and known limits. **The external-distribution corresponding-source/notice fulfillment bundle remains unfinished.** |
 
 ## Provenance correction
 
@@ -51,3 +51,5 @@ concern is resolved at that stated scope.
 - [All twelve activation banks](artifacts/larger-activation-complete-20260928/report.json) and [controlled path comparison](activation-path-comparison-20260928.md)
 - [Native binary inspection](artifacts/larger-library-audit-20260928/report.json), [private source exclusion](artifacts/larger-binary-client-20260928-r2/source-audit.json), and [retained source comparison](artifacts/larger-build-source-comparison-20260928/report.json)
 - [Notice inspection](artifacts/larger-notice-audit-20260928/report.json) and [dependency version comparison](artifacts/larger-runtime-inventory-20260928/comparison.json)
+
+[Reproducible larger dependency-delta review](artifacts/larger-dependency-delta-review-20260928/report.json) binds both exact artifact sets to the retained baseline evidence. No normal release gate was signed by this review.
