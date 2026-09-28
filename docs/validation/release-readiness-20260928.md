@@ -51,6 +51,11 @@ files plus its checksum manifest. The contemporaneous delivery audit passed
 attempts. See `artifacts/broader-source-learning-20260928/scored-checkpoint-1790571225.json`,
 its matching archive, and `delivery-audit-1790571225.json`.
 
+![All frozen follow-up tasks at the 48-attempt checkpoint; pending rows are explicit.](artifacts/broader-source-learning-20260928/checkpoint-48-outcomes.png)
+
+[Vector PDF of this interim outcome matrix](artifacts/broader-source-learning-20260928/checkpoint-48-outcomes.pdf).
+The dated checkpoint is preserved; the final matrix will be generated separately.
+
 The four completed successful pairs show procedure reuse:
 
 | Task | Control calls | Native calls | Control agent seconds | Native agent seconds |
