@@ -100,7 +100,11 @@ These are repeated operational checks of one synthetic working set, not 60
 independent knowledge tasks or a population accuracy estimate. This run does
 not test live authority, record changes, cache eviction or learned task gains.
 
-Qwen 27B is running the matching packaged check after Gemma released the GPUs.
+Qwen 27B also completed the matching packaged check: **46/46 native**,
+**14/14 text**, and **0/4 no-memory controls** recovered all three facts.
+The same limits apply: these are operational checks of a fixed synthetic working
+set, not independent knowledge or learning tasks.
+[Qwen packaged results](artifacts/qwen27-binary-validation-20260928/report.json).
 [Gemma responses, token counts and timings](artifacts/gemma26-binary-validation-20260928-r2/report.json).
 
 ## Resident-service integration

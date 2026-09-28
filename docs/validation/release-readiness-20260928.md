@@ -19,7 +19,10 @@ Its compiled-image HTTP check also passed all 60 memory-backed requests
 Qwen 27B Q8 passed its four packaged GPU baseline smoke checks.
 Qwen's first native/text/control smoke completed at 3/5, 5/5 and 1/5 respectively;
 a separate negative-position comparison now passes 5/5 native and 5/5 text.
-Both original misses remain recorded. Neither larger model has completed
+Both original misses remain recorded. Qwen's packaged HTTP validation now
+also passes all 60 memory-backed requests (46 native, 14 text). Both larger
+profiles pass live canary preparation, reuse, expiry, withdrawal, publisher
+disconnection and recovery checks. Neither larger model has completed
 release native-memory or signed lifecycle validation. See the
 [larger-model validation report](larger-model-native-20260928.md).
 The normal published channel remains at sequence 5.
