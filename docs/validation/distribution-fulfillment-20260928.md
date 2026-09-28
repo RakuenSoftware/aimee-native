@@ -48,9 +48,9 @@ a keyword match against that notice cannot determine a source-delivery gap.
 2. Reconcile component-specific source requirements with the retained source
    archives and build material. Preserve any concrete missing component in the
    final delivery inventory; the numerical collection gap alone is insufficient.
-3. Deliver the notices and applicable source archives alongside the candidate
-   through the release endpoint. The local research archives are not themselves
-   proof that a recipient can obtain the material.
+Recipient delivery of the collected notices and source archives is complete on
+the controlled origin, as verified below. This establishes access to the collected
+material; it does not resolve the two remaining component-review items.
 
 This work is separate from the GPU/runtime functional gates and from the
 aspirational microsecond performance target. Normal signed lifecycle evidence
@@ -72,3 +72,18 @@ The [AQLProfile/component notice supplement](artifacts/supplemental-notice-deliv
 is also served at `/third-party/20260928/supplements/`. Both complete files passed
 TLS download, byte-count and SHA-256 verification. This supplements the existing
 archives without replacing their verified bytes.
+
+## Exact Python source supplement (29 September)
+
+The previously unavailable Debian patch/build archive for installed
+`python3.12 3.12.13-1+jammy1` was recovered from its exact Launchpad publication.
+Together with the retained DSC and upstream archive, all three files match the
+recorded sizes and SHA-256 values; the source archives match the retained DSC.
+The historical failed retrieval report and original source bundle remain unchanged.
+
+The [complete source set and delivery evidence](artifacts/python-source-delivery-20260929/)
+are served at `/third-party/20260928/python-source-20260929/`. Recipient testing
+downloaded all three files (27,447,197 bytes) through authenticated TLS and
+verified their full sizes and hashes. DSC signature authentication and
+reproducible binary identity are not claimed. This closes the exact Python
+source-collection gap without changing any runtime or signed candidate.
