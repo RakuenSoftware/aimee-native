@@ -14,8 +14,8 @@ superseded by this clarification, without changing their experimental results.
 
 The first normal Gemma 26B manifest is signed and independently verified.
 Its normal fresh-install, update, rollback and restore canaries passed (2/2 each).
-Qwen normal lifecycle remains unfinished. Qwen sequence 1 is signed;
-sequence 2 is being staged. Existing laboratory lifecycle
+Qwen normal lifecycle remains unfinished. Both Qwen normal sequences are signed
+and their signatures independently verified; the runtime artifacts are identical. Existing laboratory lifecycle
 results establish the component path, not those pending distribution checks.
 
 The remaining review work is identified below. Broader population-level coding
