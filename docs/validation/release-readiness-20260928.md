@@ -747,21 +747,24 @@ reports and source publications. All four native runs reproduce the exact
 control patch. These rows describe the completed both-pass subset, not the
 whole campaign and not an additional-task success claim.
 
-| Task | Calls, control → native | Prompt tokens, control → native | Completion tokens, control → native | Agent seconds, control → native | Preparation seconds |
+| Task | Calls, control → native | Prompt tokens, control → native | Completion tokens, control → native | Agent seconds, control → native | Preparation/publication seconds |
 |---|---:|---:|---:|---:|---:|
 | Astropy-7336 | 6 → 5 | 8,126 → 4,704 | 859 → 314 | 70.7 → 43.7 | 82.8 |
 | Sympy-20590 | 24 → 7 | 43,917 → 5,785 | 4,299 → 602 | 381.4 → 68.6 | 67.2 |
 | Flask-4169 | 6 → 2 | 6,559 → 966 | 655 → 65 | 61.2 → 13.4 | 81.8 |
 | Pytest-5808 | 22 → 4 | 90,369 → 5,251 | 2,783 → 213 | 300.3 → 27.5 | 93.1 |
 
-Preparation is reusable after publication, but is a real acquisition cost.
-Adding preparation to this first native agent run exceeds the control agent
+The bridge timer includes uncached encoding, artifact writes, catalog update
+and refresh, including waiting for active requests to drain. It is not isolated
+encoder CPU time. Encoding artifacts can be reused; publication still has
+refresh costs. Adding this bridge time to the first native agent run exceeds the control agent
 time for Astropy and Flask; that sum remains lower for Sympy and Pytest.
-Even this sum excludes source capture/replay, grading and publication waiting,
+Even this sum excludes source capture/replay, tokenization, SSH overhead,
+grading and waiting for the outer publication/bridge locks,
 so it is not a complete end-to-end cost comparison. API token totals do not
 measure the attention occupancy or compute cost of native memory. Concurrent
 load and the absence of a second no-memory attempt also limit causal timing
-claims. Evidence: `artifacts/broader-source-learning-20260928/four-successful-pairs.json`
+claims. Evidence: `artifacts/broader-source-learning-20260928/four-successful-pairs-v2.json`
 and its matching, individually hash-verified archive.
 
 ## Release packaging storage headroom
@@ -802,3 +805,14 @@ by the queue before successful completion. The diagnostic also uses the
 repaired 600-second generation deadline and 1320-second publication deadline.
 Ten handoff/guard tests pass, and the deployed script hash matches the source.
 The live study and waiting queue were not restarted for this change.
+
+## Executed test-bridge deadline and timing scope reconciled
+
+The running bridge had correctly used a 660-second refresh deadline since the
+first recovery, while `benchmarks/swe_learning/native_bridge.py` still contained
+the older 180-second value. The checked-in source now matches the executed file
+byte for byte. No live study behavior changed. The timer audit also clarified
+that `prepared_seconds` includes refresh/drain waiting, not just encoding.
+`four-successful-pairs-v2.json` corrects the scope label without changing any
+numbers; the original report and archive are retained. The executed bridge is
+archived beside it so the timing boundary is inspectable.

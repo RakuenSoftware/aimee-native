@@ -5,7 +5,7 @@ MODEL='google-gemma-4-12b-native-negative-v1'
 PROFILE=ROOT/'preparation-profile.json'
 def control(op):
  with socket.socket(socket.AF_UNIX) as s:
-  s.settimeout(180);s.connect(str(ROOT/'control.sock'));s.sendall(json.dumps({'op':op}).encode()+b'\n');r=json.loads(s.makefile('rb').readline())
+  s.settimeout(660);s.connect(str(ROOT/'control.sock'));s.sendall(json.dumps({'op':op}).encode()+b'\n');r=json.loads(s.makefile('rb').readline())
  if 'error' in r:raise RuntimeError(r)
  return r
 request=json.load(sys.stdin)
