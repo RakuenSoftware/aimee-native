@@ -793,3 +793,20 @@ two native rounds are not independent tasks or fresh memory acquisition.
 Requests is the only unfinished case: its text patch is in the official grader,
 and no final six-case score is assigned until all its conditions are graded.
 [Complete five-case records](artifacts/larger-qwen27-complete-tasks-20260928/).
+
+
+## Larger-model application timing queued
+
+A separate GPU-lock-protected job now measures all six frozen procedural banks
+for each larger model in the exact signed runtime image. It uses the existing
+activation probe, with 20 independently verified cold-page trials, 100 warm-page
+trials and 100 device-resident lookups per bank. Complete rank-zero tensor bytes
+must match the admitted source after measurement. The source catalogs and result
+files are hashed in the report; no model weights are loaded for this probe.
+
+This fills the larger-model application-timing gap without reusing 12B numbers
+or interpreting generation/first-compilation timings as memory latency. Results
+will cover rank-zero application with a two-rank layout, not total distributed
+attention, live authorization, answer latency, or a native-versus-text speedup.
+The job is queued behind the shared GPU lock; no timing result is claimed yet.
+[Runner](../../distribution/tests/larger_activation_validation.py).
