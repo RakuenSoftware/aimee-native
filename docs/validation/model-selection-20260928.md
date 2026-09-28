@@ -302,3 +302,14 @@ and restore used the model-aware launcher and deployed multi-model authority.
 These are the same three synthetic facts, not eight independent knowledge cases.
 The installed coordinator has moved to Gemma's model-aware sequence-2 check.
 No normal-channel promotion follows automatically from this lab lifecycle pass.
+
+## Larger installed model-aware batch complete
+
+Gemma sequence 2 passed both native canary requests through the updated
+model-aware launcher. The full batch is passed: Qwen update, rollback and
+restore plus Gemma sequence 2 each passed two queries. The authority binding
+remained unchanged throughout. Exact results and the terminal batch report are
+in `artifacts/model-selection-installed-results-20260928/`. This closes the
+queued larger-model installed-consumption checks; it does not promote the
+lab-only manifests or substitute for the pending normal-launcher 12B recovery
+and larger-bank timing measurements.

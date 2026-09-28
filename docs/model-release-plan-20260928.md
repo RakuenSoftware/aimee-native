@@ -42,7 +42,7 @@ For each larger model:
 | Candidate | Signed runtime lifecycle | Coding evidence | Release decision |
 |---|---|---|---|
 | Gemma4 12B | Fresh, update, rollback and restore passed; 8/8 native canary queries | Original studies and selected source-repair/retention checks complete | Supports the documented scoped private preview; broader learning improvement remains unproven |
-| Gemma4 26B | All four phases passed; 8/8 native canary queries | All six cases complete: control 2/6, text 4/6, both native reuse rounds 4/6; both control successes retained, Requests lost between native rounds | Not yet ready |
+| Gemma4 26B | All four phases passed; 8/8 native canary queries; updated model-aware sequence-2 probe also passed 2/2 | All six cases complete: control 2/6, text 4/6, both native reuse rounds 4/6; both control successes retained, Requests lost between native rounds | Not yet ready |
 | Qwen3.8 27B | Fresh install, update, rollback and restore passed: 8/8 canary queries; final three phases use model-aware authority | All six cases complete: control 5/6, text 4/6, both native reuse rounds 6/6; all control successes retained | Not yet ready |
 
 Both larger models have separately passed native/text smoke comparisons,
@@ -54,8 +54,9 @@ it does not measure newly acquired learning between its two native rounds.
 The three-model account binding, query-forwarding frontend and delivery service
 are deployed and healthy. The same enrolled account passed 10/10 live bootstrap
 authorization checks and 6/6 fresh/repeated artifact fetches across all three
-models. Installed GPU consumption through the model-aware launcher remains
-queued, including 12B compiler restoration and interrupted-request recovery.
+models. Installed GPU consumption through the model-aware launcher passed all eight
+larger-model queries. Normal-feature 12B compiler restoration and interrupted-
+request recovery remain queued.
 No larger candidate has been promoted to the ordinary release channel.
 
 See the [larger-model report](validation/larger-model-native-20260928.md) and

@@ -28,8 +28,8 @@ Gemma 26B's signed fresh/update/rollback/restore lifecycle passed 8/8 native
 canary responses. Qwen's fresh/update/rollback/restore lifecycle also passed
 8/8, with the final three phases using the model-aware authority. The newly
 deployed model-aware authority passed bootstrap, artifact-fetch and lease
-isolation checks. Installed consumption through the updated launcher remains
-queued for both larger models and for 12B restoration/recovery. Larger-bank
+isolation checks. Installed consumption through the updated launcher passed for both larger
+models. Normal-feature 12B restoration/recovery remains queued. Larger-bank
 activation timing and final release provenance review also remain outstanding.
 
 Automatic source acquisition is implemented in the benchmark harness and has
