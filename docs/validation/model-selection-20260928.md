@@ -39,8 +39,8 @@ implementation remain in aimee-qwen. No inference engine fork is involved.
   with `-Wall -Wextra -Werror`; this is stronger than the isolated header check.
 
 Evidence: [test logs](artifacts/model-selection-20260928/). These are control-plane
-and transport fixtures, not GPU model-quality results. Full Aimee server compilation
-and deployed multi-model validation remain pending. These changes are not deployed
+and transport fixtures, not GPU model-quality results. Full Aimee server compilation passes in the isolated release image;
+deployed multi-model validation remains pending. These changes are not deployed
 into the running larger-model lifecycle or coding campaigns, which retain their
 pinned launcher and single-model canary bindings. After those campaigns finish,
 validate approved model switching through the actual frontend before release.
@@ -64,15 +64,19 @@ bootstrap state; it does not alter bindings, prepare memory or start inference.
 The extension is syntax-checked, but live multi-model execution is pending the
 new frontend and approved binding deployment after the pinned campaigns finish.
 
-## Full frontend build in progress
+## Full frontend build completed
 
 The local GCC 16 default mode rejects pre-existing mutable uses of `strchr` on
 const-qualified CLI pointers. Explicit C17 proceeds past that code but the local
 host lacks `libpq-fe.h`. Neither failure is in the changed native bridge. Logs
 are preserved in [model-selection-build-20260928](artifacts/model-selection-build-20260928/).
 
-An isolated Docker build of Aimee commit `816740e90` is now running on CT100 under
+An isolated Docker build of Aimee commit `816740e90` completed successfully on CT100 under
 `/opt/aimee-model-selection-build-20260928`, using the existing pinned release
 base and dependency recipe, two build jobs, and a 3 GiB memory limit. Its image
 tag is `aimee-native-core:model-selection-816740e90`. No deployment or service
-restart is part of this build; completion and runtime switching remain pending.
+restart is part of this build; the image is built, while deployed runtime switching remains pending.
+
+Completed image: `sha256:a97d2436f4a264acb96eb328bcf44931cd69ecd0720eabafa3b2ea049c4032f0`.
+The full build log, recipe and terminal result are preserved with the local
+prerequisite failures. The running frontend has not been replaced.

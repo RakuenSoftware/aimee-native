@@ -429,3 +429,25 @@ the new control-plane implementation. Approved per-model routing is implemented
 and tested, including real TLS bootstrap and artifact delivery. This change is
 staged separately from the pinned running campaigns; deployed switching remains
 a release gate. See [model selection validation](model-selection-20260928.md).
+
+## First complete larger-model coding task
+
+Gemma 26B completed `pytest-dev__pytest-5808` in all four frozen conditions:
+
+| Condition | Officially resolved | Agent calls | Agent elapsed seconds |
+| --- | --- | ---: | ---: |
+| No memory | yes | 7 | 610 |
+| Same-record text | yes | 3 | 563 |
+| Native reuse 1 | yes | 3 | 221 |
+| Native reuse 2 | yes | 3 | 262 |
+
+The control reached its time limit after producing a patch that passed official
+validation; it remains a success. Native rounds reused the same complete frozen
+accepted procedure, without a new acquisition between rounds. These results
+show successful procedure consumption and retention for this selected task, not
+a success-rate gain, new reasoning ability, or an isolated latency benchmark.
+Shared GPU scheduling, generated output and tool activity affect elapsed times.
+The other five tasks and the Qwen coding campaign remain incomplete.
+
+All four trajectories, submitted patches, and official grading records are
+preserved in [the completed-task archive](artifacts/larger-gemma26-complete-tasks-20260928/).
