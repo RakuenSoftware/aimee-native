@@ -810,3 +810,15 @@ will cover rank-zero application with a two-rank layout, not total distributed
 attention, live authorization, answer latency, or a native-versus-text speedup.
 The job is queued behind the shared GPU lock; no timing result is claimed yet.
 [Runner](../../distribution/tests/larger_activation_validation.py).
+
+
+## Exact signed package notices checked
+
+The sequence-2 Gemma26 and Qwen27 packages passed a read-only audit of all
+15 notice/license files. Every file's size and SHA-256 matched its signed
+manifest. Both packages include the model/revision/conversion notice, Apache
+license, native and launcher dependency notices, and vLLM/plugin licenses;
+Qwen additionally carries its source model license file. This complements the
+unchanged package-version inventory above. It is notice presence and artifact
+integrity evidence, not a fresh vulnerability assessment or public redistribution
+clearance. [Audit source, manifest identities and notice hashes](artifacts/larger-notice-audit-20260928/).
