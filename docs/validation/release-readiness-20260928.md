@@ -3,6 +3,22 @@
 Target: Monday morning, 2026-09-28, Europe/Amsterdam. This is a live work record,
 not a declaration that the release gates have passed.
 
+## Completed primary study and current handoff
+
+The primary campaign completed all 64 scored attempts. Control passed 1/16;
+each native round passed 2/16, with one unique gain retained in all three
+rounds and no loss of the sole passing-control task. The complete report,
+outcome matrix and evidence links are in
+[source-learning-primary-20260928.md](source-learning-primary-20260928.md).
+The 281-file archive is verified. The final delivery audit passed for 1,474
+requests, 64 trajectories and 39 publications.
+
+The separate 32-task follow-up started automatically after the primary audit.
+Its four pipelines use the prospectively amended output budget and parser-feedback
+fallback. The release queue now waits for that study, then runs the residual
+repetition diagnostic and candidate validation. No release promotion has occurred.
+The historical sections below preserve earlier checkpoints and interventions.
+
 ## Required closure
 
 | Requirement | Current authoritative evidence | Remaining work |
