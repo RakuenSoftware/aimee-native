@@ -60,3 +60,21 @@ repeated native reuse retains that outcome. They cannot establish a general
 SWE-bench effect, autonomous acquisition by these larger target models, or a
 change in underlying weights/reasoning. Existing 12B automatic acquisition
 results and their limitations stay separate.
+
+## Requests grader-timeout amendment
+
+The Gemma text attempt on `psf__requests-2193` submitted a patch, but the official
+139-test suite timed out at 300 seconds after beginning execution. Its result is
+ungraded (`resolved: null`), not a model failure. The original result, patch and
+logs remain unchanged. The driver stops scheduling new attempts on such an
+infrastructure outcome, after any already-running attempt returns.
+
+A CPU-only regrade now runs the exact saved patch through the same official test
+specification with a 3600-second allowance. It writes separate evidence and does
+not rerun the agent, alter memory, change tests, or feed reference data back to
+the agent. All remaining Requests conditions on both larger models will use the
+same larger grading allowance when resumed; agent time, context, outputs and
+frozen memories remain unchanged. Existing completed outcomes are not rerun.
+A timeout still remains ungraded and cannot certify the campaign. The regrade
+helper records the original result hash and patch hash, and accepts only an
+infrastructure result with a nonempty saved patch.
