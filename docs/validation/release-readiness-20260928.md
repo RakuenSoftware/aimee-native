@@ -757,3 +757,16 @@ measure the attention occupancy or compute cost of native memory. Concurrent
 load and the absence of a second no-memory attempt also limit causal timing
 claims. Evidence: `artifacts/broader-source-learning-20260928/four-successful-pairs.json`
 and its matching, individually hash-verified archive.
+
+## Release packaging storage headroom
+
+The release server held three physical copies of the identical 12.86 GB model.
+Each inode was hashed and checked against every corresponding signed manifest
+before atomic replacement with hard links. All release paths, signatures,
+manifest bytes, permissions and rollback versions remain available; model
+content is unchanged. The operation freed 25,726,765,888 filesystem bytes.
+After trimming CT101, the actual thin-pool use fell from 93.84% to 90.00%,
+leaving approximately 87.6 GiB free, above the 40 GiB operating reserve and
+with room for the next signed package and client lifecycle. The trim command's
+reported discarded range is not itself a measure of reclaimed pool capacity.
+Evidence and the executed script are in `artifacts/release-storage-20260928/`.
