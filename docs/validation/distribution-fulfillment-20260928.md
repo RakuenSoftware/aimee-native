@@ -67,3 +67,8 @@ staged bytes, then downloads every archive with certificate validation and
 checks its complete size and SHA-256. The [delivery test passed](artifacts/distribution-addenda-delivery-20260928/delivery-verification.json)
 for all three complete archives (1,444,925,152 bytes total). This proves recipient
 access on the controlled origin, not completeness of the collected material.
+
+The [AQLProfile/component notice supplement](artifacts/supplemental-notice-delivery-20260928/)
+is also served at `/third-party/20260928/supplements/`. Both complete files passed
+TLS download, byte-count and SHA-256 verification. This supplements the existing
+archives without replacing their verified bytes.
