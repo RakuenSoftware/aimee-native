@@ -412,3 +412,20 @@ and installed GPU serving independently for each larger model, then execute the
 fresh source-backed task comparisons and retained-success/regression checks.
 Model-specific latency measurements remain limited to their reported scopes.
 Existing 12B passes cannot fill larger-model gates.
+
+## Qwen signed preinstallation and model selection follow-up
+
+The CPU-only Qwen 27B installation completed in the shared validation client
+root, with current manifest
+`c5180309b74100e2e54d00db47b5a69bc02f7b61ada01c5f59f2016c1ad70e75`
+and high-water sequence 1. This is a lab package installation, not a passed
+installed-runtime or coding gate. Its terminal installer evidence is preserved
+in [larger-qwen-preinstall-20260928](artifacts/larger-qwen-preinstall-20260928/).
+The lifecycle coordinator will reuse this installation after the Gemma checks;
+GPU work remains serialized by the shared lock.
+
+The account no longer needs to be manually rebound for each installed model in
+the new control-plane implementation. Approved per-model routing is implemented
+and tested, including real TLS bootstrap and artifact delivery. This change is
+staged separately from the pinned running campaigns; deployed switching remains
+a release gate. See [model selection validation](model-selection-20260928.md).

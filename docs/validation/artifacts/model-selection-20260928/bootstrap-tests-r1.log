@@ -1,0 +1,26 @@
+
+running 1 test
+test selected_bootstrap_checks_returned_identity_over_verified_tls ... FAILED
+
+failures:
+
+---- selected_bootstrap_checks_returned_identity_over_verified_tls stdout ----
+
+thread 'selected_bootstrap_checks_returned_identity_over_verified_tls' (335523) panicked at tests/model_bootstrap.rs:88:27:
+called `Result::unwrap()` on an `Err` value: error sending request for url (https://localhost:44759/v1/native/bootstrap)
+
+Caused by:
+    0: client error (Connect)
+    1: invalid peer certificate: Other(OtherError(CaUsedAsEndEntity))
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    selected_bootstrap_checks_returned_identity_over_verified_tls
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+
+   Compiling aimee-native-launcher v0.1.0 (/opt/aimee-memory-lab/model-selection-launcher-20260928)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.50s
+     Running tests/model_bootstrap.rs (/opt/aimee-memory-lab/vllm-native-build/distribution/launcher/target/debug/deps/model_bootstrap-cb73efa91b7b2bb6)
+error: test failed, to rerun pass `--test model_bootstrap`

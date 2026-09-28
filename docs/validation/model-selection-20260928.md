@@ -30,6 +30,14 @@ implementation remain in aimee-qwen. No inference engine fork is involved.
   slash and plus characters, then repeats with local artifact reuse. Every request
   carries the exact model identity; hostname and CA rejection checks remain intact.
 
+- A separate real TLS bootstrap test passes for the selected model, legacy default,
+  mismatch rejection, denied selection and invalid identity lengths. Its first
+  fixture certificate was incorrectly marked as a CA and TLS rejected it; the
+  corrected end-entity certificate passes without disabling verification. Both
+  runs are retained.
+- The actual Aimee `server_http.c` caller compiles through the normal Make target
+  with `-Wall -Wextra -Werror`; this is stronger than the isolated header check.
+
 Evidence: [test logs](artifacts/model-selection-20260928/). These are control-plane
 and transport fixtures, not GPU model-quality results. Full Aimee server compilation
 and deployed multi-model validation remain pending. These changes are not deployed
