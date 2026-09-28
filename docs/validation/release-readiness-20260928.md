@@ -1090,3 +1090,19 @@ This closes the fresh preparation/publication revocation check. It does not
 replace frontend authentication, GPU revocation, signed-client lifecycle or
 learning-effect validation. The Requests native/text official graders remain
 live; their submitted patches match the previously passing patch.
+
+
+## Retained-success validation queued
+
+All five other distinct positive cases are queued for two native attempts each
+after the Requests comparison releases the server. Source acquisition is
+mechanical and replay-checked, using each prior passing own patch; accepted
+sources must remain unchanged after either attempt outcome. This covers Flask
+4169, Pytest 5808, Astropy 7336, Sympy 20590, and the primary study's gained
+Matplotlib 25340 case. These are selected regression checks with historical
+controls, not a new population effect estimate. All ten official outcomes must
+be inspected before claiming those successes are preserved.
+
+[Declared protocol](../protocols/retained-success-validation-20260928.md).
+The queue validates the predecessor process has actually exited before taking
+GPU ownership. Its model calls have not begun at this checkpoint.
