@@ -716,3 +716,14 @@ table, and none of the checked private implementation/source-path markers.
 This supplements the existing installed-package source-exclusion check; it does
 not prove whole-image confidentiality or prevent reverse engineering.
 [Library audit and tool provenance](artifacts/larger-library-audit-20260928/).
+
+
+## Exact larger runtime dependency inventory
+
+A CPU-only, network-disabled container captured installed dependency and license
+metadata from image `56e44a78b4ddbb228d5728311a709ee8118acc51f685b9f0e428a809b5ad2935`.
+The inventory contains 278 Python packages and 591 OS packages. Comparison with
+`native-production-20260926/inventory-r13.json` found no added, removed or
+version-changed packages in either set. This is package-level provenance,
+not vulnerability clearance, license legal review, or proof that application
+binaries are identical. [Inventory, source and exact comparison](artifacts/larger-runtime-inventory-20260928/).
