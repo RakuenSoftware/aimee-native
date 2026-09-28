@@ -627,3 +627,11 @@ and subsequent recall of all three values from each of the two banks. This
 probe is queued with `--long-refresh`; it is not yet recorded as passed on the
 final image. The earlier 237.75-second probe remains evidence for its recorded
 image only.
+
+A separate trusted-grader Requests environment diagnostic runs the official
+tests on the unchanged base implementation with the same 3600-second deadline.
+The harness requires an applicable patch, so it adds only an inert marker file;
+it changes no implementation or test file. This diagnostic is excluded from
+model-attempt totals. It will help distinguish external-service/pass-to-pass
+failures from prediction-specific failures. Both it and the saved-patch regrade
+are pending.
