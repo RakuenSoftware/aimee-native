@@ -1,8 +1,9 @@
-"""Gemma 26B real packaged CLI validation after isolated Qwen GPU work finishes.
+"""Larger-model real packaged CLI validation with serialized GPU ownership.
 
 Synthetic memory fixture; not live authority, population accuracy or learning.
 No private Python/kernel source is mounted into the serving container.
 """
+import argparse
 import concurrent.futures
 import json
 from pathlib import Path
@@ -51,6 +52,16 @@ def request(path, body=None, stream=False):
 
 
 def main():
+    global ROOT, NAME, BASE
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--profile', choices=['gemma26', 'qwen27'], default='gemma26')
+    profile = parser.parse_args().profile
+    if profile == 'qwen27':
+        ROOT = LAB / 'qwen27-binary-validation-20260928'
+        NAME = 'aimee-qwen27-binary-validation-20260928'
+        BASE = 'http://127.0.0.1:8176'
+    predecessor = ('aimee-gemma26-binary-validation-20260928-r2' if profile == 'qwen27'
+                   else 'aimee-qwen27-negative-smoke-20260928')
     ROOT.mkdir(exist_ok=False)
     report = {'status': 'waiting', 'scope': __doc__, 'rows': []}
     def save():
@@ -59,7 +70,7 @@ def main():
     # Observe the specific predecessor; never restart because observation expires.
     while True:
         state = json.loads(subprocess.check_output(['podman', 'inspect',
-            'aimee-qwen27-negative-smoke-20260928'], stderr=subprocess.DEVNULL))[0]['State']
+            predecessor], stderr=subprocess.DEVNULL))[0]['State']
         if not state['Running']:
             break
         time.sleep(10)
@@ -70,17 +81,21 @@ def main():
         time.sleep(5)
     image = json.loads((build / 'build.json').read_text())['image']
     report['image'] = image
-    fixture = LAB / 'larger-native-smoke-20260928/gemma26-fixture'
+    fixture = LAB / ('qwen27-position-ablation-20260928/fixture' if profile == 'qwen27'
+                     else 'larger-native-smoke-20260928/gemma26-fixture')
     config = json.loads((fixture / 'config.json').read_text())
-    config.update(gguf_weights='/weights/gemma4-26b-q8.gguf', gguf_matrix_backend='triton',
-        serve={'port': 8175, 'host': '127.0.0.1', 'tensor_parallel_size': 2, 'max_model_len': 4096,
+    config.update(gguf_weights='/weights/qwen27-q8.gguf' if profile == 'qwen27' else '/weights/gemma4-26b-q8.gguf',
+        gguf_matrix_backend='cuda' if profile == 'qwen27' else 'triton',
+        serve={'port': int(BASE.rsplit(':', 1)[1]), 'host': '127.0.0.1', 'tensor_parallel_size': 2, 'max_model_len': 4096,
                'max_num_seqs': 4, 'max_num_batched_tokens': 256, 'gpu_memory_utilization': .85})
+    if profile == 'qwen27':
+        config['mm_proj'] = '/weights/qwen27-mmproj-f32.gguf'
     (ROOT / 'config.json').write_text(json.dumps(config, indent=2) + '\n')
     cmd = ['podman', 'run', '-d', '--name', NAME, '--network', 'host', '--ipc', 'host',
         '--device', '/dev/kfd', '--device', '/dev/dri/renderD128', '--device', '/dev/dri/renderD129',
         '--memory', '36g', '--memory-swap', '36g', '-v', str(ROOT) + ':/evidence:ro',
-        '-v', str(fixture) + ':/fixture:ro', '-v', str(LAB / 'gemma4-moe') + ':/model:ro',
-        '-v', str(LAB / 'gemma26-release-20260928') + ':/weights:ro',
+        '-v', str(fixture) + ':/fixture:ro', '-v', str(LAB / ('model' if profile == 'qwen27' else 'gemma4-moe')) + ':/model:ro',
+        '-v', str(LAB / ('qwen27-release-20260928' if profile == 'qwen27' else 'gemma26-release-20260928')) + ':/weights:ro',
         image, '--config', '/evidence/config.json']
     (ROOT / 'command.json').write_text(json.dumps(cmd, indent=2) + '\n')
     subprocess.run(cmd, check=True, capture_output=True)
