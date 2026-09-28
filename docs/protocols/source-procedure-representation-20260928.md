@@ -11,7 +11,11 @@ Keep the original seed, temperature zero, 1,536-token response budget,
 permitted. Run once in that order and once in reverse. These deterministic
 repeats are order checks, not independent replications.
 
-The original record must retain its publication identity. The compact record
+Before any diagnostic model calls, an FP32 partial-reuse exactness failure was
+identified. Both representations now receive fresh full-pass FP32 encoding
+under `native-swe-v3-fp32-full`; the original historical publication is retained
+as provenance, not reused as the diagnostic bank. This controls the encoding
+policy across the two representations. The compact record
 is a mechanical lossless representation of the same successful own patch,
 validated on the original base. It contains no hidden reference solution.
 Native conditions receive the full record through publication selection;

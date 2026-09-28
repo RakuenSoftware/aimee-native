@@ -870,3 +870,38 @@ nine-case FP32 prefix-reuse validation now owns the CPU model; the normal
 resident service restarts automatically afterwards. Installed client canary,
 interruption recovery and served-dtype checks are queued next.
 [Migration evidence](artifacts/final-image-certification-20260928/preparation-upgrade.json).
+
+## FP32 partial-prefix mismatch and correction
+
+The first FP32 reuse validation stopped at `last-record-change`. Its original
+report says `running` because the old harness asserted before writing terminal
+failure; the queue's preserved failure and traceback are authoritative. A
+separate diagnostic found **343 differing BF16-exported values out of 6,709,248**,
+all in the newly evaluated suffix, with no differences in the reused prefix.
+Maximum absolute difference was 0.0078125. This is consistent with floating-point
+reduction differences, but is not accepted as a tolerance-based pass.
+
+The private FP32 compiler now reuses only a completely identical input sequence.
+Changed inputs get a fresh full pass. Scope and content invalidation remain in
+Rust. Identical content with a new source revision can still avoid the forward
+pass. The encoding revision advanced to `native-negative-v3-fp32-full`, preventing
+reuse of earlier hosted artifacts across this policy change. No customer image
+or upstream vLLM code changed. The isolated nine-case validation is rerunning
+under the corrected policy; its initial and changed-last-record cases now match
+exactly. New harness failures write an explicit terminal failure report.
+
+[Original failure](artifacts/fp32-reuse-correction-20260928/original-report.json),
+[difference analysis](artifacts/fp32-reuse-correction-20260928/delta-report.json),
+[deployment identity](artifacts/fp32-reuse-correction-20260928/deployment.json).
+Both old and corrected compiler source and the diagnostic are preserved privately
+alongside these records. This also records that the historical SWE compiler
+had prefix reuse enabled; those completed experiment results remain unchanged.
+
+The release queue resumes at corrected preparation validation, preserving all
+passed image checks and the failed original reuse run. It next validates the
+installed client and checks actual served FP32 jobs use complete-input reuse.
+Four checker tests pass, including rejection of partial-prefix reuse. The
+corrective Requests diagnostic is requeued. Before any of its model calls,
+its protocol was amended to freshly encode **both** source representations
+with the corrected full-pass policy, rather than compare an old cached bank
+against a newly prepared one.

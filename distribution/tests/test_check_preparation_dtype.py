@@ -9,5 +9,14 @@ class PreparedDtype(unittest.TestCase):
             with self.assertRaises(ValueError):module.prepared_jobs(logs)
     def test_rejects_any_bf16_job_in_window(self):
         with self.assertRaises(ValueError):module.prepared_jobs(self.job()+'\n'+self.job('torch.bfloat16'))
+    def test_requires_full_input_or_no_reuse_under_corrected_policy(self):
+        job={'event':'prepared','computation':{'compute_dtype':'torch.float32','evaluated_tokens':39,
+             'tokens':39,'reused_prefix_tokens':0,'reuse_policy':'identical-complete-input'}}
+        self.assertEqual(len(module.prepared_jobs(json.dumps(job),'identical-complete-input')),1)
+        job['computation']['reused_prefix_tokens']=34
+        with self.assertRaises(ValueError):module.prepared_jobs(json.dumps(job),'identical-complete-input')
+        job['computation']['reused_prefix_tokens']=0
+        job['computation']['reuse_policy']='causal-prefix'
+        with self.assertRaises(ValueError):module.prepared_jobs(json.dumps(job),'identical-complete-input')
 
 if __name__=='__main__':unittest.main()

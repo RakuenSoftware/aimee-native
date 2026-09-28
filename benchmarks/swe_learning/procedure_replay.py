@@ -65,7 +65,8 @@ def main():
     model = api('/v1/models')['data'][0]['id']
     report = {'status': 'running', 'started': time.time(), 'fixture_sha256': hashlib.sha256(raw).hexdigest(),
         'scope': 'Post-hoc frozen pre-edit prompt; single-response source-patch fidelity, not official task accuracy. Two reversed-order deterministic repeats are not independent replications.',
-        'max_tokens': 1536, 'seed': 20260926, 'publications': {}, 'rows': []}
+        'max_tokens': 1536, 'seed': 20260926, 'encoding_revision': 'native-swe-v3-fp32-full',
+        'historical_publication': fixture['original_publication'], 'publications': {}, 'rows': []}
     def save():
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(json.dumps(report, indent=2) + '\n')
@@ -77,8 +78,8 @@ def main():
                     'retain': [x['publication'] for x in report['publications'].values()]}).encode(), timeout=1320))
             if pub['records'] != 1:
                 raise ValueError('incomplete procedure publication')
-            if variant == 'original' and pub['publication'] != fixture['original_publication']:
-                raise ValueError('original publication changed')
+            if variant == 'original' and pub['publication'] == fixture['original_publication']:
+                raise ValueError('diagnostic requires fresh full-pass encoding, not historical partial-reuse cache')
             report['publications'][variant] = pub
             save()
         modes = ['native-original', 'native-compact', 'text-original', 'text-compact', 'control']

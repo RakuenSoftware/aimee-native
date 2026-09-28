@@ -63,6 +63,12 @@ class GemmaCompiler:
                 self.cache = None
             if reusable and self.cache is not None:
                 prefix = plan['prefix']
+                # FP32 suffix evaluation exported BF16 state that failed exact
+                # comparison to a fresh
+                # full pass. Reuse complete identical inputs only in this mode;
+                # changed content must retain the certified full-pass behavior.
+                if self.compute_dtype == torch.float32 and prefix != len(tokens):
+                    prefix = 0
         if prefix == len(tokens):
             cache = self.cache
         else:
@@ -90,6 +96,7 @@ class GemmaCompiler:
                  for i, layer in enumerate(cache.layers)}
         self.last_metrics = {'tokens': len(tokens), 'reused_prefix_tokens': prefix,
                              'evaluated_tokens': len(tokens) - prefix,
+                             'reuse_policy': 'identical-complete-input' if self.compute_dtype == torch.float32 else 'causal-prefix',
                              'compute_dtype': str(self.compute_dtype),
                              'input_seconds': ready - started,
                              'forward_seconds': computed - ready,

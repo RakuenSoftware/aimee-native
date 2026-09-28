@@ -39,7 +39,7 @@ r=pathlib.Path('/opt/aimee-memory-lab/swe-learning-20260926')
 assert json.loads(pathlib.Path('/opt/aimee-native-compiler/resident.json').read_text())['compute_dtype']=='float32'
 p=r/'preparation-profile.json';b=r/'preparation-profile.before-procedure-diagnostic.json'
 assert not b.exists(), 'prior diagnostic requires inspection'
-shutil.copy2(p,b);d=json.loads(p.read_text());d['worker_config']='/opt/aimee-native-compiler/benchmark-resident.json'
+shutil.copy2(p,b);d=json.loads(p.read_text());d['worker_config']='/opt/aimee-native-compiler/benchmark-resident.json';d['encoding_revision']='native-swe-v3-fp32-full'
 p.write_text(json.dumps(d)+'\n')
 ''')
     try:

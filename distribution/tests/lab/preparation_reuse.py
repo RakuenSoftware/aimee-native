@@ -19,13 +19,21 @@ def digest(banks):
  for _,pair in sorted(banks.items()):
   for t in pair:h.update(t.contiguous().view(torch.uint8).numpy().tobytes())
  return h.hexdigest()
-for num,(label,facts,override) in enumerate(cases):
- request={'identity':dict(identity,**override,records=[{'namespace':'fixture','id':str(i),'revision':str(num)} for i in range(len(facts))]),'response':{'facts':[{'content':s} for s in facts]}}
- start=time.perf_counter();bt,bb=baseline.encode(request);btiming=time.perf_counter()-start
- start=time.perf_counter();nt,nb=c.encode(request);ntiming=time.perf_counter()-start
- exact=bt==nt and all(torch.equal(x,y) for i in bb for x,y in zip(bb[i],nb[i]))
- row={'case':label,'records':len(facts),'baseline_seconds':btiming,'optimized_seconds':ntiming,'exact':exact,'baseline_sha256':digest(bb),'optimized_sha256':digest(nb),**c.last_metrics};report['rows'].append(row)
- (r/'report.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(row),flush=True);assert exact,label
- if label in ['recipient-change','view-change','length-change']:assert c.last_metrics['reused_prefix_tokens']==0
- del bb,nb
-report['status']='passed';(r/'report.json').write_text(json.dumps(report,indent=2)+'\n')
+try:
+ for num,(label,facts,override) in enumerate(cases):
+  request={'identity':dict(identity,**override,records=[{'namespace':'fixture','id':str(i),'revision':str(num)} for i in range(len(facts))]),'response':{'facts':[{'content':s} for s in facts]}}
+  start=time.perf_counter();bt,bb=baseline.encode(request);btiming=time.perf_counter()-start
+  start=time.perf_counter();nt,nb=c.encode(request);ntiming=time.perf_counter()-start
+  exact=bt==nt and all(torch.equal(x,y) for i in bb for x,y in zip(bb[i],nb[i]))
+  row={'case':label,'records':len(facts),'baseline_seconds':btiming,'optimized_seconds':ntiming,'exact':exact,'baseline_sha256':digest(bb),'optimized_sha256':digest(nb),**c.last_metrics};report['rows'].append(row)
+  (r/'report.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(row),flush=True);assert exact,label
+  if label in ['recipient-change','view-change','length-change']:assert c.last_metrics['reused_prefix_tokens']==0
+  if a.compute_dtype=='float32':
+   assert c.last_metrics['reused_prefix_tokens'] in (0,c.last_metrics['tokens'])
+   if label=='identical-content-new-revision':assert c.last_metrics['evaluated_tokens']==0
+  del bb,nb
+ report['status']='passed'
+except BaseException as error:
+ report.update(status='failed',error=repr(error));raise
+finally:
+ (r/'report.json').write_text(json.dumps(report,indent=2)+'\n')
