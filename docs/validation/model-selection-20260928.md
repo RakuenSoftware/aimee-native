@@ -258,3 +258,13 @@ and generated 47 tokens. The report is preserved in
 `artifacts/model-selection-installed-results-20260928/qwen27-updated2.json`.
 The coordinator has advanced to rollback; rollback/restore and Gemma's updated
 model-aware probe are still pending.
+
+## Qwen rollback passed installed native consumption
+
+Both native canary requests passed after rollback to signed sequence 1
+(`c5180309b74100e2e54d00db47b5a69bc02f7b61ada01c5f59f2016c1ad70e75`).
+The high-water sequence remained 2. This verifies native consumption after
+rollback through the deployed model-aware launcher; the two repeated queries
+use the same three canary facts. Raw results are preserved in
+`artifacts/model-selection-installed-results-20260928/qwen27-rollback1.json`.
+The coordinator has advanced to restored sequence 2; that phase remains pending.
