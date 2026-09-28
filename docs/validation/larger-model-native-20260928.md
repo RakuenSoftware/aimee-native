@@ -553,3 +553,14 @@ durations were approximately 89.6 seconds for the first request and 7.70 seconds
 for the repeat; the first includes cold kernel work and neither measures native
 memory application alone. The rollback and restore probes are still pending.
 [Completed update evidence](artifacts/larger-gemma26-signed-update-20260928/).
+
+## Gemma rollback passed
+
+The signed rollback to sequence 1 passed both three-fact native recall probes.
+The active manifest returned to `0b56ee0eb18ae5ededf91f1e0ccee155869c64bd96c5f1094ddfe2186376f8d9`,
+while high-water sequence remained 2 and the updated manifest became previous.
+This verifies usable native consumption after explicit rollback without lowering
+the installation's anti-rollback high-water state. First and repeated request
+durations were approximately 86.8 and 7.59 seconds, respectively; these are
+end-to-end request times, not memory-application latency. Restoration to sequence
+2 is now running. [Completed phase evidence](artifacts/larger-signed-lifecycle-completed-20260928/).
