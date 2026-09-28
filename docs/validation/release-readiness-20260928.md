@@ -423,3 +423,10 @@ The original manifest remains on the worker, and the current manifest records
 the amendment. The primary study retains its original 512-token allowance.
 The waiting worker was replaced only after confirming it had no results and was
 still waiting; the active primary worker was not interrupted.
+
+
+All 32 follow-up task images are now present, with immutable local image IDs
+recorded in `benchmarks/swe_learning/broader-image-readiness-20260928.json`.
+Prefetch completed without error and left about 59 GiB free in the actual host
+thin pool, above the 40 GiB reserve. This is environment readiness only; the
+broader GPU study is still waiting for the primary campaign to finish.
