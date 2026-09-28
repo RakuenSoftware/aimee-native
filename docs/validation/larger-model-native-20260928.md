@@ -704,3 +704,15 @@ new acquisition between rounds. The remaining four cases are still in progress;
 no full six-case score is assigned yet.
 
 [Complete task outcomes and trajectories](artifacts/larger-qwen27-complete-tasks-20260928/).
+
+
+## Exact signed client-library audit passed
+
+Both sequence-2 packages contain the same 1,009,624-byte native client library,
+SHA-256 `fdf4956fe4a9ca38f6d14111340f4439317c8c2ba083241b47c73fc9ace4416c`.
+Each file's size and hash matched its signed manifest. The release audit passed
+with exactly the allowed 23 runtime exports, no debug sections or static symbol
+table, and none of the checked private implementation/source-path markers.
+This supplements the existing installed-package source-exclusion check; it does
+not prove whole-image confidentiality or prevent reverse engineering.
+[Library audit and tool provenance](artifacts/larger-library-audit-20260928/).
