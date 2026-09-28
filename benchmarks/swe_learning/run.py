@@ -11,7 +11,11 @@ STEPS=int(os.environ.get('SWE_STEPS','40'));SECONDS=int(os.environ.get('SWE_SECO
 if min(STEPS,SECONDS,ROUNDS)<=0:raise ValueError('experiment budgets must be positive')
 OUTPUT_TOKENS=int(os.environ.get('SWE_OUTPUT_TOKENS','512'))
 if not 1<=OUTPUT_TOKENS<=4096:raise ValueError('output budget must be between 1 and 4096 tokens')
-INPUT_TOKENS=min(7400,8192-OUTPUT_TOKENS-280)
+CONTEXT_TOKENS=int(os.environ.get('SWE_CONTEXT_TOKENS','8192'))
+if not 1024<=CONTEXT_TOKENS<=8192:raise ValueError('context budget must be between 1024 and 8192 tokens')
+INPUT_TOKENS=min(7400,CONTEXT_TOKENS-OUTPUT_TOKENS-280)
+if INPUT_TOKENS<=0:raise ValueError('output budget leaves no input context')
+GRADER_MODEL_LABEL=os.environ.get('SWE_MODEL_LABEL','gemma-native')
 GRADE_TIMEOUT=int(os.environ.get('SWE_GRADE_TIMEOUT','180'))
 if GRADE_TIMEOUT<=0:raise ValueError('grading timeout must be positive')
 GRADE_TIMEOUTS=json.loads(os.environ.get('SWE_GRADE_TIMEOUT_OVERRIDES','{}'))
@@ -88,7 +92,7 @@ def attempt(task,arm,publication,text_memory=None):
  # Reference patches/test definitions are accessed only by the trusted grader here.
  if not row['model_patch'].strip():
   row.update(resolved=False,grade_status='empty_prediction',finished=time.time());(out/'result.json').write_text(json.dumps(row,indent=2)+'\n');return row
- full=GRADER[iid];pred={'instance_id':iid,'model_name_or_path':'gemma-native-'+arm,'model_patch':row['model_patch']}
+ full=GRADER[iid];pred={'instance_id':iid,'model_name_or_path':GRADER_MODEL_LABEL+'-'+arm,'model_patch':row['model_patch']}
  try:
   grade_timeout=GRADE_TIMEOUTS.get(iid,GRADE_TIMEOUT)
   row['grade_timeout_seconds']=grade_timeout
@@ -121,7 +125,7 @@ if __name__=='__main__':
  os.chdir(ROOT);(ROOT/'results').mkdir(exist_ok=True)
  tasks=json.loads((ROOT/'tasks.json').read_text());GRADER={r['instance_id']:r for r in json.loads((ROOT/'selected-grader-only.json').read_text())}
  with urllib.request.urlopen(BASE+'/v1/models') as r:MODEL=json.load(r)['data'][0]['id']
- state={'status':'running','target_tasks':len(tasks),'learning_rounds':ROUNDS,'started':time.time(),'budget':{'steps':STEPS,'wall_seconds':SECONDS,'max_output_tokens':OUTPUT_TOKENS,'max_input_tokens':INPUT_TOKENS,'grader_seconds':GRADE_TIMEOUT,'context_tokens':8192,'concurrency':4}};save_status(state)
+ state={'status':'running','target_tasks':len(tasks),'learning_rounds':ROUNDS,'started':time.time(),'budget':{'steps':STEPS,'wall_seconds':SECONDS,'max_output_tokens':OUTPUT_TOKENS,'max_input_tokens':INPUT_TOKENS,'grader_seconds':GRADE_TIMEOUT,'context_tokens':CONTEXT_TOKENS,'concurrency':4}};save_status(state)
  try:
   for start in range(0,len(tasks),4):
    group=tasks[start:start+4];lessons={};publications={}

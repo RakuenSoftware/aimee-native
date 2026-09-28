@@ -6,6 +6,41 @@ matrix backend. Qwen's initial native result was 3/5; a separate negative-positi
 now passes 5/5, matching text memory. The 12B evidence remains
 separate and unchanged.
 
+## Signed delivery and regression follow-up
+
+The first larger signed installation failed during Gemma's GGUF download.
+The release server recorded 10,692,279,989 bytes sent out of 29,135,275,488;
+the launcher reported only a response-body error. No active release was
+committed, and the coordinator restored the original canary account binding.
+The transport cause is not established. The next launcher includes the artifact,
+received byte count, and underlying read error in this failure diagnostic.
+An interrupted-stream test verifies that the existing active release and its
+files survive; all 18 unit tests and the signed lifecycle fixture pass.
+
+The `signed-lifecycle-r3` retry uses a new evidence directory and fresh client
+roots. The failed `signed-lifecycle-r2` record is retained. Both candidate
+sequences remain lab-only; the production release channel is unchanged.
+The unused 12B resident compiler was paused to free approximately 49 GB of RAM
+during larger-model work. Its documented restoration command is
+`systemctl start aimee-native-compiler.service`; larger compilers are separate.
+
+Six selected source-backed coding cases have passed a tokenizer-only preflight
+for both larger models. The complete issues and complete accepted-source memories
+fit the 4,096-token configuration with 1,536 output tokens and a 280-token reserve.
+The largest matched text prompt is 1,406 tokens on Gemma and 1,213 on Qwen;
+the largest prepared memory is 432 and 386 tokens respectively. No facts or
+initial issues were shortened to pass this check. These are selected prior
+success/regression cases, not held-out sampling or new coding outcomes.
+
+Only `preflight-r3.json` is valid preflight evidence. The first attempt incorrectly
+counted a tokenizer return object's fields rather than its tokens. The second
+stopped on a check that did not account for chat-template whitespace trimming.
+Both attempts are preserved. The corrected check renders the complete prompt,
+verifies the complete issue is present, and explicitly tokenizes the rendered
+string. The runner now uses the actual configured context budget; nine protocol
+tests pass, including preserving the initial issue during history trimming.
+[Preflight, runner tests, and failed installation evidence](artifacts/larger-release-followup-20260928/).
+
 ## Gemma 26B quantized backend repair and native comparison
 
 Paired full-checkpoint activation traces agreed closely through layer 25
@@ -304,8 +339,10 @@ runs. These failures are not scored as model answers.
 
 ## Remaining release gates
 
-Repair Gemma Q8 baseline behavior and Qwen native quality before expanding the
-model-specific comparison, procedural learning, retained-success/regression,
-revision/authorization, concurrency/stream/recovery, and latency checks. Then
-validate the compiled client artifacts and signed install/update/rollback flow
-independently for each larger model. Existing 12B passes cannot fill those gates.
+Gemma's baseline repair and Qwen's position-policy smoke comparison now pass,
+as do both packaged conversation/stream/concurrency checks and live preparation
+authorization checks described above. Complete signed install/update/rollback
+and installed GPU serving independently for each larger model, then execute the
+fresh source-backed task comparisons and retained-success/regression checks.
+Model-specific latency measurements remain limited to their reported scopes.
+Existing 12B passes cannot fill larger-model gates.

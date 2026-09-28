@@ -1,5 +1,5 @@
 """Runner recovery must retain rejected output and never execute ambiguous actions."""
-import importlib.util,pathlib,unittest
+import importlib.util,pathlib,unittest,os
 from unittest.mock import patch
 from minisweagent.exceptions import FormatError
 spec=importlib.util.spec_from_file_location('runner_under_test',pathlib.Path(__file__).with_name('run.py'))
@@ -51,5 +51,25 @@ class OutputBudget(unittest.TestCase):
    self.assertEqual(request['messages'][1]['content'],'Original issue')
    self.assertEqual(len(original),6)
    self.assertEqual(request['messages'][-1]['content'],'Recent observation')
+
+class CandidateContext(unittest.TestCase):
+ def test_candidate_context_reserves_output_and_keeps_legacy_default(self):
+  for context,expected in [('4096',2280),('8192',6376)]:
+   with patch.dict(os.environ,{'SWE_CONTEXT_TOKENS':context,'SWE_OUTPUT_TOKENS':'1536'}):
+    candidate=importlib.util.module_from_spec(spec);spec.loader.exec_module(candidate)
+   self.assertEqual(candidate.CONTEXT_TOKENS,int(context))
+   self.assertEqual(candidate.INPUT_TOKENS,expected)
+ def test_complete_initial_issue_is_never_cut_to_fit(self):
+  for mode in ('none','text','native'):
+   original=[{'role':'system','content':'Common instructions'},{'role':'user','content':'Complete issue'}]
+   model=run.NativeModel(publication='fixture' if mode=='native' else None,text_memory='Complete source' if mode=='text' else None)
+   with patch.object(run,'INPUT_TOKENS',2280),patch.object(run,'api',return_value={'count':2281}) as api:
+    with self.assertRaisesRegex(RuntimeError,'initial issue exceeds'):model.query(original)
+   self.assertEqual(api.call_count,1)
+   self.assertEqual(original[1]['content'],'Complete issue')
+ def test_impossible_context_budget_is_rejected(self):
+  with patch.dict(os.environ,{'SWE_CONTEXT_TOKENS':'4096','SWE_OUTPUT_TOKENS':'4096'}):
+   candidate=importlib.util.module_from_spec(spec)
+   with self.assertRaisesRegex(ValueError,'no input context'):spec.loader.exec_module(candidate)
 
 if __name__=='__main__':unittest.main()

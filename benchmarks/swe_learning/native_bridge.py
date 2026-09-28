@@ -15,7 +15,8 @@ with (ROOT/'bridge.lock').open('a') as lock:
  if request['op']!='publish':raise ValueError('unsupported operation')
  facts=request['facts'];assert 0<len(facts)<=4 and all(isinstance(x,str) and 0<len(x)<=5000 for x in facts)
  profile=json.loads(PROFILE.read_text()) if PROFILE.exists() else {'encoding_revision':'native-swe-v1','worker_config':'/opt/aimee-native-compiler/benchmark-resident.json'}
- identity={'recipient':'swe-learning-public-fixture','authorized_view':'public-task-experiences-v1','model_revision':MODEL,'runtime_profile':'gemma-q8-tp2-v1','encoding_revision':profile['encoding_revision'],'position_policy':'negative-prefix','records':[{'namespace':'swe-public-experience','id':str(i),'revision':hashlib.sha256(x.encode()).hexdigest()} for i,x in enumerate(facts)]}
+ MODEL=profile.get('model_revision',MODEL)
+ identity={'recipient':'swe-learning-public-fixture','authorized_view':'public-task-experiences-v1','model_revision':MODEL,'runtime_profile':profile.get('runtime_profile','gemma-q8-tp2-v1'),'encoding_revision':profile['encoding_revision'],'position_policy':profile.get('position_policy','negative-prefix'),'records':[{'namespace':'swe-public-experience','id':str(i),'revision':hashlib.sha256(x.encode()).hexdigest()} for i,x in enumerate(facts)]}
  key=hashlib.sha256(json.dumps(identity,sort_keys=True).encode()).hexdigest();out=ROOT/'banks'/key
  started=time.perf_counter()
  if not out.exists():

@@ -296,7 +296,15 @@ pub fn verify_file(mut input: impl Read, out: &Path, a: &Artifact) -> Result<()>
     let mut total = 0u64;
     let mut buf = [0u8; 128 * 1024];
     loop {
-        let n = input.read(&mut buf)?;
+        let n = input.read(&mut buf).map_err(|error| {
+            anyhow::anyhow!(
+                "release artifact {} read failed after {} of {} bytes: {:?}",
+                a.path,
+                total,
+                a.bytes,
+                error
+            )
+        })?;
         if n == 0 {
             break;
         }
@@ -666,6 +674,36 @@ mod tests {
             .is_err()
         );
         assert_eq!(active(d.path()).unwrap().current, a.current);
+        assert_eq!(fs::read_dir(d.path().join("releases")).unwrap().count(), 1);
+    }
+    #[test]
+    fn interrupted_download_keeps_active_release_and_reports_progress() {
+        struct Interrupted(bool);
+        impl Read for Interrupted {
+            fn read(&mut self, buf: &mut [u8]) -> std::io::Result<usize> {
+                if !self.0 {
+                    self.0 = true;
+                    buf[0] = b'x';
+                    return Ok(1);
+                }
+                Err(std::io::Error::new(
+                    std::io::ErrorKind::ConnectionReset,
+                    "peer reset",
+                ))
+            }
+        }
+        let d = tempfile::tempdir().unwrap();
+        let (_, raw, sig, key) = fixture(1);
+        let first = install(d.path(), &raw, &sig, &key, fetch).unwrap();
+        let (_, raw2, sig2, _) = fixture(2);
+        let error = install(d.path(), &raw2, &sig2, &key, |_| {
+            Ok(Box::new(Interrupted(false)))
+        })
+        .unwrap_err();
+        let message = error.to_string();
+        assert!(message.contains("read failed after 1 of"), "{message}");
+        assert!(message.contains("peer reset"), "{message}");
+        assert_eq!(active(d.path()).unwrap().current, first.current);
         assert_eq!(fs::read_dir(d.path().join("releases")).unwrap().count(), 1);
     }
     #[test]
