@@ -16,6 +16,9 @@ def handle(client, config, compiler):
     with client.makefile('rb') as source:
         raw = source.read(MAX_REQUEST + 1)
     wire = validate_wire(raw, config['model_revision'])
+    for field in ('position_policy', 'encoding_revision'):
+        if field in config and wire['request']['identity'].get(field) != config[field]:
+            raise ValueError('compiler preparation profile mismatch')
     # Both state and output are daemon-owned; the request cannot choose a path.
     with tempfile.TemporaryDirectory(prefix='resident-', dir=config['state']) as temporary:
         output = pathlib.Path(temporary) / 'payload'
@@ -35,7 +38,7 @@ def handle(client, config, compiler):
                 'computation': {k:v for k,v in getattr(compiler, 'last_metrics', {}).items()
                                 if k in ('tokens', 'reused_prefix_tokens', 'evaluated_tokens',
                                          'compute_dtype', 'reuse_policy', 'input_seconds', 'forward_seconds',
-                                         'export_seconds', 'publish_seconds', 'weight_policy', 'weight_reads')}}
+                                         'export_seconds', 'publish_seconds', 'weight_policy', 'weight_reads', 'memory_positions')}}
 
 
 def serve(config, path, compiler):
@@ -68,15 +71,7 @@ def serve(config, path, compiler):
                 os.unlink(path)
 
 
-def main():
-    p = argparse.ArgumentParser()
-    p.add_argument('--config', required=True)
-    p.add_argument('--socket', required=True)
-    a = p.parse_args()
-    config = owned_config(a.config)
-    os.environ['AIMEE_NATIVE_LIBRARY'] = config['library']
-    os.environ['HF_HUB_OFFLINE'] = '1'
-    started = time.perf_counter()
+def build_compiler(config):
     backend = config.get('preparation_backend', 'gemma_unified')
     if backend == 'gemma_unified':
         from gemma_compile import GemmaCompiler as Compiler
@@ -86,7 +81,24 @@ def main():
         default_dtype = 'float32'
     else:
         raise ValueError('unsupported preparation backend')
-    compiler = Compiler(config['model'], config.get('max_memory_tokens', 1024), config.get('threads', 12), config.get('reuse_library'), config.get('compute_dtype',default_dtype))
+    options = {}
+    if backend == 'bounded_text_fp32':
+        options['memory_positions'] = config.get('position_policy')
+    return Compiler(config['model'], config.get('max_memory_tokens', 1024),
+                    config.get('threads', 12), config.get('reuse_library'),
+                    config.get('compute_dtype', default_dtype), **options)
+
+
+def main():
+    p = argparse.ArgumentParser()
+    p.add_argument('--config', required=True)
+    p.add_argument('--socket', required=True)
+    a = p.parse_args()
+    config = owned_config(a.config)
+    os.environ['AIMEE_NATIVE_LIBRARY'] = config['library']
+    os.environ['HF_HUB_OFFLINE'] = '1'
+    started = time.perf_counter()
+    compiler = build_compiler(config)
     compiler.load()
     print(json.dumps({'event': 'model_loaded', 'seconds': round(time.perf_counter() - started, 6)}), flush=True)
     serve(config, a.socket, compiler)

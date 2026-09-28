@@ -79,6 +79,31 @@ The initial image build failed on this Podman version's `--pull never` argument
 syntax; `--pull=never` fixed the invocation. That failed build and the corrected
 build are preserved separately. No model or memory result was changed.
 [Completed image build](artifacts/larger-binary-client-20260928-r2/build.json).
+The installed client package contains compiled modules and no private Python,
+encoder or kernel source; the native bank contains metadata and GPU binaries.
+This audit covers that package and bank, not whole-image confidentiality.
+[Installed-package audit](artifacts/larger-binary-client-20260928-r2/source-audit.json).
+
+## Resident-service integration
+
+The resident compiler now forwards the operator's `position_policy` to the
+bounded backend. If configured, position and encoding revisions must match
+request identity before model evaluation. This closes a gap where the standalone
+Qwen experiment could choose the successful policy but service construction
+would silently retain the backend default. The 12B construction path is unchanged.
+Four resident transport/configuration tests and five remote transport tests pass.
+
+A separate full-checkpoint service test sends a deliberately mismatched policy,
+then all three valid source records through the resident Unix socket, Rust
+publisher and bounded artifact transport. Gemma 26B passed: mismatch rejected,
+valid preparation completed, 41 positions evaluated and a 9,240,740-byte payload
+returned. Qwen 27B also passed, returning a 2,494,616-byte payload after rejecting
+the mismatched policy. Both daemons logged the negative-position policy.
+[Full-checkpoint service results](artifacts/larger-resident-validation-20260928-r2/results.json).
+This does not exercise live Aimee
+authorization. Preparation overlapped GPU startup work and is not an isolated
+latency benchmark. The first operator attempt used an incorrect fixture-directory
+name and failed before preparation; the corrected run has a separate evidence root.
 
 ## Full-checkpoint preparation
 

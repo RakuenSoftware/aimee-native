@@ -26,7 +26,7 @@ class Compiler:
   self.jobs+=1;output.mkdir()
   (output/'index.json').write_text(json.dumps({'jobs':self.jobs}))
   (output/'compact.pack').write_bytes(json.dumps(request['response']['facts']).encode()*1000)
-serve({'model_revision':'gemma','state':sys.argv[2]},sys.argv[3],Compiler())
+serve({'model_revision':'gemma','state':sys.argv[2],'position_policy':'negative','encoding_revision':'fixture-v1'},sys.argv[3],Compiler())
 ''')
         self.server = subprocess.Popen([sys.executable, str(script), str(SERVICE), str(self.root / 'state'), str(self.socket)], stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
         self.addCleanup(self.stop)
@@ -46,10 +46,10 @@ serve({'model_revision':'gemma','state':sys.argv[2]},sys.argv[3],Compiler())
         self.server.wait(timeout=5)
         self.server.stderr.close()
 
-    def call(self, facts, fail=False, identity='gemma'):
+    def call(self, facts, fail=False, identity='gemma', position='negative', encoding='fixture-v1'):
         self.counter += 1
         output = self.root / ('result'+str(self.counter))
-        request = {'identity':{'model_revision':identity},'response':{'facts':facts},'fail':fail}
+        request = {'identity':{'model_revision':identity,'position_policy':position,'encoding_revision':encoding},'response':{'facts':facts},'fail':fail}
         result = subprocess.run([sys.executable,str(SERVICE/'remote_compile.py'),'frontend','--config',str(self.front),'--output',str(output),'--identity',identity,'--key','a'*64],input=json.dumps(request).encode(),capture_output=True,timeout=10)
         return result, output
 
@@ -72,6 +72,30 @@ serve({'model_revision':'gemma','state':sys.argv[2]},sys.argv[3],Compiler())
         result,out = self.call(['right'])
         self.assertEqual(result.returncode,0,result.stderr.decode())
         self.assertEqual(json.loads((out/'index.json').read_text())['jobs'],1)
+
+    def test_wrong_preparation_policy_rejected_before_compile_and_next_request_recovers(self):
+        for kwargs in ({'position': 'nonnegative'}, {'encoding': 'other-v2'}):
+            result, _ = self.call(['wrong'], **kwargs)
+            self.assertNotEqual(result.returncode, 0)
+        result, out = self.call(['right'])
+        self.assertEqual(result.returncode, 0, result.stderr.decode())
+        self.assertEqual(json.loads((out/'index.json').read_text())['jobs'], 1)
+
+
+class PreparationProfile(unittest.TestCase):
+    def test_larger_model_policy_reaches_compiler_without_changing_legacy_default(self):
+        from unittest.mock import Mock, patch
+        from types import SimpleNamespace
+        from resident_compile import build_compiler
+        bounded = Mock()
+        legacy = Mock()
+        with patch.dict(sys.modules, {'bounded_compile': SimpleNamespace(BoundedTextCompiler=bounded),
+                                      'gemma_compile': SimpleNamespace(GemmaCompiler=legacy)}):
+            build_compiler({'model': '/qwen', 'preparation_backend': 'bounded_text_fp32',
+                            'position_policy': 'negative'})
+            bounded.assert_called_once_with('/qwen', 1024, 12, None, 'float32', memory_positions='negative')
+            build_compiler({'model': '/gemma12'})
+            legacy.assert_called_once_with('/gemma12', 1024, 12, None, 'bfloat16')
 
 
 if __name__ == '__main__':

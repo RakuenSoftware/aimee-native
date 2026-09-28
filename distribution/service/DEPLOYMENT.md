@@ -179,3 +179,42 @@ The daemon logs only token counts for reuse (`tokens`, `reused_prefix_tokens`,
 `evaluated_tokens`), alongside elapsed times. Selected text and tensor contents
 are not included in these events. Changing an authorized view forces full
 preparation, including when the view changes as part of a knowledge update.
+
+### Larger-model preparation profiles
+
+Gemma 26B and Qwen 27B use the private `bounded_text_fp32` backend. Their
+recorded successful smoke comparisons use `position_policy: "negative"`.
+Set the resident configuration explicitly:
+
+```json
+{
+  "preparation_backend": "bounded_text_fp32",
+  "compute_dtype": "float32",
+  "position_policy": "negative",
+  "encoding_revision": "bounded-fp32-negative-v1"
+}
+```
+
+These fields supplement the operator-owned checkpoint path, library, state
+path, thread budget, token budget and exact `model_revision`. Match
+`position_policy` and `encoding_revision` in the Rust preparation template.
+The resident daemon rejects mismatches before evaluating the model. Its logs
+include the evaluated memory-position policy, but never selected text. Bind
+release/profile identity to the checkpoint configuration and encoding revision;
+do not reuse artifacts from the earlier nonnegative Qwen experiment.
+
+This backend uses supported CPU offload hooks and evaluates a complete selected
+working set in FP32. It exports BF16 native banks and publishes through the
+existing Rust library. Do not configure `reuse_library` for this backend:
+prefix reuse is not implemented there. Larger-model checkpoint preparation is
+private server work; it is not shipped in the client image and is not a
+microsecond memory-application operation. Validate the specific checkpoint
+through the resident socket before changing the live preparation binding.
+
+The signed client `runtime/image.json` supports `gguf_matrix_backend` and an
+optional `mm_proj` artifact path. The tested Gemma 26B Q8 profile uses `triton`;
+the Qwen 27B Q8 profile uses `cuda` (the plugin's fast-kernel selector, including
+on ROCm) with its signed projector GGUF. The launcher verifies projector
+membership in the release manifest and resolves its installed path. These
+settings belong to the release; the user only chooses the model and connects
+to Aimee. They do not imply that all larger-model release gates have passed.
