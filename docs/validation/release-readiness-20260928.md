@@ -1160,3 +1160,32 @@ control and queued five-task retained-success validation remain pending.
 [Official native result](artifacts/requests-literal-task-20260928/native-result.json),
 [grader record](artifacts/requests-literal-task-20260928/native-grade.json),
 [complete trajectory](artifacts/requests-literal-task-20260928/native-trajectory.json).
+
+
+## Matched text task passed; normal signed installation started
+
+The Requests text-memory arm also passed its official grader (10 calls, 59.4 s
+agent execution). Both full memory conditions submitted the same passing own
+patch; the fresh no-memory run is still in progress. These two completed grades
+do not change the original broader-study score.
+
+[Text result](artifacts/requests-literal-task-20260928/text-result.json) and
+[official grade](artifacts/requests-literal-task-20260928/text-grade.json).
+
+A normal-edition launcher with the same source, release public key and CA, but
+a separate validation-channel URL, successfully performed a fresh network
+installation of signed sequence 5. The fresh root has no previous release and
+high-water sequence 5. After that complete installation, its model bytes were
+independently hashed against an existing signed copy and hard-linked to recover
+space before the update test. This operator storage action is recorded and is
+not claimed as installer behavior.
+
+The signed GPU lifecycle is queued after retained-success testing releases the
+GPUs: fresh sequence 5, signed update to 6, rollback to 5, restore to 6. All GPU
+probes use the separately built normal production-URL launcher, SHA-256
+`6344b77bff635542cd232ebf02fa36b40552e96570b30ab7c979e0935297bce2`.
+The staging installer SHA-256 is
+`47e62a2ddc1650b630ec45344bea2db2782f4b5c557fe4082fc76987e6eb8b23`.
+The published channel remains sequence 5; only the separate validation route
+will advance during these checks. Normal runtime/update/rollback results are
+pending. [Installation and build evidence](artifacts/normal-signed-lifecycle-20260928/).

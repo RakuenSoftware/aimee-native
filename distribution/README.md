@@ -146,8 +146,9 @@ and its stopped run are preserved. The repaired 16-task, three-round study is
 complete (1/16 control, 2/16 in each of three native rounds). The separate
 32-task paired follow-up completed at 5/32 control versus 4/32 native, with one
 lost Requests success. A corrected source representation reproduced that
-previously passing patch in a full native agent run; its official grade and
-retained-success checks are still pending. This is not yet a broad learning
+previously passing patch in a full native agent run and passed its official
+grade. The matched text arm also passed; a fresh control and retained-success
+checks are still pending. This is not yet a broad learning
 improvement result or a cleared release regression. The
 [current release work record](../docs/validation/release-readiness-20260928.md)
 identifies the corrected candidate, runtime recovery changes, exact evidence
