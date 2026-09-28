@@ -47,6 +47,48 @@ search access. Replace files atomically. Every request rereads current bindings
 and validates the current release with Aimee's policy implementation. Leases also
 bind the model, recipient, preparation configuration and release digest.
 
+### Multiple approved model releases on one account
+
+Keep `preparer` as the account's default profile. To enable additional installed
+models without rebinding the account, add an optional `models` object to that
+same binding. Each key is the exact native identity from the signed runtime's
+`runtime/profile.json`; each value is a complete preparer object using that
+model's private template and configuration digest. For example:
+
+```json
+"models": {
+  "<Gemma-26B-native-identity>": {
+    "binary": "/opt/aimee-native/bin/native-prepare",
+    "template": "/etc/aimee-native/preparation/recipient-gemma26.json",
+    "profile": {
+      "schema": 1,
+      "recipient": "<same released recipient as the default>",
+      "model": "<Gemma-26B-native-identity>",
+      "model_config_sha256": "<Gemma configuration digest>"
+    }
+  }
+}
+```
+
+Add the Qwen profile in the same map, with its own matching template, native
+identity and configuration digest. Do not repeat the default model in the map.
+The signed installation chooses its model automatically on `run`; users do not
+need a new account credential or a model-selection setting. `connect` retains
+the default bootstrap for backward compatibility. The explicit selector on
+subsequent requests cannot change the recipient or bypass the release policy.
+
+Deploy the query-forwarding frontend and model-aware delivery service together,
+then atomically install the approved binding. Updating the binding invalidates
+existing scoped leases; clients must obtain fresh approval. Verify each model
+through `distribution/tests/live_bootstrap_authority.py --model ...` using the
+enrolled client. This bootstrap check is read-only and does not replace installed
+inference, artifact delivery, withdrawal, or model-quality validation.
+
+For the current three-model validation campaign, wait for the coordinator to
+restore its temporary single-model binding before deploying this map. Preserve
+the restricted-search memory module when rebuilding the frontend image; the
+original 0.4.5 base alone does not contain that later fix.
+
 On expiry, withdrawal, missing policy, binding changes or disconnected authority,
 delivery is denied. A final post-download approval is still required. Previously
 downloaded bytes do not restore permission. Download checks and policy file reads
