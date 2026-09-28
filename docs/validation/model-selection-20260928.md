@@ -243,3 +243,18 @@ not counted as a passing isolation check. A separate run with 0.5-second request
 spacing passed all expected statuses. The original 503's cause is not established;
 no authorization rule was relaxed or service configuration changed for the retry.
 [Both reports and executed recipes](artifacts/model-selection-live-lease-isolation-20260928/).
+
+## Qwen signed update passed installed native consumption
+
+The model-aware launcher served both native canary requests correctly from
+signed Qwen sequence 2. Each recalled all three synthetic facts through the
+deployed authority with the account binding unchanged. The exact pinned image
+was `b71da5a610b2871b2bb96ed05cf4d9de71036a78baa4d349aa9d87e1f23f5a9d`;
+active manifest was `9583fee3e7cee9475ecef3c9a1463aa731f515ecb30c43da20a07b8cd92548c5`,
+with high-water sequence 2. Whole-request times were 6.15 and 4.07 seconds,
+including generation and first-use compilation where incurred; these are not
+measurements of memory application alone. Each request used 26 prompt tokens
+and generated 47 tokens. The report is preserved in
+`artifacts/model-selection-installed-results-20260928/qwen27-updated2.json`.
+The coordinator has advanced to rollback; rollback/restore and Gemma's updated
+model-aware probe are still pending.
