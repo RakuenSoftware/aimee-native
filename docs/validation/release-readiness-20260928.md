@@ -484,3 +484,5 @@ fixture is `artifacts/source-learning-20260927/pytest-repetition-replay.json`.
 A matched native/text/no-memory replay remains pending GPU availability.
 
 The residual-response diagnostic is queued after both studies complete and before stopping the learning server. It runs two requests per mode (no memory, native, same-record text), checks the original prompt and publication identities, and saves full responses. Completion of this diagnostic is not a passing accuracy gate. The guard refuses to run while either study is unfinished. Only the waiting release queue was restarted to add this stage; neither learning worker was interrupted.
+
+The replay guard check passed with `python3 -P`; its first local invocation encountered the existing benchmark `select.py` shadowing the standard library. The deployed standalone script imports and displays its CLI successfully on CT113, where that collision is absent.
