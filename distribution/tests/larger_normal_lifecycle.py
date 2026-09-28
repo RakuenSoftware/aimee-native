@@ -13,7 +13,7 @@ import time
 
 ROOT = Path('/var/lib/aimee-large-release-validation')
 REMOTE = Path('/opt/aimee-large-release-validation')
-RUN = 'normal-lifecycle-20260928'
+RUN = 'normal-lifecycle-r2-20260928'
 OUT = ROOT / RUN
 LAUNCHER = str(REMOTE / 'model-selection-normal-launcher/aimee-native')
 
@@ -34,14 +34,16 @@ def main():
     def save():
         (OUT / 'status.json').write_text(json.dumps(report, indent=2) + '\n')
     save()
-    while True:
-        build = json.loads((ROOT / 'normal-staging-20260928/build.json').read_text())
-        if build['status'] == 'staged':
-            break
-        assert build['status'] != 'failed', build
-        alive = ct(101, "from pathlib import Path; r=Path('/opt/aimee-large-release-validation/normal-staging-20260928'); p=Path('/proc')/(r/'build.pid').read_text()/'stat'; print(p.exists() and p.read_text().split()[2]!='Z')")
-        assert alive == 'True', 'builder exited before staging completed'
-        time.sleep(10)
+    def ready(profile, sequence):
+        candidate = ROOT / 'normal-packages-20260928' / profile / str(sequence)
+        while not (candidate / 'manifest.sig').is_file():
+            build = json.loads((ROOT / 'normal-staging-20260928/build.json').read_text())
+            assert build['status'] != 'failed', build
+            alive = ct(101, "from pathlib import Path; r=Path('/opt/aimee-large-release-validation/normal-staging-20260928'); p=Path('/proc')/(r/'build.pid').read_text()/'stat'; print(p.exists() and p.read_text().split()[2]!='Z')")
+            assert alive == 'True', 'builder exited before requested package completed'
+            time.sleep(10)
+        assert (candidate / 'manifest.sig').stat().st_size == 64
+        return candidate
     with (ROOT / 'gpu-validation.lock').open('a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX)
         binding = ct(100, "from pathlib import Path;import hashlib;print(hashlib.sha256(Path('/etc/aimee-native/bindings.json').read_bytes()).hexdigest())")
@@ -59,10 +61,11 @@ root=Path({str(client)!r});root.mkdir(parents=True,exist_ok=False);root.chmod(0o
 config=json.loads(Path('/opt/aimee-client/native-signed-6-validation/config.json').read_text());config['memory_root']=str(root/'memory')
 (root/'memory').mkdir(mode=0o700);(root/'config.json').write_text(json.dumps(config));(root/'config.json').chmod(0o600)
 """)
-                model = json.loads((ROOT/'normal-packages-20260928'/profile/'1/manifest.json').read_text())['model']
+                model = json.loads((ready(profile, 1) / 'manifest.json').read_text())['model']
                 def active():
                     return json.loads((ROOT/'clients'/RUN/profile/'active.json').read_text())
                 def install(sequence):
+                    ready(profile, sequence)
                     report.update(status=f'installing_{profile}_{sequence}'); save()
                     target = REMOTE/'normal-packages-20260928'/profile/str(sequence)
                     ct(101, f"""from pathlib import Path
