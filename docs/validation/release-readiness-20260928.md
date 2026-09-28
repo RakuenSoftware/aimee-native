@@ -482,3 +482,5 @@ is established for this case. The exact request was reconstructed and matched
 to the recorded prompt hash, and the response hash was verified. The replay
 fixture is `artifacts/source-learning-20260927/pytest-repetition-replay.json`.
 A matched native/text/no-memory replay remains pending GPU availability.
+
+The residual-response diagnostic is queued after both studies complete and before stopping the learning server. It runs two requests per mode (no memory, native, same-record text), checks the original prompt and publication identities, and saves full responses. Completion of this diagnostic is not a passing accuracy gate. The guard refuses to run while either study is unfinished. Only the waiting release queue was restarted to add this stage; neither learning worker was interrupted.

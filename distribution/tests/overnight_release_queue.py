@@ -33,6 +33,12 @@ while True:
 # Check the actual two-condition result set, not just the controller's status.
 probe=subprocess.run(['pct','exec','113','--','python3','-c',"import pathlib,json; r=pathlib.Path('/opt/swe-native/broader-source-learning-20260928'); tasks=json.loads((r/'tasks.json').read_text()); assert len(tasks)==32; rows=[(t['instance_id'],a,json.loads((r/'results'/a/t['instance_id']/'result.json').read_text())) for t in tasks for a in ('source-control','source-learn-1')]; assert all(row['instance_id']==iid and row['arm']==arm and type(row.get('resolved')) is bool for iid,arm,row in rows)"],capture_output=True,text=True)
 if probe.returncode:save({'status':'blocked_by_incomplete_broader_results','error':probe.stderr});raise SystemExit(1)
+save({'status':'replaying_residual_repetition'})
+with (ROOT/'repetition-replay.log').open('w') as log:
+ p=subprocess.run(['pct','exec','113','--','python3','/opt/swe-native/replay_repetition_20260928.py','--fixture','/opt/swe-native/pytest-repetition-replay.json','--output','/opt/swe-native/pytest-repetition-replay-result.json'],stdout=log,stderr=subprocess.STDOUT)
+if p.returncode:
+ save({'status':'failed','stage':'repetition_replay','returncode':p.returncode});raise SystemExit(p.returncode)
+# A completed diagnostic is evidence to inspect, not a passing accuracy gate.
 save({'status':'stopping_completed_learning_server'})
 p=subprocess.run(['pct','exec','101','--','podman','stop','--time','60','aimee-swe-learning'],capture_output=True,text=True)
 (ROOT/'server-stop.log').write_text(p.stdout+p.stderr)
