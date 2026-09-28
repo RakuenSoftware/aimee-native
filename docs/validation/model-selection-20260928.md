@@ -313,3 +313,16 @@ in `artifacts/model-selection-installed-results-20260928/`. This closes the
 queued larger-model installed-consumption checks; it does not promote the
 lab-only manifests or substitute for the pending normal-launcher 12B recovery
 and larger-bank timing measurements.
+
+## Normal launcher 12B recovery completed
+
+The normal-feature model-aware launcher passed both initial 12B native canary
+queries. After deliberate interruption of an active streamed native request,
+it replaced its owned runtime and broker, obtained fresh authorization, and
+correctly recalled all three canary facts again. The new container identity
+differed from the original, and admission health returned successfully.
+The previously paused resident 12B compiler was restored and remains active.
+Exact report and executed coordinator are preserved in
+`artifacts/model-selection-normal-recovery-20260928/`. This closes the queued
+normal-binary recovery check. It does not assert broader learning reliability
+or promote the larger lab-only packages to normal release channels.
