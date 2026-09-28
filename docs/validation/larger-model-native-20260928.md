@@ -3,16 +3,25 @@
 Neither larger model is release-ready. Both pass the recorded 5/5 native smoke
 comparison, complete-record preparation and 64-request conversation/concurrency
 checks. Gemma 26B has completed all four signed lifecycle phases (8/8 native
-canary queries). Qwen 27B has passed fresh signed installation (2/2); its update,
-rollback and restore remain outstanding.
+canary queries). Qwen 27B passed fresh signed installation (2/2) and installed
+its signed update; update/rollback/restore GPU probes remain queued.
 
-Gemma's four fully paired coding cases currently yield 2/4 control, 3/4 text,
-3/4 first native reuse and 4/4 second native reuse. Two cases are not fully
-paired yet; these selected partial results are not the final six-case score.
-The interrupted original campaign is preserved, the unchanged Requests text
-patch passed independent regrading, and four remaining agent attempts are in
-a separate continuation. Qwen's coding campaign is queued. Deployed selection
-of all three models under one enrolled account also remains unvalidated.
+Gemma's four fully paired coding cases yield 2/4 control, 3/4 text, 3/4 first
+native reuse and 4/4 second native reuse. Three unfinished native attempts are
+queued in a separate continuation with an explicitly longer transport timeout.
+Original failures and all completed outcomes remain unchanged.
+
+Qwen has five fully paired cases: control 4/5, text 3/5 and both native rounds
+5/5. Both rounds retain every control success and add SymPy. Requests remains
+unfinished, so these are partial selected-case results, not the final six-case
+score or a population-level learning estimate.
+
+The deployed three-model authority passed 10/10 bootstrap authorization checks
+and 6/6 fresh/repeated artifact fetches through one enrolled account. Installed
+GPU consumption through the model-aware launcher and 12B compiler restoration
+remain queued. Exact larger client-library audits and the runtime dependency
+inventory are recorded below; neither substitutes for the unfinished runtime
+and coding checks.
 
 The 12B evidence remains separate. The dated work record below preserves
 failures and intermediate states; later completed outcomes supersede their
