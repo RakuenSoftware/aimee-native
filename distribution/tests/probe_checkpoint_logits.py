@@ -18,6 +18,7 @@ p.add_argument('--model', required=True)
 p.add_argument('--source', required=True)
 p.add_argument('--output', required=True)
 p.add_argument('--threads', type=int, default=8)
+p.add_argument('--trace-output')
 a = p.parse_args()
 sys.path.insert(0, a.source)
 from checkpoint_weights import CheckpointWeights
@@ -33,6 +34,20 @@ classes = {'gemma4': Gemma4ForCausalLM, 'qwen3_5': Qwen3_5ForCausalLM}
 cls = classes[config.model_type]
 with init_empty_weights():
     model = cls(text).eval()
+trace = {}
+if a.trace_output:
+    assert not pathlib.Path(a.trace_output).exists(), 'preserve prior trace'
+    def capture(name):
+        def hook(module, args, output):
+            if name in trace:
+                return
+            value = output[0] if isinstance(output, tuple) else output
+            trace[name] = value.detach().reshape(-1, value.shape[-1])[-1].float().cpu().tolist()
+        return hook
+    model.model.embed_tokens.register_forward_hook(capture('embedding'))
+    for i, layer in enumerate(model.model.layers):
+        layer.register_forward_hook(capture('layer.' + str(i)))
+    model.model.norm.register_forward_hook(capture('norm'))
 index = json.loads((pathlib.Path(a.model) / 'model.safetensors.index.json').read_text())['weight_map']
 aliases = {}
 for name in model.state_dict():
@@ -68,4 +83,6 @@ with CheckpointWeights(a.model, aliases=aliases) as weights:
         'all_parameters_released': all(p.device.type == 'meta' for p in model.parameters()),
         'seconds': time.monotonic() - started}
 output.write_text(json.dumps(report, indent=2) + '\n')
+if a.trace_output:
+    pathlib.Path(a.trace_output).write_text(json.dumps({'input_token_ids': ids, 'trace': trace}) + '\n')
 print(json.dumps(report))

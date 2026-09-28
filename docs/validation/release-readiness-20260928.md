@@ -15,7 +15,10 @@ one lost case subsequently repaired in a separate targeted experiment.
 The requested three-model release is **not ready**. Gemma 26B Q8 currently fails
 baseline inference, while its original BF16 checkpoint passed all four checks.
 Qwen 27B Q8 passed its four packaged GPU baseline smoke checks.
-Neither larger model has completed native-memory or signed lifecycle validation.
+Qwen's first native/text/control smoke completed at 3/5, 5/5 and 1/5 respectively;
+it exposes two native quality failures. Neither larger model has completed
+release native-memory or signed lifecycle validation. See the
+[larger-model validation report](larger-model-native-20260928.md).
 The normal published channel remains at sequence 5.
 
 Completed evidence: [10/10 selected regression attempts](artifacts/retained-success-validation-20260928/status.json),

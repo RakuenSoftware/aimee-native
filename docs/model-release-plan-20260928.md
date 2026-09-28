@@ -293,5 +293,23 @@ records produced 38 positions in each of its 16 full-attention layers. Banks
 were finite and every layer retained all positions. The full FP32 forward
 took approximately 66 seconds, with approximately 4 ms for export; these are
 offline preparation measurements, not serving latency. All parameters were
-released after preparation. The corresponding full Gemma memory preparation
-is running next. Native answer quality and lifecycle validation remain open.
+released after preparation. The corresponding full Gemma memory preparation also passed: all three
+records produced 41 positions across all 30 layers, with finite banks. Its
+FP32 forward took approximately 46 seconds and export approximately 248 ms.
+All parameters were released afterward. Native answer quality and lifecycle validation remain open.
+
+
+## First Qwen native comparison and Gemma isolation checks
+
+Both full-checkpoint preparations passed complete three-record export. Qwen's
+first private native runtime comparison completed at 3/5 native, 1/5 control
+and 5/5 text; two native quality failures remain. Native prompt counts matched
+control, while text memory added 43 tokens per question. No binary-only
+release, live authority or learning certification is implied.
+
+Gemma's sampled source/loaded BF16 checks, Q8 payload checks and isolated expert
+numerics have not explained the failing Q8 model. Exact loaded quantized-byte
+comparison passed all 38 checked matrices on both workers. Dense/vocabulary
+and embedding numerical samples remain finite and close to their independent
+references. Paired full-model CPU/GPU layer traces are running next. The [current validation report](validation/larger-model-native-20260928.md)
+records the full scope, failures and remaining release gates.
