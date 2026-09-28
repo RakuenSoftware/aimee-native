@@ -5,7 +5,7 @@ Runs matched answers, conversation growth, concurrent eviction pressure, streami
 TTFT and full-process/device measurements. Timing labels preserve their scope.
 """
 import argparse,concurrent.futures,json,pathlib,socket,statistics,subprocess,threading,time,urllib.request,urllib.error
-p=argparse.ArgumentParser();p.add_argument('--image',required=True);p.add_argument('--root',default='/opt/aimee-memory-lab');p.add_argument('--output',required=True);p.add_argument('--requests',type=int,default=128);p.add_argument('--profiles',nargs='+',choices=('bf16','q8'),default=['bf16','q8']);p.add_argument('--context-tokens',type=int,choices=(2048,8192),default=2048);p.add_argument('--gpu-utilization',type=float,default=.70);a=p.parse_args()
+p=argparse.ArgumentParser();p.add_argument('--image',required=True);p.add_argument('--long-refresh',action='store_true');p.add_argument('--root',default='/opt/aimee-memory-lab');p.add_argument('--output',required=True);p.add_argument('--requests',type=int,default=128);p.add_argument('--profiles',nargs='+',choices=('bf16','q8'),default=['bf16','q8']);p.add_argument('--context-tokens',type=int,choices=(2048,8192),default=2048);p.add_argument('--gpu-utilization',type=float,default=.70);a=p.parse_args()
 root=pathlib.Path(a.root);out=pathlib.Path(a.output);out.mkdir(parents=True,exist_ok=False)
 fixture=root/'vllm-native-fixture-r1';port=8160;base=f'http://127.0.0.1:{port}';name='aimee-image-certification'
 report={'image':a.image,'image_inspect':json.loads(subprocess.check_output(['podman','image','inspect',a.image]))[0]['Id'],'scope':'synthetic operational certification; not population accuracy or live grant verification','profiles':{},'status':'running','context_tokens':a.context_tokens,'gpu_utilization':a.gpu_utilization}
@@ -128,6 +128,14 @@ try:
      body,expected=payload(model,mode=mode,turns=48 if i>=10 else 0)
      row=request(body,stream=True);row.update(mode=mode,turns=48 if i>=10 else 0,correct=all(v.lower() in row['answer'].lower() for v in expected));data['streaming'].append(row)
    assert all(row['correct'] for row in data['streaming']);metrics('after_streaming')
+   if a.long_refresh:
+    if a.context_tokens!=8192:raise ValueError('long refresh probe requires 8192 context')
+    subprocess.run(['python3',str(pathlib.Path(__file__).parents[2]/'tests/long_refresh_drain.py'),'--endpoint',base,'--socket',str(sock),'--output',str(work/'long-refresh.json')],check=True)
+    data['long_refresh']=json.loads((work/'long-refresh.json').read_text());assert data['long_refresh']['status']=='passed'
+    data['post_refresh_recall']=[]
+    for bank in ('alpha','beta'):
+     body,expected=payload(model,bank);row=request(body);row.update(bank=bank,correct=all(v.lower() in row['answer'].lower() for v in expected));data['post_refresh_recall'].append(row);assert row['correct']
+    save()
    data['status']='passed';save()
   finally:
    subprocess.run(['podman','stop','--time','30',name],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)

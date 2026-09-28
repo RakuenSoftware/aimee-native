@@ -34,6 +34,9 @@ try:
   else:raise TimeoutError('no active request observed')
   report['before']=metrics;save();drain=pool.submit(refresh)
   time.sleep(.5)
+  health_started=time.monotonic();report['during_control_status']=control('status');report['during_control_status_seconds']=time.monotonic()-health_started
+  assert report['during_control_status'].get('state')=='paused'
+  assert report['during_control_status_seconds']<2,'health polling blocked behind refresh'
   short=dict(body,max_tokens=1,min_tokens=0,ignore_eos=False,messages=[{'role':'user','content':'Hello'}])
   try:api('/v1/chat/completions',short);report['during_http_status']=200
   except urllib.error.HTTPError as e:report['during_http_status']=e.code

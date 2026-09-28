@@ -619,3 +619,11 @@ worker acknowledgement. A newer withdrawal leaves admission closed; a failed
 worker collective still requires restart. Both new race tests pass in the
 compiled runtime, including the actual Unix control socket. Final build and
 installed-package audit evidence are in `artifacts/refresh-control-order-20260928/`.
+
+Final-image certification now includes a forced 4096-token generation crossing
+the original drain-timeout boundary, a concurrent health-status response within
+two seconds, rejection of new admission during draining, successful refresh,
+and subsequent recall of all three values from each of the two banks. This
+probe is queued with `--long-refresh`; it is not yet recorded as passed on the
+final image. The earlier 237.75-second probe remains evidence for its recorded
+image only.
