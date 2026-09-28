@@ -47,8 +47,8 @@ For each larger model:
 
 Both larger models have separately passed native/text smoke comparisons,
 conversation/concurrency checks and the recorded private preparation lifecycle.
-Those checks do not substitute for the outstanding coding and signed-client
-gates. The larger coding protocol reuses frozen accepted source procedures;
+The coding and laboratory signed-client campaigns are now complete; exact
+normal-channel larger installation remains unexecuted. The larger coding protocol reuses frozen accepted source procedures;
 it does not measure newly acquired learning between its two native rounds.
 
 The three-model account binding, query-forwarding frontend and delivery service

@@ -32,8 +32,10 @@ isolation checks. Installed consumption through the updated launcher passed for 
 models. Normal-feature 12B restoration/recovery also passed. Larger-bank
 activation measurements passed fidelity for all twelve banks. Cold medians
 remain 3.73–14.80 ms for Gemma and 1.62–4.40 ms for Qwen, so the microsecond
-cold-application target remains unmet. Final release provenance review remains
-outstanding.
+cold-application target remains unmet. The upstream/private source-identity concern has been resolved. The
+[explicit package gate review](larger-release-gate-review-20260928.md) identifies
+normal larger installation and the exact dependency redistribution disposition
+as unfinished, alongside the failed latency target.
 
 Automatic source acquisition is implemented in the benchmark harness and has
 replay-validated evidence in the primary and broader studies. This is distinct
