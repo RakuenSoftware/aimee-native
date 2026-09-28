@@ -16,15 +16,18 @@ def save(**fields):
 
 
 def run(name, command):
-    with (ROOT / (name + '.log')).open('x') as log:
+    target=ROOT / (name + '.log')
+    if target.exists():target=ROOT / (name + '-' + str(time.time_ns()) + '.log')
+    with target.open('x') as log:
         subprocess.run(command, stdout=log, stderr=subprocess.STDOUT, check=True)
 
 
 def main():
     state = json.loads((ROOT / 'status.json').read_text())
-    if state.get('stage') != 'fp32_preparation_reuse' or state['status'] != 'failed':
+    client_only = state.get('stage') == 'validating_candidate_client'
+    if state.get('stage') not in ('fp32_preparation_reuse', 'validating_candidate_client') or state['status'] != 'failed':
         raise ValueError('expected preserved FP32 partial-reuse failure')
-    (ROOT / 'status-before-fp32-reuse-correction.json').write_text(json.dumps(state, indent=2) + '\n')
+    (ROOT / ('status-before-client-correction-'+str(time.time_ns())+'.json' if client_only else 'status-before-fp32-reuse-correction.json')).write_text(json.dumps(state, indent=2) + '\n')
     source = r'''import pathlib,json
 r=pathlib.Path('/opt/aimee-memory-lab/release-candidate-20260927')
 for name in ('exact-image-certification','wide-image-certification','activation-certification'):
@@ -33,18 +36,25 @@ assert json.loads(pathlib.Path('/opt/aimee-native-compiler/resident.json').read_
 assert 'identical-complete-input' in pathlib.Path('/opt/aimee-native-compiler/gemma_compile.py').read_text()
 '''
     subprocess.run(['pct', 'exec', '101', '--', 'python3', '-'], input=source, text=True, check=True)
-    save(status='checking_fp32_preparation_reuse_corrected')
-    subprocess.run(['pct', 'exec', '101', '--', 'systemctl', 'stop', 'aimee-native-compiler'], check=True)
-    try:
-        run('preparation-reuse-corrected', ['pct', 'exec', '101', '--', '/opt/aimee-memory-lab/venv/bin/python',
-            '/opt/aimee-memory-lab/aimee-qwen/distribution/tests/lab/preparation_reuse.py',
-            '--output', '/opt/aimee-memory-lab/release-candidate-20260927/fp32-preparation-reuse-corrected',
-            '--source', '/opt/aimee-native-compiler', '--library', '/opt/aimee-native-compiler/libaimee_prepare.so',
-            '--compute-dtype', 'float32'])
-    finally:
-        subprocess.run(['pct', 'exec', '101', '--', 'systemctl', 'start', 'aimee-native-compiler'], check=True)
+    if not client_only:
+        save(status='checking_fp32_preparation_reuse_corrected')
+        subprocess.run(['pct', 'exec', '101', '--', 'systemctl', 'stop', 'aimee-native-compiler'], check=True)
+        try:
+            run('preparation-reuse-corrected', ['pct', 'exec', '101', '--', '/opt/aimee-memory-lab/venv/bin/python',
+                '/opt/aimee-memory-lab/aimee-qwen/distribution/tests/lab/preparation_reuse.py',
+                '--output', '/opt/aimee-memory-lab/release-candidate-20260927/fp32-preparation-reuse-corrected',
+                '--source', '/opt/aimee-native-compiler', '--library', '/opt/aimee-native-compiler/libaimee_prepare.so',
+                '--compute-dtype', 'float32'])
+        finally:
+            subprocess.run(['pct', 'exec', '101', '--', 'systemctl', 'start', 'aimee-native-compiler'], check=True)
+    else:
+        subprocess.run(['pct','exec','101','--','python3','-c',
+            "import pathlib,json; d=json.loads(pathlib.Path('/opt/aimee-memory-lab/release-candidate-20260927/fp32-preparation-reuse-corrected/report.json').read_text()); assert d['status']=='passed' and len(d['rows'])==9 and all(r['exact'] for r in d['rows'])"],check=True)
     save(status='validating_candidate_client')
-    run('candidate-client', ['pct', 'exec', '110', '--', 'python3', '/opt/aimee-client/live_client_runtime.py',
+    if client_only:
+        subprocess.run(['pct','exec','110','--','python3','-c',
+            "import pathlib,json,time; r=pathlib.Path('/opt/aimee-client/release-evidence'); p=r/'candidate-6-runtime.json'; assert not p.exists() or json.loads(p.read_text())['status']!='passed'; stamp=str(time.time_ns()); [(q.rename(q.with_name(q.stem+'-before-retry-'+stamp+q.suffix))) for q in [p,p.with_suffix('.log')] if q.exists()]"],check=True)
+    run('candidate-client-profile-corrected' if client_only else 'candidate-client', ['pct', 'exec', '110', '--', 'python3', '/opt/aimee-client/live_client_runtime.py',
         '--launcher', '/opt/aimee-client/bin/aimee-native-candidate-test', '--root', '/opt/aimee-client/native-candidate-6',
         '--query', 'What are the native release verification vault code, project, and drink?',
         '--expect', '28461', '--expect', 'Juniper', '--expect', 'hibiscus',

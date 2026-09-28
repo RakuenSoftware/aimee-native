@@ -1,14 +1,14 @@
 import hashlib,json,pathlib,subprocess,sys,tempfile,unittest
 
 class CandidateStage(unittest.TestCase):
- def stage(self,corrupt=False):
+ def stage(self,corrupt=False,invalid_budget=False):
   with tempfile.TemporaryDirectory() as tmp:
    r=pathlib.Path(tmp);installed=r/'installed';release=installed/'releases/old';release.mkdir(parents=True);inputs=r/'inputs';inputs.mkdir();candidate=r/'candidate'
    (installed/'active.json').write_text('{"current":"old"}')
    (installed/'config.json').write_text(json.dumps({'memory_root':str(installed/'memory'),'token_file':'/existing/restricted/token'}))
    (release/'manifest.json').write_text('{"schema":1}')
    model=release/'models/model.gguf';model.parent.mkdir();model.write_bytes(b'fixture model')
-   (inputs/'image.json').write_text('{"image":"fixture"}');(inputs/'profile.json').write_text('{"schema":1}')
+   (inputs/'image.json').write_text('{"image":"fixture"}');(inputs/'profile.json').write_text(json.dumps({'schema':1,'host_memory_budget':2048,'device_memory_budget':1024,'disk_budget':1024 if invalid_budget else 2048}))
    artifacts=[]
    for name,p in [('models/model.gguf',model),('runtime/image.json',inputs/'image.json'),('runtime/profile.json',inputs/'profile.json')]:artifacts.append({'path':name,'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'executable':False})
    identity=hashlib.sha256(json.dumps(sorted(artifacts,key=lambda x:x['path']),sort_keys=True,separators=(',',':')).encode()).hexdigest()
@@ -16,13 +16,15 @@ class CandidateStage(unittest.TestCase):
    if corrupt:model.write_bytes(b'corrupt model')
    p=subprocess.run([sys.executable,str(pathlib.Path(__file__).with_name('stage_candidate.py')),'--installed-root',str(installed),'--candidate-root',str(candidate),'--inputs',str(inputs)],capture_output=True,text=True)
    self.assertEqual(json.loads((installed/'active.json').read_text()),{'current':'old'})
-   if corrupt:
+   if corrupt or invalid_budget:
     self.assertNotEqual(p.returncode,0);self.assertFalse((candidate/'active.json').exists());return
    self.assertEqual(p.returncode,0,p.stderr)
    a=json.loads((candidate/'active.json').read_text());m=json.loads((candidate/'releases'/a['current']/'manifest.json').read_text());self.assertEqual(m['gates'],['lab_only'])
    self.assertEqual(json.loads((candidate/'config.json').read_text())['memory_root'],str(candidate/'memory'))
+   self.assertEqual((candidate/'memory').stat().st_mode&0o777,0o700)
    self.assertEqual(json.loads((candidate/'staging-report.json').read_text())['artifact_set_sha256'],identity)
  def test_exact_artifacts_isolated_from_normal_installation(self):self.stage()
  def test_corruption_cannot_activate_candidate(self):self.stage(corrupt=True)
+ def test_disk_budget_below_host_budget_cannot_stage(self):self.stage(invalid_budget=True)
 
 if __name__=='__main__':unittest.main()

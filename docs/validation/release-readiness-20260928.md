@@ -25,7 +25,9 @@ The historical sections below preserve earlier checkpoints and interventions.
 
 Image: `7303c9e9b0785a8574885594aafe87d8f65b54acdf3a3c20a003901be5f40605`.
 Registry digest: `sha256:1fc9a828331c42da146be2a9fcd1171e67c67dc8bf5167052c854ee7916822ea`.
-Artifact set: `d58990c72626e3d657fc02f68d424d78315030b03aee5aa4b4986d4112cfc082`.
+Artifact set: `194784c37a063b79e737aea66a45d749c24f3cf65f8186500613cd5660cb106d`.
+Lab candidate manifest: `b05aff4bea742a32f53d5b09641b7f8ee99aee9b67bd73ebb80070fd188314ea`.
+The image is unchanged; the staged disk budget was corrected to 2 GiB.
 
 This supersedes the candidate IDs in the chronological work record below. It
 includes the corrected attention bank, retryable long refresh drains, aligned
@@ -34,8 +36,8 @@ checks prevent a superseded refresh from reopening admission, including when
 withdrawal arrives during the worker RPC. All 27 compiled runtime checks pass.
 The client candidate verifies all 18 artifact hashes and uses the rebuilt Rust
 lab launcher. Standard and 32-record GPU certification passed, and hosted FP32 preparation
-is deployed pending client validation. FP32 reuse, installed model-answer
-validation/recovery, and signed lifecycle remain pending.
+is deployed pending client validation. All nine corrected FP32 reuse cases passed. Installed model-answer
+validation/recovery and signed lifecycle remain pending.
 
 The broader campaign is now **complete: 64/64 scored attempts**. Control passed
 **5/32**, native reuse passed **4/32**: four both-pass, twenty-seven both-fail,
@@ -905,3 +907,34 @@ corrective Requests diagnostic is requeued. Before any of its model calls,
 its protocol was amended to freshly encode **both** source representations
 with the corrected full-pass policy, rather than compare an old cached bank
 against a newly prepared one.
+
+## Corrected preparation passed; installed candidate staging repairs
+
+The corrected FP32 compiler passed **all nine exactness cases**, including
+32-record preparation and the changed-tail case. Identical input with a new
+record revision reused all 39 tokens and evaluated zero tokens; scope changes
+and changed content forced fresh evaluation. The [complete report](artifacts/fp32-reuse-correction-20260928/corrected-report.json)
+retains the measured costs. The original partial-reuse failure remains archived.
+
+Client startup exposed two lab-staging defects before inference: the candidate
+profile's 1 GiB disk budget was smaller than its 2 GiB host budget, and the
+staging helper created its memory directory with non-private permissions.
+The profile now allows 2 GiB disk, and the helper creates the directory with
+mode 0700. Three staging tests pass, including the invalid-budget regression
+and the permission assertion. No launcher validation was weakened.
+
+The immutable corrected profile produces artifact-set hash
+`194784c37a063b79e737aea66a45d749c24f3cf65f8186500613cd5660cb106d`
+and lab manifest
+`b05aff4bea742a32f53d5b09641b7f8ee99aee9b67bd73ebb80070fd188314ea`.
+All 18 artifacts were verified during restaging; model weights are hardlinked
+from the unchanged normal installation. The old candidate root is retained.
+The corrected unsigned production plan is on CT101 at
+`release-candidate-20260927/profile-correction-20260928/unsigned-plan.json`.
+Final gate metadata and signing must bind to this corrected artifact set,
+not the superseded `d58990c7...` identity. The image itself remains `7303c9e9...`.
+
+[Corrected profile and staging evidence](artifacts/candidate-profile-correction-20260928/staging-report.json).
+The original profile rejection is archived. Subsequent client attempts preserve
+previous reports and logs before retrying. The live queue resumed at the client
+stage without rerunning or rewriting the completed nine-case CPU validation.
