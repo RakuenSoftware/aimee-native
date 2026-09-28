@@ -542,3 +542,34 @@ trajectory snapshots. Its first broader snapshot passed for 52 observed calls,
 six trajectories (including ongoing controls), and one native publication.
 The complete prepared source equals the captured fact and all observed calls
 use the intended publication. Accuracy claims still depend on the official grader.
+
+
+## Concurrent refresh infrastructure failure and repair
+
+The broader run encountered a real serving failure during Xarray publication.
+The control socket waited only 60 seconds for active requests to drain, then
+marked the server poisoned even though no worker catalog had been changed.
+A longer in-flight generation crossed this limit; publication retries failed
+and new requests received 503s. The controller was stopped to contain invalid
+attempts. Completed primary outcomes and the completed Flask pair are preserved;
+outage-affected attempts remain infrastructure errors, not scored task failures.
+
+The control implementation now allows a 600-second drain by default and keeps
+pre-mutation timeout/cancellation failures paused but retryable. Worker-RPC or
+revision-consistency failures still poison admission. Private server logs retain
+the actual exception. Nine control checks pass both from source and compiled
+code, including retry after a drain timeout and rejection of mixed revisions.
+The repaired image is `3dd4c184270627bc3724fea622eb7e4edd3b7b1ad2ebd90190b5dbbaeb595acc`;
+it derives from the prior candidate and changes only the compiled control module.
+The prior running container and server logs are preserved. The replacement is
+running a real-generation drain probe before the experiment resumes.
+
+The first probe generated only a short refusal and did not cross 60 seconds;
+it is preserved and is not counted as boundary coverage. A fixed-length 4096-token
+generation probe is running separately. The broader controller has also gained
+a stop signal for infrastructure errors and completed-pair preservation on
+resume. Three pipeline checks pass. Admission-retry duration is configurable
+for the resumed harness; inference budgets and output allowances stay declared.
+The original candidate's pending certification cannot certify this new image.
+Candidate staging, evidence binding and queue configuration must be updated
+before promotion.

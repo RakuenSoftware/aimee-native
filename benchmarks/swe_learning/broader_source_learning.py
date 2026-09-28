@@ -13,6 +13,7 @@ PUBLICATION_LOCK=threading.Lock()
 STATE_LOCK=threading.Lock()
 active_publications={}
 state={}
+STOP=threading.Event()
 
 def save():
  with STATE_LOCK:
@@ -27,15 +28,29 @@ def save():
 
 def task_pipeline(task):
  iid=task['instance_id']
+ if STOP.is_set():raise concurrent.futures.CancelledError()
+ # Completed pairs remain untouched on infrastructure recovery.
+ prior=[]
+ for arm in ['source-control','source-learn-1']:
+  p=ROOT/'results'/arm/iid/'result.json'
+  if p.exists():
+   row=json.loads(p.read_text())
+   if row['instance_id']!=iid or row['arm']!=arm:raise ValueError('resume identity mismatch')
+   if type(row.get('resolved')) is not bool:raise ValueError('archive ungraded interruption before resuming: '+str(p))
+   prior.append(row)
+ if len(prior)==2:return {'instance_id':iid,'control':prior[0]['resolved'],'native':prior[1]['resolved']}
  try:
   control=run.attempt(task,'source-control',None)
   if type(control.get('resolved')) is not bool:raise RuntimeError('ungraded control: '+iid)
   save()
+  if STOP.is_set():raise concurrent.futures.CancelledError()
   experience=source.capture(task,control,None)
   with PUBLICATION_LOCK:
+   if STOP.is_set():raise concurrent.futures.CancelledError()
    pub,fact=source.prepare(task,experience,list(active_publications.values()))
    active_publications[iid]=pub['publication']
    source.write(ROOT/'results/source-control'/iid/'next-publication.json',dict(pub,complete_fact=fact,fact_sha256=hashlib.sha256(fact.encode()).hexdigest()))
+  if STOP.is_set():raise concurrent.futures.CancelledError()
   native=run.attempt(task,'source-learn-1',pub['publication'])
   if type(native.get('resolved')) is not bool:raise RuntimeError('ungraded native attempt: '+iid)
   return {'instance_id':iid,'control':control['resolved'],'native':native['resolved']}
@@ -49,7 +64,8 @@ def main():
  os.chdir(ROOT)
  tasks=json.loads((ROOT/'tasks.json').read_text())
  if len(tasks)!=32 or len({t['instance_id'] for t in tasks})!=32:raise ValueError('expected 32 unique frozen tasks')
- state.update(status='waiting_for_primary',started=time.time(),scheduled_attempts=64,budget={'seconds':run.SECONDS,'steps':run.STEPS,'output_tokens':run.OUTPUT_TOKENS,'input_tokens':run.INPUT_TOKENS,'grader_seconds':run.GRADE_TIMEOUT,'concurrency':4},scope='Additional frozen tasks. One control followed by one native reuse attempt per task; no prior calibration memories supplied. Not a three-round study or a held-out generalization claim.',results=[],errors=[])
+ STOP.clear()
+ state.update(status='waiting_for_primary',started=time.time(),scheduled_attempts=64,budget={'seconds':run.SECONDS,'steps':run.STEPS,'output_tokens':run.OUTPUT_TOKENS,'input_tokens':run.INPUT_TOKENS,'grader_seconds':run.GRADE_TIMEOUT,'concurrency':4},scope='Additional frozen tasks. One control followed by one native reuse attempt per task; no prior calibration memories supplied. Not a three-round study or a held-out generalization claim.',results=[],errors=[],cancelled_tasks=[])
  save()
  try:
   while True:
@@ -75,7 +91,11 @@ def main():
    futures={pool.submit(task_pipeline,task):task['instance_id'] for task in tasks}
    for future in concurrent.futures.as_completed(futures):
     try:state['results'].append(future.result())
-    except Exception as error:state['errors'].append({'instance_id':futures[future],'error':repr(error)})
+    except concurrent.futures.CancelledError:state['cancelled_tasks'].append(futures[future])
+    except Exception as error:
+     state['errors'].append({'instance_id':futures[future],'error':repr(error)})
+     STOP.set()
+     for pending in futures:pending.cancel()
     save()
   if not state['errors']:
    for task in tasks:

@@ -1,5 +1,5 @@
 """Publisher-owned Unix control socket. Never mounted as an HTTP API."""
-import asyncio,json,os,socket,struct
+import asyncio,json,logging,os,socket,struct
 from pathlib import Path
 
 async def start(owner, engine):
@@ -15,7 +15,9 @@ async def start(owner, engine):
             if uid!=os.geteuid():raise RuntimeError('publisher UID mismatch')
             request=json.loads(await asyncio.wait_for(reader.readline(),10))
             async with lock:result=await operate(owner,engine,request)
-        except Exception:result={'error':'native control operation failed; admission remains stopped'}
+        except Exception:
+            logging.getLogger(__name__).exception('Native control operation failed')
+            result={'error':'native control operation failed; admission remains stopped'}
         writer.write(json.dumps(result).encode()+b'\n');await writer.drain();writer.close();await writer.wait_closed()
     server=await asyncio.start_unix_server(handle,path=str(path),limit=4096)
     os.chmod(path,0o600)
@@ -43,10 +45,11 @@ async def operate(owner,engine,request):
         owner.generation=getattr(owner,'generation',0)+1
         return {'state':'withdrawn','active_requests':owner.active,'generation':owner.generation}
     if owner.poisoned:raise RuntimeError('worker restart required')
+    # Draining and local validation cannot leave worker ranks at mixed revisions.
+    # Keep admission paused on timeout/cancellation, but allow a publisher retry.
+    await asyncio.wait_for(owner.idle.wait(),owner.config.get('refresh_drain_timeout_seconds',600))
+    banks=await asyncio.to_thread(owner.load_banks)
     try:
-        await asyncio.wait_for(owner.idle.wait(),60)
-        # Publication I/O/admission checks run away from attention and HTTP reads.
-        banks=await asyncio.to_thread(owner.load_banks)
         results=await engine.collective_rpc('aimee_refresh_catalog',timeout=60)
         expected=owner.config.get('serve',{}).get('tensor_parallel_size',1)
         if len(results)!=expected or any(r['publications']!=len(banks) or r['pinned_requests']!=0 or r.get('catalog_digest')!=owner.pending_digest for r in results):

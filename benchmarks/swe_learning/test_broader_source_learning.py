@@ -31,4 +31,25 @@ class BroaderPipelines(unittest.TestCase):
    self.assertEqual(len(rows),4);self.assertEqual(sorted(map(len,retained)),[0,1,2,3]);self.assertEqual(module.active_publications,{})
    status=json.loads((root/'status.json').read_text());self.assertEqual(status['graded_attempts'],8)
 
+ def test_completed_pair_is_not_replayed_or_republished_on_resume(self):
+  with tempfile.TemporaryDirectory() as temp:
+   root=pathlib.Path(temp);run=types.ModuleType('run');run.ROOT=root
+   def forbidden(*args):raise AssertionError('completed pair must stay untouched')
+   run.attempt=forbidden;source=types.ModuleType('source_learning');source.capture=forbidden;source.prepare=forbidden
+   for arm in ['source-control','source-learn-1']:
+    p=root/'results'/arm/'task'/'result.json';p.parent.mkdir(parents=True);p.write_text(json.dumps({'instance_id':'task','arm':arm,'resolved':True}))
+   spec=importlib.util.spec_from_file_location('broader_resume_test',pathlib.Path(__file__).with_name('broader_source_learning.py'));module=importlib.util.module_from_spec(spec)
+   with patch.dict('sys.modules',{'run':run,'source_learning':source}):spec.loader.exec_module(module)
+   self.assertEqual(module.task_pipeline({'instance_id':'task'}),{'instance_id':'task','control':True,'native':True})
+   module.STOP.set()
+   with self.assertRaises(concurrent.futures.CancelledError):module.task_pipeline({'instance_id':'new'})
+
+ def test_ungraded_result_requires_archiving_before_resume(self):
+  with tempfile.TemporaryDirectory() as temp:
+   root=pathlib.Path(temp);run=types.ModuleType('run');run.ROOT=root;source=types.ModuleType('source_learning')
+   p=root/'results/source-control/task/result.json';p.parent.mkdir(parents=True);p.write_text(json.dumps({'instance_id':'task','arm':'source-control','resolved':None}))
+   spec=importlib.util.spec_from_file_location('broader_invalid_test',pathlib.Path(__file__).with_name('broader_source_learning.py'));module=importlib.util.module_from_spec(spec)
+   with patch.dict('sys.modules',{'run':run,'source_learning':source}):spec.loader.exec_module(module)
+   with self.assertRaisesRegex(ValueError,'archive ungraded'):module.task_pipeline({'instance_id':'task'})
+
 if __name__=='__main__':unittest.main()

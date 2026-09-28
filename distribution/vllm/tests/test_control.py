@@ -49,3 +49,30 @@ class ControlTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(name,'aimee_cache_stats');return [{'rank':0},{'rank':1}]
         result=await operate(o,NS(collective_rpc=complete),{'op':'metrics'})
         self.assertEqual(len(result['workers']),2);self.assertFalse(o.paused)
+
+    async def test_drain_timeout_is_retryable_without_worker_poisoning(self):
+        o=self.owner();o.active=1;o.idle.clear();o.config['refresh_drain_timeout_seconds']=.01
+        calls=[]
+        async def rpc(*args,**kwargs):
+            calls.append(1);return [{'publications':1,'pinned_requests':0,'catalog_digest':'new'}]*2
+        engine=NS(collective_rpc=rpc)
+        with self.assertRaises(TimeoutError):await operate(o,engine,{'op':'refresh'})
+        self.assertTrue(o.paused);self.assertFalse(o.poisoned)
+        self.assertEqual(calls,[]);self.assertEqual(o.banks,{'old':1})
+        o.active=0;o.idle.set()
+        self.assertEqual((await operate(o,engine,{'op':'refresh'}))['state'],'active')
+        self.assertEqual(len(calls),1)
+
+    async def test_cancelled_drain_does_not_poison_untouched_workers(self):
+        o=self.owner();o.idle.clear()
+        task=asyncio.create_task(operate(o,None,{'op':'refresh'}))
+        await asyncio.sleep(0);task.cancel()
+        with self.assertRaises(asyncio.CancelledError):await task
+        self.assertTrue(o.paused);self.assertFalse(o.poisoned)
+
+    async def test_invalid_local_catalog_is_retryable_without_worker_mutation(self):
+        o=self.owner()
+        def bad():raise ValueError('invalid catalog')
+        o.load_banks=bad
+        with self.assertRaises(ValueError):await operate(o,None,{'op':'refresh'})
+        self.assertTrue(o.paused);self.assertFalse(o.poisoned);self.assertEqual(o.banks,{'old':1})

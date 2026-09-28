@@ -17,11 +17,13 @@ if GRADE_TIMEOUT<=0:raise ValueError('grading timeout must be positive')
 SYSTEM='''You are a software engineer fixing a repository issue in /testbed. Use exactly one fenced bash command per response, with at most two brief sentences before it. Read relevant code, implement the fix, and run relevant existing tests or your own reproduction. Do not modify existing tests or commit. You may have native memory from earlier attempts: use its concrete feedback, but verify against this clean checkout. To finish, run exactly: echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT && git diff --no-ext-diff .\nExample:\n```bash\nls\n```'''
 def api(path,body):
  req=urllib.request.Request(BASE+path,data=json.dumps(body).encode(),headers={'Content-Type':'application/json'})
- for retry in range(20):
+ deadline=time.monotonic()+float(os.environ.get('SWE_ADMISSION_WAIT_SECONDS','90'))
+ for retry in range(1000):
   try:
    with urllib.request.urlopen(req,timeout=180) as r:return json.load(r)
   except urllib.error.HTTPError as e:
    if e.code not in (429,503):raise
+   if time.monotonic()>=deadline:break
    time.sleep(min(1+retry,5))
  raise RuntimeError('admission unavailable')
 MODEL=None
