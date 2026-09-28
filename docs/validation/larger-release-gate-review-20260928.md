@@ -117,3 +117,8 @@ and active state are retained. The subsequent [fresh-runtime probe](artifacts/la
 passed 2/2, with all three expected facts and 26 prompt tokens per answer.
 End-to-end response times were 8.08 s and 5.58 s, including first-request JIT
 activity in this campaign; these are not native activation latency measurements.
+
+Qwen's [normal signed-update installer](artifacts/larger-normal-lifecycle-20260928/qwen27/install2.log)
+has activated sequence 2, retaining sequence 1 as the previous release and
+advancing the high-water mark to 2. Its runtime canaries, rollback and restore
+remain pending; installation and runtime validation are recorded separately.
