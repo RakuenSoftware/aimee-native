@@ -692,3 +692,12 @@ requires replacement of the owned model container while the launcher stays
 alive, and verifies all three approved memory values after recovery. This
 end-to-end probe is queued, not yet passed. Code/test/build and interruption
 evidence are preserved in `artifacts/runtime-recovery-20260928/`.
+
+The resumed workload exercised the repaired transport deadline: a Seaborn
+native generation returned all 1536 permitted tokens after 198.48 seconds
+(`finish_reason=length`), followed by three more completed calls in the same
+attempt. The previous 180-second read deadline would interrupt that response.
+The exact trajectory snapshot, call metadata, executed harness and recovery
+manifest are preserved in `artifacts/runtime-recovery-20260928/generation-over-180-seconds.tar.gz`.
+This is transport-completion evidence, not a task solve or memory-application
+latency measurement.
