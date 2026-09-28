@@ -14,6 +14,8 @@ one lost case subsequently repaired in a separate targeted experiment.
 
 The requested three-model release is **not ready**. Gemma 26B Q8 now passes
 baseline 4/4 and native smoke 5/5 using the supported Triton matrix backend.
+Its compiled-image HTTP check also passed all 60 memory-backed requests
+(46 native, 14 text); four no-memory controls lacked the synthetic facts.
 Qwen 27B Q8 passed its four packaged GPU baseline smoke checks.
 Qwen's first native/text/control smoke completed at 3/5, 5/5 and 1/5 respectively;
 a separate negative-position comparison now passes 5/5 native and 5/5 text.

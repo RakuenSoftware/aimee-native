@@ -72,9 +72,9 @@ The initial 3/5 result below remains part of the record.
 
 A compiled client wheel and combined private GPU binary bank are assembled in
 image `56e44a78b4ddbb228d5728311a709ee8118acc51f685b9f0e428a809b5ad2935`
-(seven kernel profiles). The 64-request Gemma packaged HTTP validation is running. That next check uses the actual serving CLI,
+(seven kernel profiles). The 64-request Gemma packaged HTTP validation passed. That next check uses the actual serving CLI,
 conversation growth, longer prompts, streaming and concurrent requests, with no
-private Python or kernel source mounted into serving. Its outcome is pending.
+private Python or kernel source mounted into serving.
 The initial image build failed on this Podman version's `--pull never` argument
 syntax; `--pull=never` fixed the invocation. That failed build and the corrected
 build are preserved separately. No model or memory result was changed.
@@ -83,6 +83,25 @@ The installed client package contains compiled modules and no private Python,
 encoder or kernel source; the native bank contains metadata and GPU binaries.
 This audit covers that package and bank, not whole-image confidentiality.
 [Installed-package audit](artifacts/larger-binary-client-20260928-r2/source-audit.json).
+
+## Gemma 26B packaged HTTP validation
+
+The compiled image completed all 64 requests: **46/46 native**, **14/14 matched
+text**, and **0/4 no-memory controls** recovered all three synthetic facts.
+There were no private-source mounts or runtime modifications. This validates
+the actual CLI configuration path and compiled attention dispatch on both XTXs.
+
+Coverage included zero, four, 16 and 48 prior conversation turns; two longer
+prompt sizes; eight streamed native and eight streamed text responses; and
+32 native requests submitted with four concurrent client workers. Every
+memory-backed answer contained all three values. Native and text prompts use
+the same query/background, with records added only to the text condition.
+These are repeated operational checks of one synthetic working set, not 60
+independent knowledge tasks or a population accuracy estimate. This run does
+not test live authority, record changes, cache eviction or learned task gains.
+
+Qwen 27B is running the matching packaged check after Gemma released the GPUs.
+[Gemma responses, token counts and timings](artifacts/gemma26-binary-validation-20260928-r2/report.json).
 
 ## Resident-service integration
 
