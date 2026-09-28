@@ -46,5 +46,20 @@ class CompactSourceExperience(unittest.TestCase):
   self.assertEqual(result['command'],patch_command(patch))
   self.assertFalse(result['replay_trials'][0]['matches_successful_patch'])
 
+ def test_literal_blocks_preserve_backslashes_and_quote_delimiters(self):
+  with tempfile.TemporaryDirectory() as directory:
+   root=pathlib.Path(directory)
+   def git(*args):return subprocess.check_output(['git',*args],cwd=root,text=True,stderr=subprocess.DEVNULL)
+   git('init');git('config','user.email','fixture@example.invalid');git('config','user.name','Fixture')
+   original=''.join('stable context '+str(i)+' x'*30+'\n' for i in range(30))
+   p=root/'source.txt';p.write_text(original);git('add','.');git('commit','-m','base')
+   for block in ['literal backslash \\n and \\t\n', 'triple double """\n', "triple single ''' and triple double \"\"\"\n"]:
+    p.write_text(original.replace('stable context 15',block+'stable context 15'))
+    patch=git('diff','--binary','HEAD');command=compact_patch_command(patch);self.assertIsNotNone(command)
+    expected=p.read_bytes();git('reset','--hard','HEAD')
+    subprocess.run(['bash','-c',command],cwd=root,check=True)
+    self.assertEqual(p.read_bytes(),expected);self.assertEqual(git('diff','--binary','HEAD'),patch)
+    git('reset','--hard','HEAD')
+
 
 if __name__=='__main__':unittest.main()

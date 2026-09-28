@@ -995,3 +995,37 @@ That status means its explicit candidate checks and all 64 broader grades
 completed, not that the broader study showed a gain or that every release gate
 is cleared. The Requests procedure diagnostic has now started its server
 handoff after the candidate released the GPUs. Its outcomes remain pending.
+
+
+## Completed procedure diagnostic and literal-newline follow-up
+
+The ten-call frozen-prompt diagnostic completed. Compact escaped-line memory
+in the prompt reproduced the successful own patch in both calls; native
+compact memory reproduced it in neither. Native compact returned one executable
+command each time, but corrupted newline escapes into line continuations and
+joined source lines. Native raw-diff responses violated the one-command
+protocol twice. Text raw-diff and no-memory responses also failed exact patch
+reproduction. These are deterministic diagnostic repeats, not independent
+task grades or estimates of learning efficacy.
+
+[Complete responses, fixture, and executed runner](artifacts/source-procedure-representation-20260928/).
+Inspection also found the replay shell did not activate the benchmark Conda
+environment: the reproduction failed on a Python 3.11 import, not the intended
+ProtocolError. Exact patch comparisons are unchanged, but that setup cannot
+support a behavioral reproduction claim. All original evidence is preserved.
+
+The follow-up activates the testbed environment and requires the actual
+original failure message before executing a generated command. Its lossless
+literal-newline representation passed exact source-patch replay under that
+corrected environment. Twelve source-capture tests pass. Eight model calls
+compare escaped versus literal representations under both native and text
+delivery, in forward and reverse order. The literal command is 972 characters
+versus 960; the purpose is faithful copying, not compression. GPU results are
+pending. [Declared protocol](../protocols/source-procedure-literal-20260928.md)
+and [CPU evidence](artifacts/source-procedure-literal-20260928/).
+
+The exact candidate image also passed inspection of its installed native
+package and four declared kernel files. No private source extensions were
+found in that package beyond package initialization files. This is a scoped
+binary-content check, not a guarantee against reverse engineering or a claim
+about every image path. [Audit](artifacts/final-image-certification-20260928/content-audit.json).

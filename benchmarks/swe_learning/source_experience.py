@@ -86,7 +86,14 @@ def compact_patch_command(patch):
         if any(a[1]>b[0] for a,b in zip(ordered,ordered[1:])):return None
         program+=['p=Path('+repr(path)+');s=p.read_text().splitlines(True)']
         for start,end,new in reversed(ordered):
-            program.append('s['+str(start)+':'+str(end)+']='+repr(new))
+            text=''.join(new)
+            # Keep source code as source code instead of a list of escaped
+            # lines. Both forms are lossless, but model reproduction of the
+            # escaped form joined lines in the measured Requests diagnostic.
+            delimiter=next((q for q in ('"""',"'''") if q not in text),None)
+            literal=('r'+delimiter+text+delimiter+'.splitlines(True)'
+                     if text and delimiter else repr(new))
+            program.append('s['+str(start)+':'+str(end)+']='+literal)
         program.append("p.write_text(''.join(s))")
     marker='AIMEE_EDIT_'+digest(patch)[:24]
     command="python3 <<'"+marker+"'\n"+'\n'.join(program)+'\n'+marker

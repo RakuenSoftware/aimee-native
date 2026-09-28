@@ -20,7 +20,7 @@ def replay(fixture, command):
     container = subprocess.check_output(['docker', 'run', '-d', '--rm', '--network', 'none',
         '--memory', '3g', '--cpus', '2', '--entrypoint', 'sleep', image, '300'], text=True).strip()
     def execute(command):
-        p = subprocess.run(['docker', 'exec', '-w', '/testbed', container, 'bash', '-c', command],
+        p = subprocess.run(['docker', 'exec', '-w', '/testbed', container, 'bash', '-c', 'source /root/.bashrc && ' + command],
                            capture_output=True, text=True, timeout=60)
         return {'returncode': p.returncode, 'stdout': p.stdout, 'stderr': p.stderr}
     try:
@@ -29,7 +29,7 @@ def replay(fixture, command):
             raise RuntimeError('clean-base reset failed')
         setup = [execute(c) for c in fixture['setup_commands']]
         # The original reproduction intentionally failed before the fix.
-        if [p['returncode'] for p in setup] != [0, 1]:
+        if [p['returncode'] for p in setup] != [0, 1] or 'Caught ProtocolError (Fail)' not in setup[1]['stdout']:
             raise RuntimeError('preserved pre-edit setup differs')
         observation = execute(command)
         diff = execute('git diff --no-ext-diff --binary HEAD')
@@ -66,6 +66,7 @@ def main():
     report = {'status': 'running', 'started': time.time(), 'fixture_sha256': hashlib.sha256(raw).hexdigest(),
         'scope': 'Post-hoc frozen pre-edit prompt; single-response source-patch fidelity, not official task accuracy. Two reversed-order deterministic repeats are not independent replications.',
         'max_tokens': 1536, 'seed': 20260926, 'encoding_revision': 'native-swe-v3-fp32-full',
+        'representation_labels': fixture.get('representation_labels', {'original':'unified-diff','compact':'escaped-lines'}),
         'historical_publication': fixture['original_publication'], 'publications': {}, 'rows': []}
     def save():
         target.parent.mkdir(parents=True, exist_ok=True)
@@ -78,11 +79,16 @@ def main():
                     'retain': [x['publication'] for x in report['publications'].values()]}).encode(), timeout=1320))
             if pub['records'] != 1:
                 raise ValueError('incomplete procedure publication')
-            if variant == 'original' and pub['publication'] == fixture['original_publication']:
+            expected = fixture.get('expected_publications', {}).get(variant)
+            if expected is not None and pub['publication'] != expected:
+                raise ValueError('publication does not match declared full-pass representation')
+            if expected is None and variant == 'original' and pub['publication'] == fixture['original_publication']:
                 raise ValueError('diagnostic requires fresh full-pass encoding, not historical partial-reuse cache')
             report['publications'][variant] = pub
             save()
-        modes = ['native-original', 'native-compact', 'text-original', 'text-compact', 'control']
+        modes = fixture.get('mode_order', ['native-original', 'native-compact', 'text-original', 'text-compact', 'control'])
+        if len(modes)!=len(set(modes)) or not set(modes)<={'native-original','native-compact','text-original','text-compact','control'}:
+            raise ValueError('invalid declared diagnostic conditions')
         for repetition, order in enumerate((modes, list(reversed(modes))), 1):
             for mode in order:
                 messages = copy.deepcopy(fixture['messages'])
