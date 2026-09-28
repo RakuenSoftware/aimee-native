@@ -157,8 +157,32 @@ pub fn supervise(
         .arg(disk_budget.to_string());
     death_signal(&mut broker);
     death_signal(runtime);
-    let mut broker = broker.spawn()?;
     let outcome = (|| -> Result<()> {
+        for restart in 0..=3 {
+            if STOP.load(Ordering::Relaxed) { return Ok(()); }
+            let required = supervise_children(runtime, &mut broker, &socket)?;
+            if !required { return Ok(()); }
+            ensure!(restart < 3, "native runtime exceeded supervised restart limit");
+            let memory = socket.parent().context("missing managed memory root")?;
+            clean_sockets(memory)?;
+            let catalog = memory.join("catalog.json");
+            let mut value: Value = serde_json::from_slice(&fs::read(&catalog)?)?;
+            value["publications"] = json!({});
+            value["selections"] = json!([]);
+            atomic(&catalog, &serde_json::to_vec(&value)?)?;
+            eprintln!("native runtime recovery: restarting owned broker and model ({}/3)", restart + 1);
+        }
+        unreachable!()
+    })();
+    unsafe {
+        libc::signal(libc::SIGTERM, old_term);
+        libc::signal(libc::SIGINT, old_int);
+    }
+    outcome
+}
+fn supervise_children(runtime: &mut Command, broker: &mut Command, socket: &Path) -> Result<bool> {
+    let mut broker = broker.spawn()?;
+    let outcome = (|| -> Result<bool> {
         let deadline = Instant::now() + Duration::from_secs(10);
         while !socket.exists() {
             ensure!(
@@ -170,19 +194,29 @@ pub fn supervise(
             std::thread::sleep(Duration::from_millis(20));
         }
         let mut model = runtime.spawn()?;
-        let result = (|| -> Result<()> {
+        let result = (|| -> Result<bool> {
+            let control = socket.with_file_name("control.sock");
+            let mut next_health = Instant::now();
             loop {
                 if STOP.load(Ordering::Relaxed) {
-                    return Ok(());
+                    return Ok(false);
                 }
                 if let Some(status) = model.try_wait()? {
                     ensure!(status.success(), "native runtime exited unsuccessfully");
-                    return Ok(());
+                    return Ok(false);
                 }
                 ensure!(
                     broker.try_wait()?.is_none(),
                     "native broker exited; stopping runtime"
                 );
+                if Instant::now() >= next_health {
+                    // The socket is absent during normal model startup. Only an
+                    // explicit restart-required response triggers this recovery.
+                    if crate::broker::requires_restart(&control).unwrap_or(false) {
+                        return Ok(true);
+                    }
+                    next_health = Instant::now() + Duration::from_secs(2);
+                }
                 std::thread::sleep(Duration::from_millis(100));
             }
         })();
@@ -190,10 +224,6 @@ pub fn supervise(
         result
     })();
     terminate(&mut broker);
-    unsafe {
-        libc::signal(libc::SIGTERM, old_term);
-        libc::signal(libc::SIGINT, old_int);
-    }
     let _ = fs::remove_file(socket);
     outcome
 }
@@ -201,6 +231,34 @@ pub fn supervise(
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn explicit_poison_stops_both_owned_children_before_recovery() {
+        let tmp = tempfile::tempdir().unwrap();
+        let socket = tmp.path().join("selection.sock");
+        let broker_script = r#"import socket,sys,pathlib,os,time
+p=pathlib.Path(sys.argv[1]);p.with_name('broker.pid').write_text(str(os.getpid()))
+s=socket.socket(socket.AF_UNIX);s.bind(str(p));s.listen();time.sleep(10)
+"#;
+        let runtime_script = r#"import socket,sys,pathlib,os,json,time
+p=pathlib.Path(sys.argv[1]);p.with_name('model.pid').write_text(str(os.getpid()))
+s=socket.socket(socket.AF_UNIX);s.bind(str(p));s.listen();s.settimeout(8)
+c,_=s.accept();q=json.loads(c.makefile('rb').readline());assert q=={'op':'status'}
+c.sendall(b'{"state":"restart_required"}\n');c.close();time.sleep(8)
+"#;
+        let mut broker = Command::new("python3");
+        broker.args(["-c", broker_script]).arg(&socket);
+        let mut runtime = Command::new("python3");
+        runtime.args(["-c", runtime_script]).arg(socket.with_file_name("control.sock"));
+        assert!(supervise_children(&mut runtime, &mut broker, &socket).unwrap());
+        for name in ["broker.pid", "model.pid"] {
+            let pid: i32 = fs::read_to_string(tmp.path().join(name)).unwrap().parse().unwrap();
+            assert_eq!(unsafe { libc::kill(pid, 0) }, -1, "owned child survived recovery");
+        }
+        clean_sockets(tmp.path()).unwrap();
+        assert!(!socket.exists());
+        assert!(!socket.with_file_name("control.sock").exists());
+    }
+
     #[test]
     fn bootstrap_binds_recipient_model_and_clears_old_authority() {
         let tmp = tempfile::tempdir().unwrap();

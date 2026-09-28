@@ -18,6 +18,7 @@ p.add_argument('--expect', action='append', required=True)
 p.add_argument('--output', required=True)
 p.add_argument('--port', type=int, default=8152)
 p.add_argument('--repeat', type=int, default=2)
+p.add_argument('--interrupt-and-recover', action='store_true')
 a = p.parse_args()
 root = pathlib.Path(a.root)
 output = pathlib.Path(a.output)
@@ -56,6 +57,48 @@ try:
                                   'elapsed_ms': round((time.perf_counter() - started) * 1000, 3)})
         if not passed:
             raise RuntimeError('installed runtime missed a required canary')
+    if a.interrupt_and_recover:
+        def owned_containers():
+            ids=subprocess.check_output(['podman','ps','-q'],text=True,stderr=subprocess.DEVNULL).split()
+            items=json.loads(subprocess.check_output(['podman','inspect']+ids,stderr=subprocess.DEVNULL)) if ids else []
+            return {item['Id'] for item in items if any(mount['Source']==str((root/'runtime.json').resolve()) for mount in item.get('Mounts',[]))}
+        before=owned_containers()
+        if len(before)!=1:raise RuntimeError('expected one owned model container before interruption')
+        body={'model':model,'messages':[{'role':'user','content':a.query}], 'temperature':0,
+              'max_tokens':512,'min_tokens':512,'ignore_eos':True,'stream':True,
+              'chat_template_kwargs':{'enable_thinking':False}}
+        req=urllib.request.Request(base+'/v1/chat/completions',data=json.dumps(body).encode(),headers={'Content-Type':'application/json'})
+        seen=False
+        with urllib.request.urlopen(req,timeout=180) as response:
+            for line in response:
+                if not line.startswith(b'data: '):continue
+                chunk=line[6:].strip()
+                if chunk==b'[DONE]':break
+                value=json.loads(chunk)
+                if any(choice.get('delta',{}).get('content') and choice.get('finish_reason') is None for choice in value.get('choices',[])):
+                    seen=True;break
+        if not seen:raise RuntimeError('stream finished before interruption could be exercised')
+        started=time.monotonic();recovery={'status':'pending','old_containers':sorted(before)}
+        report['interrupted_request_recovery']=recovery
+        output.write_text(json.dumps(report,indent=2)+'\n')
+        deadline=time.monotonic()+600
+        while time.monotonic()<deadline:
+            if child.poll() is not None:raise RuntimeError('launcher exited instead of recovering interrupted native request')
+            current=owned_containers()
+            if current and not before.intersection(current):
+                try:
+                    with urllib.request.urlopen(base+'/health',timeout=2) as ready:
+                        if ready.status==200:break
+                except Exception:pass
+            time.sleep(2)
+        else:raise TimeoutError('owned model did not restart and become ready')
+        body={'model':model,'messages':[{'role':'user','content':a.query}], 'temperature':0,'max_tokens':100,
+              'chat_template_kwargs':{'enable_thinking':False}}
+        req=urllib.request.Request(base+'/v1/chat/completions',data=json.dumps(body).encode(),headers={'Content-Type':'application/json'})
+        with urllib.request.urlopen(req,timeout=180) as response:result=json.load(response)
+        answer=result['choices'][0]['message']['content']
+        if not all(word.lower() in answer.lower() for word in a.expect):raise RuntimeError('recovered runtime missed required memory')
+        recovery.update(status='passed',new_containers=sorted(current),seconds=time.monotonic()-started,answer=answer,usage=result.get('usage'))
     report['status'] = 'passed'
 finally:
     child.terminate()

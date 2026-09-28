@@ -16,10 +16,12 @@ use std::{
 };
 
 fn control(path: &Path, request: Value) -> Result<Value> {
-    let mut s = UnixStream::connect(path)?;
-    // Refresh may drain for 600 seconds, then await worker acknowledgement.
     let seconds = if request["op"] == "refresh" { 720 } else { 150 };
-    s.set_read_timeout(Some(Duration::from_secs(seconds)))?;
+    control_with_timeout(path, request, Duration::from_secs(seconds))
+}
+fn control_with_timeout(path: &Path, request: Value, timeout: Duration) -> Result<Value> {
+    let mut s = UnixStream::connect(path)?;
+    s.set_read_timeout(Some(timeout))?;
     s.set_write_timeout(Some(Duration::from_secs(10)))?;
     serde_json::to_writer(&mut s, &request)?;
     s.write_all(b"\n")?;
@@ -35,6 +37,14 @@ fn control(path: &Path, request: Value) -> Result<Value> {
         "native activation unavailable"
     );
     Ok(result)
+}
+pub(crate) fn requires_restart(path: &Path) -> Result<bool> {
+    let response = control_with_timeout(path, json!({"op":"status"}), Duration::from_secs(2))?;
+    match response["state"].as_str() {
+        Some("restart_required") => Ok(true),
+        Some("active" | "paused") => Ok(false),
+        _ => anyhow::bail!("invalid native health state"),
+    }
 }
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -156,4 +166,28 @@ pub fn serve(
         let _ = s.write_all(b"\n");
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod health_tests {
+    use super::*;
+    #[test]
+    fn only_explicit_restart_state_requests_recovery() {
+        for state in ["active", "paused", "restart_required", "unknown"] {
+            let tmp = tempfile::tempdir().unwrap();
+            let path = tmp.path().join("control.sock");
+            let listener = UnixListener::bind(&path).unwrap();
+            let worker = std::thread::spawn(move || {
+                let (mut stream, _) = listener.accept().unwrap();
+                let mut line = String::new();
+                BufReader::new(stream.try_clone().unwrap()).read_line(&mut line).unwrap();
+                assert_eq!(serde_json::from_str::<Value>(&line).unwrap(), json!({"op":"status"}));
+                writeln!(stream, "{}", json!({"state":state})).unwrap();
+            });
+            let response = requires_restart(&path);
+            if state == "unknown" { assert!(response.is_err()); }
+            else { assert_eq!(response.unwrap(), state == "restart_required"); }
+            worker.join().unwrap();
+        }
+    }
 }

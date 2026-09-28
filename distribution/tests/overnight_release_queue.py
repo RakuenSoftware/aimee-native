@@ -72,7 +72,7 @@ if p.returncode:
  save({'status':'failed','stage':'fp32_preparation_reuse','returncode':p.returncode,'image':image});raise SystemExit(p.returncode)
 save({'status':'validating_candidate_client'})
 with (ROOT/'candidate-client.log').open('w') as log:
- p=subprocess.run(['pct','exec','110','--','python3','/opt/aimee-client/live_client_runtime.py','--launcher','/opt/aimee-client/bin/aimee-native-candidate-test','--root','/opt/aimee-client/native-candidate-6','--query','What are the native release verification vault code, project, and drink?','--expect','28461','--expect','Juniper','--expect','hibiscus','--output','/opt/aimee-client/release-evidence/candidate-6-runtime.json','--repeat','2'],stdout=log,stderr=subprocess.STDOUT)
+ p=subprocess.run(['pct','exec','110','--','python3','/opt/aimee-client/live_client_runtime.py','--launcher','/opt/aimee-client/bin/aimee-native-candidate-test','--root','/opt/aimee-client/native-candidate-6','--query','What are the native release verification vault code, project, and drink?','--expect','28461','--expect','Juniper','--expect','hibiscus','--output','/opt/aimee-client/release-evidence/candidate-6-runtime.json','--repeat','2','--interrupt-and-recover'],stdout=log,stderr=subprocess.STDOUT)
 if p.returncode:
  save({'status':'failed','stage':'candidate_client','returncode':p.returncode,'image':image});raise SystemExit(p.returncode)
 save({'status':'checking_served_preparation_dtype'})

@@ -14,13 +14,17 @@ if not 1<=OUTPUT_TOKENS<=4096:raise ValueError('output budget must be between 1 
 INPUT_TOKENS=min(7400,8192-OUTPUT_TOKENS-280)
 GRADE_TIMEOUT=int(os.environ.get('SWE_GRADE_TIMEOUT','180'))
 if GRADE_TIMEOUT<=0:raise ValueError('grading timeout must be positive')
+GRADE_TIMEOUTS=json.loads(os.environ.get('SWE_GRADE_TIMEOUT_OVERRIDES','{}'))
+if not isinstance(GRADE_TIMEOUTS,dict) or any(type(v) is not int or v<=0 for v in GRADE_TIMEOUTS.values()):raise ValueError('grading deadline overrides must be positive integers')
+GENERATION_TIMEOUT=float(os.environ.get('SWE_GENERATION_TIMEOUT_SECONDS','600'))
+if GENERATION_TIMEOUT<=0:raise ValueError('generation read timeout must be positive')
 SYSTEM='''You are a software engineer fixing a repository issue in /testbed. Use exactly one fenced bash command per response, with at most two brief sentences before it. Read relevant code, implement the fix, and run relevant existing tests or your own reproduction. Do not modify existing tests or commit. You may have native memory from earlier attempts: use its concrete feedback, but verify against this clean checkout. To finish, run exactly: echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT && git diff --no-ext-diff .\nExample:\n```bash\nls\n```'''
 def api(path,body):
  req=urllib.request.Request(BASE+path,data=json.dumps(body).encode(),headers={'Content-Type':'application/json'})
  deadline=time.monotonic()+float(os.environ.get('SWE_ADMISSION_WAIT_SECONDS','90'))
  for retry in range(1000):
   try:
-   with urllib.request.urlopen(req,timeout=180) as r:return json.load(r)
+   with urllib.request.urlopen(req,timeout=GENERATION_TIMEOUT if path=='/v1/chat/completions' else 180) as r:return json.load(r)
   except urllib.error.HTTPError as e:
    if e.code not in (429,503):raise
    if time.monotonic()>=deadline:break
@@ -86,8 +90,9 @@ def attempt(task,arm,publication,text_memory=None):
   row.update(resolved=False,grade_status='empty_prediction',finished=time.time());(out/'result.json').write_text(json.dumps(row,indent=2)+'\n');return row
  full=GRADER[iid];pred={'instance_id':iid,'model_name_or_path':'gemma-native-'+arm,'model_patch':row['model_patch']}
  try:
-  row['grade_timeout_seconds']=GRADE_TIMEOUT
-  spec=make_test_spec(full,namespace='swebench');result=run_instance(spec,pred,False,False,docker.from_env(),'native-20260926-'+arm,timeout=GRADE_TIMEOUT)
+  grade_timeout=GRADE_TIMEOUTS.get(iid,GRADE_TIMEOUT)
+  row['grade_timeout_seconds']=grade_timeout
+  spec=make_test_spec(full,namespace='swebench');result=run_instance(spec,pred,False,False,docker.from_env(),'native-20260926-'+arm,timeout=grade_timeout)
   if result is None:raise RuntimeError('grader produced no report')
   (out/'grade.json').write_text(json.dumps(result,indent=2)+'\n')
   if not result['completed']:raise RuntimeError('official grader did not complete')

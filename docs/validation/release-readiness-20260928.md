@@ -658,3 +658,37 @@ issue-specific fix rather than a passing result caused by unrelated environment
 behavior. The unchanged-base run is a grader diagnostic, not an extra control
 model attempt. Its complete evidence is archived as
 `requests-environment-baseline-evidence.tar.gz` alongside the saved-patch regrade.
+
+## Generation transport deadline and owned-runtime recovery
+
+A Matplotlib native generation exceeded the benchmark client's 180-second
+read timeout. The disconnected native request correctly left admission closed
+with `restart_required`, and the attempt was recorded as ungraded infrastructure
+failure, not a task failure. Twenty valid grades were preserved; their agent
+work all completed before the outage. Incomplete attempts, original code, and
+any associated grader output were archived before recovery.
+
+The study resumed on the final `7303c9e9...` candidate with a 600-second generation
+transport timeout. Token, step and agent wall-time settings are unchanged. The
+agent checks its wall-time budget between steps, so a final in-flight generation
+can extend measured wall time; actual durations remain reported. Requests-2193
+now has a per-task 3600-second grading allowance for its pending native condition,
+matching the validated control regrade. Other graders retain 900 seconds.
+
+The production Rust launcher now polls the private control state outside the
+inference hot path. An explicit `restart_required` response stops both owned
+children, clears volatile catalog authorization, and restarts the broker and
+model with admission initially closed. Fresh selection/approval is required
+before native use. Recovery is capped at three restarts; paused/active states
+do not trigger restarts. Sixteen Rust tests pass, including real Unix-socket
+health responses and termination/reaping of both owned child processes. Both
+launchers rebuilt, and the lab candidate launcher was staged.
+
+Production launcher SHA-256: `6344b77bff635542cd232ebf02fa36b40552e96570b30ab7c979e0935297bce2`.
+Lab candidate launcher SHA-256: `c774ce1b8be15f0ca3c9f8b14a9655c1e7b4e78290d0c7dde7e1c1d1be2632e4`.
+
+The installed-client probe now deliberately closes an unfinished native stream,
+requires replacement of the owned model container while the launcher stays
+alive, and verifies all three approved memory values after recovery. This
+end-to-end probe is queued, not yet passed. Code/test/build and interruption
+evidence are preserved in `artifacts/runtime-recovery-20260928/`.
