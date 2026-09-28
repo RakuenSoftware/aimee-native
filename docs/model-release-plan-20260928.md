@@ -126,3 +126,23 @@ with `VLLM_TARGET_DEVICE=cpu` passed the actual loading-plan check without GPU
 access. This does not test expert execution, inference quality or native-memory
 consumption. Those remain release gates, along with Qwen artifact preparation.
 [Build and probe evidence](validation/artifacts/larger-runtime-20260928/).
+
+
+## Qwen conversion started
+
+No reusable Qwen GGUF was found at the historical path or in the inspected
+model-storage roots. Dry runs using the unmodified converter at revision
+`e85e15cf6d810cd1268498c2e5b657bb3ece47bc` passed for both the text backbone
+(866 output tensors, approximately 29 GB) and vision projector (334 output
+tensors, approximately 1.8 GB). This uses a conversion utility only; serving
+remains vLLM without a fork. The separate projector preserves the upstream
+loader's expected multimodal layout.
+
+The full CPU-only conversion runs with two CPUs, no network or GPU devices,
+and a 20 GiB memory cap. Four byte-identical historical client model copies were
+independently hashed and hard-linked, reclaiming approximately 51 GB without
+removing release paths or evidence. This is an operator storage action, not
+installer behavior. A thin-pool reserve and host-memory check passed before
+conversion. Final artifact validation, real inference and native-memory checks
+are still pending.
+[Conversion plans and storage evidence](validation/artifacts/qwen27-preparation-20260928/).

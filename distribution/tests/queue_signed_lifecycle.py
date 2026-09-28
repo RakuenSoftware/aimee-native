@@ -1,4 +1,5 @@
 """Designated-host signed lifecycle; uses a separate validation channel."""
+import argparse
 import json
 import pathlib
 import subprocess
@@ -37,7 +38,7 @@ def probe(label):
         '--port','8152','--output',OUTPUT+'/'+label+'.json'],label+'.log')
 
 
-def main():
+def main(resume_after_fresh5=False):
     predecessor=pathlib.Path('/root/aimee-retained-success-20260928')
     save(status='waiting_for_retained_success_checks')
     while True:
@@ -51,14 +52,26 @@ def main():
     installation=json.loads(ct(110,'import pathlib;print(pathlib.Path('+repr(OUTPUT+'/install-state.json')+').read_text())'))
     if installation['status']!='installed_sequence5':raise RuntimeError('fresh signed install is not ready')
     before=active();assert before['high_water_sequence']==5 and before['previous'] is None
-    probe('fresh5')
+    if resume_after_fresh5:
+        checked=json.loads(ct(110,'import pathlib;print(pathlib.Path('+repr(OUTPUT+'/fresh5.json')+').read_text())'))
+        assert checked['status']=='passed' and checked['active']==before
+        assert len(checked['answers'])==2 and all(row['passed'] for row in checked['answers'])
+    else:
+        probe('fresh5')
     # Only the validation URL changes; the published channel remains sequence 5.
     ct(101,r'''import pathlib,json
 r=pathlib.Path('/opt/aimee-native-release/candidate6-assembly-20260928')
 d=json.loads((r/'validation-channel.json').read_text());link=pathlib.Path(d['link'])
-assert str(link.resolve())==d['initial_target']
-target=pathlib.Path(d['candidate_target']);assert json.loads((target/'manifest.json').read_text())['sequence']==6
-stage=link.with_name(link.name+'.next');stage.symlink_to(target,target_is_directory=True);stage.replace(link)
+target=pathlib.Path(d['candidate_target']);manifest=json.loads((target/'manifest.json').read_text());assert manifest['sequence']==6
+assert str(link.resolve()) in (d['initial_target'],d['candidate_target'])
+# Packager creates its temporary output root privately. This directory contains
+# only signed distribution artifacts; let the origin worker traverse it.
+target.chmod(0o755)
+for artifact in manifest['artifacts']:
+ path=target/artifact['path'];assert path.resolve().is_relative_to(target.resolve())
+ path.chmod(0o755 if artifact['executable'] else 0o644)
+if str(link.resolve())!=d['candidate_target']:
+ stage=link.with_name(link.name+'.next');stage.symlink_to(target,target_is_directory=True);stage.replace(link)
 ''')
     save(status='installing_signed_sequence6')
     command(['pct','exec','110','--',STAGING,'--root',CLIENT,'install','gemma4-12b-q8-native'],'install6.log')
@@ -76,6 +89,7 @@ stage=link.with_name(link.name+'.next');stage.symlink_to(target,target_is_direct
 
 
 if __name__=='__main__':
-    try:main()
+    parser=argparse.ArgumentParser();parser.add_argument('--resume-after-fresh5',action='store_true');args=parser.parse_args()
+    try:main(args.resume_after_fresh5)
     except BaseException as error:
         save(status='failed',error=repr(error));raise

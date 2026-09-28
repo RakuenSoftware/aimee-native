@@ -1205,3 +1205,25 @@ The retained-success follow-up has started; its first four officially graded
 attempts passed. Remaining regression checks and the queued signed GPU lifecycle
 still need completion. Gemma 26B conversion is complete; larger-model serving
 and native-memory validation remain outstanding.
+
+
+## Retained-success checks complete: 10/10
+
+All five selected positive tasks passed official grading on both native-memory
+attempts: Flask 4169, pytest 5808, Astropy 7336, SymPy 20590 and Matplotlib 25340.
+The accepted own-source memory was preserved across both attempts, as required
+by the protocol. This supports retaining the previously demonstrated successes
+after the source-representation repair. It is a selected regression check using
+historical controls, not a fresh population-level improvement estimate.
+The original primary and broader-study scores remain unchanged.
+
+[Full outcome record](artifacts/retained-success-validation-20260928/status.json)
+and [reproducibility archive](artifacts/retained-success-validation-20260928/evidence.tar.gz).
+
+The normal signed sequence-5 runtime answered both native canary queries. The
+first sequence-6 install failed because nginx could not traverse the privately
+created staging directory; after fixing that, an executable artifact also
+needed origin-readable permissions. Both failures are preserved. The validation
+operator now exposes only the signed distribution artifacts with appropriate
+read permissions and can resume after the verified fresh-5 check. The resumed
+update, rollback and restore remain pending; the public channel remains at 5.
