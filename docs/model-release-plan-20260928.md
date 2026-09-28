@@ -109,3 +109,20 @@ GGUF readback checked tensor names and shapes. This completes conversion, not
 model-loading or native-memory certification. Both larger releases still need
 their own real-model runtime, preparation, quality and signed lifecycle checks.
 [Completed conversion report](validation/artifacts/gemma26-conversion-20260928/conversion.json).
+
+
+## Separate larger-model runtime built
+
+Image `79d7f03eedc74943f2ffd9c1271141086ea0813bcd3f697c718e09501908cf58`
+is a private child of the pinned 12B runtime with only the compiled GGUF loader
+replaced. It leaves the current 12B runtime and signed candidate unchanged.
+The installed binary successfully built a loading plan for all 1,013 tensors
+in the real 26B GGUF, using the upstream Gemma adapter. Private source exclusion
+passed for the client package. No upstream source or registration was patched.
+
+The first CPU-only probe lacked an explicit CPU platform and stopped during
+ROCm initialization before reaching the loader. Its log is preserved. Running
+with `VLLM_TARGET_DEVICE=cpu` passed the actual loading-plan check without GPU
+access. This does not test expert execution, inference quality or native-memory
+consumption. Those remain release gates, along with Qwen artifact preparation.
+[Build and probe evidence](validation/artifacts/larger-runtime-20260928/).
