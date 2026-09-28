@@ -938,3 +938,25 @@ not the superseded `d58990c7...` identity. The image itself remains `7303c9e9...
 The original profile rejection is archived. Subsequent client attempts preserve
 previous reports and logs before retrying. The live queue resumed at the client
 stage without rerunning or rewriting the completed nine-case CPU validation.
+
+## Recovery-probe ordering correction
+
+The corrected installed package answered both initial canary queries correctly:
+all three authorized facts, 27 prompt tokens, and no explicit memory text in
+the request. Closing the native response stream caused the owned runtime to
+restart while the launcher stayed alive. The probe then incorrectly waited
+for `/health` to return 200 before making the next authorized query.
+
+The replacement engine was available (`/v1/models` returned 200), while
+admission correctly stayed paused (`/health` returned 503) because restart
+cleared its grants. Waiting for admission before requesting fresh selection
+created a test deadlock. The operator stopped this incomplete probe; no external
+recall query was injected to make it appear to pass. Its [partial report and
+intervention record](artifacts/client-recovery-sequencing-20260928/) are preserved.
+
+The corrected probe waits for a replacement owned container and engine
+identity, sends an ordinary query through fresh Aimee selection, verifies all
+three facts, and only then requires healthy admission. It does not bypass or
+weaken authorization. The full installed-client probe is rerunning against the
+same immutable candidate. This changes the test sequence, not runtime code or
+release artifacts.

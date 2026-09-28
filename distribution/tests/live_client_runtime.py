@@ -87,8 +87,12 @@ try:
             current=owned_containers()
             if current and not before.intersection(current):
                 try:
-                    with urllib.request.urlopen(base+'/health',timeout=2) as ready:
-                        if ready.status==200:break
+                    # Recovery clears grants and starts paused. Engine discovery
+                    # is ready before admission; the next ordinary query must
+                    # obtain fresh Aimee authorization to reopen admission.
+                    with urllib.request.urlopen(base+'/v1/models',timeout=2) as ready:
+                        data=json.load(ready)
+                        if ready.status==200 and any(item['id']==model for item in data['data']):break
                 except Exception:pass
             time.sleep(2)
         else:raise TimeoutError('owned model did not restart and become ready')
@@ -98,6 +102,8 @@ try:
         with urllib.request.urlopen(req,timeout=180) as response:result=json.load(response)
         answer=result['choices'][0]['message']['content']
         if not all(word.lower() in answer.lower() for word in a.expect):raise RuntimeError('recovered runtime missed required memory')
+        with urllib.request.urlopen(base+'/health',timeout=2) as ready:
+            if ready.status!=200:raise RuntimeError('fresh authorized recall did not restore healthy admission')
         recovery.update(status='passed',new_containers=sorted(current),seconds=time.monotonic()-started,answer=answer,usage=result.get('usage'))
     report['status'] = 'passed'
 finally:
