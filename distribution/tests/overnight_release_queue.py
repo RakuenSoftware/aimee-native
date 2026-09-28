@@ -20,6 +20,19 @@ while True:
 p=subprocess.run(['pct','exec','113','--','python3','-c',"import json,pathlib,sys; r=pathlib.Path('/opt/swe-native/source-learning-20260927'); sys.path.insert(0,str(r)); from resume_campaign import validate_resume; tasks=json.loads((r/'tasks.json').read_text()); validate_resume(r,tasks,len(tasks))"],capture_output=True,text=True)
 if p.returncode:
  save({'status':'blocked_by_incomplete_learning_results','error':p.stderr});raise SystemExit(1)
+save({'status':'waiting_for_broader_source_learning'})
+while True:
+ p=subprocess.run(['pct','exec','113','--','cat','/opt/swe-native/broader-source-learning-20260928/status.json'],capture_output=True,text=True)
+ if p.returncode:save({'status':'failed','stage':'broader_status','error':p.stderr});raise SystemExit(1)
+ broader=json.loads(p.stdout)
+ if broader['status']=='complete':break
+ if broader['status']=='failed':save({'status':'blocked_by_broader_learning_failure','error':broader.get('error'),'errors':broader.get('errors')});raise SystemExit(1)
+ probe=subprocess.run(['pct','exec','113','--','python3','-c',"import pathlib; r=pathlib.Path('/opt/swe-native/broader-source-learning-20260928'); pid=int((r/'pid').read_text()); cmd=(pathlib.Path('/proc')/str(pid)/'cmdline').read_bytes(); assert b'broader_source_learning.py' in cmd"],capture_output=True,text=True)
+ if probe.returncode:save({'status':'blocked_by_broader_worker_exit','error':probe.stderr});raise SystemExit(1)
+ time.sleep(30)
+# Check the actual two-condition result set, not just the controller's status.
+probe=subprocess.run(['pct','exec','113','--','python3','-c',"import pathlib,json; r=pathlib.Path('/opt/swe-native/broader-source-learning-20260928'); tasks=json.loads((r/'tasks.json').read_text()); assert len(tasks)==32; rows=[(t['instance_id'],a,json.loads((r/'results'/a/t['instance_id']/'result.json').read_text())) for t in tasks for a in ('source-control','source-learn-1')]; assert all(row['instance_id']==iid and row['arm']==arm and type(row.get('resolved')) is bool for iid,arm,row in rows)"],capture_output=True,text=True)
+if probe.returncode:save({'status':'blocked_by_incomplete_broader_results','error':probe.stderr});raise SystemExit(1)
 save({'status':'stopping_completed_learning_server'})
 p=subprocess.run(['pct','exec','101','--','podman','stop','--time','60','aimee-swe-learning'],capture_output=True,text=True)
 (ROOT/'server-stop.log').write_text(p.stdout+p.stderr)

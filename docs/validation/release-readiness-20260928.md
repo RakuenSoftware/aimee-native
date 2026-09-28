@@ -366,3 +366,30 @@ This is one successful paired regression comparison, not broad regression
 assurance. It also does not isolate a serving-latency effect: the action
 sequences differ, and this is an agent-task comparison. The two further native
 rounds and the remaining task pairs are still pending.
+
+
+## Broader follow-up scheduled before certification
+
+A separate follow-up adds 32 frozen-list tasks, bringing the repaired studies
+to 48 distinct tasks and 128 planned attempts. It uses four independent task
+pipelines, each with a fresh control followed by one native attempt using only
+that control's captured experience. The original 16-task, three-native-round
+study is unchanged. The follow-up is waiting for its completion; no additional
+GPU experiment runs concurrently with it.
+
+The selection and prior exposure are explicit in
+`benchmarks/swe_learning/broader-manifest-20260928.json`: first 32 original-list
+tasks not in the primary 16, with no outcome filtering; 16 had prior attempts in
+the broken run, and no memories from those attempts are supplied. Conditions,
+limits and interpretation are in `benchmarks/swe_learning/BROADER_PROTOCOL.md`.
+The concurrent retention check passes. Its first ordinary unittest-discovery
+invocation encountered the existing `select.py`/stdlib name collision; preloading
+the standard-library `select` before discovery ran the actual check successfully.
+The deployed worker imports successfully and is confirmed live while waiting.
+
+The task container filesystem was expanded from 80 to 128 GiB. Image prefetch
+checks actual host thin-pool capacity, with a 40 GiB reserve, rather than treating
+that logical expansion as new physical storage. The release queue now requires
+all 64 primary and all 64 additional results to be present and scored before
+starting image certification. Neither study's scope or outcome is silently
+substituted for the other.
