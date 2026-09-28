@@ -85,7 +85,7 @@ validated native-memory integration and measured reuse capability.
 Collected notices, the available exact OS sources, ROCgdb sources and notice
 supplements are available through the controlled origin and passed full TLS
 size/hash checks. [External distribution fulfillment](distribution-fulfillment-20260928.md)
-remains unfinished: the exact Broadcom compiled payload/source review and final
-component-specific source reconciliation are open. Those are explicitly unmet
-external-distribution items, not hidden runtime failures or a reason to revive
+now accounts for all 342 OS source/version pairs. The exact Broadcom compiled
+payload/source review remains open. That is an explicitly unmet
+external-distribution item, not hidden runtime failures or a reason to revive
 the aspirational latency threshold. No public redistribution approval is claimed.

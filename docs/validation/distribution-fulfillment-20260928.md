@@ -45,9 +45,9 @@ a keyword match against that notice cannot determine a source-delivery gap.
 1. Finish the compiled vendor payload review for `bnxt-rocelib`, using its own
    notice and installed-file evidence. Do not assume one header covers every
    binary or replace its exact version with unrelated upstream source.
-2. Reconcile component-specific source requirements with the retained source
-   archives and build material. Preserve any concrete missing component in the
-   final delivery inventory; the numerical collection gap alone is insufficient.
+The source/version inventory is now reconciled below. The unresolved vendor
+payload remains explicitly open; the inventory reconciliation is not blanket
+legal clearance of every shipped file.
 Recipient delivery of the collected notices and source archives is complete on
 the controlled origin, as verified below. This establishes access to the collected
 material; it does not resolve the two remaining component-review items.
@@ -87,3 +87,39 @@ downloaded all three files (27,447,197 bytes) through authenticated TLS and
 verified their full sizes and hashes. DSC signature authentication and
 reproducible binary identity are not claimed. This closes the exact Python
 source-collection gap without changing any runtime or signed candidate.
+
+## Source/version reconciliation (29 September)
+
+The [reconciliation ledger](artifacts/source-reconciliation-20260929/report.json)
+accounts for all 342 installed OS source/version pairs:
+
+| Treatment | Pairs |
+|---|---:|
+| Exact source set delivered | 264 |
+| Matching ROCgdb release source and build instructions delivered | 1 |
+| Retained component notices; no separate source gap established | 71 |
+| Version-marker metapackages | 3 |
+| Ionic installed payload consists of source/scripts/configuration | 1 |
+| RDMA provider with file-scoped dual-license notices | 1 |
+| Broadcom compiled vendor payload terms unresolved | 1 |
+
+This supersedes use of the historical 79-pair collection gap as a current
+work queue. The 71 component entries retain their notice hashes, including
+split-package relationships and the separate AQLProfile supplement. Their
+MIT/BSD/Apache-family notices do not establish a requirement to collect every
+upstream source tree. The GPL references in LLVM/Comgr/OpenMP notices concern
+the LLVM compatibility exception; they are not a declaration that those
+components are GPL-licensed.
+
+RDMA notices distinguish provider/library files, packaging, and individual
+kernel headers. The ledger preserves that distinction instead of applying
+a GPL keyword match to the entire vendor library. Ionic's installed payload
+inspection found source/scripts/configuration, with no ELF or static archive.
+ROCgdb's release source delivery retains its existing qualification: it is not
+a reproducible-binary attestation.
+
+The remaining concrete vendor question is the exact `bnxt-rocelib 235.2.86.0`
+compiled payload. The original package, repository inventory, and header
+notices have been inspected; package-level terms or matching vendor source
+remain unavailable in the collected evidence. No public-distribution clearance
+is inferred from this reconciliation.
