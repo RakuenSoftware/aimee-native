@@ -623,3 +623,20 @@ remain outstanding. [Fresh installation evidence](artifacts/larger-signed-lifecy
 After this probe released the shared GPU lock, the Gemma continuation started its
 server for the four remaining coding attempts. The Qwen coding coordinator is
 also queued; it has not yet produced coding outcomes.
+
+
+## Qwen signed update transfer stopped; existing installation retained
+
+The sequence-2 download failed after 5,596,692,149 of 29,047,084,448 weight
+bytes with a TLS unexpected-EOF error. The origin access log records the same
+short response. The signed lifecycle coordinator exited with a failed status
+and restored the original account binding. The passed fresh-install result and
+Gemma's completed lifecycle remain valid; Qwen's remaining phases are incomplete.
+
+Initial checks found no origin restart, recent OOM event or disk exhaustion.
+They do not establish the transport cause. Origin transfer logging was increased
+for this release virtual host without changing TLS verification or timeout
+settings. A separate CPU-only single update retry is running, preserving the
+failed record and leaving GPU scheduling independent. Its success would prove
+installation only; update/rollback/restore GPU probes would still be required.
+[Original failure and retry recipe](artifacts/qwen-update-transfer-failure-20260928/).

@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/var/lib/aimee-large-release-validation/assembly/larger_signed_lifecycle_r5.py", line 140, in <module>
+    main()
+    ~~~~^^
+  File "/var/lib/aimee-large-release-validation/assembly/larger_signed_lifecycle_r5.py", line 114, in main
+    command(110, [launcher, '--root', str(client), 'install', model], work / 'install2.log')
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/lib/aimee-large-release-validation/assembly/larger_signed_lifecycle_r5.py", line 25, in command
+    subprocess.run(['pct', 'exec', str(number), '--'] + args, stdout=output, stderr=subprocess.STDOUT, check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['pct', 'exec', '110', '--', '/opt/aimee-large-release-validation/assembly/aimee-native-lab', '--root', '/opt/aimee-large-release-validation/clients/signed-lifecycle-r3/qwen27', 'install', 'lab-qwen3.8-27b-q8-native']' returned non-zero exit status 1.
