@@ -16,9 +16,9 @@ class Bridge(unittest.TestCase):
 #include "server_native_delivery.h"
 int server_conn_io_write_all(int fd,const void *p,int n){return (int)write(fd,p,(size_t)n);}
 int main(int argc,char **argv){
- if(argc!=4 || !server_native_delivery_route(argv[1],argv[2]))return 2;
+ if((argc!=4 && argc!=5) || !server_native_delivery_route(argv[1],argv[2]))return 2;
  int backend_status=0;
- int status=server_native_delivery_forward(1,argv[1],argv[2],argv[3],"",0,&backend_status);
+ int status=server_native_delivery_forward_query(1,argv[1],argv[2],argc==5?argv[4]:"",argv[3],"",0,&backend_status);
  fprintf(stderr,"%d\\n",backend_status);
  if(status)printf("HTTP/1.1 %d rejected\\r\\n\\r\\n",status);
  return 0;
@@ -29,6 +29,7 @@ int main(int argc,char **argv){
   cls.policy={'version':1,'recipient':'alice','peer_uid':os.geteuid(),'namespace':'personal','base_view':'a'*64,'valid_until':(datetime.datetime.now(datetime.timezone.utc)+datetime.timedelta(hours=1)).isoformat(),'active':True,'records':[]}
   cls.release=cls.root/'release.json';cls.write_policy()
   bindings={'schema':1,'bindings':[{'principal':'webuser:alice','release_policy':str(cls.release),'publisher_uid':os.geteuid(),'preparer':{'Binary':'/not-used','Template':'/not-used','Profile':{'schema':1,'recipient':'alice','model':'test-profile','model_config_sha256':'b'*64}}}]}
+  bindings['bindings'][0]['models']={'other/model':{'Binary':'/not-used','Template':'/other-template','Profile':{'schema':1,'recipient':'alice','model':'other/model','model_config_sha256':'c'*64}}}
   file=cls.root/'bindings.json';file.write_text(json.dumps(bindings));file.chmod(0o600)
   cls.service=subprocess.Popen([a.delivery,'--socket',str(cls.socket),'--bindings',str(file),'--frontend-uid',str(os.geteuid())],stdout=subprocess.DEVNULL,stderr=subprocess.PIPE)
   for _ in range(100):
@@ -42,8 +43,8 @@ int main(int argc,char **argv){
  @classmethod
  def tearDownClass(cls):
   cls.service.terminate();cls.service.wait(timeout=5);cls.service.stderr.close();cls.temp.cleanup()
- def run_request(self,principal='webuser:alice',path='/v1/native/bootstrap',method='GET',socket_path=None):
-  return subprocess.run([str(self.probe),method,path,principal],env=dict(os.environ,AIMEE_NATIVE_SOCKET=str(socket_path or self.socket)),capture_output=True,check=False)
+ def run_request(self,principal='webuser:alice',path='/v1/native/bootstrap',method='GET',socket_path=None,query=''):
+  return subprocess.run([str(self.probe),method,path,principal,query],env=dict(os.environ,AIMEE_NATIVE_SOCKET=str(socket_path or self.socket)),capture_output=True,check=False)
  def test_current_binding_and_withdrawal(self):
   self.policy['active']=True;self.write_policy()
   result=self.run_request();self.assertEqual(result.returncode,0);self.assertIn(b'200 OK',result.stdout);self.assertEqual(result.stderr,b'200\n');self.assertIn(b'"recipient":"alice"',result.stdout)
@@ -51,6 +52,16 @@ int main(int argc,char **argv){
   self.assertIn(b'403',self.run_request().stdout)
   self.policy['active']=True;self.write_policy()
   self.assertIn(b'200 OK',self.run_request().stdout)
+ def test_model_selection_uses_operator_allowlist(self):
+  result=self.run_request(query='model=other%2Fmodel');self.assertIn(b'200 OK',result.stdout);self.assertIn(b'"model":"other/model"',result.stdout)
+  for query in ('model=unknown','model=other%2Fmodel&model=test-profile','recipient=bob'):
+   self.assertIn(b'403',self.run_request(query=query).stdout)
+  self.policy['active']=False;self.write_policy()
+  try:self.assertIn(b'403',self.run_request(query='model=other%2Fmodel').stdout)
+  finally:self.policy['active']=True;self.write_policy()
+ def test_query_cannot_inject_a_request_line_or_header(self):
+  for query in ('model=x\r\nX-Evil: true','model=x fragment','model=x#fragment','x'*1025):
+   self.assertIn(b'400',self.run_request(query=query).stdout)
  def test_large_stream_preserves_bytes_and_backend_status(self):
   path=self.root/'stream.sock';listener=socket.socket(socket.AF_UNIX,socket.SOCK_STREAM)
   listener.bind(str(path));path.chmod(0o600);listener.listen(1);listener.settimeout(5)

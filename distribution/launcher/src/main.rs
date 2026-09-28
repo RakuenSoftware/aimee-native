@@ -313,7 +313,14 @@ fn run() -> Result<()> {
                     connection.connect_address,
                 )?;
                 let token = fs::read_to_string(&connection.token_file)?;
-                let profile = native::delivery::bootstrap(&http, &connection.endpoint, &token)?;
+                let defaults: native::runtime::Defaults =
+                    serde_json::from_slice(&fs::read(dir.join("runtime/profile.json"))?)?;
+                let profile = native::delivery::bootstrap_for_model(
+                    &http,
+                    &connection.endpoint,
+                    &token,
+                    Some(&defaults.native_model),
+                )?;
                 native::runtime::clean_sockets(&connection.memory_root)?;
                 let (serving, defaults) =
                     native::runtime::initialize(&root, &dir, &connection, &profile)?;

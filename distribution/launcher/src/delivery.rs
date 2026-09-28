@@ -49,25 +49,43 @@ pub struct Profile {
     pub model_config_sha256: String,
 }
 pub fn bootstrap(http: &Client, endpoint: &str, token: &str) -> Result<Profile> {
+    bootstrap_for_model(http, endpoint, token, None)
+}
+pub fn bootstrap_for_model(
+    http: &Client,
+    endpoint: &str,
+    token: &str,
+    model: Option<&str>,
+) -> Result<Profile> {
     crate::validate_endpoint(endpoint)?;
     ensure!(
         !token.trim().is_empty() && token.len() <= 16384 && !token.trim().contains(['\r', '\n']),
         "invalid credential"
     );
-    let p: Profile = read_json(
-        http.get(format!(
+    let mut request = http
+        .get(format!(
             "{}/v1/native/bootstrap",
             endpoint.trim_end_matches('/')
         ))
-        .bearer_auth(token.trim())
-        .send()?,
-    )?;
+        .bearer_auth(token.trim());
+    if let Some(model) = model {
+        ensure!(
+            !model.is_empty() && model.len() <= 256,
+            "invalid native model selection"
+        );
+        request = request.query(&[("model", model)]);
+    }
+    let p: Profile = read_json(request.send()?)?;
     ensure!(
         p.schema == 1
             && !p.recipient.is_empty()
             && !p.model.is_empty()
             && digest(&p.model_config_sha256),
         "invalid native profile"
+    );
+    ensure!(
+        model.is_none_or(|model| p.model == model),
+        "native model selection mismatch"
     );
     Ok(p)
 }
@@ -165,6 +183,7 @@ pub fn fetch(
     let token = fs::read_to_string(&connection.token_file)?;
     let offer: Offer = read_json(
         http.post(format!("{base}/v1/native/select"))
+            .query(&[("model", model)])
             .bearer_auth(token.trim())
             .header("Content-Type", "application/json")
             .body(serde_json::to_vec(&serde_json::json!({"query":query}))?)
@@ -218,6 +237,7 @@ pub fn fetch(
                     "{base}/v1/native/leases/{}/{}",
                     offer.lease, a.name
                 ))
+                .query(&[("model", model)])
                 .bearer_auth(token.trim())
                 .send()?
                 .error_for_status()?
@@ -274,6 +294,7 @@ pub fn approve(http: &Client, connection: &Config, offer: &Offer) -> Result<()> 
     let base = connection.endpoint.trim_end_matches('/');
     let approved: serde_json::Value = read_json(
         http.post(format!("{base}/v1/native/leases/{}/approve", offer.lease))
+            .query(&[("model", offer.model.as_str())])
             .bearer_auth(token.trim())
             .send()?,
     )?;

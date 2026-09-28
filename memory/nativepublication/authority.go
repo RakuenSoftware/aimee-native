@@ -14,6 +14,7 @@ import (
 	"io"
 	"net"
 	"net/http"
+	"net/url"
 	"os"
 	"syscall"
 	"time"
@@ -41,10 +42,11 @@ func PeerContext(ctx context.Context, c net.Conn) context.Context {
 }
 
 type Binding struct {
-	Principal     string   `json:"principal"`
-	ReleasePolicy string   `json:"release_policy"`
-	PublisherUID  uint32   `json:"publisher_uid"`
-	Preparer      Preparer `json:"preparer"`
+	Principal     string              `json:"principal"`
+	ReleasePolicy string              `json:"release_policy"`
+	PublisherUID  uint32              `json:"publisher_uid"`
+	Preparer      Preparer            `json:"preparer"`
+	Models        map[string]Preparer `json:"models,omitempty"`
 }
 type Authority struct {
 	Bindings    string
@@ -119,6 +121,37 @@ func (a Authority) Resolve(r *http.Request) (Access, error) {
 		return Access{}, denied
 	}
 	b := *selected
+	// A model selector is a routing hint, never authority. Only the operator's
+	// explicit profiles for this already authenticated principal are eligible.
+	query, e := url.ParseQuery(r.URL.RawQuery)
+	if e != nil || len(query) > 1 {
+		return Access{}, denied
+	}
+	requested := ""
+	if values, present := query["model"]; present {
+		if len(values) != 1 || len(values[0]) == 0 || len(values[0]) > 256 {
+			return Access{}, denied
+		}
+		requested = values[0]
+	} else if len(query) != 0 {
+		return Access{}, denied
+	}
+	if len(b.Models) > 64 {
+		return Access{}, denied
+	}
+	for name, profile := range b.Models {
+		if name == "" || name == b.Preparer.Profile.Model || name != profile.Profile.Model ||
+			profile.Profile.Recipient != b.Preparer.Profile.Recipient {
+			return Access{}, denied
+		}
+	}
+	if requested != "" && requested != b.Preparer.Profile.Model {
+		profile, ok := b.Models[requested]
+		if !ok {
+			return Access{}, denied
+		}
+		b.Preparer = profile
+	}
 	var release policy.MemoryReleasePolicy
 	if readOwnedJSON(b.ReleasePolicy, &release) != nil || release.Validate(b.Preparer.Profile.Recipient, b.PublisherUID, time.Now()) != nil {
 		return Access{}, denied
