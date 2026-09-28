@@ -1,5 +1,11 @@
 # Controlled native-memory beta
 
+This page records the existing sequence-5 beta. For the newer three-model
+candidates and their current validation status, see the
+[three-model preview guide](three-model-preview.md) and
+[release plan](../../docs/model-release-plan-20260928.md). Do not use the older
+image and manifest below as identifiers for the newer validated candidates.
+
 The private beta uses the signed `gemma4-12b-q8-native` release, sequence 5.
 Its manifest SHA-256 is
 `d56c92bfade06bf91ad6cb713d04fe791815b65350f4414f91cd82514554960b`.
