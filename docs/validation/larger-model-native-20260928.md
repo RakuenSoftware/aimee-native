@@ -727,3 +727,18 @@ The inventory contains 278 Python packages and 591 OS packages. Comparison with
 version-changed packages in either set. This is package-level provenance,
 not vulnerability clearance, license legal review, or proof that application
 binaries are identical. [Inventory, source and exact comparison](artifacts/larger-runtime-inventory-20260928/).
+
+
+## Qwen Astropy comparison complete: all four conditions passed
+
+Astropy 7336 passed official grading in the control, text and both native reuse
+conditions. Together with pytest and Flask, this brings the three fully paired
+Qwen cases to 12/12 successful attempts. These cases demonstrate retention of
+control successes; they do not show a gain over their matched controls.
+[Completed task records](artifacts/larger-qwen27-complete-tasks-20260928/).
+
+SymPy's first native attempt has separately passed while its control and text
+arms produced no patch after 40 calls. Inspection of their recorded trajectories
+shows repeated code-inspection commands, not transport failures. The second
+native SymPy outcome is still pending, so its paired case is not included in
+the three-case complete archive or aggregate above.
