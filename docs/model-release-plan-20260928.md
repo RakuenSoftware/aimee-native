@@ -55,8 +55,8 @@ For each larger model:
 Both larger models have separately passed native/text smoke comparisons,
 conversation/concurrency checks and the recorded private preparation lifecycle.
 The coding and laboratory signed-client campaigns are now complete; exact
-normal-channel validation is underway. Gemma 26B fresh installation, signed update and rollback each passed 2/2
-native runtime queries; restore and Qwen normal installation are pending. The larger coding protocol reuses frozen accepted source procedures;
+normal-channel validation is underway. Gemma 26B fresh installation, signed update, rollback and restore each passed 2/2
+native runtime queries (8/8 total); Qwen normal lifecycle is running. The larger coding protocol reuses frozen accepted source procedures;
 it does not measure newly acquired learning between its two native rounds.
 
 The three-model account binding, query-forwarding frontend and delivery service

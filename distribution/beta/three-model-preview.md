@@ -1,7 +1,7 @@
 # Three-model private preview — release candidate
 
-The 12B candidate has completed its recorded normal signed lifecycle checks.
-Gemma 26B and Qwen 27B are undergoing normal signed lifecycle validation. This
+The 12B and Gemma 26B candidates have completed their recorded normal signed
+lifecycle checks. Qwen 27B is undergoing normal signed lifecycle validation. This
 is the intended user workflow, not a claim that pending checks have passed or
 that public distribution is open.
 
@@ -57,7 +57,8 @@ private memory from shared support logs.
 
 The larger runtimes completed native/text integration checks, model-aware
 delivery, full-source procedural memory audits and laboratory signed lifecycle
-checks. Normal-channel validation remains pending. Exact evidence and candidate
+checks. Gemma normal-channel validation passed all four phases (8/8 canaries);
+Qwen normal-channel validation remains pending. Exact evidence and candidate
 identities are in the [release plan](../../docs/model-release-plan-20260928.md).
 
 The selected six-task Qwen comparison passed 5/6 without memory, 4/6 with matched

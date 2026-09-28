@@ -41,8 +41,8 @@ normal larger lifecycle completion and external source/notice fulfillment as unf
 with measured latency retained as a disclosed limitation, not a failed release gate. The exact larger dependency-delta review is
 complete and carries forward the earlier controlled-infrastructure limitations.
 
-Normal-format Gemma fresh installation, update and rollback have now passed
-2/2 native canaries each (6/6 total); restore is running. These repeat the same
+Normal-format Gemma fresh installation, update, rollback and restore have passed
+2/2 native canaries each (8/8 total). Qwen normal installation is running. These repeat the same
 three-fact fixture to validate lifecycle behavior. Qwen normal sequence 1 is
 signed, with sequence 2 staging before its remaining lifecycle checks.
 
