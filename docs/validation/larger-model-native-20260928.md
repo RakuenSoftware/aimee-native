@@ -692,3 +692,15 @@ These probes use the separately built model-aware launcher and the deployed
 three-model account binding, with no per-model account rebinding. The recipe
 records each phase separately and checks that the binding remains unchanged.
 Passing installation is not yet a pass for those queued GPU probes.
+
+
+## First two complete Qwen coding comparisons: 8/8
+
+Both pytest 5808 and Flask 4169 passed official grading in all four conditions:
+fresh no-memory control, matched text memory, and two native reuses of the frozen
+accepted source procedure. These eight completed attempts retain the control
+successes, but show no accuracy gain over those controls. They do not establish
+new acquisition between rounds. The remaining four cases are still in progress;
+no full six-case score is assigned yet.
+
+[Complete task outcomes and trajectories](artifacts/larger-qwen27-complete-tasks-20260928/).
