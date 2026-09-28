@@ -493,3 +493,21 @@ selected-task outcomes; the remaining three tasks and Qwen campaign are still
 pending. Each native round reuses its frozen source procedure, with no acquisition
 between rounds. Full trajectories and official grades are in the completed-task
 archive, preserving the earlier tasks unchanged.
+
+## Fourth complete Gemma task: Sympy control success retained
+
+`sympy__sympy-20590` passes official grading in every condition:
+
+| Condition | Officially resolved | Agent calls | Agent elapsed seconds |
+| --- | --- | ---: | ---: |
+| control | yes | 10 | 732 |
+| text | yes | 11 | 429 |
+| native-1 | yes | 6 | 156 |
+| native-2 | yes | 6 | 156 |
+
+Across the four completed selected tasks, control resolves 2/4, text 3/4, native
+reuse 1 resolves 3/4, and native reuse 2 resolves 4/4. Both control successes are
+retained in both native rounds. Matplotlib and Requests remain incomplete; these
+interim totals do not substitute for the final six-task comparison. Repeated
+native rounds reuse frozen procedures without new acquisition. The complete
+Sympy trajectories, patches and grades are preserved in the completed-task archive.
