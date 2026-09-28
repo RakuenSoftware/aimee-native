@@ -1106,3 +1106,16 @@ be inspected before claiming those successes are preserved.
 [Declared protocol](../protocols/retained-success-validation-20260928.md).
 The queue validates the predecessor process has actually exited before taking
 GPU ownership. Its model calls have not begun at this checkpoint.
+
+
+## Exact-image dependency delta checked
+
+Read-only inventories from the previous sequence-5 image and candidate image
+7303c9e9 show identical versions of 278 Python distributions and 591 OS packages.
+The native Rust lockfile hash remains `75f7af1d00144c920cbfc69a485c518a79446ef265cfa1aa32bdf194e780ebbe`.
+Current packaged notice-file hashes and launcher lockfile identity are recorded.
+This verifies dependency-version continuity; private runtime code did change,
+and this comparison is not a new vulnerability scan or public redistribution
+clearance. Previously documented advisory and distribution limits still apply.
+
+[Exact inventories and delta review](artifacts/current-dependency-review-20260928/).
