@@ -21,6 +21,36 @@ not measure answer generation or establish performance across every bank.
 
 Coordinator: `distribution/tests/activation_path_comparison.py`.
 Remote output: `/opt/aimee-large-release-validation/activation-path-comparison-r1`.
-CT101 process 368787 was confirmed live after launch. Results are pending;
-no implementation change or speedup is claimed yet. The direct arena mount
-was confirmed as ext4 on `/dev/mapper/storage-vm--101--disk--0`, not tmpfs.
+The coordinator completed all eight runs. The direct arena mount was confirmed
+as ext4 on `/dev/mapper/storage-vm--101--disk--0`, not tmpfs.
+
+## Completed measurements
+
+Ranges below are the two per-run medians, not pooled sample estimates.
+
+| Path | Cold application (ms) | Warm application (ms) |
+|---|---:|---:|
+| Overlay, overlapping upload (current) | 14.84–14.87 | 5.01–5.24 |
+| Direct, overlapping upload | 14.85–15.11 | 5.00–5.27 |
+| Overlay, bulk upload | 17.61–17.93 | 5.89–6.53 |
+| Direct, bulk upload | 17.59–17.63 | 6.24–6.60 |
+
+All eight runs passed exact reconstruction of 60 tensor segments. Sample counts
+were verified: 80 independent cold applications, 800 warm applications and
+800 resident lookups overall. Raw files and coordinator-recorded result hashes
+are preserved in [the evidence archive](artifacts/activation-path-comparison-20260928/).
+
+The container overlay does not explain the cold-read bottleneck in this bank.
+Removing overlap worsens both measured cold and warm application. Keep the
+existing pipeline; neither alternative is a supported performance fix.
+
+The current transport carries a losslessly encoded BF16 bank, not a few
+kilobytes of token IDs that can simply be reinterpreted as the same tensors.
+For this bank, even the stored transport payload is 36.6 MB per rank. A
+microsecond-scale cold application therefore needs substantially less data
+movement, rather than just different file placement or upload scheduling.
+A replacement representation must be evaluated against native task quality;
+lossy reconstruction cannot be passed off as the byte-identical representation
+validated here. Already-resident lookup timings do not establish cold-load
+performance. The existing candidate remains unchanged, and the requested
+cold/warm performance target remains unmet.

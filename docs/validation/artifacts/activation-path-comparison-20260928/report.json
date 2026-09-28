@@ -1,0 +1,256 @@
+{
+  "status": "passed",
+  "scope": "Isolate overlay and upload scheduling costs on one frozen native bank.\n\nUses the unchanged compiled consumer and byte-fidelity probe. This diagnostic\nis not a model-quality benchmark or a release-wide latency certification.\nRun in CT101; the direct arena must reside on the same Optane filesystem as\nPodman's graphroot. Never use a RAM-backed directory for the direct arm.\n",
+  "case": {
+    "model": "gemma26",
+    "publication": "94c88eecaa45ae494fed513e3a26b6874ed93b76913b79a6f407b6dbf5a289ec",
+    "catalog_sha256": "8854e31785eef67c8ef54873a4909381b8f8dbf70b5c279587b9108285aab266",
+    "result_sha256": "f03ce08290a39493334ceee281c3a1ef64b6ccbbeca8d503a10a1e24d80f786a",
+    "summary": {
+      "os_page_cache_cold": {
+        "n": 20,
+        "median_us": 14796.68,
+        "p95_us": 14985.668,
+        "min_us": 14563.642,
+        "max_us": 15073.479
+      },
+      "os_page_cache_warm": {
+        "n": 100,
+        "median_us": 6228.7105,
+        "p95_us": 9924.415,
+        "min_us": 5459.64,
+        "max_us": 10907.808
+      },
+      "already_device_resident": {
+        "n": 100,
+        "median_us": 0.6,
+        "p95_us": 1.02,
+        "min_us": 0.58,
+        "max_us": 6.32
+      }
+    },
+    "source_bytes": 36632124,
+    "exact_segments_verified": 60
+  },
+  "results": [
+    {
+      "name": "0-overlay-pipeline",
+      "summary": {
+        "os_page_cache_cold": {
+          "n": 10,
+          "median_us": 14866.009,
+          "p95_us": 17751.291,
+          "min_us": 14579.275,
+          "max_us": 17751.291
+        },
+        "os_page_cache_warm": {
+          "n": 100,
+          "median_us": 5010.769,
+          "p95_us": 7137.935,
+          "min_us": 4255.323,
+          "max_us": 12748.257
+        },
+        "already_device_resident": {
+          "n": 100,
+          "median_us": 0.59,
+          "p95_us": 0.63,
+          "min_us": 0.57,
+          "max_us": 4.481
+        }
+      },
+      "sha256": "3e186d2883427a52306f0bb67db95bead4a6b7591fa7b255f53af39436c425fb"
+    },
+    {
+      "name": "0-direct-bulk",
+      "summary": {
+        "os_page_cache_cold": {
+          "n": 10,
+          "median_us": 17626.674,
+          "p95_us": 18241.739,
+          "min_us": 17471.468,
+          "max_us": 18241.739
+        },
+        "os_page_cache_warm": {
+          "n": 100,
+          "median_us": 6599.547500000001,
+          "p95_us": 7587.062,
+          "min_us": 5290.728,
+          "max_us": 8168.88
+        },
+        "already_device_resident": {
+          "n": 100,
+          "median_us": 0.56,
+          "p95_us": 0.62,
+          "min_us": 0.54,
+          "max_us": 11.56
+        }
+      },
+      "sha256": "6881fad2903abcfa41bd218a19130f01ac1195f16cb5c99bcf8992829656c4e0"
+    },
+    {
+      "name": "0-direct-pipeline",
+      "summary": {
+        "os_page_cache_cold": {
+          "n": 10,
+          "median_us": 15109.788,
+          "p95_us": 15332.236,
+          "min_us": 14854.778,
+          "max_us": 15332.236
+        },
+        "os_page_cache_warm": {
+          "n": 100,
+          "median_us": 5273.0425,
+          "p95_us": 6363.814,
+          "min_us": 4282.993,
+          "max_us": 6695.348
+        },
+        "already_device_resident": {
+          "n": 100,
+          "median_us": 0.57,
+          "p95_us": 0.83,
+          "min_us": 0.55,
+          "max_us": 4.25
+        }
+      },
+      "sha256": "441fb9ab7dc1101e33861c7b5df2943bbe8254fba81d3ea221a6477f849692d2"
+    },
+    {
+      "name": "0-overlay-bulk",
+      "summary": {
+        "os_page_cache_cold": {
+          "n": 10,
+          "median_us": 17933.6895,
+          "p95_us": 18209.988,
+          "min_us": 17446.577,
+          "max_us": 18209.988
+        },
+        "os_page_cache_warm": {
+          "n": 100,
+          "median_us": 6530.091,
+          "p95_us": 7267.377,
+          "min_us": 5333.588,
+          "max_us": 7530.251
+        },
+        "already_device_resident": {
+          "n": 100,
+          "median_us": 0.61,
+          "p95_us": 0.92,
+          "min_us": 0.59,
+          "max_us": 4.841
+        }
+      },
+      "sha256": "29f6adc334c580d0ad04c3f2b2ade0eb0dc1d96a49fe06098fad62f922937ea6"
+    },
+    {
+      "name": "1-overlay-bulk",
+      "summary": {
+        "os_page_cache_cold": {
+          "n": 10,
+          "median_us": 17613.7745,
+          "p95_us": 18495.722,
+          "min_us": 17456.227,
+          "max_us": 18495.722
+        },
+        "os_page_cache_warm": {
+          "n": 100,
+          "median_us": 5889.2919999999995,
+          "p95_us": 7504.16,
+          "min_us": 5541.021,
+          "max_us": 8051.248
+        },
+        "already_device_resident": {
+          "n": 100,
+          "median_us": 0.57,
+          "p95_us": 0.62,
+          "min_us": 0.56,
+          "max_us": 15.62
+        }
+      },
+      "sha256": "83e2c944bc6354fcace7fda9b533c66b42227c8fb864b28e48e5ba45b8d08456"
+    },
+    {
+      "name": "1-direct-pipeline",
+      "summary": {
+        "os_page_cache_cold": {
+          "n": 10,
+          "median_us": 14852.5785,
+          "p95_us": 16109.947,
+          "min_us": 14723.786,
+          "max_us": 16109.947
+        },
+        "os_page_cache_warm": {
+          "n": 100,
+          "median_us": 4999.888000000001,
+          "p95_us": 6874.301,
+          "min_us": 4461.115,
+          "max_us": 8090.799
+        },
+        "already_device_resident": {
+          "n": 100,
+          "median_us": 0.58,
+          "p95_us": 0.73,
+          "min_us": 0.56,
+          "max_us": 3.62
+        }
+      },
+      "sha256": "1ce9bf48c4a1061485acd2c9fabf235a4e1bbf6046a4a67612972d342275c046"
+    },
+    {
+      "name": "1-direct-bulk",
+      "summary": {
+        "os_page_cache_cold": {
+          "n": 10,
+          "median_us": 17590.704,
+          "p95_us": 18015.445,
+          "min_us": 17391.116,
+          "max_us": 18015.445
+        },
+        "os_page_cache_warm": {
+          "n": 100,
+          "median_us": 6241.531499999999,
+          "p95_us": 8409.423,
+          "min_us": 5429.31,
+          "max_us": 9934.496
+        },
+        "already_device_resident": {
+          "n": 100,
+          "median_us": 0.56,
+          "p95_us": 0.61,
+          "min_us": 0.55,
+          "max_us": 10.68
+        }
+      },
+      "sha256": "f82bb9fd212fbab389803dfe88fa622d47ab7c01d989cf4effe40b5f1d706440"
+    },
+    {
+      "name": "1-overlay-pipeline",
+      "summary": {
+        "os_page_cache_cold": {
+          "n": 10,
+          "median_us": 14840.149,
+          "p95_us": 15089.712,
+          "min_us": 14643.105,
+          "max_us": 15089.712
+        },
+        "os_page_cache_warm": {
+          "n": 100,
+          "median_us": 5241.762000000001,
+          "p95_us": 6781.53,
+          "min_us": 4132.051,
+          "max_us": 7318.847
+        },
+        "already_device_resident": {
+          "n": 100,
+          "median_us": 0.58,
+          "p95_us": 0.64,
+          "min_us": 0.56,
+          "max_us": 5.5
+        }
+      },
+      "sha256": "2e4676c5ddbfe4e3e32dc9e0350ad62761433ec37e84d1727fe45b951bec8057"
+    }
+  ],
+  "probe_sha256": "fba8bedec92fa5714969026bf9d92983196f51b5653209ed68f2097bbbe09163",
+  "image": "56e44a78b4ddbb228d5728311a709ee8118acc51f685b9f0e428a809b5ad2935",
+  "arena_mount": "{\n   \"filesystems\": [\n      {\n         \"target\": \"/\",\n         \"source\": \"/dev/mapper/storage-vm--101--disk--0\",\n         \"fstype\": \"ext4\",\n         \"options\": \"rw,relatime,stripe=16\"\n      }\n   ]\n}\n"
+}
