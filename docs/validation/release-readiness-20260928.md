@@ -25,8 +25,8 @@ round 1 and Flask passed only native round 2. These are frozen accepted
 procedure reuse comparisons, not fresh acquisition between rounds.
 
 Gemma 26B's signed fresh/update/rollback/restore lifecycle passed 8/8 native
-canary responses. Qwen's fresh signed installation passed 2/2 and its signed
-update is installed; subsequent GPU lifecycle probes are queued. The newly
+canary responses. Qwen's fresh/update/rollback/restore lifecycle also passed
+8/8, with the final three phases using the model-aware authority. The newly
 deployed model-aware authority passed bootstrap, artifact-fetch and lease
 isolation checks. Installed consumption through the updated launcher remains
 queued for both larger models and for 12B restoration/recovery. Larger-bank

@@ -289,3 +289,16 @@ and the script/binary hashes. Its output is
 is retained unchanged. GPU recovery validation of this normal binary is pending,
 and no public channel was changed. Qwen/Gemma lab packages continue with the
 lab launcher during their already-active checks.
+
+## Qwen restore passed; larger Qwen lifecycle complete
+
+Restored signed sequence 2 answered both native canary requests correctly,
+with high-water sequence 2 intact. The report is preserved in
+`artifacts/model-selection-installed-results-20260928/qwen27-restored2.json`.
+Together with the earlier fresh-install pair and the newly recorded update and
+rollback pairs, all four Qwen signed lifecycle phases passed (8/8 repeated
+canary queries). The fresh phase used the earlier launcher; update, rollback
+and restore used the model-aware launcher and deployed multi-model authority.
+These are the same three synthetic facts, not eight independent knowledge cases.
+The installed coordinator has moved to Gemma's model-aware sequence-2 check.
+No normal-channel promotion follows automatically from this lab lifecycle pass.
