@@ -126,7 +126,7 @@ def main():
                         time.sleep(5)
                     state.update(status='testing_' + profile); save()
                     env = ['env', 'SWE_RUN_ROOT=' + str(runroot), 'SWE_CONTEXT_TOKENS=4096', 'SWE_OUTPUT_TOKENS=1536',
-                           'SWE_STEPS=40', 'SWE_SECONDS=600', 'SWE_GRADE_TIMEOUT=300', 'SWE_MODEL_LABEL=' + profile]
+                           'SWE_STEPS=40', 'SWE_SECONDS=600', 'SWE_GRADE_TIMEOUT=300', 'SWE_GRADE_TIMEOUT_OVERRIDES=' + json.dumps({'psf__requests-2193':3600}), 'SWE_MODEL_LABEL=' + profile]
                     with (work / 'runner.log').open('w') as log:
                         subprocess.run(['pct', 'exec', '113', '--', *env, '/opt/swe-venv/bin/python', str(runroot / 'larger_regression.py')],
                                        stdout=log, stderr=subprocess.STDOUT, check=True)

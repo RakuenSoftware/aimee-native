@@ -524,3 +524,18 @@ uses the same saved patch and official tests with a 3600-second allowance under
 the documented protocol amendment. No agent, memory or test changes are part of
 that regrade. The six-task campaign remains incomplete until it has an official
 outcome and the remaining attempts finish.
+
+The original Gemma campaign is now terminal with 20 recorded attempts: 19 graded
+and one ungraded Requests text attempt. Matplotlib's first native attempt also
+failed, matching its control/text outcomes. Its second native attempt and three
+remaining Requests conditions were not run after the fail-closed stop.
+A [complete interrupted-run archive](artifacts/larger-gemma26-interrupted-20260928/)
+preserves 122 files, including all recorded results, trajectories, grading logs,
+inputs, manifest and runner source; the archive's per-file SHA-256 checks passed.
+
+The 300-second Requests allowance was a harness configuration regression: prior
+validation had already required about 1583 seconds and established a 3600-second
+allowance. The original and continuation queue recipes now retain that per-task
+override. This correction changes grading time only. The new Gemma text patch
+has the same SHA-256 as that earlier passing patch, but its current outcome stays
+ungraded until this independent regrade completes.
