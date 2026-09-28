@@ -664,3 +664,15 @@ unattempted. Qwen's independent coding coordinator then acquired the GPUs.
 Any subsequent retry must explicitly record its transport-timeout change and
 retain the original failed attempt. Completed outcomes must not be rerun or
 replaced to improve the reported comparison.
+
+
+A separate Gemma continuation is queued behind the current GPU owner. It copies
+21 completed outcomes unchanged and moves the ungraded Matplotlib attempt to
+an excluded-attempts directory; all original source-file hashes were verified
+unchanged. Only Matplotlib native-2 and the two unattempted Requests native arms
+will execute. Their HTTP generation-read allowance is explicitly increased from
+600 to 1,200 seconds. The 600-second agent budget, 1,536-token output limit,
+source memories, prompts and grading allowances remain unchanged. The agent
+budget is checked between calls, so an in-flight call may overshoot it. This
+transport change must accompany any reported retry outcome.
+[Continuation recipe and immutable source hashes](artifacts/larger-gemma26-generation-retry-20260928/).
