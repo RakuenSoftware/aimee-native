@@ -343,3 +343,26 @@ The complete first-eight-task block, including all 32 trajectories/results,
 publication records, acquisition evidence and launch/resume source versions,
 is archived in `artifacts/source-learning-20260927/first-eight-tasks.tar.gz`.
 All 135 file hashes in its embedded manifest were verified after transfer.
+
+
+## First passing-control retention result
+
+Flask-5014 passed in both control and the first native round. The control used
+8 calls and about 56 seconds of agent execution; native used 4 calls and about
+9.6 seconds. Both produced the identical successful patch, SHA-256
+`1f37d23c8c6deaa7721dd06b43826fd9d64f056e7c30df43bb2332e4eca7efa0`.
+The source procedure was automatically captured from the declared prior
+calibration experience and replayed exactly on its first trial. No generated
+summary replaced it.
+
+The initial messages have the same SHA-256 and 195 prompt tokens in both arms.
+No text memory was supplied. All control calls omit a native publication, while
+all native calls use the expected publication. The raw prior calibration source,
+replay evidence, control/native trajectories and official grades are preserved
+in `artifacts/source-learning-20260927/flask-first-retention.tar.gz`; the derived
+input/outcome audit is in `flask-first-retention.json`.
+
+This is one successful paired regression comparison, not broad regression
+assurance. It also does not isolate a serving-latency effect: the action
+sequences differ, and this is an agent-task comparison. The two further native
+rounds and the remaining task pairs are still pending.
