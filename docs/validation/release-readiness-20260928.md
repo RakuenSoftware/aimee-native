@@ -393,3 +393,22 @@ that logical expansion as new physical storage. The release queue now requires
 all 64 primary and all 64 additional results to be present and scored before
 starting image certification. Neither study's scope or outcome is silently
 substituted for the other.
+
+
+## Flask retention across all three native rounds
+
+Flask passed its control and all three native rounds. The control used 8 calls
+and about 56 seconds; the native rounds used 4, 5 and 5 calls and about 9.6,
+12.5 and 11.6 seconds. Every attempt produced the identical successful patch.
+All four initial message hashes match, with 195 prompt tokens and no supplied
+text memory. Every native request used the same retained complete-procedure
+publication. This is stable reuse on one passing-control task, not three
+independent tasks or a serving-latency benchmark.
+
+The complete raw evidence and derived audit are preserved as
+`artifacts/source-learning-20260927/flask-three-round-retention.tar.gz` and
+`flask-three-round-retention.json`. The primary campaign has completed its first
+ten tasks and continues into the Requests/Django pair. The broader follow-up
+waits behind it. The actual server configuration confirms a maximum of four
+sequences, TP2, 256 batched tokens and 0.8 GPU utilization; no server setting was
+changed to queue that follow-up.
