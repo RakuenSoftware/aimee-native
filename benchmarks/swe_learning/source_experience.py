@@ -58,6 +58,33 @@ def accept_success(task,row,trajectory,replay):
     raise ValueError('no candidate reproduced successful patch')
 
 
+def format_failures(trajectory):
+    """Capture parser rejection evidence, distinct from executed tool failures."""
+    failures=[]; pending=None
+    for message in trajectory.get('messages',[]):
+        if message.get('role')=='assistant':
+            extra=message.get('extra',{})
+            pending=message if 'finish_reason' in extra and not extra.get('actions') else None
+        elif message.get('role')=='user':
+            feedback=message.get('content','')
+            if (pending is not None and 'returncode' not in message.get('extra',{})
+                    and feedback.startswith('Return exactly one fenced bash command.')):
+                response=pending.get('content','')
+                failures.append({'finish_reason':pending['extra']['finish_reason'],
+                    'response':response,'response_sha256':digest(response),'feedback':feedback})
+            pending=None
+    return failures
+
+
+def render_format_failure(experience):
+    for failure in reversed(experience.get('format_failures',[])):
+        feedback=failure['feedback']
+        if len(feedback)<=3000:
+            return ('The previous assistant response was rejected before any command executed. '
+                    'Response finish reason: '+failure['finish_reason']+'.\nObserved parser feedback:\n'+feedback)
+    return ''
+
+
 def failure_evidence(task,row,trajectory):
     observations=[]
     pending=[]
@@ -71,7 +98,7 @@ def failure_evidence(task,row,trajectory):
             pending=[]
     return {'schema':1,'scope':scope(task),'kind':'failed_attempt','source_arm':row['arm'],
             'exit_status':row.get('exit_status'),'own_patch':row.get('model_patch',''),
-            'observations':observations,'resolved':row.get('resolved')}
+            'observations':observations,'format_failures':format_failures(trajectory),'resolved':row.get('resolved')}
 
 
 def promote(previous,candidate):

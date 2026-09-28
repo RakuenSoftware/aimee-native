@@ -50,3 +50,14 @@ All 32 initial prompts were tokenized without generation and fit the resulting
 6376-token input budget; the largest is 3107 tokens. The original launch manifest
 is preserved remotely and the amendment is explicit in the current manifest.
 This differs from the primary study's unchanged 512-token output allowance.
+
+Before any follow-up model attempt, failure capture was amended to preserve
+exact command-parser feedback when no usable executed-command failure exists.
+Rejected assistant output is retained in the source evidence but is not injected
+as a command or successful procedure. The memory carries the observed parser
+feedback and response finish reason, with no generated explanation. This covers
+format/length failures which previously produced only a generic failure notice.
+The option is enabled with `SWE_CAPTURE_FORMAT_FEEDBACK=1`; it defaults off and
+is not enabled in the fixed primary campaign. The manifest records the amended
+source hashes. Original files are preserved in `before-format-feedback` on the
+worker, which was replaced only while waiting with zero model attempts.

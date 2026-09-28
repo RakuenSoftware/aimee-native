@@ -486,3 +486,23 @@ A matched native/text/no-memory replay remains pending GPU availability.
 The residual-response diagnostic is queued after both studies complete and before stopping the learning server. It runs two requests per mode (no memory, native, same-record text), checks the original prompt and publication identities, and saves full responses. Completion of this diagnostic is not a passing accuracy gate. The guard refuses to run while either study is unfinished. Only the waiting release queue was restarted to add this stage; neither learning worker was interrupted.
 
 The replay guard check passed with `python3 -P`; its first local invocation encountered the existing benchmark `select.py` shadowing the standard library. The deployed standalone script imports and displays its CLI successfully on CT113, where that collision is absent.
+
+
+## Capturing pre-execution failures
+
+The final Seaborn control exposed a capture gap: five responses exceeded the
+512-token cap without completing a command, so there was no executed-command
+failure to retain. The primary therefore delivered only a generic failed-result
+notice. The still-unstarted broader follow-up now captures exact parser feedback
+as a fallback when no usable executed-command error exists. It preserves the
+rejected response in source evidence, but only the feedback and termination
+reason enter memory; neither a rejected command nor repeated text is promoted
+as a working procedure. No model-generated summary is involved.
+
+Eight source-experience checks pass, including separation of parser rejection
+from tool execution and non-injection of repeated rejected output. A read-only
+check against the real Seaborn trajectory recovered all five rejections and
+rendered a 363-character feedback record. The amendment, source hashes, and
+zero-attempt precondition are recorded in the broader manifest. The prior
+manifest and code are backed up remotely. Only the waiting follow-up worker
+was replaced; the fixed primary study remains unchanged.

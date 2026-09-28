@@ -1,5 +1,5 @@
 import unittest
-from source_experience import accept_success,patch_command,promote,successful_commands,render_success
+from source_experience import accept_success,patch_command,promote,successful_commands,render_success,failure_evidence,render_format_failure
 
 class SourceExperience(unittest.TestCase):
  def setUp(self):
@@ -26,5 +26,24 @@ class SourceExperience(unittest.TestCase):
   with self.assertRaises(ValueError):accept_success(self.task,self.row,{},lambda c:{'returncode':1,'patch':self.patch})
  def test_no_acceptance_from_failure_boolean(self):
   with self.assertRaises(ValueError):accept_success(self.task,dict(self.row,resolved=False),{},lambda c:None)
+
+class FormatEvidence(unittest.TestCase):
+ def test_rejected_response_retains_feedback_without_treating_it_as_execution(self):
+  feedback='Return exactly one fenced bash command. Your response exceeded the output limit. Use one shorter command.'
+  trace={'messages':[{'role':'assistant','content':'thought\n'*128,'extra':{'finish_reason':'length'}},
+                     {'role':'user','content':feedback}]}
+  e=failure_evidence({'instance_id':'x','base_commit':'b'},{'arm':'control','resolved':False},trace)
+  self.assertEqual(e['observations'],[])
+  self.assertEqual(e['format_failures'][0]['response'],trace['messages'][0]['content'])
+  rendered=render_format_failure(e)
+  self.assertIn(feedback,rendered)
+  self.assertIn('before any command executed',rendered)
+  self.assertNotIn('thought',rendered)
+ def test_tool_output_cannot_masquerade_as_parser_feedback(self):
+  trace={'messages':[{'role':'assistant','content':'cmd','extra':{'actions':[{'command':'bad'}]}},
+       {'role':'user','content':'Return exactly one fenced bash command.','extra':{'returncode':1}}]}
+  e=failure_evidence({'instance_id':'x','base_commit':'b'},{'arm':'control','resolved':False},trace)
+  self.assertEqual(e['format_failures'],[])
+  self.assertEqual(len(e['observations']),1)
 
 if __name__=='__main__':unittest.main()

@@ -2,7 +2,7 @@
 import concurrent.futures,hashlib,json,os,pathlib,shlex,subprocess,time,urllib.request
 import run
 from resume_campaign import validate_resume
-from source_experience import accept_success,failure_evidence,promote,render_success
+from source_experience import accept_success,failure_evidence,promote,render_success,render_format_failure
 ROOT=run.ROOT;ORIGINAL=ROOT.parent
 
 def write(path,data):path.parent.mkdir(parents=True,exist_ok=True);path.write_text(json.dumps(data,indent=2)+'\n')
@@ -32,6 +32,10 @@ def capture(task,row,previous,source_root=ROOT):
          'Command:\n'+observation['command']+'\nObserved tool result:\n'+observation['observation'])
    if len(text)<=3000:
     facts=[text];break
+  # Prospective follow-up option; the fixed primary protocol keeps its default.
+  if not facts and os.environ.get('SWE_CAPTURE_FORMAT_FEEDBACK')=='1':
+   feedback=render_format_failure(candidate)
+   if feedback:facts=[feedback]
   candidate['lesson']=('The previous attempt at this exact issue did not pass the official overall evaluation. '
                        'Inspect the current source and verify a revised approach; do not assume the prior patch was correct.'
                        +('\n'+facts[0] if facts else ''))
