@@ -580,3 +580,19 @@ include the launcher logs, outputs, manifest states and container constraints.
 The repeated canary is one fixed three-fact working set, not eight independent
 knowledge cases. Restore request durations were approximately 85.7 and 7.62
 seconds; these include generation and cold request work.
+
+
+## Gemma Requests unchanged-patch regrade passed
+
+The text-arm patch for `psf__requests-2193` passed the official grader with
+8/8 target tests and 125/125 preservation tests. Grading took approximately
+1,582 seconds under the restored 3,600-second per-task allowance. The agent was
+not rerun; patch SHA-256 remains
+`181591653cb01e3e90ad3065a0f6570f45856e40733dfb3ddbfe6629503f4a27`.
+The original timeout record remains unchanged. This is a text-arm outcome,
+not an additional native success.
+
+[Independent regrade evidence](artifacts/larger-gemma26-requests-regrade-20260928/)
+contains the official report, logs, patch and provenance. The continuation
+preserves completed outcomes in a separate run directory and is queued for
+exclusive GPU access to finish the four remaining Gemma agent attempts.
