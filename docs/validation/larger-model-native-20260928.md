@@ -848,3 +848,14 @@ before packaging. Supplying a valid SHA is not proof of source-to-binary provena
 final packaging must reconcile that revision with the recorded build inputs and
 retain the exact tested artifact identities. This metadata correction does not
 rebuild or replace the live candidates.
+
+
+## Qwen Requests control passed; native retention still pending
+
+The fresh no-memory Requests 2193 patch passed official grading. Text also
+passed this task. Across all six cases, the completed control now scores 5/6
+and text 4/6; both native rounds remain 5/5 on the five fully paired cases,
+with Requests still outstanding. Those unequal denominators must not be
+presented as a completed six-case effect. The next two native attempts test
+whether the new control success is retained.
+[Exact control result, grade and trajectory](artifacts/larger-qwen27-requests-control-20260928/).
