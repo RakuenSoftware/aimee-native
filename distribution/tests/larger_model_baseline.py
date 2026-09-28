@@ -2,6 +2,7 @@
 
 Run in CT101 only after the signed lifecycle releases both GPUs.
 """
+import argparse
 import json
 import pathlib
 import subprocess
@@ -26,7 +27,7 @@ def request(path, data=None, timeout=180):
         return json.load(response)
 
 
-def main():
+def main(reference_bf16=False):
     ROOT.mkdir(exist_ok=True)
     args = ['podman', 'run', '-d', '--name', NAME, '--network', 'host', '--ipc', 'host',
         '--device', '/dev/kfd', '--device', '/dev/dri/renderD128', '--device', '/dev/dri/renderD129',
@@ -35,7 +36,7 @@ def main():
         '-v', '/opt/aimee-memory-lab/gemma26-release-20260928:/weights:ro',
         '-e', 'VLLM_PLUGINS=aimee_native', '-e', 'AIMEE_GGUF_ENABLE=1',
         '-e', 'VLLM_USE_V2_MODEL_RUNNER=0', '-e', 'VLLM_ROCM_USE_AITER=0',
-        '--entrypoint', 'vllm', IMAGE, 'serve', '/model', '--host', '127.0.0.1', '--port', '8174',
+        '--entrypoint', 'vllm', IMAGE, 'serve', '/model', '--host', '127.0.0.1', '--port', BASE.rsplit(':',1)[1],
         '--served-model-name', 'gemma4-26b-q8-baseline', '--dtype', 'bfloat16',
         '--tensor-parallel-size', '2', '--max-model-len', '4096', '--max-num-seqs', '2',
         '--max-num-batched-tokens', '256', '--gpu-memory-utilization', '.85',
@@ -44,8 +45,15 @@ def main():
         '--quantization', 'gguf', '--model-loader-extra-config',
         json.dumps({'gguf_weights': '/weights/gemma4-26b-q8.gguf'}),
         '--limit-mm-per-prompt', '{"image":0,"audio":0,"video":0}']
+    if reference_bf16:
+        for option in ['--load-format', '--quantization', '--model-loader-extra-config']:
+            index = args.index(option)
+            del args[index:index + 2]
+        args[args.index('AIMEE_GGUF_ENABLE=1')] = 'AIMEE_GGUF_ENABLE=0'
+        args[args.index('--served-model-name') + 1] = 'gemma4-26b-bf16-reference'
+        args += ['--cpu-offload-gb', '8']
     (ROOT / 'command.json').write_text(json.dumps(args, indent=2) + '\n')
-    save(status='starting', scope='Quantized real-model baseline; no native-memory capability claim')
+    save(status='starting', scope='Original BF16 checkpoint baseline with CPU offload; no memory' if reference_bf16 else 'Quantized real-model baseline; no native-memory capability claim')
     created = False
     try:
         subprocess.run(args, check=True, capture_output=True, text=True)
@@ -92,9 +100,16 @@ def main():
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--reference-bf16', action='store_true')
+    options = parser.parse_args()
+    if options.reference_bf16:
+        ROOT = pathlib.Path('/opt/aimee-memory-lab/gemma26-bf16-reference-20260928')
+        NAME = 'aimee-gemma26-bf16-reference-20260928'
+        BASE = 'http://127.0.0.1:8175'
     ROOT.mkdir(exist_ok=True)
     try:
-        main()
+        main(options.reference_bf16)
     except BaseException as error:
         save(status='failed', error=repr(error))
         raise

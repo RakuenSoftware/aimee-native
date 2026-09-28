@@ -194,3 +194,19 @@ checkpoint values. These are mechanics tests, not full-checkpoint certification;
 production compiler integration and actual larger-model preparation remain open.
 The serving hot path does not import this mapping.
 [Preparation fixture evidence](validation/artifacts/bounded-preparation-20260928/).
+
+
+## Gemma 26B failure isolation
+
+Raw-token inspection reproduced padding-token loops for the chat prompt and
+a repeated ` it` token for plain completion. The empty visible response was
+not just a missing final-answer field. The original-checkpoint FP32 CPU probe
+completed through supported Transformers/Accelerate hooks and released all
+parameters, but its leading logits were saturated at the configured soft cap.
+That result does not establish a healthy reference model or isolate conversion
+as the cause. The original BF16 checkpoint is now being tested directly in
+vLLM, with 8 GiB of CPU offload per worker and no GGUF loader enabled.
+Its outcomes remain pending.
+
+[Raw tokens](validation/artifacts/gemma26-baseline-20260928/raw-token-diagnostic.json)
+and [original-weight CPU diagnostic](validation/artifacts/bounded-preparation-20260928/gemma26-reference.json).

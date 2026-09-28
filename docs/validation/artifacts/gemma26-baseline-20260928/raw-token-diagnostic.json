@@ -1,0 +1,173 @@
+[
+  {
+    "path": "/v1/chat/completions",
+    "request": {
+      "model": "gemma4-26b-q8-baseline",
+      "max_tokens": 16,
+      "temperature": 0,
+      "seed": 20260928,
+      "skip_special_tokens": false,
+      "return_token_ids": true,
+      "messages": [
+        {
+          "role": "user",
+          "content": "Compute 17 + 25. Return only the integer."
+        }
+      ],
+      "chat_template_kwargs": {
+        "enable_thinking": false
+      }
+    },
+    "response": {
+      "id": "chatcmpl-918406880cb26b96",
+      "object": "chat.completion",
+      "created": 1790584821,
+      "model": "gemma4-26b-q8-baseline",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "<pad><pad><pad><pad><pad><pad><pad><pad><pad><pad><pad><pad><pad><pad><pad><pad>",
+            "refusal": null,
+            "annotations": null,
+            "audio": null,
+            "function_call": null,
+            "reasoning": null
+          },
+          "logprobs": null,
+          "finish_reason": "length",
+          "stop_reason": null,
+          "token_ids": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "routed_experts": null
+        }
+      ],
+      "service_tier": null,
+      "system_fingerprint": "vllm-0.30.0-tp2-c7e20372",
+      "usage": {
+        "prompt_tokens": 27,
+        "total_tokens": 43,
+        "completion_tokens": 16,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
+      },
+      "prompt_logprobs": null,
+      "prompt_token_ids": [
+        2,
+        105,
+        2364,
+        107,
+        55822,
+        236743,
+        236770,
+        236832,
+        900,
+        236743,
+        236778,
+        236810,
+        236761,
+        9657,
+        1186,
+        506,
+        11995,
+        236761,
+        106,
+        107,
+        105,
+        4368,
+        107,
+        100,
+        45518,
+        107,
+        101
+      ],
+      "prompt_text": null,
+      "kv_transfer_params": null,
+      "ec_transfer_params": null,
+      "metrics": null
+    }
+  },
+  {
+    "path": "/v1/completions",
+    "request": {
+      "model": "gemma4-26b-q8-baseline",
+      "max_tokens": 16,
+      "temperature": 0,
+      "seed": 20260928,
+      "skip_special_tokens": false,
+      "return_token_ids": true,
+      "prompt": "The capital of France is"
+    },
+    "response": {
+      "id": "cmpl-b298512e5375fefc",
+      "object": "text_completion",
+      "created": 1790584830,
+      "model": "gemma4-26b-q8-baseline",
+      "choices": [
+        {
+          "index": 0,
+          "text": " it it it it it it it it it it it it it it it it",
+          "logprobs": null,
+          "finish_reason": "length",
+          "stop_reason": null,
+          "token_ids": [
+            625,
+            625,
+            625,
+            625,
+            625,
+            625,
+            625,
+            625,
+            625,
+            625,
+            625,
+            625,
+            625,
+            625,
+            625,
+            625
+          ],
+          "prompt_logprobs": null,
+          "prompt_token_ids": [
+            818,
+            5279,
+            529,
+            7001,
+            563
+          ],
+          "routed_experts": null
+        }
+      ],
+      "service_tier": null,
+      "system_fingerprint": "vllm-0.30.0-tp2-c7e20372",
+      "usage": {
+        "prompt_tokens": 5,
+        "total_tokens": 21,
+        "completion_tokens": 16,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
+      },
+      "kv_transfer_params": null,
+      "ec_transfer_params": null,
+      "metrics": null
+    }
+  }
+]
