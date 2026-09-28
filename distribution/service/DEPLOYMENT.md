@@ -170,6 +170,16 @@ rollout. The native bridge candidate needed more than the initial 90-second
 window on the existing 5.9 GB ledger; rollback was exercised and the longer
 readiness window admitted the healthy candidate.
 
+Also check the image entrypoint's own socket-startup deadline. Increasing only
+the external rollout health timeout cannot prevent the entrypoint from killing
+an otherwise running server. The deployed image accepts
+`AIMEE_WFE_SOCKET_WAIT_TENTHS`; its default `1200` permits 120 seconds. The
+larger-model validation host is using `6000` while investigating startup under
+I/O pressure. Keep the outer rollout deadline longer than the entrypoint
+allowance and confirm actual health; an increased allowance alone is not a
+successful startup. Preserve candidate logs before rollback removes its
+container. Do not disable audit verification to meet a readiness deadline.
+
 ### Persisting the deployed frontend
 
 On the controlled preview host, `compose.override.yaml` points to the explicit
@@ -276,3 +286,19 @@ changes account enrollment: the Aimee release policy, preparer template and
 bootstrap profile must still agree on the selected model. Stage new profiles
 with isolated cache roots and validate approved preparation and reuse before
 changing a live account binding.
+
+
+## Large signed-artifact transfers
+
+The validation origin serves approximately 29 GB weight files. Under host I/O
+pressure, its default nginx send timeout interrupted two Qwen transfers. An
+info-level release-vhost error log identified `client timed out ... while
+sending response to client`; the client reported a TLS unexpected EOF. That
+message does not justify disabling TLS validation.
+
+The affected release virtual host now uses `send_timeout 300s` and scoped
+transfer diagnostics. This setting allows longer gaps between writes; it is
+not a total-download deadline. Validate any deployment-specific value against
+the real storage and network path. A failed install must retain its previous
+active release; successful transfer still requires signed artifact validation
+and installed-runtime checks. Preserve failed transfer records when retrying.
