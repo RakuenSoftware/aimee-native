@@ -58,11 +58,29 @@ def main():
         files = []
         for relative in dist.files or []:
             name = Path(str(relative)).name.lower()
-            if any(word in name for word in ('license', 'copying', 'notice')):
+            if any(word in name for word in ('license', 'copying', 'copyright', 'notice')):
                 files.append(retain(Path(dist.locate_file(relative))))
+        # System Python distributions often keep notices in their owning Debian
+        # package, outside the Python file manifest. Resolve actual ownership;
+        # do not guess from similar package names or license identifiers.
+        system_notice_owners = []
+        metadata_path = getattr(dist, '_path', None)
+        if metadata_path is not None and not any(n['status'] == 'collected' for n in files):
+            owned = subprocess.run(['dpkg-query', '-S', str(metadata_path)],
+                                   capture_output=True, text=True)
+            if owned.returncode == 0:
+                for line in owned.stdout.splitlines():
+                    if ': ' not in line:
+                        continue
+                    for owner in line.split(': ', 1)[0].split(', '):
+                        candidate = retain(Path('/usr/share/doc') / owner.split(':')[0] / 'copyright')
+                        if candidate['status'] == 'collected':
+                            system_notice_owners.append(owner)
+                            files.append(candidate)
         python_rows.append(dict(name=dist.metadata.get('Name'), version=dist.version,
             license_expression=dist.metadata.get('License-Expression'), license_metadata=dist.metadata.get('License'),
             declared_license_files=dist.metadata.get_all('License-File', []), notices=files,
+            system_notice_owners=sorted(set(system_notice_owners)),
             source_archives='not_collected'))
     # Debian copyright files often refer to these full license texts instead
     # of embedding them. Retain them even when base-files has its own copyright.
