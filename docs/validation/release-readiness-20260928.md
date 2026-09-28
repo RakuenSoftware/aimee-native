@@ -813,3 +813,27 @@ that `prepared_seconds` includes refresh/drain waiting, not just encoding.
 `four-successful-pairs-v2.json` corrects the scope label without changing any
 numbers; the original report and archive are retained. The executed bridge is
 archived beside it so the timing boundary is inspectable.
+
+## Final-image standard certification completed
+
+The exact `7303c9e9` image passed 72/72 conversation-matrix checks, 8/8 long
+context checks (4,096 and 7,168 tokens), 128/128 concurrent recall requests,
+40/40 streaming recall requests, and both post-refresh three-record recalls.
+The forced 4,096-token generation occupied the server for 223.1 seconds;
+refresh waited 223.0 seconds without poisoning it. The private status endpoint
+responded in 0.35 ms while paused, and admission resumed afterwards. This is
+runtime drain/recovery evidence, not a claim that the forced long response was
+useful: its raw output repeats and is preserved in the report.
+
+[Exact-image report](artifacts/final-image-certification-20260928/standard-report.json).
+The 32-record, activation, hosted FP32 reuse, installed-client recovery and
+signed lifecycle checks remain separate requirements.
+
+The Requests corrective diagnostic is now queued automatically after candidate
+checks release the GPUs. Its frozen pre-edit prompt compares original and
+compact source procedures through both native memory and text, plus no memory,
+in two reversed-order deterministic passes. Each single-command response is
+executed on a fresh benchmark checkout after replaying the same original
+pre-edit actions. The outcome is equality to the already verified own patch,
+not official task accuracy. Completed study outcomes will not be overwritten.
+The compact procedure passed that exact setup/replay path before scheduling.
