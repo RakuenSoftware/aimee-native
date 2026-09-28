@@ -13,8 +13,8 @@ release notes. Earlier records treating that target as a hard requirement are
 superseded by this clarification, without changing their experimental results.
 
 The first normal Gemma 26B manifest is signed and independently verified.
-Its real normal installation and fresh-runtime canaries passed (2/2). Gemma
-update/rollback/restore, Qwen normal packaging, and Qwen normal lifecycle remain
+Its normal fresh-install and updated-runtime canaries passed (2/2 each). Gemma
+rollback/restore, Qwen normal packaging, and Qwen normal lifecycle remain
 unfinished. Existing laboratory lifecycle
 results establish the component path, not those pending distribution checks.
 
@@ -33,7 +33,7 @@ being introduced as a new requirement.
 | `revision_withdrawal` | Recorded preparation lifecycle rejects expired/withdrawn/disconnected authority and recovers reuse. Installed signed update/rollback/restore passed. These are separate pieces of evidence; preparation-cache rejection alone does not prove immediate GPU revocation. |
 | `cold_warm_latency` | **Measurement requirement complete; microseconds are aspirational, not a release blocker.** All twelve banks passed tensor fidelity. Cold medians are 3.73–14.80 ms for Gemma and 1.62–4.40 ms for Qwen. Disclose these limits; resident lookup is a different measurement. Further optimization is not a prerequisite for release staging. |
 | `reusable_preparation` | Both models passed fresh preparation, repeat reuse and lifecycle checks. Fresh preparation remains seconds; reuse is separate from request-time application. This component behavior is evidenced. |
-| `clean_install` | Larger laboratory fresh/update/rollback/restore passed, including updated model-aware installed consumption. Normal-feature launcher build and 12B recovery passed. **Normal Gemma fresh installation and runtime consumption now passed 2/2. Its remaining lifecycle phases and Qwen normal installation remain pending.** |
+| `clean_install` | Larger laboratory fresh/update/rollback/restore passed, including updated model-aware installed consumption. Normal-feature launcher build and 12B recovery passed. **Normal Gemma fresh installation and signed update each passed 2/2 runtime queries. Rollback/restore and Qwen normal installation remain pending.** |
 | `binary_disclosure_audit` | Client source exclusion, exported-symbol/debug/private-marker inspection and exact library hashes passed their recorded checks. Private wheel retained-source comparison matches 16 files. This is evidence of source exclusion, not secrecy against disassembly. |
 | `authenticated_delivery` | Live model-aware bootstrap, artifact fetching, scoped leases and installed consumption passed. Channel promotion remains unperformed. This component path is evidenced. |
 | `license_dependency_audit` | Completed dependency-delta reconciliation: 278 Python metadata/license-file records, 591 OS records, both Rust lockfiles and six common notices per model are unchanged. Model-specific notices are separately recorded. This preserves the earlier controlled-infrastructure disposition and known limits. **The external-distribution corresponding-source/notice fulfillment bundle remains unfinished.** |
@@ -89,3 +89,8 @@ image under its 36 GiB container limit. End-to-end measured response times were
 JIT activity and concurrent staging I/O. These are not native activation timings
 or a matched native/text performance comparison. No model or memory bytes were
 changed for this normal-channel check.
+
+[Normal Gemma signed-update evidence](artifacts/larger-normal-lifecycle-20260928/gemma26/updated2.json)
+also passed 2/2. The sequence-2 manifest signature was independently verified,
+and the installed high-water sequence advanced to 2 while retaining sequence 1
+as the previous release. Rollback and restore are separate pending runtime checks.
