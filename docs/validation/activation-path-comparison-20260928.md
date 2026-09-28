@@ -54,3 +54,26 @@ lossy reconstruction cannot be passed off as the byte-identical representation
 validated here. Already-resident lookup timings do not establish cold-load
 performance. The existing candidate remains unchanged, and the requested
 cold/warm performance target remains unmet.
+
+## Offline payload follow-up
+
+The same largest Gemma bank contains 432 positions and 48,660,480 dense bytes
+for rank zero. A CPU-only exact-roundtrip diagnostic tested ordinary zlib and
+byte-plane zlib coding. The smallest result was 33,884,732 bytes (69.6% of dense),
+versus the existing 36,632,124-byte transport. Reconstruction in this diagnostic
+took a median 242.7 ms, excluding disk and GPU transfer, so this is rejected as
+a serving optimization. All five reconstructions per variant were byte checked.
+These CPU measurements do not predict an optimized Rust/SIMD decoder's speed;
+the size result itself also falls far short of the desired small payload.
+
+Empirical 16-bit word entropy was 11.19 bits and the exact-zero fraction was
+zero. These describe this bank and do not prove a general information-theoretic
+limit or rule out structured representations. They do show that treating this
+particular dense bank as mostly zero values is not supported.
+
+The current implementation compresses prepared K/V state. It does not implement
+the requested few-kilobyte intermediate with cheap expansion into this same
+large native state. Further work needs to address that representation gap;
+neither token-ID byte counts nor resident-cache timings establish that it has
+been solved. No codec or serving candidate was changed by this diagnostic.
+[Raw result](artifacts/native-payload-compressibility-20260928/report.json).
