@@ -195,3 +195,25 @@ three approved profiles without changing recipient authority.
 This closes live bootstrap selection, not artifact delivery, lease lifecycle,
 or installed GPU consumption through the new model-aware launcher. Those checks
 remain required before the deployed path is release-complete.
+
+
+## All three models passed live artifact fetch and approval
+
+The same enrolled account fetched approved memory for Gemma 12B, Gemma 26B and
+Qwen 27B through the deployed model selector. Each model used a fresh client
+cache followed by a repeated fetch: **6/6 passed**, each retaining all three
+selected records. Publication identity and authorized view remained stable
+within each pair; publications differed across model encodings while the
+source authorization view was shared. The Rust delivery path performed the
+artifact checks and approval rather than a fixture bypass.
+
+The authority reused existing private preparations. These checks do not show
+new 12B compilation while its resident compiler is paused; restoring that
+service remains necessary after the larger-model resource window. Initial
+client fetches took approximately 0.33–0.37 seconds and repeated fetches
+0.18–0.20 seconds, including network selection, local storage and approval.
+They are not GPU application latency measurements.
+
+[Sanitized results and executed recipes](artifacts/model-selection-live-fetch-20260928/).
+The queued installed-runtime probes still need to prove GPU consumption through
+the new model-aware launcher; the broader coding comparisons are also unfinished.
