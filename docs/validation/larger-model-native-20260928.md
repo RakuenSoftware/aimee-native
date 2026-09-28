@@ -511,3 +511,16 @@ retained in both native rounds. Matplotlib and Requests remain incomplete; these
 interim totals do not substitute for the final six-task comparison. Repeated
 native rounds reuse frozen procedures without new acquisition. The complete
 Sympy trajectories, patches and grades are preserved in the completed-task archive.
+
+## Requests text grading interruption
+
+The Gemma Requests text attempt submitted a patch in eight calls, but its official
+139-test suite did not finish within the 300-second grading limit. It is ungraded,
+not a pass or failure. [Original evidence](artifacts/larger-requests-grader-timeout-20260928/)
+includes the unchanged patch/result, trajectory, and timed-out official test log.
+The fail-closed driver stops scheduling further attempts after this infrastructure
+outcome; its in-flight attempt is allowed to return. A separate CPU-only regrade
+uses the same saved patch and official tests with a 3600-second allowance under
+the documented protocol amendment. No agent, memory or test changes are part of
+that regrade. The six-task campaign remains incomplete until it has an official
+outcome and the remaining attempts finish.
