@@ -596,3 +596,18 @@ not an additional native success.
 contains the official report, logs, patch and provenance. The continuation
 preserves completed outcomes in a separate run directory and is queued for
 exclusive GPU access to finish the four remaining Gemma agent attempts.
+
+
+## Qwen 27B fresh signed installation passed
+
+The fresh sequence-1 installation passed both native three-fact recall queries
+under the unprivileged 36 GiB container limit. Its active manifest is
+`c5180309b74100e2e54d00db47b5a69bc02f7b61ada01c5f59f2016c1ad70e75`.
+Both responses used 26 prompt tokens and 47 completion tokens. End-to-end request
+durations were approximately 5.63 and 4.42 seconds; these include generation and
+are not memory-application timings. The update, rollback and restore phases
+remain outstanding. [Fresh installation evidence](artifacts/larger-signed-lifecycle-completed-20260928/qwen27/).
+
+After this probe released the shared GPU lock, the Gemma continuation started its
+server for the four remaining coding attempts. The Qwen coding coordinator is
+also queued; it has not yet produced coding outcomes.
