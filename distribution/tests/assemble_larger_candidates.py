@@ -1,8 +1,10 @@
 """Private signed lab candidates. No production gate reports are fabricated."""
+import argparse
 import hashlib
 import importlib.util
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -13,6 +15,12 @@ ORIGIN = Path('/opt/aimee-native-release')
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--runtime-commit', required=True,
+                        help='Audited source revision for the candidate, not an inherited base-image revision')
+    args = parser.parse_args()
+    if not re.fullmatch(r'[0-9a-f]{40}', args.runtime_commit):
+        parser.error('--runtime-commit must be a full lowercase Git commit SHA')
     build = ROOT / 'assembly'
     identity = json.loads((ORIGIN / 'identity.json').read_text())
     digest = (build / 'image-digest.txt').read_text().strip()
@@ -86,7 +94,7 @@ def main():
             files['runtime/profile.json'] = str(defaults_path)
             metadata = {'schema': 1, 'sequence': sequence, 'version': f'larger-validation-{sequence}',
                 'platform': 'linux-x86_64', 'model': name, 'runtime': 'vllm',
-                'runtime_commit': 'ced6857afa0ea7b2e3f0846a62e1394e90f15607', 'abi': 1,
+                'runtime_commit': args.runtime_commit, 'abi': 1,
                 'engine': 'bin/aimee-vllm', 'library': 'lib/libaimee_native.so', 'model_file': 'models/model.gguf'}
             plan = {'manifest': metadata, 'files': dict(files)}
             (owned / f'plan-{sequence}.json').write_text(json.dumps(plan, indent=2) + '\n')

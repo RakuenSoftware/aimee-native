@@ -831,3 +831,20 @@ network-test run. The recorded result is now final for that arm. Control and bot
 native arms are still outstanding, so the five fully paired case totals above
 remain the appropriate comparison; no six-case aggregate is claimed.
 [Exact result, grade and trajectory](artifacts/larger-qwen27-requests-text-20260928/).
+
+
+## Source-revision metadata correction for future assembly
+
+The historical lab manifests inherited `runtime_commit=ced6857...` from the
+base build, while the larger compiled wheel and kernel bank were added later.
+That field alone is therefore insufficient to identify the complete larger
+runtime source. The immutable image digest, signed artifact hashes, wheel hash
+and kernel-manifest hash remain the identities of the bytes actually tested;
+historical manifests and test records are unchanged.
+
+Future lab assembly now requires an explicit full `--runtime-commit` instead of
+silently copying that base revision. Missing and malformed revisions are rejected
+before packaging. Supplying a valid SHA is not proof of source-to-binary provenance:
+final packaging must reconcile that revision with the recorded build inputs and
+retain the exact tested artifact identities. This metadata correction does not
+rebuild or replace the live candidates.
