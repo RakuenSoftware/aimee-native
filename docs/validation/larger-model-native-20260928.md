@@ -649,3 +649,18 @@ virtual host now has a 300-second send timeout instead of its default 60 seconds
 TLS and artifact verification are unchanged. A single new installation attempt
 is running with this correction. [Retry failure, origin diagnostic and corrected
 retry recipe](artifacts/release-io-startup-failures-20260928/).
+
+
+## Gemma continuation stopped on generation read timeout
+
+The separate continuation completed the Requests no-memory control without a
+patch (16 calls, approximately 609 seconds). Matplotlib's second native reuse
+instead hit the 600-second HTTP generation read timeout before a response or
+patch could be recorded. It remains ungraded, not a counted task failure.
+The continuation stopped as designed; Requests' two native attempts remain
+unattempted. Qwen's independent coding coordinator then acquired the GPUs.
+
+[Preserved continuation archive](artifacts/larger-gemma26-generation-timeout-20260928/).
+Any subsequent retry must explicitly record its transport-timeout change and
+retain the original failed attempt. Completed outcomes must not be rerun or
+replaced to improve the reported comparison.

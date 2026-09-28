@@ -176,3 +176,22 @@ original hash. [Recovery receipt](artifacts/release-io-startup-failures-20260928
 A separate candidate rollout now retains that entrypoint allowance, uses a
 660-second external readiness window, and captures candidate logs before any
 rollback. Its live authorization outcome remains pending.
+
+
+## Deployed authority and three-model bootstrap passed
+
+The corrected rollout reached healthy state with the candidate frontend image,
+tested delivery binary, and three-model account binding. The runtime directory
+inode was preserved. Startup completed in approximately 205 seconds; the former
+120-second entrypoint allowance was insufficient for this host.
+
+The enrolled client passed all 10 live bootstrap checks: default selection,
+each of the three explicit model identities, missing/invalid bearer denial,
+missing client certificate denial, and rejection of an unapproved model,
+duplicate model selector, and recipient override. The same account selected all
+three approved profiles without changing recipient authority.
+
+[Deployment and live authorization evidence](artifacts/model-selection-live-bootstrap-20260928/).
+This closes live bootstrap selection, not artifact delivery, lease lifecycle,
+or installed GPU consumption through the new model-aware launcher. Those checks
+remain required before the deployed path is release-complete.
