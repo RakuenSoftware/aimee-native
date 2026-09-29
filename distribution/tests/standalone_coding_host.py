@@ -3,6 +3,7 @@ import base64
 import fcntl
 import hashlib
 import json
+import os
 from pathlib import Path
 import subprocess
 import time
@@ -31,6 +32,9 @@ def main():
         state['updated'] = time.time()
         stage = OUT / 'status.next'; stage.write_text(json.dumps(state, indent=2) + '\n'); stage.replace(OUT / 'status.json')
     save()
+    # Shared test output must be writable by the CT's mapped root.
+    owner = (ROOT / 'plugin-standalone-20260929').stat()
+    os.chown(OUT, owner.st_uid, owner.st_gid)
     made = False
     try:
         with (ROOT / 'gpu-validation.lock').open('a') as lock:
