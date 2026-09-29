@@ -52,7 +52,11 @@ An infrastructure error stops further scheduling and is not scored as a model
 failure. Already running attempts finish and remain recorded.
 
 Budgets are identical across conditions: 8,192 context tokens, 1,536 output tokens
-per response, at most 60 agent steps and 900 agent seconds, concurrency two.
+per response, at most 60 agent steps and a 900-second agent wall-time budget,
+concurrency two. The existing harness checks that time budget between calls;
+an in-flight model/tool call can finish after the deadline. It is not a hard
+cancellation at 900 seconds. This clarifies the unchanged runner behavior; no
+budgets or scheduling conditions were changed after observing outcomes.
 The runner reserves 280 tokens and caps input history at 6,376 tokens. Complete
 initial issues remain in history; older interaction pairs are removed as needed.
 Grading gets 300 seconds, except the previously established Requests requirement
