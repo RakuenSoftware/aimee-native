@@ -58,6 +58,11 @@ enum Action {
         #[arg(long, default_value_t = 8080)]
         port: u16,
     },
+    /// Serve an existing model in the current vLLM environment with live Aimee.
+    Serve {
+        #[arg(long)]
+        config: PathBuf,
+    },
     /// Restore the preceding installed release; does not downgrade memory.
     Rollback,
     /// Show installation/hardware information without reading credentials.
@@ -286,6 +291,47 @@ fn run() -> Result<()> {
             println!(
                 "GPU availability and model compatibility are certified by the runtime, not inferred from device nodes."
             );
+        }
+        Action::Serve { config } => {
+            let connection: native::Config = serde_json::from_slice(
+                &fs::read(root.join("config.json")).context("connect Aimee before serving")?,
+            )?;
+            let _runtime_lock = native::runtime::lock(&root)?;
+            let mut settings: serde_json::Value = serde_json::from_slice(&fs::read(config)?)?;
+            let model = fs::canonicalize(settings["model"].as_str().context("model directory required")?)?;
+            let native_model = settings["native_model"].as_str().context("native_model required")?.to_owned();
+            let ca = connection.ca_file.as_ref().map(fs::read).transpose()?;
+            let identity = connection.client_identity.as_ref().map(fs::read).transpose()?;
+            let http = tls_client(ca.as_deref(), identity.as_deref(), Some(&connection.endpoint), connection.connect_address)?;
+            let token = fs::read_to_string(&connection.token_file)?;
+            let profile = native::delivery::bootstrap_for_model(&http, &connection.endpoint, &token, Some(&native_model))?;
+            let d: native::runtime::Defaults = serde_json::from_value(serde_json::json!({
+                "schema":1, "native_model":native_model, "model_config_sha256":profile.model_config_sha256,
+                "host_memory_budget":settings.get("host_memory_budget").cloned().unwrap_or(serde_json::json!(1073741824u64)),
+                "device_memory_budget":settings.get("device_memory_budget").cloned().unwrap_or(serde_json::json!(268435456u64)),
+                "disk_budget":settings.get("disk_budget").cloned().unwrap_or(serde_json::json!(2147483648u64)),
+                "serve":settings.get("serve").cloned().unwrap_or(serde_json::json!({}))
+            }))?;
+            native::runtime::clean_sockets(&connection.memory_root)?;
+            let (mut serving, defaults) = native::runtime::initialize_profile(&root, &model.join("config.json"), &connection, &profile, d)?;
+            serving["model"] = serde_json::json!(model);
+            let library = std::env::var_os("AIMEE_NATIVE_LIBRARY").map(PathBuf::from)
+                .or_else(|| settings["library"].as_str().map(PathBuf::from))
+                .context("install the complete Aimee plugin wheel")?;
+            serving["library"] = serde_json::json!(fs::canonicalize(library)?);
+            for key in ["gguf_weights", "mm_proj", "gguf_matrix_backend"] {
+                if let Some(value) = settings.as_object_mut().and_then(|s| s.remove(key)) {
+                    serving[key] = value;
+                }
+            }
+            serving["serve"]["host"] = serde_json::json!("127.0.0.1");
+            let runtime_config = root.join("runtime.json");
+            native::atomic(&runtime_config, &serde_json::to_vec(&serving)?)?;
+            let python = std::env::var_os("AIMEE_VLLM_PYTHON").context("use the installed plugin entry point")?;
+            let mut cmd = Command::new(python);
+            cmd.args(["-c", "from aimee_vllm.cli import main; main()", "--config"]).arg(runtime_config).env_remove("AIMEE_TOKEN");
+            return native::runtime::supervise(&root, &mut cmd, &defaults.native_model,
+                defaults.disk_budget, connection.memory_root.join("selection.sock"));
         }
         Action::Run { port } => {
             let a = native::active(&root)?;

@@ -37,6 +37,16 @@ pub fn initialize(
     profile: &Profile,
 ) -> Result<(Value, Defaults)> {
     let d: Defaults = serde_json::from_slice(&fs::read(release.join("runtime/profile.json"))?)?;
+    initialize_profile(root, &release.join("models/config.json"), connection, profile, d)
+}
+
+pub fn initialize_profile(
+    root: &Path,
+    model_config: &Path,
+    connection: &Config,
+    profile: &Profile,
+    d: Defaults,
+) -> Result<(Value, Defaults)> {
     ensure!(
         d.schema == 1
             && d.native_model == profile.model
@@ -54,7 +64,7 @@ pub fn initialize(
     );
     ensure!(
         hex::encode(Sha256::digest(fs::read(
-            release.join("models/config.json")
+            model_config
         )?)) == d.model_config_sha256,
         "installed model configuration mismatch"
     );

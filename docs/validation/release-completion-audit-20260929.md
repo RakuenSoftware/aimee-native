@@ -1,5 +1,12 @@
 # Release preparation audit — 29 September
 
+**Superseded distribution scope:** This audit treated the complete runtime image
+as the deliverable. The user clarified that the deliverable is a vLLM plugin
+plus an Aimee connection. The Broadcom item therefore does not block that
+release. See [standalone packaging](../../distribution/vllm/STANDALONE.md) for
+the corrected implementation; the original audit below is retained as history.
+
+
 The engineering evidence supports the three-model controlled preview. The full
 external-distribution objective remains unresolved at the exact Broadcom vendor
 package review. This audit does not turn a passing subset into unconditional

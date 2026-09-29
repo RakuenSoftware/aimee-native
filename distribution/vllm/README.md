@@ -1,5 +1,9 @@
 # Private, fork-free vLLM integration
 
+For the client release, use the [standalone plugin wheel](STANDALONE.md). It
+connects an existing supported vLLM installation to Aimee without a runtime
+container or a fork. The manual configuration below is for development.
+
 This package registers an external attention backend and a configured worker
 subclass using vLLM's existing extension interfaces. It does not patch, fork,
 replace installed source files, or monkey-patch vLLM. Pin vLLM 0.30.0; the tested
@@ -78,8 +82,10 @@ host staging and allocator-reserved memory. Leave device headroom. Ingress
 admission rejects incompatible concurrent working sets before generation. Failed
 activation poisons the worker cache rather than serving incomplete state.
 
-The private preview includes hosted preparation, authorized delivery, signed
-installation, compiled client code and a pinned runtime image. The source plugin
+The historical container preview included hosted preparation, authorized delivery,
+signed installation, compiled client code and a pinned runtime image. The
+standalone release packages the compiled client components as a wheel; that
+image is build/test infrastructure, not a required client artifact. The source plugin
 and kernel remain private development artifacts. Public redistribution and broader
 hardware/model certification remain separate gates. See the release evidence in
 `docs/validation/`; isolated activation, preparation and end-to-end serving are

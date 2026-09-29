@@ -20,12 +20,12 @@ for any separately proposed distribution of the image itself.
 
 The existing container-based installer and three-model test evidence below
 remain historical implementation evidence. They do **not** establish completion
-of standalone plugin installation. The remaining release work is to assemble
-the compiled plugin components with compatible ABI/profile metadata, wire the
-existing authenticated Aimee connection without container-owned paths, and
-validate installation and live memory consumption in an existing supported
-vLLM environment. Do not advertise a plain source checkout or the wheel alone
-as the complete binary release.
+of standalone plugin installation. The new [standalone distribution](vllm/STANDALONE.md)
+bundles the compiled plugin components into one wheel and runs the existing Rust
+Aimee connection directly in the supported vLLM environment. Gemma12, Gemma26
+and Qwen27 have each passed live native-memory queries through this path. The
+GGUF extra selects the tested ROCm loader wheel by URL and hash. The compiled
+wheel is the client deliverable; preparation remains in Aimee.
 
 ## Runtime decision: unmodified vLLM
 
@@ -34,8 +34,9 @@ attention backend registry and worker subclass configuration. **No forks, source
 patches or monkey-patching.** The llama.cpp patch/provider are abandoned research
 artifacts, not part of the distribution or implementation plan.
 
-The working private command is `aimee-vllm --config /path/config.json`.
-The signed installer flow is:
+The current end-user flow is documented in [Standalone Aimee vLLM plugin](vllm/STANDALONE.md): install the wheel, connect Aimee, then serve your existing model.
+
+The historical signed model/container installer flow was:
 
 ```
 aimee-native connect https://your-aimee-endpoint

@@ -1,14 +1,12 @@
 # Three-model release recommendation
 
-**29 September distribution correction:** The intended deliverable is a vLLM
-plugin plus Aimee, not redistribution of the complete ROCm/vLLM container.
-Broadcom package review therefore does not block that deliverable. The
-container-based preview below is validated research/engineering evidence;
-standalone compiled-plugin installation, connection setup and consumption
-still require packaging and validation. See the corrected
-[distribution boundary](../../distribution/README.md). The earlier vendor
-blocker applies only to distribution of the full image.
+**Current release:** [Standalone plugin 0.1.1](standalone-plugin-20260929.md) is
+packaged, live-tested, and delivered. The container campaign and its previous
+whole-image distribution qualifications below are historical. Broadcom is not
+a dependency of the distributed plugin.
 
+
+## Historical container campaign recommendation
 
 **Recommend the tested three-model controlled private preview. Do not describe
 it as a generally validated autonomous coding learner or as completed public
