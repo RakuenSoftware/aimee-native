@@ -10,6 +10,10 @@ The [installation guide](../../distribution/vllm/STANDALONE.md) documents the
 supported Python 3.12 / ROCm 7.2.3 / two-RX-7900-XTX profile. This is not a claim
 of compatibility with arbitrary vLLM versions or NVIDIA builds.
 
+The subsequent [full coding-workflow comparison](standalone-coding-20260929.md)
+tests the installed wheel on repository repair tasks against no-memory and
+text-memory conditions, with fresh native repeats and separate official grading.
+
 ## Artifact and delivery
 
 - Wheel: `aimee_vllm-0.1.1-1-cp312-cp312-linux_x86_64.whl`, **3,143,773 bytes**.
