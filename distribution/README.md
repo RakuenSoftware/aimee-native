@@ -4,6 +4,29 @@ All implementation, preparation, experiments and packaging remain in the private
 `RakuenSoftware/aimee-qwen` repository. Aimee owns authoritative memory,
 permissions, selection and scoped publication.
 
+## Distribution boundary — corrected 29 September
+
+The product is the compiled Aimee vLLM plugin connected to Aimee. Users provide
+an existing supported vLLM/PyTorch/GPU runtime. Distribute the plugin wheel,
+Rust consumer library, matched compiled attention kernels, and the client
+connection/configuration support. Preparation remains with Aimee's private
+service. Do not require a fork or ship the upstream operating-system/runtime
+image as a mandatory product dependency.
+
+The pinned container is a build and validation fixture. Its bundled Broadcom
+network driver is not an Aimee plugin dependency, and reviewing redistribution
+of that entire image does not gate the plugin release. Retain that review only
+for any separately proposed distribution of the image itself.
+
+The existing container-based installer and three-model test evidence below
+remain historical implementation evidence. They do **not** establish completion
+of standalone plugin installation. The remaining release work is to assemble
+the compiled plugin components with compatible ABI/profile metadata, wire the
+existing authenticated Aimee connection without container-owned paths, and
+validate installation and live memory consumption in an existing supported
+vLLM environment. Do not advertise a plain source checkout or the wheel alone
+as the complete binary release.
+
 ## Runtime decision: unmodified vLLM
 
 The active integration is [vLLM](vllm/README.md), through upstream's external

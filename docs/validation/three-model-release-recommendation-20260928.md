@@ -1,5 +1,15 @@
 # Three-model release recommendation
 
+**29 September distribution correction:** The intended deliverable is a vLLM
+plugin plus Aimee, not redistribution of the complete ROCm/vLLM container.
+Broadcom package review therefore does not block that deliverable. The
+container-based preview below is validated research/engineering evidence;
+standalone compiled-plugin installation, connection setup and consumption
+still require packaging and validation. See the corrected
+[distribution boundary](../../distribution/README.md). The earlier vendor
+blocker applies only to distribution of the full image.
+
+
 **Recommend the tested three-model controlled private preview. Do not describe
 it as a generally validated autonomous coding learner or as completed public
 redistribution fulfillment.** The native-memory regressions investigated in
