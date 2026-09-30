@@ -17,6 +17,7 @@ p.add_argument('--config', type=Path, required=True)
 p.add_argument('--output', type=Path, required=True)
 p.add_argument('--interrupt-and-recover', action='store_true')
 p.add_argument('--repeat', type=int, default=2)
+p.add_argument('--start-with-empty', action='store_true')
 p.add_argument('--interleave-controls', action='store_true', help='Interleave unrelated tasks; these do not disable automatic memory selection')
 p.add_argument('--startup-timeout', type=int, default=1200)
 a = p.parse_args()
@@ -51,6 +52,16 @@ try:
     else: raise TimeoutError('plugin startup timed out')
     report['model_ready'] = True; save()
     query = 'What are the native release verification vault code, project, and drink?'
+    if a.start_with_empty:
+        first = {'model': model, 'messages': [{'role': 'user', 'content': 'Calculate 17 + 24. Reply with only the integer.'}],
+                 'temperature': 0, 'max_tokens': 100, 'chat_template_kwargs': {'enable_thinking': False},
+                 'vllm_xargs': {'aimee_publication': 'untrusted-caller-bank', 'aimee_catalog_digest': 'stale-caller-digest'}}
+        req = urllib.request.Request(base + '/v1/chat/completions', data=json.dumps(first).encode(), headers={'Content-Type': 'application/json'})
+        with urllib.request.urlopen(req, timeout=240) as response: result = json.load(response)
+        answer = result['choices'][0]['message']['content']
+        report['empty_first'] = {'passed': answer.strip() == '41', 'answer': answer, 'usage': result.get('usage')}
+        save()
+        if not report['empty_first']['passed']: raise RuntimeError('cold-start authorized empty request failed')
     for iteration in range(a.repeat):
         body = {'model': model, 'messages': [{'role': 'user', 'content': query}],
                 'temperature': 0, 'max_tokens': 100, 'chat_template_kwargs': {'enable_thinking': False}}
@@ -64,7 +75,7 @@ try:
         if not passed: raise RuntimeError('missing native canary fact')
         if a.interleave_controls:
             value = 17 + iteration
-            control = dict(body, messages=[{'role': 'user', 'content': f'Calculate {value} + 24. Reply with only the integer.'}])
+            control = dict(body, vllm_xargs={'aimee_publication': 'untrusted-caller-bank', 'aimee_catalog_digest': 'stale-caller-digest'}, messages=[{'role': 'user', 'content': f'Calculate {value} + 24. Reply with only the integer.'}])
             req = urllib.request.Request(base + '/v1/chat/completions', data=json.dumps(control).encode(), headers={'Content-Type': 'application/json'})
             with urllib.request.urlopen(req, timeout=240) as response: result = json.load(response)
             answer = result['choices'][0]['message']['content']

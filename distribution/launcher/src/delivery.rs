@@ -40,6 +40,39 @@ pub struct Offer {
     pub records: Vec<Record>,
     pub artifacts: Vec<Artifact>,
 }
+#[derive(Debug, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct NoMemory {
+    pub schema: u32,
+    pub outcome: String,
+    pub recipient: String,
+    pub model: String,
+    pub authorized_view: String,
+}
+impl NoMemory {
+    fn validate(&self, recipient: &str, model: &str) -> Result<()> {
+        ensure!(
+            self.schema == 1
+                && self.outcome == "no_memory"
+                && self.recipient == recipient
+                && self.model == model
+                && digest(&self.authorized_view),
+            "invalid empty selection"
+        );
+        Ok(())
+    }
+}
+#[derive(Deserialize)]
+#[serde(untagged)]
+enum Response {
+    Empty(NoMemory),
+    Memory(Offer),
+}
+pub enum Selection {
+    Empty(NoMemory),
+    Memory(Offer, PathBuf),
+}
+
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Profile {
@@ -161,14 +194,14 @@ fn read_json<T: serde::de::DeserializeOwned>(r: reqwest::blocking::Response) -> 
 }
 /// Returns only after a fresh remote approval. Existing local bytes are never
 /// themselves authority. Do not serve on any error, including network failure.
-pub fn fetch(
+pub fn select(
     http: &Client,
     connection: &Config,
     query: &str,
     recipient: &str,
     model: &str,
     budget: u64,
-) -> Result<(Offer, PathBuf)> {
+) -> Result<Selection> {
     ensure!(!query.is_empty() && query.len() <= 65536, "invalid query");
     let base = connection.endpoint.trim_end_matches('/');
     let url = reqwest::Url::parse(base)?;
@@ -181,7 +214,7 @@ pub fn fetch(
         "invalid authority endpoint"
     );
     let token = fs::read_to_string(&connection.token_file)?;
-    let offer: Offer = read_json(
+    let response: Response = read_json(
         http.post(format!("{base}/v1/native/select"))
             .query(&[("model", model)])
             .bearer_auth(token.trim())
@@ -189,6 +222,13 @@ pub fn fetch(
             .body(serde_json::to_vec(&serde_json::json!({"query":query}))?)
             .send()?,
     )?;
+    let offer = match response {
+        Response::Empty(empty) => {
+            empty.validate(recipient, model)?;
+            return Ok(Selection::Empty(empty));
+        }
+        Response::Memory(offer) => offer,
+    };
     offer.validate(recipient, model, budget)?;
     let root = connection.memory_root.join("prepared");
     private_dir(&root)?;
@@ -286,7 +326,7 @@ pub fn fetch(
         );
     }
     approve(http, connection, &offer)?;
-    Ok((offer, final_path))
+    Ok(Selection::Memory(offer, final_path))
 }
 pub fn approve(http: &Client, connection: &Config, offer: &Offer) -> Result<()> {
     offer.current()?;
@@ -358,5 +398,49 @@ mod tests {
         o = offer();
         o.artifacts.pop();
         assert!(o.validate("alice", "gemma", 110).is_err());
+    }
+}
+
+/// CLI artifact fetch requires a publication; ordinary serving also accepts an
+/// explicitly authorized empty result through `select`.
+pub fn fetch(
+    http: &Client,
+    connection: &Config,
+    query: &str,
+    recipient: &str,
+    model: &str,
+    budget: u64,
+) -> Result<(Offer, PathBuf)> {
+    match select(http, connection, query, recipient, model, budget)? {
+        Selection::Memory(offer, path) => Ok((offer, path)),
+        Selection::Empty(_) => anyhow::bail!("authorized selection contains no memory"),
+    }
+}
+
+#[cfg(test)]
+mod empty_selection_tests {
+    use super::*;
+    #[test]
+    fn explicit_empty_requires_bound_identity_and_no_extra_payload() {
+        let wire = serde_json::json!({"schema":1,"outcome":"no_memory","recipient":"alice","model":"gemma","authorized_view":"a".repeat(64)});
+        let Response::Empty(empty) = serde_json::from_value::<Response>(wire.clone()).unwrap()
+        else {
+            panic!()
+        };
+        assert!(empty.validate("alice", "gemma").is_ok());
+        assert!(empty.validate("bob", "gemma").is_err());
+        assert!(empty.validate("alice", "other").is_err());
+        for field in ["outcome", "authorized_view", "recipient"] {
+            let mut bad = wire.clone();
+            bad[field] = serde_json::json!("");
+            let Response::Empty(empty) = serde_json::from_value::<Response>(bad).unwrap() else {
+                panic!()
+            };
+            assert!(empty.validate("alice", "gemma").is_err());
+        }
+        let mut mixed = wire;
+        mixed["artifacts"] = serde_json::json!([]);
+        assert!(serde_json::from_value::<Response>(mixed).is_err());
+        assert!(serde_json::from_str::<Response>(r#"{"error":"unavailable"}"#).is_err());
     }
 }

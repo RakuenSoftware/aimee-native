@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"os"
 	"os/exec"
@@ -84,14 +85,14 @@ func (p Preparer) execute(ctx context.Context, recipient, query string, check bo
 	output := &limitedOutput{limit: 1 << 20}
 	cmd.Stdout = output
 	if e = cmd.Run(); e != nil {
-		return Prepared{}, denied
+		return Prepared{}, fmt.Errorf("private preparation execution: %w", e)
 	}
 	var wire struct {
 		Root string `json:"root"`
 		Prepared
 	}
 	if e = json.Unmarshal(output.Bytes(), &wire); e != nil {
-		return Prepared{}, denied
+		return Prepared{}, fmt.Errorf("private preparation response: %w", e)
 	}
 	result := wire.Prepared
 	result.Root = wire.Root
@@ -109,7 +110,7 @@ func (p Preparer) Access(scope, recipient string) (Access, error) {
 		Prepare: func(r *http.Request, q string) (Prepared, error) { return p.execute(r.Context(), recipient, q, false) },
 		Check: func(r *http.Request, old Prepared) error {
 			current, e := p.execute(r.Context(), recipient, old.Query, true)
-			if e != nil || current.Key != old.Key || current.View != old.View || current.Model != old.Model || current.Recipient != old.Recipient || !reflect.DeepEqual(current.Records, old.Records) {
+			if e != nil || current.Outcome != old.Outcome || current.Key != old.Key || current.View != old.View || current.Model != old.Model || current.Recipient != old.Recipient || !reflect.DeepEqual(current.Records, old.Records) {
 				return denied
 			}
 			return nil

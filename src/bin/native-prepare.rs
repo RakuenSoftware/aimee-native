@@ -138,6 +138,25 @@ fn run() -> Result<()> {
     let facts = response["facts"]
         .as_array()
         .context("approved response has no facts")?;
+    if facts.is_empty() && records.is_empty() && remote.is_some() {
+        // Only an authoritative, revalidated read may certify an empty result.
+        // A local miss, compiler failure or unavailable gateway is not emptiness.
+        revalidate(
+            &mut reader,
+            &mut remote,
+            &response,
+            &approved,
+            &view,
+            &c.query,
+            c.limit,
+        )?;
+        println!(
+            "{}",
+            json!({"outcome":"no_memory","model":c.model_revision,
+            "recipient":c.recipient,"authorized_view":view,"records":[]})
+        );
+        return Ok(());
+    }
     ensure!(
         !facts.is_empty() && records.len() == facts.len(),
         "all selected facts require canonical revisions"
@@ -216,7 +235,10 @@ fn run() -> Result<()> {
     Ok(())
 }
 fn main() {
-    if run().is_err() {
+    if let Err(error) = run() {
+        if std::env::var_os("AIMEE_PREPARE_DIAGNOSTICS").is_some() {
+            eprintln!("{error:#}");
+        }
         eprintln!("native preparation unavailable");
         std::process::exit(1);
     }

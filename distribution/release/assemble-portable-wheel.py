@@ -29,10 +29,10 @@ def assemble(wheel, launcher, library, notices, output, gguf_wheel_url, gguf_whe
         raise ValueError('Expected compiled aimee-vllm wheel')
     # A new version is required so pip upgrades earlier development wheels.
     old_info = info
-    info = 'aimee_vllm-0.2.0.dist-info'
+    info = 'aimee_vllm-0.2.1.dist-info'
     files = {(info + name[len(old_info):] if name.startswith(old_info + '/') else name): data
              for name, data in files.items()}
-    files[info + '/METADATA'] = re.sub(rb'(?m)^Version: [^\r\n]+', b'Version: 0.2.0', files[info + '/METADATA'])
+    files[info + '/METADATA'] = re.sub(rb'(?m)^Version: [^\r\n]+', b'Version: 0.2.1', files[info + '/METADATA'])
     for name in files:
         if name.startswith('aimee_vllm/') and name.endswith(('.py', '.pyc', '.pyx', '.c')) and name not in ('aimee_vllm/__init__.py', 'aimee_vllm/kernel.py', 'aimee_vllm/decoder_kernel.py'):
             raise ValueError('Private implementation source in wheel: ' + name)
@@ -69,7 +69,7 @@ def assemble(wheel, launcher, library, notices, output, gguf_wheel_url, gguf_whe
     parts = wheel.name.split('-')
     if len(parts) != 5:
         raise ValueError('Expected untagged input wheel')
-    parts[1] = '0.2.0'
+    parts[1] = '0.2.1'
     dest = output / '-'.join(parts[:2] + ['1'] + parts[2:])
     with dest.open('xb') as f, zipfile.ZipFile(f, 'w', zipfile.ZIP_DEFLATED) as z:
         for name, data in sorted(files.items()):

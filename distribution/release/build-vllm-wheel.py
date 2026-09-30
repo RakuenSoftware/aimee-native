@@ -16,7 +16,7 @@ with tempfile.TemporaryDirectory(prefix='aimee-client-build-') as tmp:
   shutil.copyfile(source/(name+'.py'),pkg/(name+'.py'))
  (root/'setup.py').write_text('''from setuptools import setup,Extension
 from Cython.Build import cythonize
-setup(name='aimee-vllm',version='0.2.0',packages=['aimee_vllm'],
+setup(name='aimee-vllm',version='0.2.1',packages=['aimee_vllm'],
  ext_modules=cythonize([Extension('aimee_vllm.'+m,['aimee_vllm/'+m+'.py'],extra_compile_args=['-O3','-g0'],extra_link_args=['-s']) for m in '''+repr(modules)+'''],compiler_directives={'language_level':3,'binding':True,'annotation_typing':False,'embedsignature':False}),
  entry_points={'vllm.general_plugins':['aimee_native=aimee_vllm:register'],'console_scripts':['aimee-vllm=aimee_vllm.cli:main']},
  install_requires=['vllm>=0.30.0,<0.31'],python_requires='>=3.12')
@@ -30,13 +30,13 @@ setup(name='aimee-vllm',version='0.2.0',packages=['aimee_vllm'],
  (root/'setup.py').write_text('''from setuptools import setup,Distribution
 class BinaryDistribution(Distribution):
  def has_ext_modules(self):return True
-setup(name='aimee-vllm',version='0.2.0',packages=['aimee_vllm'],package_data={'aimee_vllm':['*.so']},
+setup(name='aimee-vllm',version='0.2.1',packages=['aimee_vllm'],package_data={'aimee_vllm':['*.so']},
  entry_points={'vllm.general_plugins':['aimee_native=aimee_vllm:register'],'console_scripts':['aimee-vllm=aimee_vllm.cli:main']},
  install_requires=['vllm>=0.30.0,<0.31'],python_requires='>=3.12',
  distclass=BinaryDistribution)
 ''')
  subprocess.run([sys.executable,'setup.py','bdist_wheel','--dist-dir',str(out)],cwd=root,env=env,check=True)
- wheels=list(out.glob('aimee_vllm-0.2.0-*.whl'));assert len(wheels)==1,'use an empty output directory'
+ wheels=list(out.glob('aimee_vllm-0.2.1-*.whl'));assert len(wheels)==1,'use an empty output directory'
  with zipfile.ZipFile(wheels[0]) as wheel:
   names=wheel.namelist()
   assert all(not n.endswith(('.py','.pyc','.c','.pyx')) or n in ('aimee_vllm/__init__.py','aimee_vllm/kernel.py','aimee_vllm/decoder_kernel.py') for n in names)

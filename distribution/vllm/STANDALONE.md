@@ -101,3 +101,11 @@ The portable candidate is version 0.2.0. Its signed download and execution
 coverage are recorded in the [validation report](../../docs/validation/portable-plugin-20260930.md).
 On the private origin, use the provisioned release CA with pip's `--cert` option.
 The earlier 0.1.1 architecture-specific package remains an immutable prior release.
+
+### 0.2.1 empty-selection correction
+
+Version 0.2.1 supports an explicit, freshly authorized “no relevant memory”
+response from the hosted service. Such a request runs with no native bank,
+including when earlier requests used resident memory. It still rejects failed
+or unavailable authorization. Hosted service and plugin must both support this
+response; no new GPU kernels, model weights or runtime fork are required.

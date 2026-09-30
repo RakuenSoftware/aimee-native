@@ -99,7 +99,9 @@ class NativeAdmission:
                 if selected['catalog_digest']!=self.catalog_digest:
                     raise RuntimeError('selection/catalogue mismatch')
                 publication=selected['publication']
-                extras['aimee_publication']=publication
+                if publication is None:extras.pop('aimee_publication',None)
+                else:extras['aimee_publication']=publication
+                extras['aimee_catalog_digest']=self.catalog_digest
             except Exception:
                 return await self.error(send,503,'approved native memory is unavailable')
             if self.poisoned or self.paused:
@@ -110,6 +112,7 @@ class NativeAdmission:
             if bank is None:return await self.error(send,400,'native publication unavailable')
             if not self.ledger.acquire(*bank):return await self.error(send,429,'native memory busy; retry after active requests finish')
             extras['aimee_catalog_digest']=self.catalog_digest
+        if publication is not None or selector:
             body['vllm_xargs']=extras
             raw=json.dumps(body).encode()
             scope=dict(scope)

@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"errors"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -40,6 +41,7 @@ type Record struct {
 	Revision  string `json:"revision"`
 }
 type Prepared struct {
+	Outcome   string   `json:"outcome,omitempty"`
 	Query     string   `json:"-"`
 	Root      string   `json:"-"`
 	Recipient string   `json:"recipient"`
@@ -148,7 +150,30 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 		p, e := a.Prepare(r, q.Query)
 		p.Query = q.Query
-		if e != nil || p.Recipient != a.Recipient || p.Key == "" || p.Model == "" || p.View == "" || len(p.Records) == 0 || len(p.Records) > 32 {
+		if e != nil && os.Getenv("AIMEE_PREPARE_DIAGNOSTICS") != "" {
+			log.Printf("private preparation failed: %v", e)
+		}
+		if e == nil && p.Outcome == "no_memory" {
+			if p.Recipient != a.Recipient || p.Model == "" || p.View == "" || p.Key != "" || p.Root != "" || len(p.Records) != 0 {
+				fail(503)
+				return
+			}
+			fresh, err := h.access(r)
+			if err != nil || fresh.Scope != a.Scope || fresh.Recipient != a.Recipient || fresh.Check(r, p) != nil {
+				fail(403)
+				return
+			}
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode(struct {
+				Schema    int    `json:"schema"`
+				Outcome   string `json:"outcome"`
+				Recipient string `json:"recipient"`
+				Model     string `json:"model"`
+				View      string `json:"authorized_view"`
+			}{1, "no_memory", p.Recipient, p.Model, p.View})
+			return
+		}
+		if e != nil || p.Outcome != "" || p.Recipient != a.Recipient || p.Key == "" || p.Model == "" || p.View == "" || len(p.Records) == 0 || len(p.Records) > 32 {
 			fail(503)
 			return
 		}

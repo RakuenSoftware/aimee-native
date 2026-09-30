@@ -141,3 +141,53 @@ func TestWithdrawalDuringPreparationAndWrongRecipient(t *testing.T) {
 		t.Fatal(w.Code)
 	}
 }
+
+func TestAuthorizedEmptySelectionRevalidatedAndNeverMasksFailure(t *testing.T) {
+	for _, mode := range []string{"empty", "error", "withdrawn", "changed-scope", "mixed", "implicit-empty", "unauthenticated"} {
+		t.Run(mode, func(t *testing.T) {
+			checks, resolves := 0, 0
+			h := &Handler{Resolve: func(r *http.Request) (Access, error) {
+				resolves++
+				if mode == "unauthenticated" {
+					return Access{}, denied
+				}
+				scope := "current"
+				if mode == "changed-scope" && resolves > 1 {
+					scope = "new"
+				}
+				return Access{Scope: scope, Recipient: "alice", Prepare: func(*http.Request, string) (Prepared, error) {
+					p := Prepared{Outcome: "no_memory", Recipient: "alice", Model: "gemma", View: strings.Repeat("a", 64), Records: []Record{}}
+					if mode == "error" {
+						return p, denied
+					}
+					if mode == "mixed" {
+						p.Key = strings.Repeat("b", 64)
+					}
+					if mode == "implicit-empty" {
+						p.Outcome = ""
+					}
+					return p, nil
+				}, Check: func(*http.Request, Prepared) error {
+					checks++
+					if mode == "withdrawn" {
+						return denied
+					}
+					return nil
+				}}, nil
+			}}
+			w := request(h, "POST", "/v1/native/select", `{"query":"17 + 24"}`, true)
+			if mode == "empty" {
+				if w.Code != 200 || checks != 1 || resolves != 2 {
+					t.Fatalf("%d checks %d resolves %d", w.Code, checks, resolves)
+				}
+				var body map[string]any
+				json.Unmarshal(w.Body.Bytes(), &body)
+				if body["outcome"] != "no_memory" || len(body) != 5 || len(h.leases) != 0 {
+					t.Fatal(body)
+				}
+			} else if w.Code == 200 {
+				t.Fatalf("%s became successful empty response", mode)
+			}
+		})
+	}
+}

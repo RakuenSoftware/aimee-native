@@ -55,6 +55,32 @@ class AdmissionTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result[0]['status'],200)
         self.assertEqual(received[0]['vllm_xargs']['aimee_publication'],'a')
 
+    async def test_authorized_empty_overrides_caller_without_reserving_bank(self):
+        from unittest.mock import patch
+        received=[]
+        async def app(scope,receive,send):
+            received.append(json.loads((await receive())['body']))
+            await send({'type':'http.response.start','status':200,'headers':[]})
+            await send({'type':'http.response.body','body':b'ok'})
+        m=self.middleware(app);m.config={'selection_socket':'fixture'}
+        async def select(*args):return {'publication':None,'catalog_digest':'fixture'}
+        with patch('aimee_vllm.selection.select',select):
+            result=await self.call(m,'a')
+        self.assertEqual(result[0]['status'],200)
+        self.assertNotIn('aimee_publication',received[0]['vllm_xargs'])
+        self.assertEqual(received[0]['vllm_xargs']['aimee_catalog_digest'],'fixture')
+        from vllm.entrypoints.openai.chat_completion.protocol import ChatCompletionRequest
+        ChatCompletionRequest(model='fixture',messages=[{'role':'user','content':'17+24'}],vllm_xargs=received[0]['vllm_xargs'])
+        self.assertTrue(m.ledger.acquire(2,10));m.ledger.release(2)
+
+    async def test_selection_error_is_not_empty_success(self):
+        from unittest.mock import patch
+        async def app(*args):self.fail('generation received failed authorization')
+        m=self.middleware(app);m.config={'selection_socket':'fixture'}
+        async def select(*args):raise RuntimeError('unavailable')
+        with patch('aimee_vllm.selection.select',select):
+            self.assertEqual((await self.call(m,'a'))[0]['status'],503)
+
     async def test_selection_revision_race_rejects_before_generation(self):
         from unittest.mock import patch
         async def app(*args):self.fail('generation received a stale selection')

@@ -108,7 +108,7 @@ pub fn serve(
                 "invalid selection request"
             );
             let query: Query = serde_json::from_str(&line)?;
-            let (offer, root) = delivery::fetch(
+            let selection = delivery::select(
                 &http,
                 &connection,
                 &query.query,
@@ -119,6 +119,49 @@ pub fn serve(
             let raw = fs::read(catalog)?;
             let mut cat: Value = serde_json::from_slice(&raw)?;
             ensure!(cat["recipient"] == recipient, "catalog recipient mismatch");
+            let (offer, root) = match selection {
+                delivery::Selection::Memory(offer, root) => (offer, root),
+                delivery::Selection::Empty(empty) => {
+                    let status = control(ctl, json!({"op":"status"}))?;
+                    ensure!(
+                        status["state"] != "restart_required",
+                        "worker restart required"
+                    );
+                    let bytes = if status["state"] == "active" {
+                        raw
+                    } else {
+                        // Startup/recovery/withdrawal must never reactivate old grants.
+                        let withdrawn = control(ctl, json!({"op":"withdraw"}))?;
+                        cat["publications"] = json!({});
+                        cat["selections"] = json!([]);
+                        let bytes = serde_json::to_vec(&cat)?;
+                        atomic(catalog, &bytes)?;
+                        control(
+                            ctl,
+                            json!({"op":"refresh","generation":withdrawn["generation"]}),
+                        )?;
+                        // A cold activation can take time. Recheck authority after
+                        // refresh, just as the nonempty publication path does.
+                        let checked = delivery::select(
+                            &http,
+                            &connection,
+                            &query.query,
+                            recipient,
+                            model,
+                            disk_budget,
+                        );
+                        if !matches!(checked, Ok(delivery::Selection::Empty(ref current)) if current.authorized_view == empty.authorized_view)
+                        {
+                            let _ = control(ctl, json!({"op":"withdraw"}));
+                            anyhow::bail!("empty selection changed during activation");
+                        }
+                        bytes
+                    };
+                    return Ok(
+                        json!({"publication":null,"catalog_digest":hex::encode(Sha256::digest(&bytes))}),
+                    );
+                }
+            };
             let desired = json!({"root":root,"model":offer.model,"key":offer.key});
             let binding = json!({"publication":offer.key,"authorized_view":offer.authorized_view,"records":offer.records});
             let matched = cat["publications"][&offer.key] == desired
@@ -180,13 +223,21 @@ mod health_tests {
             let worker = std::thread::spawn(move || {
                 let (mut stream, _) = listener.accept().unwrap();
                 let mut line = String::new();
-                BufReader::new(stream.try_clone().unwrap()).read_line(&mut line).unwrap();
-                assert_eq!(serde_json::from_str::<Value>(&line).unwrap(), json!({"op":"status"}));
+                BufReader::new(stream.try_clone().unwrap())
+                    .read_line(&mut line)
+                    .unwrap();
+                assert_eq!(
+                    serde_json::from_str::<Value>(&line).unwrap(),
+                    json!({"op":"status"})
+                );
                 writeln!(stream, "{}", json!({"state":state})).unwrap();
             });
             let response = requires_restart(&path);
-            if state == "unknown" { assert!(response.is_err()); }
-            else { assert_eq!(response.unwrap(), state == "restart_required"); }
+            if state == "unknown" {
+                assert!(response.is_err());
+            } else {
+                assert_eq!(response.unwrap(), state == "restart_required");
+            }
             worker.join().unwrap();
         }
     }

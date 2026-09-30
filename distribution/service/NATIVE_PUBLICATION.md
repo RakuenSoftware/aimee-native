@@ -101,3 +101,32 @@ broker/container supervision. Users do not install catalogs or select publicatio
 IDs. See the [remote delivery validation](../../docs/validation/native-remote-delivery-20260925.md)
 for the tested clean-client flow and the distinction between lab enrollment and
 production deployment. The earlier co-located supervisor remains available.
+
+## Authorized empty selections (plugin 0.2.1)
+
+An authoritative restricted read can explicitly report that no memory applies:
+
+```json
+{"schema":1,"outcome":"no_memory","recipient":"recipient-id","model":"model-id","authorized_view":"<64-character view digest>"}
+```
+
+This is a successful `/v1/native/select` response, not an empty publication or a
+transport fallback. The private preparer obtains an acknowledged restricted
+read, revalidates the empty result and its view, and avoids compilation. The
+service rechecks current identity, scope and selection before returning it.
+Local cache misses, missing contextual windows, revoked authority, malformed
+responses and unavailable services continue to fail closed.
+
+The Rust broker accepts only the exact typed response for its configured model
+and recipient. It does not cache empty decisions across requests. Active
+resident banks may remain cached, but the request selects none. On cold start
+or paused admission, the broker clears the catalogue before activation and
+rechecks the empty authority result afterward. The frontend removes any
+caller-supplied publication and replaces its catalogue digest; the worker pins
+this request without native memory. In particular, a previous request's bank is
+never an implicit default.
+
+Deploy both the updated hosted native-publication/preparation service and the
+0.2.1 plugin. A new plugin does not turn an older server's HTTP 503 into an empty
+success. Earlier plugins reject the new empty response, retaining their previous
+fail-closed behavior. Ordinary nonempty publication delivery remains compatible.

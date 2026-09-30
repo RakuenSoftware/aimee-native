@@ -11,7 +11,7 @@ async def select(path, body):
     try:
         writer.write(json.dumps({'query':query}).encode()+b'\n');await writer.drain()
         result=json.loads(await asyncio.wait_for(reader.readline(),1320))
-        if set(result)!={'publication','catalog_digest'} or not isinstance(result['publication'],str):
+        if set(result)!={'publication','catalog_digest'} or (result['publication'] is not None and not isinstance(result['publication'],str)):
             raise RuntimeError('selection unavailable')
         return result
     finally:
