@@ -16,6 +16,8 @@ p.add_argument('--root', type=Path, required=True)
 p.add_argument('--config', type=Path, required=True)
 p.add_argument('--output', type=Path, required=True)
 p.add_argument('--interrupt-and-recover', action='store_true')
+p.add_argument('--repeat', type=int, default=2)
+p.add_argument('--interleave-controls', action='store_true', help='Interleave unrelated tasks; these do not disable automatic memory selection')
 p.add_argument('--startup-timeout', type=int, default=1200)
 a = p.parse_args()
 settings = json.loads(a.config.read_text())
@@ -49,7 +51,7 @@ try:
     else: raise TimeoutError('plugin startup timed out')
     report['model_ready'] = True; save()
     query = 'What are the native release verification vault code, project, and drink?'
-    for _ in range(2):
+    for iteration in range(a.repeat):
         body = {'model': model, 'messages': [{'role': 'user', 'content': query}],
                 'temperature': 0, 'max_tokens': 100, 'chat_template_kwargs': {'enable_thinking': False}}
         req = urllib.request.Request(base + '/v1/chat/completions', data=json.dumps(body).encode(), headers={'Content-Type': 'application/json'})
@@ -60,6 +62,16 @@ try:
         report['answers'].append({'passed': passed, 'answer': answer, 'usage': result.get('usage'), 'elapsed_ms': round((time.perf_counter()-start)*1000, 3)})
         save()
         if not passed: raise RuntimeError('missing native canary fact')
+        if a.interleave_controls:
+            value = 17 + iteration
+            control = dict(body, messages=[{'role': 'user', 'content': f'Calculate {value} + 24. Reply with only the integer.'}])
+            req = urllib.request.Request(base + '/v1/chat/completions', data=json.dumps(control).encode(), headers={'Content-Type': 'application/json'})
+            with urllib.request.urlopen(req, timeout=240) as response: result = json.load(response)
+            answer = result['choices'][0]['message']['content']
+            passed = answer.strip() == str(value + 24)
+            report.setdefault('interleaved_tasks', []).append({'iteration': iteration, 'expected': str(value + 24), 'answer': answer, 'passed': passed, 'usage': result.get('usage')})
+            save()
+            if not passed: raise RuntimeError('unrelated arithmetic task failed between native recalls')
     if a.interrupt_and_recover:
         def model_child():
             children = Path(f'/proc/{child.pid}/task/{child.pid}/children').read_text().split()
