@@ -28,7 +28,9 @@ restriction: GPU operations compile through the installed CUDA/HIP runtime, the
 tensor bridge has no ATen or GPU-library link, and the GGUF extra uses upstream
 Triton code without an optional architecture-specific binary. The vLLM interface
 range remains explicit. See [portable validation](../docs/validation/portable-plugin-20260930.md)
-for execution versus compilation coverage. Preparation remains in Aimee.
+for execution versus compilation coverage. The same wheel also passed
+[physical RTX 5080 validation](../docs/validation/cuda-5080-20260930.md), including
+216 exact memory activations and live Gemma12 consumption. Preparation remains in Aimee.
 
 ## Runtime decision: unmodified vLLM
 

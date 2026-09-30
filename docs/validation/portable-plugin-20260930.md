@@ -65,8 +65,10 @@ data correctness and ownership after the activation handle is released.
 Offline compilation covers all seven attention specializations from the prior
 validated model profiles and both decoder kernels on each of seven targets:
 CUDA `sm80`, `sm89`, `sm90`, `sm120`; HIP `gfx942`, `gfx1100`, `gfx1201`.
-All 63 compilations passed. These are compiler checks, **not GPU executions**;
-NVIDIA and other AMD hardware still need physical execution validation.
+All 63 compilations passed. These are compiler checks, **not GPU executions**.
+The later [RTX 5080 follow-up](cuda-5080-20260930.md) supplies physical NVIDIA
+execution evidence for the same wheel. Other AMD and NVIDIA targets retain
+compilation-only coverage.
 
 Three live-model checks use the installed `aimee-native connect` and `serve`
 commands and an authenticated Aimee service. Each asks twice for three authorized

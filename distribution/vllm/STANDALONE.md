@@ -17,7 +17,14 @@ The current wheel targets **Linux x86-64 / Python 3.12 / glibc 2.34+** and the *
 plugin interface**. The installed runtime must support the GPU and BF16. There
 is no GPU-model allowlist. Compiling for a target is not equivalent to executing
 on it: see the [portable validation record](../../docs/validation/portable-plugin-20260930.md)
-for actual hardware coverage and remaining limits.
+for actual hardware coverage and remaining limits. The same published wheel has
+now passed physical checks on the RX 7900 XTXs and an
+[RTX 5080](../../docs/validation/cuda-5080-20260930.md).
+
+In the fresh CUDA pip environment, upstream FlashInfer sampling required an
+`nvcc` setup. The 5080 check used `VLLM_USE_FLASHINFER_SAMPLER=0` to select
+vLLM's PyTorch sampler. This is an upstream runtime setting; existing environments
+with a working sampler do not need to change it.
 
 ```sh
 python -m pip install ./aimee_vllm-0.2.0-1-cp312-cp312-linux_x86_64.whl

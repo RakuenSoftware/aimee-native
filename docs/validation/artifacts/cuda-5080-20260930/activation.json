@@ -1,0 +1,906 @@
+{
+  "status": "passed",
+  "scope": "Installed portable consumer: exact tensor identity against raw Rust storage.\n\nExercise each admitted fixture with requested tensor-parallel layouts, ownership after\nRust activation destruction, eviction/reactivation, raw and lossless transfers.\nLayouts may be checked sequentially on fewer GPUs; this is not inter-GPU testing.\n",
+  "cases": [
+    {
+      "publication": "74000cd1df408472624a1859dc4175a56142ff42b9100e376ef052d2db8c79bf",
+      "rank": 0,
+      "world_size": 1,
+      "device": "cuda:0",
+      "lossless_requested": false,
+      "lossless_used": false,
+      "bytes": 21176320,
+      "transfer_bytes": 21176320,
+      "segments": 60,
+      "activation_us": [
+        29898.751,
+        6207.351,
+        4604.368
+      ],
+      "last_phases_us": {
+        "device_submit": 64.001,
+        "device_wait": 1465.732,
+        "pinned_allocation": 31.761000000000003,
+        "read_into_pinned": 2773.29,
+        "release": 27.69,
+        "views": 123.75200000000001
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "74000cd1df408472624a1859dc4175a56142ff42b9100e376ef052d2db8c79bf",
+      "rank": 0,
+      "world_size": 1,
+      "device": "cuda:0",
+      "lossless_requested": true,
+      "lossless_used": true,
+      "bytes": 21176320,
+      "transfer_bytes": 16082212,
+      "segments": 60,
+      "activation_us": [
+        154493.232,
+        3523.282,
+        3126.016
+      ],
+      "last_phases_us": {
+        "device_submit": 312.51500000000004,
+        "device_wait": 10.77,
+        "pinned_allocation": 28.911,
+        "read_and_submit": 2478.3959999999997,
+        "release": 26.34,
+        "views": 151.27200000000002
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "74000cd1df408472624a1859dc4175a56142ff42b9100e376ef052d2db8c79bf",
+      "rank": 0,
+      "world_size": 2,
+      "device": "cuda:0",
+      "lossless_requested": false,
+      "lossless_used": false,
+      "bytes": 10588160,
+      "transfer_bytes": 10588160,
+      "segments": 60,
+      "activation_us": [
+        2705.301,
+        2120.571,
+        2046.34
+      ],
+      "last_phases_us": {
+        "device_submit": 53.491,
+        "device_wait": 732.131,
+        "pinned_allocation": 44.73,
+        "read_into_pinned": 939.044,
+        "release": 6.5,
+        "views": 151.172
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "74000cd1df408472624a1859dc4175a56142ff42b9100e376ef052d2db8c79bf",
+      "rank": 0,
+      "world_size": 2,
+      "device": "cuda:0",
+      "lossless_requested": true,
+      "lossless_used": true,
+      "bytes": 10588160,
+      "transfer_bytes": 8041344,
+      "segments": 60,
+      "activation_us": [
+        8239.081,
+        1980.849,
+        2049.481
+      ],
+      "last_phases_us": {
+        "device_submit": 461.357,
+        "device_wait": 12.62,
+        "pinned_allocation": 27.98,
+        "read_and_submit": 1268.0790000000002,
+        "release": 26.040000000000003,
+        "views": 143.812
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "74000cd1df408472624a1859dc4175a56142ff42b9100e376ef052d2db8c79bf",
+      "rank": 1,
+      "world_size": 2,
+      "device": "cuda:0",
+      "lossless_requested": false,
+      "lossless_used": false,
+      "bytes": 10588160,
+      "transfer_bytes": 10588160,
+      "segments": 60,
+      "activation_us": [
+        6537.297,
+        4761.581,
+        2679.939
+      ],
+      "last_phases_us": {
+        "device_submit": 78.72099999999999,
+        "device_wait": 757.481,
+        "pinned_allocation": 37.381,
+        "read_into_pinned": 1518.442,
+        "release": 23.570999999999998,
+        "views": 137.40200000000002
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "74000cd1df408472624a1859dc4175a56142ff42b9100e376ef052d2db8c79bf",
+      "rank": 1,
+      "world_size": 2,
+      "device": "cuda:0",
+      "lossless_requested": true,
+      "lossless_used": true,
+      "bytes": 10588160,
+      "transfer_bytes": 8040888,
+      "segments": 60,
+      "activation_us": [
+        2594.989,
+        2375.245,
+        1893.408
+      ],
+      "last_phases_us": {
+        "device_submit": 399.56600000000003,
+        "device_wait": 10.05,
+        "pinned_allocation": 27.291,
+        "read_and_submit": 1228.868,
+        "release": 7.0,
+        "views": 115.012
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "6bdcc2cdb71a08ece64f43a1aa030ef3c678368dd050fc1e1c3f450c047e50f1",
+      "rank": 0,
+      "world_size": 1,
+      "device": "cuda:0",
+      "lossless_requested": false,
+      "lossless_used": false,
+      "bytes": 21176320,
+      "transfer_bytes": 21176320,
+      "segments": 60,
+      "activation_us": [
+        5177.067,
+        5065.065,
+        4620.388
+      ],
+      "last_phases_us": {
+        "device_submit": 131.031,
+        "device_wait": 1511.992,
+        "pinned_allocation": 26.94,
+        "read_into_pinned": 2669.73,
+        "release": 8.42,
+        "views": 146.733
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "6bdcc2cdb71a08ece64f43a1aa030ef3c678368dd050fc1e1c3f450c047e50f1",
+      "rank": 0,
+      "world_size": 1,
+      "device": "cuda:0",
+      "lossless_requested": true,
+      "lossless_used": true,
+      "bytes": 21176320,
+      "transfer_bytes": 16080084,
+      "segments": 60,
+      "activation_us": [
+        4231.522,
+        3501.792,
+        3128.756
+      ],
+      "last_phases_us": {
+        "device_submit": 427.396,
+        "device_wait": 10.601,
+        "pinned_allocation": 34.730000000000004,
+        "read_and_submit": 2372.795,
+        "release": 25.95,
+        "views": 131.572
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "6bdcc2cdb71a08ece64f43a1aa030ef3c678368dd050fc1e1c3f450c047e50f1",
+      "rank": 0,
+      "world_size": 2,
+      "device": "cuda:0",
+      "lossless_requested": false,
+      "lossless_used": false,
+      "bytes": 10588160,
+      "transfer_bytes": 10588160,
+      "segments": 60,
+      "activation_us": [
+        6239.842,
+        2482.187,
+        2235.613
+      ],
+      "last_phases_us": {
+        "device_submit": 40.911,
+        "device_wait": 732.571,
+        "pinned_allocation": 33.911,
+        "read_into_pinned": 1173.037,
+        "release": 7.720999999999999,
+        "views": 130.661
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "6bdcc2cdb71a08ece64f43a1aa030ef3c678368dd050fc1e1c3f450c047e50f1",
+      "rank": 0,
+      "world_size": 2,
+      "device": "cuda:0",
+      "lossless_requested": true,
+      "lossless_used": true,
+      "bytes": 10588160,
+      "transfer_bytes": 8040096,
+      "segments": 60,
+      "activation_us": [
+        2152.542,
+        1932.958,
+        2371.985
+      ],
+      "last_phases_us": {
+        "device_submit": 312.375,
+        "device_wait": 12.59,
+        "pinned_allocation": 28.759999999999998,
+        "read_and_submit": 1771.406,
+        "release": 8.16,
+        "views": 132.122
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "6bdcc2cdb71a08ece64f43a1aa030ef3c678368dd050fc1e1c3f450c047e50f1",
+      "rank": 1,
+      "world_size": 2,
+      "device": "cuda:0",
+      "lossless_requested": false,
+      "lossless_used": false,
+      "bytes": 10588160,
+      "transfer_bytes": 10588160,
+      "segments": 60,
+      "activation_us": [
+        2606.698,
+        2487.996,
+        2237.974
+      ],
+      "last_phases_us": {
+        "device_submit": 45.080000000000005,
+        "device_wait": 745.311,
+        "pinned_allocation": 33.4,
+        "read_into_pinned": 1155.568,
+        "release": 7.84,
+        "views": 138.302
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "6bdcc2cdb71a08ece64f43a1aa030ef3c678368dd050fc1e1c3f450c047e50f1",
+      "rank": 1,
+      "world_size": 2,
+      "device": "cuda:0",
+      "lossless_requested": true,
+      "lossless_used": true,
+      "bytes": 10588160,
+      "transfer_bytes": 8040004,
+      "segments": 60,
+      "activation_us": [
+        2391.975,
+        1900.848,
+        2339.145
+      ],
+      "last_phases_us": {
+        "device_submit": 291.18399999999997,
+        "device_wait": 13.370000000000001,
+        "pinned_allocation": 38.161,
+        "read_and_submit": 1714.895,
+        "release": 8.729999999999999,
+        "views": 148.72299999999998
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "cb9b3ad3e343d7e03d99ed397da57642f9966ae311d041e6e2f9a5cd5336b603",
+      "rank": 0,
+      "world_size": 1,
+      "device": "cuda:0",
+      "lossless_requested": false,
+      "lossless_used": false,
+      "bytes": 26808320,
+      "transfer_bytes": 26808320,
+      "segments": 60,
+      "activation_us": [
+        6216.102,
+        6034.609,
+        5416.42
+      ],
+      "last_phases_us": {
+        "device_submit": 39.531,
+        "device_wait": 1858.307,
+        "pinned_allocation": 25.82,
+        "read_into_pinned": 3275.2380000000003,
+        "release": 8.09,
+        "views": 113.67200000000001
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "cb9b3ad3e343d7e03d99ed397da57642f9966ae311d041e6e2f9a5cd5336b603",
+      "rank": 0,
+      "world_size": 1,
+      "device": "cuda:0",
+      "lossless_requested": true,
+      "lossless_used": true,
+      "bytes": 26808320,
+      "transfer_bytes": 20350416,
+      "segments": 60,
+      "activation_us": [
+        4188.162,
+        3639.194,
+        10552.485
+      ],
+      "last_phases_us": {
+        "device_submit": 311.785,
+        "device_wait": 9.58,
+        "pinned_allocation": 46.611,
+        "read_and_submit": 9904.975999999999,
+        "release": 10.4,
+        "views": 125.752
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "cb9b3ad3e343d7e03d99ed397da57642f9966ae311d041e6e2f9a5cd5336b603",
+      "rank": 0,
+      "world_size": 2,
+      "device": "cuda:0",
+      "lossless_requested": false,
+      "lossless_used": false,
+      "bytes": 13404160,
+      "transfer_bytes": 13404160,
+      "segments": 60,
+      "activation_us": [
+        3313.829,
+        2436.996,
+        10748.509
+      ],
+      "last_phases_us": {
+        "device_submit": 210.683,
+        "device_wait": 1763.655,
+        "pinned_allocation": 47.721,
+        "read_into_pinned": 8231.552,
+        "release": 14.311,
+        "views": 203.65300000000002
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "cb9b3ad3e343d7e03d99ed397da57642f9966ae311d041e6e2f9a5cd5336b603",
+      "rank": 0,
+      "world_size": 2,
+      "device": "cuda:0",
+      "lossless_requested": true,
+      "lossless_used": true,
+      "bytes": 13404160,
+      "transfer_bytes": 10175572,
+      "segments": 60,
+      "activation_us": [
+        2714.88,
+        5546.972,
+        1840.637
+      ],
+      "last_phases_us": {
+        "device_submit": 321.815,
+        "device_wait": 11.0,
+        "pinned_allocation": 36.010000000000005,
+        "read_and_submit": 1213.368,
+        "release": 7.74,
+        "views": 132.792
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "cb9b3ad3e343d7e03d99ed397da57642f9966ae311d041e6e2f9a5cd5336b603",
+      "rank": 1,
+      "world_size": 2,
+      "device": "cuda:0",
+      "lossless_requested": false,
+      "lossless_used": false,
+      "bytes": 13404160,
+      "transfer_bytes": 13404160,
+      "segments": 60,
+      "activation_us": [
+        2436.626,
+        3416.01,
+        2985.574
+      ],
+      "last_phases_us": {
+        "device_submit": 44.830000000000005,
+        "device_wait": 931.534,
+        "pinned_allocation": 33.9,
+        "read_into_pinned": 1719.4759999999999,
+        "release": 5.76,
+        "views": 135.602
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "cb9b3ad3e343d7e03d99ed397da57642f9966ae311d041e6e2f9a5cd5336b603",
+      "rank": 1,
+      "world_size": 2,
+      "device": "cuda:0",
+      "lossless_requested": true,
+      "lossless_used": true,
+      "bytes": 13404160,
+      "transfer_bytes": 10174860,
+      "segments": 60,
+      "activation_us": [
+        2885.143,
+        3056.365,
+        1978.06
+      ],
+      "last_phases_us": {
+        "device_submit": 275.974,
+        "device_wait": 9.671,
+        "pinned_allocation": 28.75,
+        "read_and_submit": 1419.361,
+        "release": 7.301,
+        "views": 129.36100000000002
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "743feb8de2ff7386a5830c34be401896f6c32e2e7553161ba63aaab3aa1f06b6",
+      "rank": 0,
+      "world_size": 1,
+      "device": "cuda:0",
+      "lossless_requested": false,
+      "lossless_used": false,
+      "bytes": 31764480,
+      "transfer_bytes": 31764480,
+      "segments": 60,
+      "activation_us": [
+        6598.547,
+        6066.54,
+        5980.978
+      ],
+      "last_phases_us": {
+        "device_submit": 57.800999999999995,
+        "device_wait": 2196.053,
+        "pinned_allocation": 28.81,
+        "read_into_pinned": 3422.7599999999998,
+        "release": 7.17,
+        "views": 143.042
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "743feb8de2ff7386a5830c34be401896f6c32e2e7553161ba63aaab3aa1f06b6",
+      "rank": 0,
+      "world_size": 1,
+      "device": "cuda:0",
+      "lossless_requested": true,
+      "lossless_used": true,
+      "bytes": 31764480,
+      "transfer_bytes": 24110640,
+      "segments": 60,
+      "activation_us": [
+        4628.999,
+        3893.238,
+        3990.798
+      ],
+      "last_phases_us": {
+        "device_submit": 569.0279999999999,
+        "device_wait": 10.21,
+        "pinned_allocation": 28.971,
+        "read_and_submit": 3138.5860000000002,
+        "release": 4.5600000000000005,
+        "views": 128.012
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "743feb8de2ff7386a5830c34be401896f6c32e2e7553161ba63aaab3aa1f06b6",
+      "rank": 0,
+      "world_size": 2,
+      "device": "cuda:0",
+      "lossless_requested": false,
+      "lossless_used": false,
+      "bytes": 15882240,
+      "transfer_bytes": 15882240,
+      "segments": 60,
+      "activation_us": [
+        4277.063,
+        3187.357,
+        2872.332
+      ],
+      "last_phases_us": {
+        "device_submit": 53.971000000000004,
+        "device_wait": 1098.116,
+        "pinned_allocation": 28.439999999999998,
+        "read_into_pinned": 1474.982,
+        "release": 4.67,
+        "views": 111.872
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "743feb8de2ff7386a5830c34be401896f6c32e2e7553161ba63aaab3aa1f06b6",
+      "rank": 0,
+      "world_size": 2,
+      "device": "cuda:0",
+      "lossless_requested": true,
+      "lossless_used": true,
+      "bytes": 15882240,
+      "transfer_bytes": 12054384,
+      "segments": 60,
+      "activation_us": [
+        2445.496,
+        1818.377,
+        2167.602
+      ],
+      "last_phases_us": {
+        "device_submit": 402.666,
+        "device_wait": 12.14,
+        "pinned_allocation": 28.02,
+        "read_and_submit": 1386.8809999999999,
+        "release": 5.45,
+        "views": 169.722
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "743feb8de2ff7386a5830c34be401896f6c32e2e7553161ba63aaab3aa1f06b6",
+      "rank": 1,
+      "world_size": 2,
+      "device": "cuda:0",
+      "lossless_requested": false,
+      "lossless_used": false,
+      "bytes": 15882240,
+      "transfer_bytes": 15882240,
+      "segments": 60,
+      "activation_us": [
+        3146.706,
+        2839.361,
+        2609.139
+      ],
+      "last_phases_us": {
+        "device_submit": 43.761,
+        "device_wait": 1098.1560000000002,
+        "pinned_allocation": 27.98,
+        "read_into_pinned": 1192.317,
+        "release": 8.33,
+        "views": 126.392
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "743feb8de2ff7386a5830c34be401896f6c32e2e7553161ba63aaab3aa1f06b6",
+      "rank": 1,
+      "world_size": 2,
+      "device": "cuda:0",
+      "lossless_requested": true,
+      "lossless_used": true,
+      "bytes": 15882240,
+      "transfer_bytes": 12056272,
+      "segments": 60,
+      "activation_us": [
+        2079.291,
+        1869.617,
+        1954.089
+      ],
+      "last_phases_us": {
+        "device_submit": 368.375,
+        "device_wait": 10.17,
+        "pinned_allocation": 28.240000000000002,
+        "read_and_submit": 1302.1499999999999,
+        "release": 8.49,
+        "views": 129.002
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "94c88eecaa45ae494fed513e3a26b6874ed93b76913b79a6f407b6dbf5a289ec",
+      "rank": 0,
+      "world_size": 1,
+      "device": "cuda:0",
+      "lossless_requested": false,
+      "lossless_used": false,
+      "bytes": 97320960,
+      "transfer_bytes": 97320960,
+      "segments": 60,
+      "activation_us": [
+        110249.079,
+        19182.303,
+        19098.222
+      ],
+      "last_phases_us": {
+        "device_submit": 79.721,
+        "device_wait": 6724.669,
+        "pinned_allocation": 31.3,
+        "read_into_pinned": 11963.757,
+        "release": 22.49,
+        "views": 149.793
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "94c88eecaa45ae494fed513e3a26b6874ed93b76913b79a6f407b6dbf5a289ec",
+      "rank": 0,
+      "world_size": 1,
+      "device": "cuda:0",
+      "lossless_requested": true,
+      "lossless_used": true,
+      "bytes": 97320960,
+      "transfer_bytes": 73815540,
+      "segments": 60,
+      "activation_us": [
+        13157.574,
+        10129.21,
+        11008.273
+      ],
+      "last_phases_us": {
+        "device_submit": 383.675,
+        "device_wait": 176.403,
+        "pinned_allocation": 31.211000000000002,
+        "read_and_submit": 10121.22,
+        "release": 28.819999999999997,
+        "views": 132.352
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "94c88eecaa45ae494fed513e3a26b6874ed93b76913b79a6f407b6dbf5a289ec",
+      "rank": 0,
+      "world_size": 2,
+      "device": "cuda:0",
+      "lossless_requested": false,
+      "lossless_used": false,
+      "bytes": 48660480,
+      "transfer_bytes": 48660480,
+      "segments": 60,
+      "activation_us": [
+        49802.006,
+        9463.45,
+        10107.909
+      ],
+      "last_phases_us": {
+        "device_submit": 67.28099999999999,
+        "device_wait": 3386.9,
+        "pinned_allocation": 38.41,
+        "read_into_pinned": 6268.852999999999,
+        "release": 7.1,
+        "views": 184.012
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "94c88eecaa45ae494fed513e3a26b6874ed93b76913b79a6f407b6dbf5a289ec",
+      "rank": 0,
+      "world_size": 2,
+      "device": "cuda:0",
+      "lossless_requested": true,
+      "lossless_used": true,
+      "bytes": 48660480,
+      "transfer_bytes": 36905620,
+      "segments": 60,
+      "activation_us": [
+        6021.469,
+        4916.483,
+        4841.782
+      ],
+      "last_phases_us": {
+        "device_submit": 287.155,
+        "device_wait": 42.379999999999995,
+        "pinned_allocation": 42.141000000000005,
+        "read_and_submit": 4145.631,
+        "release": 23.77,
+        "views": 125.592
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "94c88eecaa45ae494fed513e3a26b6874ed93b76913b79a6f407b6dbf5a289ec",
+      "rank": 1,
+      "world_size": 2,
+      "device": "cuda:0",
+      "lossless_requested": false,
+      "lossless_used": false,
+      "bytes": 48660480,
+      "transfer_bytes": 48660480,
+      "segments": 60,
+      "activation_us": [
+        9735.104,
+        8753.54,
+        9050.224
+      ],
+      "last_phases_us": {
+        "device_submit": 40.041,
+        "device_wait": 3364.62,
+        "pinned_allocation": 27.681,
+        "read_into_pinned": 5374.389,
+        "release": 23.151,
+        "views": 110.511
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "94c88eecaa45ae494fed513e3a26b6874ed93b76913b79a6f407b6dbf5a289ec",
+      "rank": 1,
+      "world_size": 2,
+      "device": "cuda:0",
+      "lossless_requested": true,
+      "lossless_used": true,
+      "bytes": 48660480,
+      "transfer_bytes": 36909936,
+      "segments": 60,
+      "activation_us": [
+        6253.353,
+        6144.281,
+        5124.085
+      ],
+      "last_phases_us": {
+        "device_submit": 383.786,
+        "device_wait": 43.510000000000005,
+        "pinned_allocation": 28.2,
+        "read_and_submit": 4428.166,
+        "release": 21.82,
+        "views": 112.38199999999999
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "f9499f6299d4bf46589625ed317da1e5c5f346176b896ae3c722ea89a10aeaf0",
+      "rank": 0,
+      "world_size": 1,
+      "device": "cuda:0",
+      "lossless_requested": false,
+      "lossless_used": false,
+      "bytes": 87859200,
+      "transfer_bytes": 87859200,
+      "segments": 60,
+      "activation_us": [
+        16863.969,
+        16037.757,
+        15804.343
+      ],
+      "last_phases_us": {
+        "device_submit": 74.461,
+        "device_wait": 6079.219999999999,
+        "pinned_allocation": 30.801,
+        "read_into_pinned": 9359.598,
+        "release": 9.700000000000001,
+        "views": 128.40200000000002
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "f9499f6299d4bf46589625ed317da1e5c5f346176b896ae3c722ea89a10aeaf0",
+      "rank": 0,
+      "world_size": 1,
+      "device": "cuda:0",
+      "lossless_requested": true,
+      "lossless_used": true,
+      "bytes": 87859200,
+      "transfer_bytes": 66644476,
+      "segments": 60,
+      "activation_us": [
+        11860.275,
+        9138.215,
+        8556.647
+      ],
+      "last_phases_us": {
+        "device_submit": 581.9879999999999,
+        "device_wait": 146.643,
+        "pinned_allocation": 27.551000000000002,
+        "read_and_submit": 7503.061,
+        "release": 31.690000000000005,
+        "views": 132.58200000000002
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "f9499f6299d4bf46589625ed317da1e5c5f346176b896ae3c722ea89a10aeaf0",
+      "rank": 0,
+      "world_size": 2,
+      "device": "cuda:0",
+      "lossless_requested": false,
+      "lossless_used": false,
+      "bytes": 43929600,
+      "transfer_bytes": 43929600,
+      "segments": 60,
+      "activation_us": [
+        8820.54,
+        8840.921,
+        8649.307
+      ],
+      "last_phases_us": {
+        "device_submit": 93.301,
+        "device_wait": 3100.186,
+        "pinned_allocation": 28.761000000000003,
+        "read_into_pinned": 5140.036,
+        "release": 23.900000000000002,
+        "views": 136.562
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "f9499f6299d4bf46589625ed317da1e5c5f346176b896ae3c722ea89a10aeaf0",
+      "rank": 0,
+      "world_size": 2,
+      "device": "cuda:0",
+      "lossless_requested": true,
+      "lossless_used": true,
+      "bytes": 43929600,
+      "transfer_bytes": 33321324,
+      "segments": 60,
+      "activation_us": [
+        4341.904,
+        5525.532,
+        4644.509
+      ],
+      "last_phases_us": {
+        "device_submit": 400.646,
+        "device_wait": 25.601000000000003,
+        "pinned_allocation": 26.14,
+        "read_and_submit": 3897.107,
+        "release": 22.3,
+        "views": 153.582
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "f9499f6299d4bf46589625ed317da1e5c5f346176b896ae3c722ea89a10aeaf0",
+      "rank": 1,
+      "world_size": 2,
+      "device": "cuda:0",
+      "lossless_requested": false,
+      "lossless_used": false,
+      "bytes": 43929600,
+      "transfer_bytes": 43929600,
+      "segments": 60,
+      "activation_us": [
+        8892.282,
+        9495.17,
+        7943.187
+      ],
+      "last_phases_us": {
+        "device_submit": 69.461,
+        "device_wait": 3059.895,
+        "pinned_allocation": 29.3,
+        "read_into_pinned": 4430.296,
+        "release": 25.761,
+        "views": 187.472
+      },
+      "bit_exact": true
+    },
+    {
+      "publication": "f9499f6299d4bf46589625ed317da1e5c5f346176b896ae3c722ea89a10aeaf0",
+      "rank": 1,
+      "world_size": 2,
+      "device": "cuda:0",
+      "lossless_requested": true,
+      "lossless_used": true,
+      "bytes": 43929600,
+      "transfer_bytes": 33323172,
+      "segments": 60,
+      "activation_us": [
+        5088.175,
+        4151.342,
+        3861.257
+      ],
+      "last_phases_us": {
+        "device_submit": 290.844,
+        "device_wait": 28.03,
+        "pinned_allocation": 26.431,
+        "read_and_submit": 3261.6580000000004,
+        "release": 23.13,
+        "views": 124.62199999999999
+      },
+      "bit_exact": true
+    }
+  ]
+}
