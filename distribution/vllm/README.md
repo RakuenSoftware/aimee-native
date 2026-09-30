@@ -6,11 +6,14 @@ container or a fork. The manual configuration below is for development.
 
 This package registers an external attention backend and a configured worker
 subclass using vLLM's existing extension interfaces. It does not patch, fork,
-replace installed source files, or monkey-patch vLLM. Pin vLLM 0.30.0; the tested
-ROCm wheel is 0.30.0+rocm723. Upstream interfaces are version-sensitive.
+replace installed source files, or monkey-patch vLLM. Version 0.2.0 targets the
+vLLM 0.30.x plugin interface. Upstream interfaces are version-sensitive. GPU
+operations compile through the installed CUDA/HIP runtime; see the
+[portable validation record](../../docs/validation/portable-plugin-20260930.md)
+for execution coverage, compilation checks and current release limits.
 
 The serving process uses Rust store admission and activation, a small ABI bridge
-to the installed ATen runtime, and an external GPU attention implementation.
+to the installed public PyTorch API, and a runtime-compiled GPU attention implementation.
 Encoding remains in the private preparation system.
 Prepared native banks are separate from text KV cache allocation and prompt
 positions. The worker pins a specific publication for each request, including
@@ -19,8 +22,8 @@ TP ranks consume their own head shards. No memory text is added to prompts.
 
 ## Run in the private validation environment
 
-Build `sh distribution/release/build-vllm-client.sh`, then install this package
-in the pinned vLLM environment. Run:
+Build `sh distribution/release/build-portable-client.sh`, then install this package
+in the supported vLLM environment. Run:
 
 ```
 aimee-vllm --config /absolute/path/config.json
@@ -59,7 +62,7 @@ if any rank rejects admission, stop admission and restart the serving instance
 with a consistent catalog before resuming traffic. No public refresh HTTP route
 is provided.
 
-## Validated scope and remaining gates
+## Original development validation and feature limits
 
 Gemma4 12B with BF16 native memory and certified Q8 GGUF weights, two
 RX7900XTXs, tensor parallel size2, V1 runner, eager execution,

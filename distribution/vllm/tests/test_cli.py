@@ -10,6 +10,7 @@ class CliTests(unittest.TestCase):
         self.assertEqual(json.loads(args[args.index('--model-loader-extra-config')+1]),{'gguf_weights':'/models/gemma.gguf'})
         self.assertEqual(env['VLLM_PLUGINS'],'aimee_native')
         self.assertEqual(env['AIMEE_GGUF_ENABLE'],'1')
+        self.assertEqual(env['VLLM_GGUF_USE_CUDA'],'0')
         self.assertEqual(args[args.index('--load-format')+1],'aimee_gguf_unified')
 
     def test_signed_larger_model_options_reach_upstream_plugin(self):

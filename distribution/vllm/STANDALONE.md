@@ -2,30 +2,43 @@
 
 Install the compiled wheel into your existing supported vLLM environment. The
 wheel contains the plugin, Rust memory consumer and connection client, and
-matched native-memory attention kernels. It does not contain vLLM, PyTorch,
+portable native-memory GPU operations. It does not contain vLLM, PyTorch,
 an operating system, model weights, a container runtime, or the private encoder.
 Aimee supplies authorized model-specific native memory through the connection.
 
-The first binary profile targets Python 3.12, Linux x86-64, vLLM
-`0.30.0+rocm723`, PyTorch `2.12.0+git6bbd260`, Triton `3.7.1+gitf0b55c07`, and
-RX 7900 XTX (`gfx1100`). Version checks at startup preserve that ABI boundary;
-this wheel is not a claim of CUDA or arbitrary-vLLM-version compatibility.
-The same compiled consumer assets passed live Aimee memory queries on
-Gemma4 12B, Gemma4 26B and Qwen3.8 27B; interrupted-stream recovery also passed.
-See the [standalone validation record](../../docs/validation/standalone-plugin-20260929.md).
+Version 0.2.0 removes the `gfx1100` binary-kernel requirement and the exact
+ROCm/PyTorch/Triton build locks. The plugin uses the installed PyTorch runtime
+for allocations/transfers and Triton to compile its attention and lossless
+transport operations for the active **CUDA or HIP** GPU. Users do not compile
+Rust/C++ or install another GPU toolkit. Initial GPU compilation is cached by
+Triton; it is distinct from warmed request execution.
+
+The current wheel targets **Linux x86-64 / Python 3.12 / glibc 2.34+** and the **vLLM 0.30.x
+plugin interface**. The installed runtime must support the GPU and BF16. There
+is no GPU-model allowlist. Compiling for a target is not equivalent to executing
+on it: see the [portable validation record](../../docs/validation/portable-plugin-20260930.md)
+for actual hardware coverage and remaining limits.
 
 ```sh
-python -m pip install ./aimee_vllm-0.1.1-1-cp312-cp312-linux_x86_64.whl
+python -m pip install ./aimee_vllm-0.2.0-1-cp312-cp312-linux_x86_64.whl
 # The scoped token is read from stdin, never from a command-line argument.
 aimee-native connect https://your-aimee-endpoint
 aimee-native serve --config ./aimee.json
 ```
 
-For a GGUF model, install the wheel with its `gguf` extra (or install the
-tested ROCm build `vllm-gguf-plugin==0.0.5+rocm723`). Aimee uses its loader interfaces,
-not its upstream-patching entry point. The extra pins the ROCm wheel by URL and
-SHA-256, so pip cannot substitute the CUDA wheel with the same version. The configuration references your model
-files and the native model identity authorized by Aimee:
+For a GGUF model, install the wheel with its `gguf` extra:
+
+```sh
+python -m pip install './aimee_vllm-0.2.0-1-cp312-cp312-linux_x86_64.whl[gguf]'
+```
+
+The extra supplies upstream's existing Triton GGUF loader implementation,
+without its optional hardware-specific binary. All retained upstream code is
+unchanged. Aimee uses its loader interfaces, not its patching entry point.
+The dependency URL and hash are pinned, and the default matrix backend is
+Triton on both CUDA and HIP. No per-GPU dependency selection is necessary.
+The configuration references your model files and the native model identity
+authorized by Aimee:
 
 ```json
 {
@@ -36,8 +49,8 @@ files and the native model identity authorized by Aimee:
 ```
 
 The model directory includes the matching `config.json` and tokenizer. For
-GGUF, add `gguf_weights` with the absolute weight-file path, and the certified
-`gguf_matrix_backend` (`triton` for the current Gemma26 profile). Other serving
+GGUF, add `gguf_weights` with the absolute weight-file path.
+`gguf_matrix_backend` defaults to `triton`. Other serving
 limits remain the existing plugin's supported settings. The Rust client
 obtains fresh authorization, initializes local memory, and supervises the
 selection broker and vLLM process. Serving binds loopback. No model container
@@ -49,7 +62,7 @@ The plugin already uses vLLM for model execution, ordinary attention when no
 native bank is selected, and text K/V cache updates. The supported Triton
 attention interface takes one paged K/V cache. Aimee's selected native banks
 are separate allocations; they do not occupy text positions or prompt tokens.
-The current private kernel combines those banks and the text cache in one
+The native attention operation combines those banks and the text cache in one
 normalized attention computation. vLLM's FlashAttention cascade helper is not
 a drop-in replacement: its implementation rejects sliding windows, which the
 Gemma profile uses. Packing memory into the text cache or running independent
@@ -57,13 +70,27 @@ softmaxes without their normalization state would change the tested behavior.
 
 Reusing upstream kernels further remains a valid implementation option, but
 requires evidence that positional visibility, normalization, request isolation,
-and performance remain correct. It does not require a vLLM fork. The current
-kernel binaries are internal wheel assets, not an extra user installation.
+and performance remain correct. It does not require a vLLM fork. The required
+operations compile automatically through the installed Triton runtime.
 
-## Current controlled download
+## Platform and feature limits
 
-Version 0.1.1 is [available here](https://192.168.0.126:8445/plugins/rocm723-gfx1100/0.1.1/aimee_vllm-0.1.1-1-cp312-cp312-linux_x86_64.whl).
-The adjacent `manifest.json` and detached `.sig` files retain the existing
-release signing identity. On this private origin, use the provisioned release CA
-with pip's `--cert` option; do not disable TLS verification. The GGUF extra
-automatically downloads the matching ROCm loader.
+Portability follows the installed runtime's GPU support; it does not make a
+CPU-only runtime, Metal, or an unsupported GPU into a supported execution target.
+Prepared memory must match the model configuration. This implementation uses
+BF16 causal decoder attention; ALiBi, attention sinks, cascade attention,
+quantized K/V cache and multimodal prefix ranges are not currently supported.
+The launcher continues to disable graph capture, prefix caching and asynchronous
+scheduling to preserve request ownership. These are separate from GPU portability.
+
+The private memory encoder, publication service, and Rust storage implementation
+are not distributed as source. The generic attention and bit-unpacking operations
+are supplied as runtime-compilation inputs; this deliberately replaces the
+architecture-specific binary bank. No vLLM fork is required.
+
+## Controlled download
+
+The portable candidate is version 0.2.0. Its signed download and execution
+coverage are recorded in the [validation report](../../docs/validation/portable-plugin-20260930.md).
+On the private origin, use the provisioned release CA with pip's `--cert` option.
+The earlier 0.1.1 architecture-specific package remains an immutable prior release.

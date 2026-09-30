@@ -1,4 +1,4 @@
-//! Rust-owned activation over the already installed ATen runtime. No encoder.
+//! Rust-owned activation over the installed tensor runtime. No encoder.
 use crate::{
     native_store::{NativeStore, RankPlan},
     native_transport::Transport,
@@ -113,6 +113,12 @@ impl Activation {
             None => Tensor::new(unsafe { aimee_rt_upload(host.0, device) })?,
         };
         let decoded = if let Some(t) = transport {
+            // The portable bridge hands raw pointers from public framework copy
+            // operations to an external decoder. Complete those copies at this
+            // boundary: allocator reuse plus chunked asynchronous copies exposed
+            // stale input without it. Disk reads and DMA still overlap during fill.
+            #[cfg(feature = "vllm-portable")]
+            ensure!(unsafe { aimee_rt_wait(transferred.0) }, "native upload completion failed");
             let out = Tensor::new(unsafe { aimee_rt_device(plan.bytes, device) })?;
             let source = unsafe { aimee_rt_data(transferred.0) };
             let mut stream = std::ptr::null_mut();
@@ -219,7 +225,7 @@ pub fn warmup(device: i32) -> Result<()> {
             aimee_rt_data(out.0),
             8,
             0,
-            0,
+            1,
             0,
             0,
             stream,

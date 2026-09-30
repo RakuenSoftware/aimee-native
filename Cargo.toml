@@ -13,6 +13,8 @@ native-client = ["torch"]
 vllm-client = []
 # Runtime-only ATen/CPython bridge; does not enable tch or private encoding.
 vllm-runtime = ["vllm-client"]
+# Public torch operations through CPython; no linked GPU or ATen ABI.
+vllm-portable = ["vllm-runtime"]
 preparation-service = []
 
 [dependencies]

@@ -5,11 +5,7 @@ from vllm.v1.attention.backends.triton_attn import TritonAttentionBackend, Trito
 from vllm.v1.attention.backend import AttentionCGSupport, AttentionType
 from . import state
 import os
-if os.environ.get("AIMEE_KERNEL_BANK"):
-    from .binary_kernel import BinaryAttention
-    native_attention = BinaryAttention(os.environ["AIMEE_KERNEL_BANK"])
-else:
-    from .kernel import native_attention
+from .kernel import native_attention
 
 class AimeeMetadataBuilder(TritonAttentionMetadataBuilder):
     _cudagraph_support = AttentionCGSupport.NEVER

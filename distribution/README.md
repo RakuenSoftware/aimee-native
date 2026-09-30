@@ -4,11 +4,11 @@ All implementation, preparation, experiments and packaging remain in the private
 `RakuenSoftware/aimee-qwen` repository. Aimee owns authoritative memory,
 permissions, selection and scoped publication.
 
-## Distribution boundary — corrected 29 September
+## Distribution boundary — portable plugin, 30 September
 
 The product is the compiled Aimee vLLM plugin connected to Aimee. Users provide
 an existing supported vLLM/PyTorch/GPU runtime. Distribute the plugin wheel,
-Rust consumer library, matched compiled attention kernels, and the client
+Rust consumer library, runtime-compiled GPU operations, and the client
 connection/configuration support. Preparation remains with Aimee's private
 service. Do not require a fork or ship the upstream operating-system/runtime
 image as a mandatory product dependency.
@@ -23,9 +23,12 @@ remain historical implementation evidence. They do **not** establish completion
 of standalone plugin installation. The new [standalone distribution](vllm/STANDALONE.md)
 bundles the compiled plugin components into one wheel and runs the existing Rust
 Aimee connection directly in the supported vLLM environment. Gemma12, Gemma26
-and Qwen27 have each passed live native-memory queries through this path. The
-GGUF extra selects the tested ROCm loader wheel by URL and hash. The compiled
-wheel is the client deliverable; preparation remains in Aimee.
+and Qwen27 have each passed live native-memory queries through this path. The earlier 0.1.1 wheel targeted one ROCm/GPU build. Version 0.2.0 removes that
+restriction: GPU operations compile through the installed CUDA/HIP runtime, the
+tensor bridge has no ATen or GPU-library link, and the GGUF extra uses upstream
+Triton code without an optional architecture-specific binary. The vLLM interface
+range remains explicit. See [portable validation](../docs/validation/portable-plugin-20260930.md)
+for execution versus compilation coverage. Preparation remains in Aimee.
 
 ## Runtime decision: unmodified vLLM
 
@@ -64,7 +67,7 @@ parallel/pipelined reads and per-upload staging accounting.
 
 - External vLLM native attention with request isolation, ragged batches, tensor
   parallelism, separate memory banks, unchanged text positions and prompt tokens.
-- Rust store admission and activation through the installed ATen runtime; no encoder in serving.
+- Rust store admission and activation through the installed tensor runtime; no encoder in serving.
 - Revision pinning, explicit catalog refresh, graceful withdrawal for new requests.
 - Single-command private vLLM server launcher using the unmodified package.
 - Signed installer, atomic installs, rollback and release sequence protection.
@@ -75,7 +78,7 @@ parallel/pipelined reads and per-upload staging accounting.
 Full-model Gemma validation has passed recall, isolation, three-record composition
 and publication replacement. See the vLLM validation record for exact coverage.
 
-## Certification and supported-profile limits
+## Historical container certification and supported-profile limits
 
 Compiled client modules, binary native kernels and the pinned ROCm container now
 pass full-model smoke checks. Q8_0 GGUF loading also passes without invoking the
@@ -105,7 +108,8 @@ the isolated lab registry. This is not a customer production release.
 Lab builds require the explicit `lab-release` feature and `lab_only` manifest
 marker; normal launchers reject them. Production gate evidence must match the
 exact packaged artifact set, not merely the upstream runtime commit.
-The compiled client still needs a supported host GPU driver and container runtime.
+That container distribution requires a supported host GPU driver and container runtime.
+The standalone plugin requires only the supported existing vLLM environment.
 The live Aimee account endpoint now authenticates and delivers scoped native
 artifacts. Client enrollment and an operator-approved publication are required;
 the release does not grant access to an entire user or general knowledge base.

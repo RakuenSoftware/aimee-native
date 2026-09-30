@@ -24,7 +24,14 @@ fn main() {
             )
             .compile("aimee_prepared_transfer");
     }
-    if std::env::var_os("CARGO_FEATURE_VLLM_RUNTIME").is_some() {
+    if std::env::var_os("CARGO_FEATURE_VLLM_PORTABLE").is_some() {
+        let python = std::env::var_os("PYTHON_INCLUDE").expect("PYTHON_INCLUDE required for portable bridge build");
+        println!("cargo:rerun-if-env-changed=PYTHON_INCLUDE");
+        println!("cargo:rerun-if-changed=native/vllm_runtime_portable.cpp");
+        cc::Build::new().cpp(true).file("native/vllm_runtime_portable.cpp").include(python)
+            .flag_if_supported("-std=c++17").flag_if_supported("-fvisibility=hidden")
+            .compile("aimee_vllm_runtime_portable");
+    } else if std::env::var_os("CARGO_FEATURE_VLLM_RUNTIME").is_some() {
         let root = std::path::PathBuf::from(std::env::var_os("LIBTORCH").expect("LIBTORCH required for runtime bridge"));
         let python = std::env::var_os("PYTHON_INCLUDE").expect("PYTHON_INCLUDE required for runtime bridge");
         let codec = std::env::var_os("AIMEE_CODEC_OBJECT").expect("AIMEE_CODEC_OBJECT required for pinned GPU decoder");

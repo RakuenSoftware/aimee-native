@@ -33,7 +33,9 @@ def command(config_path):
         loader = {'gguf_weights': config['gguf_weights']}
         if config.get('mm_proj'):
             loader['mm_proj'] = config['mm_proj']
-        backend = config.get('gguf_matrix_backend', 'cuda')
+        backend = config.get('gguf_matrix_backend')
+        if backend is None:
+            backend = 'triton'
         if backend not in ('cuda', 'triton'):
             raise ValueError('unsupported GGUF matrix backend')
         env['VLLM_GGUF_USE_CUDA'] = '0' if backend == 'triton' else '1'
