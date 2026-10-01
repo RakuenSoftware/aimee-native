@@ -6,7 +6,8 @@ container or a fork. The manual configuration below is for development.
 
 This package registers an external attention backend and a configured worker
 subclass using vLLM's existing extension interfaces. It does not patch, fork,
-replace installed source files, or monkey-patch vLLM. Version 0.2.1 targets the
+replace installed source files, or monkey-patch vLLM. The published 0.2.1 wheel
+and staged 0.2.2 candidate target the
 vLLM 0.30.x plugin interface. Upstream interfaces are version-sensitive. GPU
 operations compile through the installed CUDA/HIP runtime; see the
 [portable validation record](../../docs/validation/portable-plugin-20260930.md)

@@ -91,18 +91,20 @@ quantized K/V cache and multimodal prefix ranges are not currently supported.
 The signed 0.2.1 launcher disables graph capture, prefix caching and
 asynchronous scheduling. These are separate from GPU portability.
 
-Source after the published 0.2.1 wheel contains opt-in work on those limits:
+The staged 0.2.2 candidate adds opt-in work on those limits:
 `serve.enable_prefix_caching`, `serve.async_scheduling`,
 `serve.enable_model_compilation`, `serve.enable_piecewise_graphs`, and
 `serve.v2_model_runner`.
-They are **not in the signed 0.2.1 wheel** and are not
-part of its supported settings yet. Prefix caching uses a server-generated
+They are **not in the published 0.2.1 wheel**. The exact 0.2.2 wheel has passed
+the [installed-wheel release-candidate checks](../../docs/validation/plugin-polish-20261001.md)
+for these options. Prefix caching uses a server-generated
 identity tied to the recipient, catalogue revision and selected publication;
 the caller's `cache_salt` is replaced. Asynchronous scheduling waits for the
 previous GPU forward before releasing native pointers. Piecewise graph mode
 captures compiled model segments while native attention remains outside the
-graph; full graph capture remains unsupported. Each setting needs a new
-installed-wheel GPU comparison before publication as a supported feature.
+graph; full graph capture remains unsupported. The candidate's paired
+installed-wheel GPU comparison is recorded in that validation report;
+publication remains a separate step.
 The V2 runner candidate uses the stable request-state slots in vLLM's
 attention metadata to associate requests with native banks during forward.
 In vLLM 0.30, the hybrid model state does not supply those slots for live
@@ -124,11 +126,26 @@ architecture-specific binary bank. No vLLM fork is required.
 
 ## Controlled download
 
-The current candidate is version 0.2.1. Its portable GPU execution coverage
+The published controlled preview is version 0.2.1. Version 0.2.2 is signed and
+staged but is not yet available from the download origin. The 0.2.1 portable
+GPU execution coverage
 is recorded in the [0.2.0 validation report](../../docs/validation/portable-plugin-20260930.md),
 and its changed empty-selection path in the [0.2.1 validation report](../../docs/validation/authorized-empty-20260930.md).
 On the private origin, use the provisioned release CA with pip's `--cert` option.
 The earlier 0.1.1 architecture-specific package remains an immutable prior release.
+
+Once the signed 0.2.2 stage is published to the controlled origin, install its
+wheel in the same supported vLLM environment:
+
+```sh
+python -m pip install ./aimee_vllm-0.2.2-1-cp312-cp312-linux_x86_64.whl
+```
+
+Use the existing `aimee-native connect` and `aimee-native serve` commands above.
+For the tested Qwen3.8 27B hybrid profile, set
+`"v2_model_runner": false` inside `serve` in the JSON configuration. The 0.2.2
+[release review](../../docs/validation/plugin-0.2.2-release-review-20261001.md)
+sets out the tested models, GPUs, and runner boundaries.
 
 ### 0.2.1 empty-selection correction
 
