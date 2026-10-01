@@ -105,8 +105,13 @@ graph; full graph capture remains unsupported. Each setting needs a new
 installed-wheel GPU comparison before publication as a supported feature.
 The V2 runner candidate uses the stable request-state slots in vLLM's
 attention metadata to associate requests with native banks during forward.
+In vLLM 0.30, the hybrid model state does not supply those slots for live
+attention requests. The 0.2.2 candidate therefore rejects V2 for hybrid
+models with an explicit configuration error; use `serve.v2_model_runner: false`
+for Qwen3.8 27B. Native memory remains available through the V1 runner.
 The [0.2.2 candidate validation](../../docs/validation/plugin-polish-20261001.md)
-records installed-wheel RTX 5080 results and the remaining AMD matrix.
+records the installed-wheel AMD model matrix, candidate integrity checks, and
+the separate option, live-revision, and CUDA gates.
 
 The private memory encoder, publication service, and Rust storage implementation
 are not distributed as source. The generic attention and bit-unpacking operations

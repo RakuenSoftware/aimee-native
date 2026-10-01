@@ -15,6 +15,21 @@ use std::{
     time::Duration,
 };
 
+fn same_publication(
+    original: &delivery::Offer,
+    original_root: &Path,
+    renewed: &delivery::Offer,
+    renewed_root: &Path,
+) -> bool {
+    original_root == renewed_root
+        && original.recipient == renewed.recipient
+        && original.model == renewed.model
+        && original.key == renewed.key
+        && original.authorized_view == renewed.authorized_view
+        && original.records == renewed.records
+        && original.artifacts == renewed.artifacts
+}
+
 fn control(path: &Path, request: Value) -> Result<Value> {
     let seconds = if request["op"] == "refresh" { 720 } else { 150 };
     control_with_timeout(path, request, Duration::from_secs(seconds))
@@ -195,9 +210,22 @@ pub fn serve(
                 ctl,
                 json!({"op":"refresh","generation":withdrawn["generation"]}),
             )?;
-            if let Err(e) = delivery::approve(&http, &connection, &offer) {
+            // Draining an old stream can outlive the lease that produced the
+            // replacement. Obtain fresh authority after the drain, and admit
+            // only if it still identifies the exact installed publication.
+            let renewed = delivery::select(
+                &http,
+                &connection,
+                &query.query,
+                recipient,
+                model,
+                disk_budget,
+            );
+            if !matches!(renewed, Ok(delivery::Selection::Memory(ref current, ref current_root))
+                if same_publication(&offer, &root, current, current_root))
+            {
                 let _ = control(ctl, json!({"op":"withdraw"}));
-                return Err(e);
+                anyhow::bail!("publication changed or fresh approval unavailable after refresh");
             }
             Ok(
                 json!({"publication":offer.key,"catalog_digest":hex::encode(Sha256::digest(&bytes))}),
@@ -217,6 +245,42 @@ pub fn serve(
 #[cfg(test)]
 mod health_tests {
     use super::*;
+    #[test]
+    fn renewed_lease_must_name_the_same_publication() {
+        let original = delivery::Offer {
+            schema: 1,
+            lease: "a".repeat(64),
+            expires: 1,
+            recipient: "recipient".into(),
+            model: "model".into(),
+            key: "b".repeat(64),
+            authorized_view: "c".repeat(64),
+            records: vec![delivery::Record {
+                namespace: "personal".into(),
+                id: "one".into(),
+                revision: "r1".into(),
+            }],
+            artifacts: vec![delivery::Artifact {
+                name: "compact.pack".into(),
+                bytes: 10,
+                sha256: "d".repeat(64),
+            }],
+        };
+        let mut renewed = original.clone();
+        renewed.lease = "e".repeat(64);
+        renewed.expires = 2;
+        let root = Path::new("/prepared/pub");
+        assert!(same_publication(&original, root, &renewed, root));
+        renewed.records[0].revision = "r2".into();
+        assert!(!same_publication(&original, root, &renewed, root));
+        renewed.records[0].revision = "r1".into();
+        assert!(!same_publication(
+            &original,
+            root,
+            &renewed,
+            Path::new("/prepared/other")
+        ));
+    }
     #[test]
     fn only_explicit_restart_state_requests_recovery() {
         for state in ["active", "paused", "restart_required", "unknown"] {

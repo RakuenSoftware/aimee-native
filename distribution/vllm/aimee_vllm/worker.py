@@ -8,11 +8,11 @@ from vllm.v1.worker.gpu.model_states.mamba_hybrid import MambaHybridModelState
 from . import state
 
 
-def require_v2_request_slots(model_state, enabled):
+def require_v2_request_slots(runner, enabled):
     # vLLM 0.30's hybrid model state omits req_idx from attention metadata even
     # for live requests. Without those slots, native banks cannot be assigned
     # to the right request safely. The V1 runner remains supported.
-    if enabled and isinstance(model_state, MambaHybridModelState):
+    if enabled and isinstance(runner.model_state, MambaHybridModelState):
         raise RuntimeError(
             'native V2 hybrid attention does not expose request slots; '
             'set v2_model_runner=false for this model'
@@ -41,7 +41,7 @@ class AimeeWorker(Worker):
 
     def load_model(self, *, load_dummy_weights=False):
         super().load_model(load_dummy_weights=load_dummy_weights)
-        require_v2_request_slots(self.model_runner.model_state, self.use_v2_model_runner)
+        require_v2_request_slots(self.model_runner, self.use_v2_model_runner)
         from vllm.distributed import get_tensor_model_parallel_rank, get_tensor_model_parallel_world_size
         with open(os.environ['AIMEE_VLLM_CONFIG']) as f:
             config = json.load(f)

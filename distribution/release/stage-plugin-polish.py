@@ -30,8 +30,8 @@ parser.add_argument("--origin", type=Path, default=Path("/opt/aimee-native-relea
 args = parser.parse_args()
 work = args.workdir
 
-audit = read(work / "wheel-audit-final.json")
-wheel = work / "release-final" / "aimee_vllm-0.2.2-1-cp312-cp312-linux_x86_64.whl"
+audit = read(work / "wheel-audit-lease-r1-ubuntu.json")
+wheel = work / "release-lease-r1-ubuntu" / "aimee_vllm-0.2.2-1-cp312-cp312-linux_x86_64.whl"
 require(audit["status"] == "passed" and audit["wheel"] == wheel.name,
         "final wheel audit missing or for a different wheel")
 require(hashlib.sha256(wheel.read_bytes()).hexdigest() == audit["sha256"],
@@ -40,8 +40,8 @@ require(wheel.stat().st_size == audit["bytes"], "wheel size differs from audit")
 
 models = {}
 for name in ("gemma12", "gemma26", "qwen27"):
-    probe = read(work / f"{name}-amd-probe-r5.json")
-    matrix = read(work / f"{name}-amd-matrix-r5.json")
+    probe = read(work / f"{name}-amd-probe-r9.json")
+    matrix = read(work / f"{name}-amd-matrix-r9.json")
     require(probe["status"] == "passed" and probe["consumer_from_wheel"],
             f"{name}: installed-wheel probe failed")
     require(len(probe["answers"]) == 4 and all(row["passed"] for row in probe["answers"]),
@@ -54,19 +54,22 @@ for name in ("gemma12", "gemma26", "qwen27"):
         require(group["correct"] == group["requests"] == 8 and
                 group["admission_retries"] == 0,
                 f"{name}: {arm} four-client matrix failed")
-    models[name] = {"native_probe": 4, "native_matrix": 8, "empty_matrix": 8}
+    models[name] = {"native_probe": 4, "native_matrix": 8,
+                    "empty_matrix": 8, "runner": "V1" if name == "qwen27" else "V2"}
 
-cuda_matrix = read(work / "gemma12-5080-final-v2-combined.json")
-for arm in ("native", "empty"):
-    group = cuda_matrix["groups"][arm]
-    require(group["correct"] == group["requests"] == 8 and
-            group["admission_retries"] == 0,
-            f"RTX 5080: {arm} V2 combined matrix failed")
+cuda_probe = read(work / "gemma12-5080-lease-r1-probe.json")
+require(cuda_probe["status"] == "passed" and cuda_probe["consumer_from_wheel"],
+        "RTX 5080: corrected-wheel probe failed")
+require(len(cuda_probe["answers"]) == 4 and
+        all(row["passed"] for row in cuda_probe["answers"]) and
+        cuda_probe["empty_first"]["passed"] and
+        all(row["passed"] for row in cuda_probe["interleaved_tasks"]),
+        "RTX 5080: native or empty answer failed")
 
 options = {}
 for name in ("eager_v1", "prefix_v1", "async_v1", "piecewise_v1",
              "eager_v2", "combined_v2"):
-    result = read(work / "perf-amd-r1" / f"{name}.summary.json")
+    result = read(work / "perf-amd-lease-r1-r2" / f"{name}.summary.json")
     require(result["status"] == "passed", f"{name}: option run failed")
     for arm in ("native", "empty"):
         score = result["summary"][arm]
@@ -74,9 +77,12 @@ for name in ("eager_v1", "prefix_v1", "async_v1", "piecewise_v1",
                 f"{name}: {arm} option answers failed")
     options[name] = {"native": 6, "empty": 6}
 
-revision = read(work / "live-revision-amd-r1.json")
+revision = read(work / "live-revision-amd-lease-r1.json")
 require(revision["status"] == "passed" and revision["overlap"],
         "live publication change was not observed during an old stream")
+require(len(revision["replacement_attempts"]) == 1 and
+        revision["replacement_attempts"][0]["status"] == 200,
+        "live replacement required a failed admission and retry")
 require(revision["after_first_publication"]["digest"] !=
         revision["after_replacement"]["digest"], "catalogue digest did not change")
 require(revision["followup"]["correct"] == revision["followup"]["total"] == 30,
@@ -95,8 +101,12 @@ manifest = {
     "compatibility": audit["compatibility"],
     "scope": "Controlled standalone vLLM plugin preview with revision-safe prefix caching, optional async scheduling, and optional piecewise compilation; user supplies supported vLLM and model files.",
     "models": models, "option_validation": options,
-    "rtx_5080_v2_combined": {"native": 8, "empty": 8},
-    "live_revision_overlap": True, "live_selection_followups": 30,
+    "rtx_5080_v2_probe": {"native": 4, "empty": 5},
+    "hybrid_model_runner": "V1; vLLM 0.30 hybrid V2 omits request slots and is rejected",
+    "revision_request_started_during_old_stream": True,
+    "revision_activation_drains_old_stream": True,
+    "replacement_first_attempt_status": 200,
+    "live_selection_followups": 30,
     "executed_gpu_architectures": ["gfx1100", "sm120"],
     "native_library_sha256": audit["native_library_sha256"],
     "private_encoder_source_included": False, "runtime_image_included": False,
