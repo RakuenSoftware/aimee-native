@@ -59,10 +59,12 @@ also passed the three-model matrix, but its broker exposed the expired-lease
 failure described below. The current wheel differs only in the Rust launcher
 and wheel RECORD; the inference modules and native library are byte-identical.
 
-The RTX 5080 remains occupied by a separate workload. A smoke run of the
-current exact candidate is queued for when it becomes available. Earlier candidates
-passed installed-wheel Gemma V2 tests on that GPU, but those runs do not
-substitute for an exact-candidate result.
+The exact candidate also passed the RTX 5080 CUDA smoke with unmodified vLLM
+`0.30.0`: Gemma 4 12B on V2 answered all four native-memory questions and
+all five empty-memory controls correctly. The four native requests took
+2.78–3.26 s end to end in this sequential canary run. This is an additional
+backend check, not a CUDA performance distribution or a four-client CUDA
+matrix.
 
 ## Availability, revision isolation and option performance
 
@@ -134,7 +136,13 @@ The GPU-host record is under
 Credentials, model files and private memory are not copied into this repository.
 The release staging script signs a tested candidate into a non-web directory
 only after all matrix, CUDA, option and live-revision gates pass; staging does
-not publish it.
+not publish it. All those gates passed for the exact wheel. The wheel and
+manifest were staged and their Ed25519 signatures verified, including a
+separate verification after staging. The staged wheel SHA-256 is
+`ff069f26ff20316e91576e3f901275b41e74599b5c2b73b5f307eb297fa9d46e`;
+the staged manifest SHA-256 is
+`0fcab09a03a536b896b3176a532911b2c486de370c793629de70bc218703909d`.
+The stage is still private and unpublished.
 
 ## Reproducible evidence
 
@@ -151,3 +159,7 @@ are retained alongside the successful retry. The [live revision run](artifacts/p
 records the single successful replacement attempt. The
 [option measurements](artifacts/plugin-polish-20261001/perf-amd-lease-r1-r2/)
 include per-request JSONL, condition summaries and prefix-cache log excerpts.
+The [RTX 5080 probe](artifacts/plugin-polish-20261001/gemma12-5080-lease-r1-probe.json)
+contains its scored answers. The [staging record](artifacts/plugin-polish-20261001/release-stage-lease-r1-staging.json)
+and [manifest](artifacts/plugin-polish-20261001/release-stage-lease-r1-manifest.json)
+identify the signed, unpublished release candidate.
