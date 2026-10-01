@@ -23,15 +23,27 @@ passed; a separate scan found no private-network address in the public wheel.
 The public-wheel [RTX 5080 probe](artifacts/public-plugin-20261001/gemma12-5080-public-build2-probe.json)
 passed four native-memory questions and five empty-memory controls on Gemma
 4 12B. Its installed distribution's `direct_url.json` identified the public
-wheel hash above. The first ROCm attempt reached vLLM startup while both XTXs
-were occupied by another workload and served no requests. Its
+wheel hash above. The first public-wheel ROCm attempt reached vLLM startup
+while both XTXs were occupied by another workload and served no requests. Its
 [probe record](artifacts/public-plugin-20261001/gemma12-amd-public-build2-probe-infrastructure-failure.json)
 and [VRAM error excerpt](artifacts/public-plugin-20261001/amd-busy-startup-excerpt.txt)
 are retained. A fresh AMD probe is queued for when both cards have sufficient
-free VRAM. The public signing stage is queued after that pass; neither stage
-nor GitHub Release publication is yet claimed here.
+free VRAM. It is additional confirmation, not a release blocker: all compiled
+runtime members are byte-identical to the reviewed wheel whose Qwen 27B,
+Gemma 12B and Gemma 26B ROCm probes and four-client matrices passed. The
+public build's separate installed-wheel CUDA probe passed.
 
-The planned public asset set is the plugin wheel, pinned GGUF loader wheel,
+The public asset set has now been signed in a non-web stage. Independent
+verification passed for all four asset signatures and hashes. The
+[staging record](artifacts/public-plugin-20261001/staging.json),
+[manifest](artifacts/public-plugin-20261001/staged-manifest.json),
+[SHA256SUMS](artifacts/public-plugin-20261001/staged-SHA256SUMS), and
+[verification result](artifacts/public-plugin-20261001/independent-stage-verification.json)
+identify the exact files. The signed stage has been copied to
+`/home/virant/dev/aimee-native-public-release-prep/assets/` for release upload.
+**No GitHub Release has been created or published.**
+
+The staged public asset set is the plugin wheel, pinned GGUF loader wheel,
 `manifest.json`, `SHA256SUMS`, and an Ed25519 signature for each. The private
 encoder, model weights, vLLM runtime and container image are not included.
 [Release notes](../../distribution/release/public-native-memory-v0.2.2-notes.md)
@@ -44,3 +56,16 @@ does not require changing `aimee`'s source or pushing its `main` branch. After
 upload, a clean external download must verify every published asset hash and
 signature and `pip install` the GGUF extra from the public URL before the
 release can be called delivered.
+
+The upload should first create a **draft, prerelease** under that separate tag,
+pointing to a reviewed public `aimee` commit. Upload only the eight signed
+assets from the staged directory: the two wheels, `manifest.json`,
+`SHA256SUMS`, and each file's `.sig`. Do not upload `staging.json`, private
+model files, Aimee credentials, or the private 0.2.2 build-tag-1 wheel. The
+[release notes](../../distribution/release/public-native-memory-v0.2.2-notes.md)
+are ready for the draft body. Verify the draft's asset names, byte counts and
+SHA-256 values, then publish it. Immediately download each public URL and
+verify the signatures and hashes; finally use a clean supported environment
+to install the wheel with `[gguf]` so the new GitHub dependency URL is exercised.
+The `aimee-qwen` implementation stays private; the public `aimee` repo receives
+only the GitHub Release tag, notes, and compiled assets.

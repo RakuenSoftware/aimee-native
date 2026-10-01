@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Sign a public GitHub Release asset set after public-wheel GPU probes pass.
+"""Sign a public GitHub Release asset set after its GPU evidence gates pass.
 
 Staging is offline and non-public. No files are written to the GitHub repo or
 the controlled download origin by this script.
@@ -67,8 +67,19 @@ def main():
                               "sha256": audit["sha256"]},
                 f"tested environment did not install the public wheel: {name}")
 
-    for name in ("gemma12-amd-public-build2-probe-r2.json",
-                 "gemma12-5080-public-build2-probe.json"):
+    for model, run in (("gemma12", "r9"), ("gemma26", "r9b"), ("qwen27", "r9")):
+        probe = json.loads((work / f"{model}-amd-probe-{run}.json").read_text())
+        matrix = json.loads((work / f"{model}-amd-matrix-{run}.json").read_text())
+        require(probe["status"] == "passed" and probe["consumer_from_wheel"] and
+                len(probe["answers"]) == 4 and all(x["passed"] for x in probe["answers"]),
+                f"reviewed runtime AMD probe failed: {model}")
+        for arm in ("native", "empty"):
+            score = matrix["groups"][arm]
+            require(score["correct"] == score["requests"] == 8 and
+                    score["admission_retries"] == 0,
+                    f"reviewed runtime AMD matrix failed: {model}/{arm}")
+
+    for name in ("gemma12-5080-public-build2-probe.json",):
         result = json.loads((work / name).read_text())
         require(result["status"] == "passed" and result["consumer_from_wheel"],
                 f"installed public-wheel probe failed: {name}")
@@ -101,6 +112,8 @@ def main():
                           "Gemma 4 12B": "V2 on gfx1100 and sm120",
                           "Gemma 4 26B": "V2 on gfx1100"},
         "compiled_runtime_identical_to_reviewed_private_wheel": True,
+        "public_wheel_direct_execution": "Gemma 4 12B on sm120",
+        "gfx1100_evidence": "Byte-identical compiled runtime in reviewed private candidate",
         "private_encoder_source_included": False,
         "model_weights_included": False,
         "vllm_runtime_included": False,

@@ -128,8 +128,8 @@ architecture-specific binary bank. No vLLM fork is required.
 
 The published controlled preview is version 0.2.1. Version 0.2.2 is signed and
 staged but is not yet available from the download origin. The 0.2.1 portable
-GPU execution coverage
-is recorded in the [0.2.0 validation report](../../docs/validation/portable-plugin-20260930.md),
+GPU execution coverage is recorded in the
+[0.2.0 validation report](../../docs/validation/portable-plugin-20260930.md),
 and its changed empty-selection path in the [0.2.1 validation report](../../docs/validation/authorized-empty-20260930.md).
 On the private origin, use the provisioned release CA with pip's `--cert` option.
 The earlier 0.1.1 architecture-specific package remains an immutable prior release.
@@ -146,6 +146,11 @@ For the tested Qwen3.8 27B hybrid profile, set
 `"v2_model_runner": false` inside `serve` in the JSON configuration. The 0.2.2
 [release review](../../docs/validation/plugin-0.2.2-release-review-20261001.md)
 sets out the tested models, GPUs, and runner boundaries.
+For the planned public GitHub asset, build tag `2` changes only the optional
+GGUF dependency URL and wheel `RECORD`; the compiled runtime is byte-identical
+to this controlled candidate. Its separate
+[public release preparation](../../docs/validation/public-plugin-release-readiness-20261001.md)
+records the asset hash and direct installed-wheel CUDA check.
 
 ### 0.2.1 empty-selection correction
 

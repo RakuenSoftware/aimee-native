@@ -18,6 +18,10 @@ signed `manifest.json`. The release also includes the small, pinned GGUF loader
 wheel used by the tested GGUF profiles. With a supported vLLM environment
 already installed:
 
+- Plugin wheel SHA-256: `40b5df989308822357d06d9c84eed611b5e45fd861162b03695e31e0f95515fb`
+- GGUF loader wheel SHA-256: `616360d726fbaf88c96ebbe9ec4a62fc69ba86cba591f1a8b609199ad5339246`
+- Ed25519 release public key: `5d14ca247841adcc1130a4d95b82ead12ba699c03f2ba45f2f47524abde0c6c2`
+
 ```sh
 python -m pip install './aimee_vllm-0.2.2-2-cp312-cp312-linux_x86_64.whl[gguf]'
 aimee-native connect https://your-aimee-endpoint < /path/to/scoped-token

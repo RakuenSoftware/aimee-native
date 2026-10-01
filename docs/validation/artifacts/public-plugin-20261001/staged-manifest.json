@@ -1,0 +1,41 @@
+{
+  "release": "native-memory-v0.2.2",
+  "package": "aimee-vllm",
+  "version": "0.2.2",
+  "scope": "Controlled public preview: standalone vLLM plugin and Aimee connection client. An enrolled Aimee account and authorized publication are required for native memory.",
+  "assets": {
+    "aimee_vllm-0.2.2-2-cp312-cp312-linux_x86_64.whl": {
+      "url": "https://github.com/RakuenSoftware/aimee/releases/download/native-memory-v0.2.2/aimee_vllm-0.2.2-2-cp312-cp312-linux_x86_64.whl",
+      "sha256": "40b5df989308822357d06d9c84eed611b5e45fd861162b03695e31e0f95515fb",
+      "bytes": 4912256
+    },
+    "vllm_gguf_plugin-0.0.5+triton-py3-none-any.whl": {
+      "url": "https://github.com/RakuenSoftware/aimee/releases/download/native-memory-v0.2.2/vllm_gguf_plugin-0.0.5+triton-py3-none-any.whl",
+      "sha256": "616360d726fbaf88c96ebbe9ec4a62fc69ba86cba591f1a8b609199ad5339246",
+      "bytes": 230630
+    }
+  },
+  "public_key_ed25519_hex": "5d14ca247841adcc1130a4d95b82ead12ba699c03f2ba45f2f47524abde0c6c2",
+  "compatibility": {
+    "schema": 2,
+    "vllm": ">=0.30.0,<0.31",
+    "backends": [
+      "cuda",
+      "hip"
+    ],
+    "gpu_arch": "runtime",
+    "tensor_bridge": "public-torch-api",
+    "scope": "Runtime-compiled GPU operations. Execution coverage is recorded separately."
+  },
+  "tested_models": {
+    "Qwen3.8 27B": "V1 on gfx1100",
+    "Gemma 4 12B": "V2 on gfx1100 and sm120",
+    "Gemma 4 26B": "V2 on gfx1100"
+  },
+  "compiled_runtime_identical_to_reviewed_private_wheel": true,
+  "public_wheel_direct_execution": "Gemma 4 12B on sm120",
+  "gfx1100_evidence": "Byte-identical compiled runtime in reviewed private candidate",
+  "private_encoder_source_included": false,
+  "model_weights_included": false,
+  "vllm_runtime_included": false
+}
