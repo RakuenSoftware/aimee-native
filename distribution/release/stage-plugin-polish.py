@@ -40,8 +40,9 @@ require(wheel.stat().st_size == audit["bytes"], "wheel size differs from audit")
 
 models = {}
 for name in ("gemma12", "gemma26", "qwen27"):
-    probe = read(work / f"{name}-amd-probe-r9.json")
-    matrix = read(work / f"{name}-amd-matrix-r9.json")
+    run = "r9b" if name == "gemma26" else "r9"
+    probe = read(work / f"{name}-amd-probe-{run}.json")
+    matrix = read(work / f"{name}-amd-matrix-{run}.json")
     require(probe["status"] == "passed" and probe["consumer_from_wheel"],
             f"{name}: installed-wheel probe failed")
     require(len(probe["answers"]) == 4 and all(row["passed"] for row in probe["answers"]),

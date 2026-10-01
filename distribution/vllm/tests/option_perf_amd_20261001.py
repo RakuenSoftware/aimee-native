@@ -1,4 +1,5 @@
 """Paired, installed-wheel option measurements on two RX 7900 XTXs."""
+import argparse
 import json
 import os
 from pathlib import Path
@@ -9,7 +10,9 @@ from urllib.request import Request, urlopen
 from urllib.error import HTTPError
 
 ROOT = Path('/opt/aimee-large-release-validation/plugin-polish-20261001')
-OUT = ROOT / 'perf-amd-hybrid-gate-v2-r1'
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--output-name', default='perf-amd-hybrid-gate-v2-r1')
+OUT = ROOT / parser.parse_args().output_name
 OUT.mkdir(exist_ok=False)
 CLIENT = ROOT / 'client'
 BASE = json.loads((ROOT / 'gemma12-amd-combined-r3.json').read_text())

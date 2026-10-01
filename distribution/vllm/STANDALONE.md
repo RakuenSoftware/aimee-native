@@ -109,6 +109,10 @@ In vLLM 0.30, the hybrid model state does not supply those slots for live
 attention requests. The 0.2.2 candidate therefore rejects V2 for hybrid
 models with an explicit configuration error; use `serve.v2_model_runner: false`
 for Qwen3.8 27B. Native memory remains available through the V1 runner.
+Live publication replacement pauses new admission until active requests drain.
+The broker obtains fresh approval after the drain and verifies that the
+authorized publication is unchanged; a long stream can therefore delay the
+first answer under a new revision.
 The [0.2.2 candidate validation](../../docs/validation/plugin-polish-20261001.md)
 records the installed-wheel AMD model matrix, candidate integrity checks, and
 the separate option, live-revision, and CUDA gates.

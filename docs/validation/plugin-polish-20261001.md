@@ -26,12 +26,8 @@ not a model-family or GPU limitation.
 
 ## Correctness matrix
 
-The completed AMD matrix below is for the preceding wheel
-`eb911584b455b042b3baee0c681e708f2dfda8bf59d4583814b2d2707a52615c`.
-The only change in the current wheel is the Rust selection broker's lease
-renewal after a publication refresh; its inference modules and native library
-are byte-identical. An exact-wheel repeat is queued after the live revision
-check. The AMD matrix uses two RX 7900 XTX cards, unmodified vLLM
+The completed matrix uses the current audited wheel on two RX 7900 XTX cards,
+unmodified vLLM
 `0.30.0+rocm723`, installed 0.2.2 wheel, authenticated live Aimee and a canary
 publication. Each probe starts with an authorized empty-memory arithmetic
 request, asks for three values carried by native memory four times, and
@@ -45,12 +41,23 @@ content and admission retries, not only HTTP status.
 | Gemma 4 12B | V2 | 4/4 | 8/8 | 8/8 | 0 |
 | Gemma 4 26B | V2 | 4/4 | 8/8 | 8/8 | 0 |
 
-The Qwen native and empty matrix medians were 31.74 s and 3.52 s; the Gemma
-12B medians were 13.45 s and 1.69 s; the Gemma 26B medians were 12.66 s
-and 2.14 s. These arms
-generate different answers and are not a native-versus-text latency
-comparison. The model's first startup included a long compile and JIT warmup;
-the report below records startup separately from warm-request measurements.
+The native and empty response medians respectively were 31.67 s and 3.33 s
+for Qwen, 12.99 s and 1.61 s for Gemma 12B, and 12.98 s and 2.11 s for
+Gemma 26B. These arms generate different answers and are not a
+native-versus-text latency comparison. Startup, compile and JIT costs are
+measured separately below.
+
+The first exact-wheel Gemma 26B startup stopped before serving a request when
+the host logged an RX 7900 XTX SDMA timeout and GPU reset. A small PyTorch
+allocation and sum then passed on both GPUs. The separate Gemma 26B retry
+passed the probe and matrix above. The failed startup is retained as
+infrastructure evidence and is not counted as an answer result.
+
+The preceding wheel
+`eb911584b455b042b3baee0c681e708f2dfda8bf59d4583814b2d2707a52615c`
+also passed the three-model matrix, but its broker exposed the expired-lease
+failure described below. The current wheel differs only in the Rust launcher
+and wheel RECORD; the inference modules and native library are byte-identical.
 
 The RTX 5080 remains occupied by a separate workload. A smoke run of the
 current exact candidate is queued for when it becomes available. Earlier candidates
@@ -82,9 +89,8 @@ replacement took 65.95 seconds because activation still drains the old stream;
 the test demonstrates safe ordered revision change, not simultaneous old- and
 new-revision execution. It does not mutate authority records.
 
-The paired option test below also used the preceding wheel. The current wheel
-has the same inference code and will be measured again. It used Gemma 4 12B
-on AMD. Each condition started a fresh
+The paired option test below used the current wheel and Gemma 4 12B on AMD.
+Each condition started a fresh
 installed-wheel server, warmed one native and one empty request, then
 alternated six of each. All 72 scored answers were correct. Every condition
 generated 186 completion tokens across its 12 measured, sequential requests.
@@ -93,18 +99,18 @@ both cards, not an allocation trace.
 
 | Configuration | Startup s | Native TTFT ms | Native full s | Empty TTFT ms | Empty full s | Requests/s | Peak VRAM MiB |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| Eager V1 | 140 | 867 | 9.49 | 783 | 1.42 | 0.183 | 41,567 |
-| Prefix V1 | 75 | 523 | 9.15 | 453 | 1.09 | 0.196 | 41,566 |
-| Async V1 | 74 | 981 | 9.61 | 980 | 1.61 | 0.176 | 41,566 |
-| Piecewise V1 | 185 | 907 | 9.89 | 1,223 | 2.02 | 0.147 | 41,416 |
-| Eager V2 | 84 | 860 | 9.43 | 803 | 1.44 | 0.183 | 41,674 |
-| Prefix + async + piecewise V2 | 197 | 630 | 9.08 | 633 | 1.26 | 0.188 | 41,037 |
+| Eager V1 | 102 | 868 | 9.51 | 780 | 1.42 | 0.183 | 41,566 |
+| Prefix V1 | 94 | 547 | 9.22 | 453 | 1.10 | 0.194 | 41,566 |
+| Async V1 | 88 | 981 | 9.64 | 979 | 1.61 | 0.178 | 41,565 |
+| Piecewise V1 | 98 | 875 | 9.59 | 789 | 1.43 | 0.176 | 41,932 |
+| Eager V2 | 80 | 889 | 9.42 | 789 | 1.42 | 0.185 | 41,674 |
+| Prefix + async + piecewise V2 | 80 | 632 | 9.06 | 635 | 1.26 | 0.194 | 41,560 |
 
 TTFT and full response are medians. Requests/s is 12 divided by the measured
 sequential interval; it is not a concurrent throughput benchmark. The prefix
 condition showed a lower median TTFT than eager V1 and vLLM's aggregate
 prefix-cache hit log reached 78.6%. The combined V2 log also reached 78.6%.
-The other optional modes establish correctness here but no speedup. Fresh
+The other optional modes establish correctness here but no clear speedup. Fresh
 processes still reuse warmed disk and compilation caches, so startup differences
 cannot be attributed to a setting. These small canary runs do not establish a
 production latency distribution or general throughput improvement.
@@ -129,3 +135,19 @@ Credentials, model files and private memory are not copied into this repository.
 The release staging script signs a tested candidate into a non-web directory
 only after all matrix, CUDA, option and live-revision gates pass; staging does
 not publish it.
+
+## Reproducible evidence
+
+The [wheel audit](artifacts/plugin-polish-20261001/wheel-audit-lease-r1-ubuntu.json)
+identifies the exact tested artifact. Installed-wheel [Qwen probe](artifacts/plugin-polish-20261001/qwen27-amd-probe-r9.json)
+and [matrix](artifacts/plugin-polish-20261001/qwen27-amd-matrix-r9.json),
+[Gemma 12B probe](artifacts/plugin-polish-20261001/gemma12-amd-probe-r9.json)
+and [matrix](artifacts/plugin-polish-20261001/gemma12-amd-matrix-r9.json),
+and [Gemma 26B retry probe](artifacts/plugin-polish-20261001/gemma26-amd-probe-r9b.json)
+and [matrix](artifacts/plugin-polish-20261001/gemma26-amd-matrix-r9b.json)
+contain the scored answers. The [initial 26B startup failure](artifacts/plugin-polish-20261001/gemma26-amd-probe-r9.json)
+and [GPU reset log excerpt](artifacts/plugin-polish-20261001/gemma26-r9-gpu-reset.txt)
+are retained alongside the successful retry. The [live revision run](artifacts/plugin-polish-20261001/live-revision-amd-lease-r1.json)
+records the single successful replacement attempt. The
+[option measurements](artifacts/plugin-polish-20261001/perf-amd-lease-r1-r2/)
+include per-request JSONL, condition summaries and prefix-cache log excerpts.
