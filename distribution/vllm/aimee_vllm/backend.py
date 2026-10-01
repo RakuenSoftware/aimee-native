@@ -14,7 +14,8 @@ class AimeeMetadataBuilder(TritonAttentionMetadataBuilder):
         # cannot combine a shared text prefix with separate native banks.
         # The normal paged path still reads prefix-cache hits from block_table.
         result = super().build(0, common_attn_metadata, fast_build)
-        if state.CURRENT is None or not state.CURRENT.requests:
+        if (state.CURRENT is None or not state.CURRENT.requests or
+                state.CURRENT.upstream_only_without_slots(common_attn_metadata)):
             result.aimee_ids = None  # upstream startup profiling, no real request
         else:
             result.aimee_ids = state.CURRENT.request_ids(common_attn_metadata)

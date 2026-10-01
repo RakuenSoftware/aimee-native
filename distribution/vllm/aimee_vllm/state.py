@@ -100,6 +100,14 @@ class State:
                 raise RuntimeError('scheduled native request is not pinned')
         return ids
 
+    def upstream_only_without_slots(self, common):
+        # Hybrid-model kernel warmup can schedule synthetic requests before V2
+        # has populated request-state slots. They have no native publication;
+        # standard attention is sufficient. Never bypass slot checks while a
+        # native publication is pinned by any request.
+        return (common.req_idx is None and bool(self.requests)
+                and all(pin.store is None for pin in self.requests.values()))
+
     def memory_table(self, ids, layer, dtype, heads, width):
         selections = tuple(self.requests[r] for r in ids)
         if not any(s.store is not None for s in selections):

@@ -46,4 +46,16 @@ class StateTests(unittest.TestCase):
             s.request_ids(NS(req_idx=None,num_reqs=2))
         with self.assertRaisesRegex(RuntimeError,'mapping mismatch'):
             s.request_ids(NS(req_idx=[2,2],num_reqs=2))
+    def test_missing_v2_slots_bypass_only_publication_free_warmup(self):
+        s=self.state()
+        s.runner=NS(req_states=NS(req_id_to_index={'warmup':0}))
+        s.begin(self.output([('warmup',None)]))
+        no_slots=NS(req_idx=None,num_reqs=1)
+        self.assertTrue(s.upstream_only_without_slots(no_slots))
+        self.assertFalse(s.upstream_only_without_slots(NS(req_idx=[0],num_reqs=1)))
+        s.begin(NS(finished_req_ids={'warmup'},scheduled_new_reqs=[]))
+        s.begin(self.output([('native','approved')]))
+        self.assertFalse(s.upstream_only_without_slots(no_slots))
+        with self.assertRaisesRegex(RuntimeError,'missing request slots'):
+            s.request_ids(no_slots)
 if __name__=='__main__':unittest.main()
