@@ -69,3 +69,35 @@ verify the signatures and hashes; finally use a clean supported environment
 to install the wheel with `[gguf]` so the new GitHub dependency URL is exercised.
 The `aimee-qwen` implementation stays private; the public `aimee` repo receives
 only the GitHub Release tag, notes, and compiled assets.
+
+GitHub CLI's supported release flow accepts a draft, a pinned target commit,
+notes from a file and asset paths in one command. Use `--latest=false` so this
+plugin preview does not replace the main Aimee application release as “Latest”.
+The public `main` ref was `7899ec340a9812bbd28ad9d8478abe2ef5e3f00c`
+at this review; recheck it and the tag before creation. The staged upload
+directory is `/home/virant/dev/aimee-native-public-release-prep/assets/`.
+
+```sh
+gh release create native-memory-v0.2.2 \
+  --repo RakuenSoftware/aimee \
+  --target 7899ec340a9812bbd28ad9d8478abe2ef5e3f00c \
+  --title 'Aimee native memory v0.2.2 (preview)' \
+  --notes-file /home/virant/dev/aimee-qwen-live/distribution/release/public-native-memory-v0.2.2-notes.md \
+  --draft --prerelease --latest=false \
+  /home/virant/dev/aimee-native-public-release-prep/assets/*.whl \
+  /home/virant/dev/aimee-native-public-release-prep/assets/*.whl.sig \
+  /home/virant/dev/aimee-native-public-release-prep/assets/manifest.json \
+  /home/virant/dev/aimee-native-public-release-prep/assets/manifest.json.sig \
+  /home/virant/dev/aimee-native-public-release-prep/assets/SHA256SUMS \
+  /home/virant/dev/aimee-native-public-release-prep/assets/SHA256SUMS.sig
+```
+
+After reviewing the draft asset list, publish with
+`gh release edit native-memory-v0.2.2 --repo RakuenSoftware/aimee --draft=false`.
+The public download and `[gguf]` install check must then pass.
+
+This workspace can push Git refs over SSH but currently has no authenticated
+GitHub Releases API client (`gh` is absent and no release API token is
+configured). That prevents creating the draft or uploading assets from here
+until release-write access is supplied. It does not affect the signed artifact
+stage or the GPU results.
