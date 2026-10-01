@@ -10,8 +10,8 @@ class AimeeWorker(Worker):
     def init_device(self):
         super().init_device()
         cfg = self.vllm_config
-        if self.use_v2_model_runner:
-            raise RuntimeError('native memory requires VLLM_USE_V2_MODEL_RUNNER=0')
+        if self.use_v2_model_runner != self._aimee_v2_enabled():
+            raise RuntimeError('native V2 model-runner configuration mismatch')
         graph_mode=cfg.compilation_config.cudagraph_mode
         if graph_mode not in (CUDAGraphMode.NONE,CUDAGraphMode.PIECEWISE):
             raise RuntimeError('full native-attention graph capture is not supported')
@@ -51,6 +51,11 @@ class AimeeWorker(Worker):
         with open(os.environ['AIMEE_VLLM_CONFIG']) as f:
             config=json.load(f)
         return config.get('serve',{}).get('enable_piecewise_graphs',False) is True
+
+    def _aimee_v2_enabled(self):
+        with open(os.environ['AIMEE_VLLM_CONFIG']) as f:
+            config=json.load(f)
+        return config.get('serve',{}).get('v2_model_runner',False) is True
 
     def execute_model(self, scheduler_output):
         if state.CURRENT is None:

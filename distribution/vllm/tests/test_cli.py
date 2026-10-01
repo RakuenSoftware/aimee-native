@@ -49,5 +49,5 @@ class CliTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,'require model compilation'):
                 command(path)
             path.write_text(json.dumps(dict(base,serve={'v2_model_runner':True})))
-            with self.assertRaisesRegex(ValueError,'request identities are unavailable'):
-                command(path)
+            _,env=command(path)
+            self.assertEqual(env['VLLM_USE_V2_MODEL_RUNNER'],'1')

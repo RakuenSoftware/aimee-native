@@ -203,7 +203,10 @@ pub fn serve(
                 json!({"publication":offer.key,"catalog_digest":hex::encode(Sha256::digest(&bytes))}),
             )
         })();
-        let response = result.unwrap_or_else(|_| json!({"error":"native_selection_unavailable"}));
+        let response = result.unwrap_or_else(|error| {
+            eprintln!("native selection unavailable: {error:#}");
+            json!({"error":"native_selection_unavailable"})
+        });
         // Disconnects do not kill the host broker or undo a completed installation.
         let _ = serde_json::to_writer(&mut s, &response);
         let _ = s.write_all(b"\n");

@@ -27,8 +27,6 @@ def command(config_path):
     v2_runner=serve.get('v2_model_runner',False)
     if type(v2_runner) is not bool:
         raise ValueError('v2_model_runner must be a boolean')
-    if v2_runner:
-        raise ValueError('v2_model_runner is not supported: request identities are unavailable during attention')
     piecewise_graphs=serve.get('enable_piecewise_graphs',False)
     if type(piecewise_graphs) is not bool:
         raise ValueError('enable_piecewise_graphs must be a boolean')
@@ -54,7 +52,7 @@ def command(config_path):
         args += ['--compilation-config',json.dumps({'mode':3,'cudagraph_mode':mode})]
     else:
         args += ['--enforce-eager']
-    env = {'AIMEE_VLLM_CONFIG': str(path), 'VLLM_USE_V2_MODEL_RUNNER': '0',
+    env = {'AIMEE_VLLM_CONFIG': str(path), 'VLLM_USE_V2_MODEL_RUNNER': '1' if v2_runner else '0',
            'VLLM_PLUGINS': 'aimee_native', 'VLLM_ROCM_USE_AITER': '0', 'AIMEE_GGUF_ENABLE': '0'}
     if config.get('gguf_weights'):
         loader = {'gguf_weights': config['gguf_weights']}

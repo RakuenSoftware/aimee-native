@@ -15,8 +15,8 @@ from urllib.request import Request, urlopen
 
 
 def call(endpoint, model, kind, expected, attempt):
-    question = ('Give my private vault code, private project codename, and '
-                'preferred meeting drink. Be concise.' if kind == 'native' else
+    question = ('What are the native release verification vault code, project, '
+                'and drink?' if kind == 'native' else
                 'What is 17 + 24? Reply with the integer only.')
     body = {'model': model, 'messages': [{'role': 'user', 'content': question}],
             'temperature': 0, 'max_tokens': 96,

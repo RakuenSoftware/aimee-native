@@ -10,6 +10,7 @@ from pathlib import Path
 import subprocess
 import time
 import urllib.request
+import urllib.error
 
 p = argparse.ArgumentParser(description=__doc__)
 p.add_argument('--root', type=Path, required=True)
@@ -128,7 +129,11 @@ try:
     report['consumer_from_wheel'] = True
     report['status'] = 'passed'
 except Exception as e:
-    report['status'] = 'failed'; report['error'] = str(e); raise
+    report['status'] = 'failed'; report['error'] = str(e)
+    if isinstance(e, urllib.error.HTTPError):
+        report['http_status'] = e.code
+        report['http_error_body'] = e.read().decode(errors='replace')[:500]
+    raise
 finally:
     child.terminate()
     try: child.wait(timeout=50)

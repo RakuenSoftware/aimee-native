@@ -78,13 +78,22 @@ class State:
             self.tables.clear()
 
     def request_ids(self, common):
-        batch = self.runner.input_batch.req_ids
         indices = common.req_idx
-        if indices is None:
-            ids = tuple(batch[:common.num_reqs])
+        if hasattr(self.runner, 'req_states'):
+            # V2 metadata carries stable request-state slots, not batch offsets.
+            # Resolve them during forward, before execute_model_state is assigned.
+            if indices is None:
+                raise RuntimeError('native V2 attention is missing request slots')
+            slots = {index: rid for rid, index in
+                     self.runner.req_states.req_id_to_index.items()}
+            ids = tuple(slots.get(int(i)) for i in indices[:common.num_reqs])
         else:
-            ids = tuple(batch[int(i)] for i in indices[:common.num_reqs])
-        if len(ids) != common.num_reqs:
+            batch = self.runner.input_batch.req_ids
+            if indices is None:
+                ids = tuple(batch[:common.num_reqs])
+            else:
+                ids = tuple(batch[int(i)] for i in indices[:common.num_reqs])
+        if len(ids) != common.num_reqs or len(set(ids)) != len(ids):
             raise RuntimeError('native request/batch mapping mismatch')
         for rid in ids:
             if rid not in self.requests:

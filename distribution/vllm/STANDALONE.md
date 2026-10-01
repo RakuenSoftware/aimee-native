@@ -88,12 +88,13 @@ CPU-only runtime, Metal, or an unsupported GPU into a supported execution target
 Prepared memory must match the model configuration. This implementation uses
 BF16 causal decoder attention; ALiBi, attention sinks, cascade attention,
 quantized K/V cache and multimodal prefix ranges are not currently supported.
-The launcher continues to disable graph capture, prefix caching and asynchronous
-scheduling to preserve request ownership. These are separate from GPU portability.
+The signed 0.2.1 launcher disables graph capture, prefix caching and
+asynchronous scheduling. These are separate from GPU portability.
 
 Source after the published 0.2.1 wheel contains opt-in work on those limits:
 `serve.enable_prefix_caching`, `serve.async_scheduling`,
-`serve.enable_model_compilation`, and `serve.enable_piecewise_graphs`.
+`serve.enable_model_compilation`, `serve.enable_piecewise_graphs`, and
+`serve.v2_model_runner`.
 They are **not in the signed 0.2.1 wheel** and are not
 part of its supported settings yet. Prefix caching uses a server-generated
 identity tied to the recipient, catalogue revision and selected publication;
@@ -102,8 +103,10 @@ previous GPU forward before releasing native pointers. Piecewise graph mode
 captures compiled model segments while native attention remains outside the
 graph; full graph capture remains unsupported. Each setting needs a new
 installed-wheel GPU comparison before publication as a supported feature.
-The V2 model runner remains disabled: it exposes the request batch after the
-forward pass, too late for native attention to associate requests with banks.
+The V2 runner candidate uses the stable request-state slots in vLLM's
+attention metadata to associate requests with native banks during forward.
+The [0.2.2 candidate validation](../../docs/validation/plugin-polish-20261001.md)
+records installed-wheel RTX 5080 results and the remaining AMD matrix.
 
 The private memory encoder, publication service, and Rust storage implementation
 are not distributed as source. The generic attention and bit-unpacking operations

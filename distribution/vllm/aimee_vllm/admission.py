@@ -5,11 +5,14 @@ import asyncio
 import hashlib
 import ctypes
 import json
+import logging
 import os
 from pathlib import Path
 from .store import PreparedStore
 from .stream_completion import StreamCompletion
 from .cache_identity import cache_salt
+
+logger = logging.getLogger(__name__)
 
 class Ledger:
     def __init__(self, lib, budget):
@@ -103,7 +106,8 @@ class NativeAdmission:
                 if publication is None:extras.pop('aimee_publication',None)
                 else:extras['aimee_publication']=publication
                 extras['aimee_catalog_digest']=self.catalog_digest
-            except Exception:
+            except Exception as exc:
+                logger.warning('native selection failed (%s): %s',type(exc).__name__,exc)
                 return await self.error(send,503,'approved native memory is unavailable')
             if self.poisoned or self.paused:
                 return await self.error(send,503,'native publication update in progress')

@@ -36,4 +36,14 @@ class StateTests(unittest.TestCase):
     def test_missing_request_fails_instead_of_borrowing_another_bank(self):
         s=self.state();s.begin(self.output([('a','approved')]))
         with self.assertRaises(RuntimeError):s.request_ids(NS(req_idx=None,num_reqs=2))
+    def test_v2_physical_slots_resolve_during_forward(self):
+        s=self.state();s.begin(self.output([('a','approved'),('b',None)]))
+        s.runner=NS(req_states=NS(req_id_to_index={'a':7,'b':2}))
+        self.assertEqual(s.request_ids(NS(req_idx=[2,7],num_reqs=2)),('b','a'))
+        with self.assertRaisesRegex(RuntimeError,'not pinned'):
+            s.request_ids(NS(req_idx=[2,9],num_reqs=2))
+        with self.assertRaisesRegex(RuntimeError,'missing request slots'):
+            s.request_ids(NS(req_idx=None,num_reqs=2))
+        with self.assertRaisesRegex(RuntimeError,'mapping mismatch'):
+            s.request_ids(NS(req_idx=[2,2],num_reqs=2))
 if __name__=='__main__':unittest.main()
