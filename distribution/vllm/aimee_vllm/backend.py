@@ -10,7 +10,10 @@ from .kernel import native_attention
 class AimeeMetadataBuilder(TritonAttentionMetadataBuilder):
     _cudagraph_support = AttentionCGSupport.NEVER
     def build(self, common_prefix_len, common_attn_metadata, fast_build=False):
-        result = super().build(common_prefix_len, common_attn_metadata, fast_build)
+        # Cached text blocks remain usable, but the upstream cascade kernel
+        # cannot combine a shared text prefix with separate native banks.
+        # The normal paged path still reads prefix-cache hits from block_table.
+        result = super().build(0, common_attn_metadata, fast_build)
         if state.CURRENT is None or not state.CURRENT.requests:
             result.aimee_ids = None  # upstream startup profiling, no real request
         else:

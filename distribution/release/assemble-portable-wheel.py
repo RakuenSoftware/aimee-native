@@ -13,7 +13,7 @@ from urllib.parse import urlsplit
 import re
 
 
-def assemble(wheel, launcher, library, notices, output, gguf_wheel_url, gguf_wheel_sha256):
+def assemble(wheel, launcher, library, notices, output, gguf_wheel_url, gguf_wheel_sha256, version='0.2.2'):
     url = urlsplit(gguf_wheel_url)
     if url.scheme != 'https' or not url.hostname or url.username or url.password or url.fragment:
         raise ValueError('Expected credential-free HTTPS dependency URL')
@@ -29,10 +29,10 @@ def assemble(wheel, launcher, library, notices, output, gguf_wheel_url, gguf_whe
         raise ValueError('Expected compiled aimee-vllm wheel')
     # A new version is required so pip upgrades earlier development wheels.
     old_info = info
-    info = 'aimee_vllm-0.2.1.dist-info'
+    info = f'aimee_vllm-{version}.dist-info'
     files = {(info + name[len(old_info):] if name.startswith(old_info + '/') else name): data
              for name, data in files.items()}
-    files[info + '/METADATA'] = re.sub(rb'(?m)^Version: [^\r\n]+', b'Version: 0.2.1', files[info + '/METADATA'])
+    files[info + '/METADATA'] = re.sub(rb'(?m)^Version: [^\r\n]+', f'Version: {version}'.encode(), files[info + '/METADATA'])
     for name in files:
         if name.startswith('aimee_vllm/') and name.endswith(('.py', '.pyc', '.pyx', '.c')) and name not in ('aimee_vllm/__init__.py', 'aimee_vllm/kernel.py', 'aimee_vllm/decoder_kernel.py'):
             raise ValueError('Private implementation source in wheel: ' + name)
@@ -69,7 +69,7 @@ def assemble(wheel, launcher, library, notices, output, gguf_wheel_url, gguf_whe
     parts = wheel.name.split('-')
     if len(parts) != 5:
         raise ValueError('Expected untagged input wheel')
-    parts[1] = '0.2.1'
+    parts[1] = version
     dest = output / '-'.join(parts[:2] + ['1'] + parts[2:])
     with dest.open('xb') as f, zipfile.ZipFile(f, 'w', zipfile.ZIP_DEFLATED) as z:
         for name, data in sorted(files.items()):
@@ -86,5 +86,6 @@ if __name__ == '__main__':
         p.add_argument('--' + name, required=True, type=Path)
     p.add_argument('--gguf-wheel-url', required=True)
     p.add_argument('--gguf-wheel-sha256', required=True)
+    p.add_argument('--version', default='0.2.2')
     a = p.parse_args()
-    print(assemble(a.wheel, a.launcher, a.library, a.notices, a.output, a.gguf_wheel_url, a.gguf_wheel_sha256))
+    print(assemble(a.wheel, a.launcher, a.library, a.notices, a.output, a.gguf_wheel_url, a.gguf_wheel_sha256, a.version))

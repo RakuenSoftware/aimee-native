@@ -6,7 +6,8 @@ portable native-memory GPU operations. It does not contain vLLM, PyTorch,
 an operating system, model weights, a container runtime, or the private encoder.
 Aimee supplies authorized model-specific native memory through the connection.
 
-Version 0.2.0 removes the `gfx1100` binary-kernel requirement and the exact
+Version 0.2.1 includes the authorized empty-selection correction. Its portable
+GPU path, unchanged from 0.2.0, removes the `gfx1100` binary-kernel requirement and the exact
 ROCm/PyTorch/Triton build locks. The plugin uses the installed PyTorch runtime
 for allocations/transfers and Triton to compile its attention and lossless
 transport operations for the active **CUDA or HIP** GPU. Users do not compile
@@ -27,7 +28,7 @@ vLLM's PyTorch sampler. This is an upstream runtime setting; existing environmen
 with a working sampler do not need to change it.
 
 ```sh
-python -m pip install ./aimee_vllm-0.2.0-1-cp312-cp312-linux_x86_64.whl
+python -m pip install ./aimee_vllm-0.2.1-1-cp312-cp312-linux_x86_64.whl
 # The scoped token is read from stdin, never from a command-line argument.
 aimee-native connect https://your-aimee-endpoint
 aimee-native serve --config ./aimee.json
@@ -36,7 +37,7 @@ aimee-native serve --config ./aimee.json
 For a GGUF model, install the wheel with its `gguf` extra:
 
 ```sh
-python -m pip install './aimee_vllm-0.2.0-1-cp312-cp312-linux_x86_64.whl[gguf]'
+python -m pip install './aimee_vllm-0.2.1-1-cp312-cp312-linux_x86_64.whl[gguf]'
 ```
 
 The extra supplies upstream's existing Triton GGUF loader implementation,
@@ -90,6 +91,20 @@ quantized K/V cache and multimodal prefix ranges are not currently supported.
 The launcher continues to disable graph capture, prefix caching and asynchronous
 scheduling to preserve request ownership. These are separate from GPU portability.
 
+Source after the published 0.2.1 wheel contains opt-in work on those limits:
+`serve.enable_prefix_caching`, `serve.async_scheduling`,
+`serve.enable_model_compilation`, and `serve.enable_piecewise_graphs`.
+They are **not in the signed 0.2.1 wheel** and are not
+part of its supported settings yet. Prefix caching uses a server-generated
+identity tied to the recipient, catalogue revision and selected publication;
+the caller's `cache_salt` is replaced. Asynchronous scheduling waits for the
+previous GPU forward before releasing native pointers. Piecewise graph mode
+captures compiled model segments while native attention remains outside the
+graph; full graph capture remains unsupported. Each setting needs a new
+installed-wheel GPU comparison before publication as a supported feature.
+The V2 model runner remains disabled: it exposes the request batch after the
+forward pass, too late for native attention to associate requests with banks.
+
 The private memory encoder, publication service, and Rust storage implementation
 are not distributed as source. The generic attention and bit-unpacking operations
 are supplied as runtime-compilation inputs; this deliberately replaces the
@@ -97,8 +112,9 @@ architecture-specific binary bank. No vLLM fork is required.
 
 ## Controlled download
 
-The portable candidate is version 0.2.0. Its signed download and execution
-coverage are recorded in the [validation report](../../docs/validation/portable-plugin-20260930.md).
+The current candidate is version 0.2.1. Its portable GPU execution coverage
+is recorded in the [0.2.0 validation report](../../docs/validation/portable-plugin-20260930.md),
+and its changed empty-selection path in the [0.2.1 validation report](../../docs/validation/authorized-empty-20260930.md).
 On the private origin, use the provisioned release CA with pip's `--cert` option.
 The earlier 0.1.1 architecture-specific package remains an immutable prior release.
 
@@ -107,5 +123,10 @@ The earlier 0.1.1 architecture-specific package remains an immutable prior relea
 Version 0.2.1 supports an explicit, freshly authorized “no relevant memory”
 response from the hosted service. Such a request runs with no native bank,
 including when earlier requests used resident memory. It still rejects failed
-or unavailable authorization. Hosted service and plugin must both support this
-response; no new GPU kernels, model weights or runtime fork are required.
+or unavailable authorization. **Upgrade the Aimee hosted service and plugin
+together** before serving empty selections. An older hosted service does not
+authorize them. No new GPU kernels, model weights or runtime fork are required.
+
+The signed [0.2.1 manifest](https://192.168.0.126:8445/plugins/portable/0.2.1/manifest.json)
+identifies the current private wheel. Its SHA-256 is
+`b3dc503d0bbec6f0f303fb7a2829ac1773d8b5bd0783041929d707351660bc2f`.

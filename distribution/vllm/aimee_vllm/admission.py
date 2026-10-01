@@ -9,6 +9,7 @@ import os
 from pathlib import Path
 from .store import PreparedStore
 from .stream_completion import StreamCompletion
+from .cache_identity import cache_salt
 
 class Ledger:
     def __init__(self, lib, budget):
@@ -112,8 +113,16 @@ class NativeAdmission:
             if bank is None:return await self.error(send,400,'native publication unavailable')
             if not self.ledger.acquire(*bank):return await self.error(send,429,'native memory busy; retry after active requests finish')
             extras['aimee_catalog_digest']=self.catalog_digest
+        if self.config.get('serve',{}).get('enable_prefix_caching',False):
+            # vLLM hashes this salt into the first prefix block, so every
+            # downstream text K/V block belongs to this authorized revision.
+            # Never accept a caller's cache namespace for native execution.
+            body['cache_salt']=cache_salt(self.config['recipient'],self.catalog_digest,publication)
+        else:
+            body.pop('cache_salt',None)
         if publication is not None or selector:
             body['vllm_xargs']=extras
+        if publication is not None or selector or self.config.get('serve',{}).get('enable_prefix_caching',False):
             raw=json.dumps(body).encode()
             scope=dict(scope)
             scope['headers']=[(k,v) for k,v in scope.get('headers',[]) if k.lower()!=b'content-length']+[(b'content-length',str(len(raw)).encode())]
