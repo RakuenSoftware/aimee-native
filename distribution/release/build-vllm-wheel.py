@@ -5,7 +5,7 @@ Run in the pinned runtime's Python with Cython/setuptools/wheel installed.
 import argparse,os,pathlib,shutil,subprocess,sys,tempfile,zipfile
 p=argparse.ArgumentParser();p.add_argument('--output',required=True);p.add_argument('--version',default='0.2.2');a=p.parse_args()
 repo=pathlib.Path(__file__).resolve().parents[2];out=pathlib.Path(a.output).resolve();out.mkdir(parents=True,exist_ok=True)
-modules=['stream_completion','selection','gguf_loader','control','admission','backend','binary_kernel','cache','cache_identity','cli','state','store','worker','runtime_ops','compatibility']
+modules=['stream_completion','selection','gguf_loader','control','admission','backend','binary_kernel','cache','cache_identity','cli','state','store','worker','runtime_ops','runtime_owner','compatibility']
 with tempfile.TemporaryDirectory(prefix='aimee-client-build-') as tmp:
  root=pathlib.Path(tmp);pkg=root/'aimee_vllm';pkg.mkdir()
  source=repo/'distribution/vllm/aimee_vllm'
