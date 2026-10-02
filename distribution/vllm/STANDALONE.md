@@ -4,16 +4,18 @@ Enroll the standard Aimee thin client using the invitation issued in Aimee's
 Settings → Clients and the existing `aimee remote set URL INVITATION` command.
 The thin client pins TLS and enrolls its certificate. Then run
 `aimee-native connect-aimee` to use that enrolled identity for native memory.
-`connect-aimee` is not in the staged 0.2.2 wheel, and the current public Aimee
-release does not yet provide the native delivery service. See
+`connect-aimee` is not in the staged 0.2.2 wheel. The self-hosted release under
+development obtains a versioned memory primitive from the latest Aimee server;
+the inference host prepares model-specific memory locally. See
 [the public-install gate](../../docs/validation/public-native-aimee-enrollment-20261002.md)
 before describing the staged preview as a general public release.
 
 Install the compiled wheel into your existing supported vLLM environment. The
-wheel contains the plugin, Rust memory consumer and connection client, and
-portable native-memory GPU operations. It does not contain vLLM, PyTorch,
-an operating system, model weights, a container runtime, or the private encoder.
-Aimee supplies authorized model-specific native memory through the connection.
+planned self-hosted wheel contains the plugin, Rust memory consumer and
+connection client, portable GPU operations and a compiled local encoder. It
+does not contain vLLM, PyTorch, an operating system, model weights or a
+container runtime. Aimee supplies authorized source records through the
+enrolled thin client; model-specific preparation happens beside vLLM.
 
 Version 0.2.1 includes the authorized empty-selection correction. Its portable
 GPU path, unchanged from 0.2.0, removes the `gfx1100` binary-kernel requirement and the exact
@@ -43,6 +45,12 @@ aimee-native connect https://your-aimee-endpoint
 aimee-native serve --config ./aimee.json
 ```
 
+Those commands document the controlled 0.2.1 preview. For the pending
+self-hosted 0.2.3 wheel, enroll the standard Aimee thin client first, then use
+`aimee-native connect-aimee` followed by `aimee-native serve --config
+./aimee.json`. The plugin reuses the enrolled certificate, TLS pin and token;
+no separate plugin enrollment or server-side model installation is required.
+
 For a GGUF model, install the wheel with its `gguf` extra:
 
 ```sh
@@ -54,19 +62,20 @@ without its optional hardware-specific binary. All retained upstream code is
 unchanged. Aimee uses its loader interfaces, not its patching entry point.
 The dependency URL and hash are pinned, and the default matrix backend is
 Triton on both CUDA and HIP. No per-GPU dependency selection is necessary.
-The configuration references your model files and the native model identity
-authorized by Aimee:
+The configuration references your local model files:
 
 ```json
 {
   "model": "/models/my-model",
-  "native_model": "<Aimee native model identity>",
   "serve": {"tensor_parallel_size": 2, "port": 8080}
 }
 ```
 
-The model directory includes the matching `config.json` and tokenizer. For
-GGUF, add `gguf_weights` with the absolute weight-file path.
+The model directory includes the matching `config.json`, tokenizer and
+safetensors for initial local memory preparation. For GGUF serving, add
+`gguf_weights` with the absolute weight-file path; the local safetensors are
+still required by the current encoder. GGUF-only local preparation remains
+unvalidated.
 `gguf_matrix_backend` defaults to `triton`. Other serving
 limits remain the existing plugin's supported settings. The Rust client
 obtains fresh authorization, initializes local memory, and supervises the

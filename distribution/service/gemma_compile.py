@@ -6,7 +6,10 @@ import time
 from pathlib import Path
 import torch
 from transformers import AutoTokenizer, Gemma4UnifiedForConditionalGeneration
-from publisher import publish
+try:
+    from .publisher import publish
+except ImportError:  # private standalone preparation tests
+    from publisher import publish
 
 
 class GemmaCompiler:
@@ -23,8 +26,14 @@ class GemmaCompiler:
         self.model = None
         self.cache = None
         self.last_metrics = {}
-        from reuse import ReusePlanner
-        self.planner = ReusePlanner(reuse_library, max_memory_tokens) if reuse_library else None
+        if reuse_library:
+            try:
+                from .reuse import ReusePlanner
+            except ImportError:  # private standalone preparation tests
+                from reuse import ReusePlanner
+            self.planner = ReusePlanner(reuse_library, max_memory_tokens)
+        else:
+            self.planner = None
 
     def load(self):
         if self.model is None:

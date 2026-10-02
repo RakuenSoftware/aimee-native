@@ -1,6 +1,7 @@
 use aimee_native_launcher as native;
 use anyhow::{Context, Result, ensure};
 use clap::{Parser, Subcommand};
+use sha2::{Digest, Sha256};
 use std::os::unix::process::CommandExt;
 use std::os::unix::fs::{MetadataExt, OpenOptionsExt, PermissionsExt};
 use std::{
@@ -63,6 +64,15 @@ enum Action {
         query: String,
         #[arg(long, default_value_t = 1024)]
         limit_tokens: u32,
+    },
+    #[command(hide = true)]
+    PublishLocal {
+        #[arg(long)]
+        output: PathBuf,
+        #[arg(long)]
+        identity: String,
+        #[arg(long)]
+        key: String,
     },
     /// Install a certified model/runtime from the configured release service.
     Install { model: String },
@@ -136,6 +146,44 @@ fn read_aimee_credentials(home: &std::path::Path) -> Result<AimeeCredentials> {
     identity.extend(private_aimee_file(&home.join("tls/client.key"))?);
     reqwest::Identity::from_pem(&identity)?;
     Ok(AimeeCredentials { endpoint, token, ca, identity })
+}
+
+fn local_model_fingerprint(model: &std::path::Path, gguf: Option<&str>) -> Result<String> {
+    let mut files = Vec::new();
+    for entry in fs::read_dir(model)? {
+        let entry = entry?;
+        let name = entry.file_name().to_string_lossy().into_owned();
+        let relevant = name.ends_with(".safetensors")
+            || matches!(name.as_str(), "config.json" | "tokenizer.json" | "tokenizer.model"
+                | "tokenizer_config.json" | "special_tokens_map.json" | "added_tokens.json"
+                | "vocab.json" | "merges.txt" | "chat_template.jinja");
+        if relevant {
+            ensure!(entry.metadata()?.is_file(), "model artifact must be a regular file: {name}");
+            files.push((name, entry.path()));
+        }
+    }
+    ensure!(files.iter().any(|(name, _)| name.ends_with(".safetensors")),
+        "local native preparation requires model safetensors on the inference host");
+    if let Some(path) = gguf {
+        let path = fs::canonicalize(path)?;
+        ensure!(path.is_file(), "GGUF weights must be a regular file");
+        files.push(("serving.gguf".into(), path));
+    }
+    files.sort_by(|a, b| a.0.cmp(&b.0));
+    let mut digest = Sha256::new();
+    digest.update(b"aimee-local-model-v1\0");
+    let mut buffer = [0u8; 1024 * 1024];
+    for (name, path) in files {
+        digest.update((name.len() as u64).to_le_bytes());
+        digest.update(name.as_bytes());
+        let mut file = fs::File::open(path)?;
+        loop {
+            let count = file.read(&mut buffer)?;
+            if count == 0 { break; }
+            digest.update(&buffer[..count]);
+        }
+    }
+    Ok(hex::encode(digest.finalize()))
 }
 fn connect_from_aimee(root: &std::path::Path, home: &std::path::Path) -> Result<()> {
     let credentials = read_aimee_credentials(home)?;
@@ -324,6 +372,9 @@ fn run() -> Result<()> {
                 &connection, &query, limit_tokens)?;
             println!("{}", serde_json::json!({"records":primitive.records.len(),"schema":primitive.schema}));
         }
+        Action::PublishLocal { output, identity, key } => {
+            native::local_publisher::publish(io::stdin().lock(), &output, &identity, &key)?;
+        }
         Action::Install { model } => {
             ensure!(native::component(&model), "invalid model identifier");
             let key = release_key()?;
@@ -394,12 +445,23 @@ fn run() -> Result<()> {
             let _runtime_lock = native::runtime::lock(&root)?;
             let mut settings: serde_json::Value = serde_json::from_slice(&fs::read(config)?)?;
             let model = fs::canonicalize(settings["model"].as_str().context("model directory required")?)?;
-            let native_model = settings["native_model"].as_str().context("native_model required")?.to_owned();
+            let model_config_sha256 = hex::encode(Sha256::digest(fs::read(model.join("config.json"))?));
+            let fingerprint = local_model_fingerprint(&model, settings["gguf_weights"].as_str())?;
+            let native_model = format!("local-{}", &fingerprint[..24]);
             let ca = connection.ca_file.as_ref().map(fs::read).transpose()?;
             let identity = connection.client_identity.as_ref().map(fs::read).transpose()?;
             let http = tls_client(ca.as_deref(), identity.as_deref(), Some(&connection.endpoint), connection.connect_address)?;
             let token = fs::read_to_string(&connection.token_file)?;
-            let profile = native::delivery::bootstrap_for_model(&http, &connection.endpoint, &token, Some(&native_model))?;
+            native::primitive::fetch_with_token(&http, &connection.endpoint, &token,
+                "native memory connection", 64)?;
+            let mut recipient_identity = Sha256::new();
+            recipient_identity.update(b"aimee-local-recipient-v1\0");
+            recipient_identity.update(connection.endpoint.as_bytes());
+            recipient_identity.update(token.as_bytes());
+            if let Some(identity) = &identity { recipient_identity.update(identity); }
+            let profile = native::delivery::Profile { schema:1,
+                recipient:format!("self-{}", hex::encode(recipient_identity.finalize())),
+                model:native_model.clone(), model_config_sha256 };
             let d: native::runtime::Defaults = serde_json::from_value(serde_json::json!({
                 "schema":1, "native_model":native_model, "model_config_sha256":profile.model_config_sha256,
                 "host_memory_budget":settings.get("host_memory_budget").cloned().unwrap_or(serde_json::json!(1073741824u64)),
@@ -414,15 +476,36 @@ fn run() -> Result<()> {
                 .or_else(|| settings["library"].as_str().map(PathBuf::from))
                 .context("install the complete Aimee plugin wheel")?;
             serving["library"] = serde_json::json!(fs::canonicalize(library)?);
+            let python = std::env::var_os("AIMEE_VLLM_PYTHON").context("use the installed plugin entry point")?;
+            let limit_tokens: u32 = settings["max_memory_tokens"].as_u64().unwrap_or(1024).try_into()?;
+            let compiler: Vec<String> = match settings.get("local_compiler") {
+                Some(value) => serde_json::from_value(value.clone())?,
+                None => vec![fs::canonicalize(&python)?.to_string_lossy().into_owned(),
+                    "-c".into(), "from aimee_vllm.native_compiler.local_compile import main; main()".into(),
+                    "--model".into(), model.to_string_lossy().into_owned(),
+                    "--max-memory-tokens".into(), limit_tokens.to_string()],
+            };
+            let model_config: serde_json::Value = serde_json::from_slice(&fs::read(model.join("config.json"))?)?;
+            let position_policy = if model_config["model_type"] == "qwen3_5" { "nonnegative" } else { "negative" };
+            let local = native::local_delivery::Settings {
+                compiler,
+                model_config_sha256:profile.model_config_sha256.clone(),
+                runtime_profile:format!("{}-vllm", native_model),
+                encoding_revision:"local-primitive-v1".into(),
+                position_policy:position_policy.into(),
+                limit_tokens,
+            };
+            local.validate()?;
+            serving["local_preparation"] = serde_json::to_value(&local)?;
             for key in ["gguf_weights", "mm_proj", "gguf_matrix_backend"] {
                 if let Some(value) = settings.as_object_mut().and_then(|s| s.remove(key)) {
                     serving[key] = value;
                 }
             }
             serving["serve"]["host"] = serde_json::json!("127.0.0.1");
+            native::atomic(&root.join("serving.json"), &serde_json::to_vec(&serving)?)?;
             let runtime_config = root.join("runtime.json");
             native::atomic(&runtime_config, &serde_json::to_vec(&serving)?)?;
-            let python = std::env::var_os("AIMEE_VLLM_PYTHON").context("use the installed plugin entry point")?;
             let mut cmd = Command::new(python);
             cmd.args(["-c", "from aimee_vllm.cli import main; main()", "--config"]).arg(runtime_config).env_remove("AIMEE_TOKEN");
             return native::runtime::supervise(&root, &mut cmd, &defaults.native_model,
@@ -677,6 +760,21 @@ mod aimee_enrollment_tests {
         assert!(credentials.identity.windows(17).any(|v| v == b"BEGIN PRIVATE KEY"));
         fs::remove_file(dir.path().join("remote-ca.pem")).unwrap();
         assert!(read_aimee_credentials(dir.path()).unwrap().ca.is_none());
+    }
+
+    #[test]
+    fn local_bank_identity_changes_with_checkpoint_bytes() {
+        let dir = tempfile::tempdir().unwrap();
+        fs::write(dir.path().join("config.json"), b"model").unwrap();
+        let checkpoint = dir.path().join("model.safetensors");
+        assert!(local_model_fingerprint(dir.path(), None).is_err());
+        fs::write(&checkpoint, b"first weights").unwrap();
+        let first = local_model_fingerprint(dir.path(), None).unwrap();
+        fs::write(&checkpoint, b"other weights").unwrap();
+        assert_ne!(first, local_model_fingerprint(dir.path(), None).unwrap());
+        let gguf = dir.path().join("model.gguf");
+        fs::write(&gguf, b"served weights").unwrap();
+        assert_ne!(first, local_model_fingerprint(dir.path(), gguf.to_str()).unwrap());
     }
 
 }

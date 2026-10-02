@@ -1,5 +1,5 @@
 //! Host-side selection broker. No private preparation or credentials enter vLLM.
-use crate::{Config, atomic, delivery};
+use crate::{Config, atomic, delivery, local_delivery};
 use anyhow::{Context, Result, ensure};
 use serde::Deserialize;
 use serde_json::{Value, json};
@@ -66,6 +66,15 @@ pub(crate) fn requires_restart(path: &Path) -> Result<bool> {
 struct Query {
     query: String,
 }
+fn select_current(http: &reqwest::blocking::Client, connection: &Config, query: &str,
+    recipient: &str, model: &str, disk_budget: u64,
+    local: Option<&local_delivery::Settings>) -> Result<delivery::Selection> {
+    match local {
+        Some(settings) => local_delivery::select(http, connection, query, recipient,
+            model, disk_budget, settings),
+        None => delivery::select(http, connection, query, recipient, model, disk_budget),
+    }
+}
 
 pub fn serve(
     http: reqwest::blocking::Client,
@@ -75,6 +84,8 @@ pub fn serve(
     disk_budget: u64,
 ) -> Result<()> {
     let c: Value = serde_json::from_slice(&fs::read(serving)?)?;
+    let local: Option<local_delivery::Settings> = c.get("local_preparation")
+        .map(|value| serde_json::from_value(value.clone())).transpose()?;
     let recipient = c["recipient"].as_str().context("missing recipient")?;
     let socket = Path::new(
         c["selection_socket"]
@@ -123,13 +134,14 @@ pub fn serve(
                 "invalid selection request"
             );
             let query: Query = serde_json::from_str(&line)?;
-            let selection = delivery::select(
+            let selection = select_current(
                 &http,
                 &connection,
                 &query.query,
                 recipient,
                 model,
                 disk_budget,
+                local.as_ref(),
             )?;
             let raw = fs::read(catalog)?;
             let mut cat: Value = serde_json::from_slice(&raw)?;
@@ -157,13 +169,14 @@ pub fn serve(
                         )?;
                         // A cold activation can take time. Recheck authority after
                         // refresh, just as the nonempty publication path does.
-                        let checked = delivery::select(
+                        let checked = select_current(
                             &http,
                             &connection,
                             &query.query,
                             recipient,
                             model,
                             disk_budget,
+                            local.as_ref(),
                         );
                         if !matches!(checked, Ok(delivery::Selection::Empty(ref current)) if current.authorized_view == empty.authorized_view)
                         {
@@ -213,13 +226,14 @@ pub fn serve(
             // Draining an old stream can outlive the lease that produced the
             // replacement. Obtain fresh authority after the drain, and admit
             // only if it still identifies the exact installed publication.
-            let renewed = delivery::select(
+            let renewed = select_current(
                 &http,
                 &connection,
                 &query.query,
                 recipient,
                 model,
                 disk_budget,
+                local.as_ref(),
             );
             if !matches!(renewed, Ok(delivery::Selection::Memory(ref current, ref current_root))
                 if same_publication(&offer, &root, current, current_root))

@@ -19,6 +19,7 @@ with zipfile.ZipFile(a.wheel) as z:
     assert len(names) == len(set(names)), 'duplicate members'
     info = next(n.rsplit('/', 1)[0] for n in names if n.endswith('.dist-info/METADATA'))
     metadata = BytesParser().parsebytes(z.read(info + '/METADATA'))
+    version = tuple(map(int, metadata['Version'].split('.')[:3]))
     assert 'gguf' in metadata.get_all('Provides-Extra', []), 'GGUF extra not in parsed metadata'
     assert any('vllm-gguf-plugin @ https://' in v and '#sha256=' in v for v in metadata.get_all('Requires-Dist', []))
     compatibility = json.loads(z.read('aimee_vllm/native/compatibility.json'))
@@ -36,7 +37,11 @@ with zipfile.ZipFile(a.wheel) as z:
         assert n.startswith(('aimee_vllm/', info + '/'))
         assert not Path(n).is_absolute() and '..' not in Path(n).parts
         assert not n.endswith(('.gguf', '.safetensors', '.pt', '.pth', '.pyc', '.c', '.cpp', '.pyx'))
-        if n.endswith('.py'): assert n in ['aimee_vllm/__init__.py', 'aimee_vllm/client.py'] + (['aimee_vllm/kernel.py', 'aimee_vllm/decoder_kernel.py'] if portable else [])
+        if n.endswith('.py'): assert n in ['aimee_vllm/__init__.py', 'aimee_vllm/client.py',
+            'aimee_vllm/native_compiler/__init__.py'] + (['aimee_vllm/kernel.py', 'aimee_vllm/decoder_kernel.py'] if portable else [])
+    if version >= (0, 2, 3):
+        for module in ('publisher', 'checkpoint_weights', 'gemma_compile', 'bounded_compile', 'local_compile'):
+            assert len([n for n in names if n.startswith('aimee_vllm/native_compiler/' + module + '.') and n.endswith('.so')]) == 1
     records = list(csv.reader(io.StringIO(z.read(info + '/RECORD').decode())))
     assert {r[0] for r in records} == set(names)
     for n, digest, size in records:

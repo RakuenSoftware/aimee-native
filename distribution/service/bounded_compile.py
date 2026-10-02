@@ -11,8 +11,12 @@ import time
 import torch
 from accelerate import cpu_offload, init_empty_weights
 from transformers import AutoConfig, AutoTokenizer, Gemma4TextModel, Qwen3_5TextModel
-from checkpoint_weights import CheckpointWeights
-from gemma_compile import GemmaCompiler
+try:
+    from .checkpoint_weights import CheckpointWeights
+    from .gemma_compile import GemmaCompiler
+except ImportError:  # private standalone preparation tests
+    from checkpoint_weights import CheckpointWeights
+    from gemma_compile import GemmaCompiler
 
 
 class BoundedTextCompiler(GemmaCompiler):

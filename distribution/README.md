@@ -8,10 +8,12 @@ permissions, selection and scoped publication.
 
 The product is the compiled Aimee vLLM plugin connected to Aimee. Users provide
 an existing supported vLLM/PyTorch/GPU runtime. Distribute the plugin wheel,
-Rust consumer library, runtime-compiled GPU operations, and the client
-connection/configuration support. Preparation remains with Aimee's private
-service. Do not require a fork or ship the upstream operating-system/runtime
-image as a mandatory product dependency.
+Rust consumer library, runtime-compiled GPU operations, compiled local encoder,
+and client connection support. The enrolled inference host requests a
+model-neutral memory primitive from Aimee and prepares model-specific native
+memory beside vLLM. Aimee never needs the model weights. Do not require a fork
+or ship the upstream operating-system/runtime image as a mandatory product
+dependency.
 
 The pinned container is a build and validation fixture. Its bundled Broadcom
 network driver is not an Aimee plugin dependency, and reviewing redistribution
@@ -30,7 +32,9 @@ Triton code without an optional architecture-specific binary. The vLLM interface
 range remains explicit. See [portable validation](../docs/validation/portable-plugin-20260930.md)
 for execution versus compilation coverage. The same wheel also passed
 [physical RTX 5080 validation](../docs/validation/cuda-5080-20260930.md), including
-216 exact memory activations and live Gemma12 consumption. Preparation remains in Aimee.
+216 exact memory activations and live Gemma12 consumption. That preview used
+server-prepared memory; the self-hosted path prepares memory on the enrolled
+inference host.
 
 ## Runtime decision: unmodified vLLM
 
@@ -112,14 +116,12 @@ marker; normal launchers reject them. Production gate evidence must match the
 exact packaged artifact set, not merely the upstream runtime commit.
 That container distribution requires a supported host GPU driver and container runtime.
 The standalone plugin requires only the supported existing vLLM environment.
-The live Aimee account endpoint now authenticates and delivers scoped native
-artifacts. Client enrollment and an operator-approved publication are required;
-the release does not grant access to an entire user or general knowledge base.
-
-Preparation stays server-side. Users receive approved local representations and
-a compiled consumer. Owning the machine still permits inspecting usable tensors
-and binary behavior; binary packaging raises the cost of reconstruction rather
-than guaranteeing secrecy.
+The preview Aimee account endpoint authenticates and delivers scoped native
+artifacts. For the self-hosted path, the latest Aimee server authenticates its
+ordinary enrolled thin client and returns a versioned, selected source primitive.
+The host prepares and caches its own native representation. Owning the machine
+still permits inspecting usable tensors and binary behavior; binary packaging
+raises the cost of reconstruction rather than guaranteeing secrecy.
 
 The active work order and acceptance criteria are in
 [the vLLM release plan](../docs/proposals/pending/vllm-release-plan.md).

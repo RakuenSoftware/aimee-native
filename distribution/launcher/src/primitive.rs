@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashSet;
 use std::fs;
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 pub struct SourceVersion {
     pub schema_version: u32,
     pub owner_id: String,
@@ -15,14 +15,14 @@ pub struct SourceVersion {
     pub record_revision: String,
 }
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 pub struct SourceRecord {
     pub id: u64,
     pub content: String,
     pub version: SourceVersion,
 }
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 pub struct Primitive {
     pub schema: u32,
     pub records: Vec<SourceRecord>,

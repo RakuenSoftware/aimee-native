@@ -11,9 +11,22 @@ from pathlib import Path
 import zipfile
 from urllib.parse import urlsplit
 import re
+import subprocess
 
 
-def assemble(wheel, launcher, library, notices, output, gguf_wheel_url, gguf_wheel_sha256, version='0.2.2'):
+def check_glibc(path, ceiling=(2, 34)):
+    symbols = subprocess.run(['objdump', '-T', str(path)], check=True,
+                             capture_output=True, text=True).stdout
+    required = [tuple(map(int, match.groups())) for match in
+                re.finditer(r'GLIBC_(\d+)\.(\d+)(?!\.)', symbols)]
+    if required and max(required) > ceiling:
+        raise ValueError(f'{path} requires glibc {max(required)}, above {ceiling}')
+
+
+def assemble(wheel, launcher, library, notices, output, gguf_wheel_url, gguf_wheel_sha256,
+             version='0.2.2', compiler_dir=None):
+    if tuple(map(int, version.split('.')[:3])) >= (0, 2, 3) and compiler_dir is None:
+        raise ValueError('Self-hosted native release requires compiled local encoder')
     url = urlsplit(gguf_wheel_url)
     if url.scheme != 'https' or not url.hostname or url.username or url.password or url.fragment:
         raise ValueError('Expected credential-free HTTPS dependency URL')
@@ -39,9 +52,22 @@ def assemble(wheel, launcher, library, notices, output, gguf_wheel_url, gguf_whe
     files['aimee_vllm/client.py'] = (Path(__file__).resolve().parents[1] / 'vllm/aimee_vllm/client.py').read_bytes()
     files['aimee_vllm/native/aimee-native'] = launcher.read_bytes()
     files['aimee_vllm/native/libaimee_native.so'] = library.read_bytes()
+    if compiler_dir is not None:
+        modules = ('publisher', 'checkpoint_weights', 'gemma_compile',
+                   'bounded_compile', 'local_compile')
+        files['aimee_vllm/native_compiler/__init__.py'] = b''
+        for module in modules:
+            matches = list(compiler_dir.glob(module + '.*.so'))
+            if len(matches) != 1 or matches[0].read_bytes()[:4] != b'\x7fELF':
+                raise ValueError('Missing compiled local encoder: ' + module)
+            files['aimee_vllm/native_compiler/' + matches[0].name] = matches[0].read_bytes()
     for path in [launcher, library]:
         if path.read_bytes()[:4] != b'\x7fELF':
             raise ValueError('Expected compiled ELF: ' + str(path))
+        check_glibc(path)
+    if compiler_dir is not None:
+        for module in modules:
+            check_glibc(next(compiler_dir.glob(module + '.*.so')))
     for path in notices.rglob('*'):
         if path.is_file():
             files[info + '/licenses/' + str(path.relative_to(notices))] = path.read_bytes()
@@ -87,5 +113,6 @@ if __name__ == '__main__':
     p.add_argument('--gguf-wheel-url', required=True)
     p.add_argument('--gguf-wheel-sha256', required=True)
     p.add_argument('--version', default='0.2.2')
+    p.add_argument('--compiler-dir', type=Path)
     a = p.parse_args()
-    print(assemble(a.wheel, a.launcher, a.library, a.notices, a.output, a.gguf_wheel_url, a.gguf_wheel_sha256, a.version))
+    print(assemble(a.wheel, a.launcher, a.library, a.notices, a.output, a.gguf_wheel_url, a.gguf_wheel_sha256, a.version, a.compiler_dir))
