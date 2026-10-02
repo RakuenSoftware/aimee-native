@@ -14,6 +14,8 @@ class RuntimeOwner:
         library.aimee_vllm_runtime_begin.restype = ctypes.c_char_p
         library.aimee_vllm_runtime_refresh.argtypes = [ctypes.c_void_p]
         library.aimee_vllm_runtime_refresh.restype = ctypes.c_char_p
+        library.aimee_vllm_attention_plan.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
+        library.aimee_vllm_attention_plan.restype = ctypes.c_char_p
         library.aimee_vllm_runtime_close.argtypes = [ctypes.c_void_p]
         payload = {k: config[k] for k in ('catalog', 'model', 'recipient')}
         self.handle = library.aimee_vllm_runtime_open(json.dumps(payload, separators=(',', ':')).encode())
@@ -37,6 +39,10 @@ class RuntimeOwner:
 
     def refresh(self):
         return self._decode(self.lib.aimee_vllm_runtime_refresh(self.handle))
+
+    def attention_plan(self, request):
+        return self._decode(self.lib.aimee_vllm_attention_plan(
+            self.handle, json.dumps(request, separators=(',', ':')).encode()))
 
     def close(self):
         if getattr(self, 'handle', None):
