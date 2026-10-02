@@ -14,6 +14,7 @@ use std::{
 
 pub mod broker;
 pub mod delivery;
+pub mod primitive;
 pub mod runtime;
 
 pub const ABI: u32 = 1;

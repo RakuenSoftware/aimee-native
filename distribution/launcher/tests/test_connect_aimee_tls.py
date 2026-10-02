@@ -1,4 +1,4 @@
-"""End-to-end thin-client identity bootstrap against a disposable mTLS server.
+"""End-to-end thin-client primitive access against a disposable mTLS server.
 
 Usage: python3 test_connect_aimee_tls.py /path/to/aimee-native
 """
@@ -36,14 +36,22 @@ def cert(base, name, extra, authority=None):
     return key, crt
 
 class Handler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        if (self.path != "/v1/native/bootstrap"
+    def do_POST(self):
+        if (self.path != "/v1/native/primitive"
                 or self.headers.get("Authorization") != "Bearer enrolled-token"
                 or not self.connection.getpeercert()):
             self.send_error(403)
             return
-        body = json.dumps({"schema": 1, "recipient": "owner", "model": "gemma",
-                           "model_config_sha256": "b" * 64}).encode()
+        request = json.loads(self.rfile.read(int(self.headers["Content-Length"])))
+        if (request.get("store") != "user" or request.get("task_hint") not in
+                ("native memory connection", "test query")):
+            self.send_error(400)
+            return
+        records = [] if request["task_hint"] == "native memory connection" else [
+            {"id": 7, "content": "fixture fact", "version": {"schema_version": 1,
+             "owner_id": "00000000-0000-0000-0000-000000000001",
+             "record_id": "7", "record_revision": "3"}}]
+        body = json.dumps({"schema": 1, "records": records}).encode()
         self.send_response(200)
         self.send_header("Content-Type", "application/json")
         self.send_header("Content-Length", str(len(body)))
@@ -80,7 +88,12 @@ with tempfile.TemporaryDirectory() as tmp:
     environment = dict(os.environ, NO_PROXY="localhost,127.0.0.1", no_proxy="localhost,127.0.0.1")
     done = subprocess.run(command, text=True, capture_output=True, env=environment)
     assert done.returncode == 0, (done.stdout, done.stderr)
-    assert json.loads((root / "native-profile.json").read_text())["recipient"] == "owner"
+    assert json.loads((root / "config.json").read_text())["endpoint"].rstrip("/") == endpoint
+    assert not (root / "native-profile.json").exists()
+    fetched = subprocess.run([LAUNCHER, "--root", str(root), "fetch-primitive", "test query"],
+                             text=True, capture_output=True, env=environment)
+    assert fetched.returncode == 0, (fetched.stdout, fetched.stderr)
+    assert json.loads(fetched.stdout) == {"records": 1, "schema": 1}
     os.chmod(home / "tls/client.key", 0o644)
     refused = subprocess.run(command, text=True, capture_output=True, env=environment)
     assert refused.returncode != 0

@@ -58,6 +58,12 @@ enum Action {
         #[arg(long, default_value_t = 1073741824)]
         disk_budget: u64,
     },
+    /// Check the enrolled Aimee source primitive on this inference host.
+    FetchPrimitive {
+        query: String,
+        #[arg(long, default_value_t = 1024)]
+        limit_tokens: u32,
+    },
     /// Install a certified model/runtime from the configured release service.
     Install { model: String },
     /// Launch the installed native-memory runtime on loopback.
@@ -133,14 +139,13 @@ fn read_aimee_credentials(home: &std::path::Path) -> Result<AimeeCredentials> {
 }
 fn connect_from_aimee(root: &std::path::Path, home: &std::path::Path) -> Result<()> {
     let credentials = read_aimee_credentials(home)?;
-    let profile = native::delivery::bootstrap(
+    native::primitive::fetch_with_token(
         &tls_client(credentials.ca.as_deref(), Some(&credentials.identity),
             Some(&credentials.endpoint), None)?,
-        &credentials.endpoint, &credentials.token,
+        &credentials.endpoint, &credentials.token, "native memory connection", 64,
     )?;
     native::connect_with_tls(root, &credentials.endpoint, &credentials.token,
         credentials.ca.as_deref(), Some(&credentials.identity))?;
-    native::atomic(&root.join("native-profile.json"), &serde_json::to_vec(&profile)?)?;
     println!("Authenticated Aimee native-memory connection established.");
     Ok(())
 }
@@ -307,6 +312,17 @@ fn run() -> Result<()> {
                 "{}",
                 serde_json::json!({"publication":offer.key,"root":path,"records":offer.records.len(),"authorized_view":offer.authorized_view})
             );
+        }
+        Action::FetchPrimitive { query, limit_tokens } => {
+            let connection: native::Config =
+                serde_json::from_slice(&fs::read(root.join("config.json"))?)?;
+            let ca = connection.ca_file.as_ref().map(fs::read).transpose()?;
+            let identity = connection.client_identity.as_ref().map(fs::read).transpose()?;
+            let primitive = native::primitive::fetch(
+                &tls_client(ca.as_deref(), identity.as_deref(),
+                    Some(&connection.endpoint), connection.connect_address)?,
+                &connection, &query, limit_tokens)?;
+            println!("{}", serde_json::json!({"records":primitive.records.len(),"schema":primitive.schema}));
         }
         Action::Install { model } => {
             ensure!(native::component(&model), "invalid model identifier");
