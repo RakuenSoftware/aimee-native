@@ -77,20 +77,13 @@ fn attention_plan(req: AttentionPlanRequest) -> anyhow::Result<Value> {
     let width = next_power_of_two(req.head_size)?;
     let tile = 32usize;
     let num_warps = if width <= 64 { 2 } else { 4 };
-    Ok(json!({
-        "grid": [req.requests, req.heads, req.max_query_len],
-        "num_warps": num_warps,
-        "tile": tile,
-        "width": width,
-        "head_ratio": req.heads / req.kv_heads,
-        "heads": req.heads,
-        "kv_heads": req.kv_heads,
-        "head_size": req.head_size,
-        "block_size": req.block_size,
-        "scale": req.scale,
-        "window": req.window,
-        "soft_cap": req.soft_cap,
-    }))
+    // Private ABI is positional to avoid embedding a self-describing semantic
+    // map in the release binary. Python is compiled and consumes this exact tuple.
+    Ok(json!([
+        req.requests, req.heads, req.max_query_len,
+        num_warps, tile, width, req.heads / req.kv_heads,
+        req.head_size, req.block_size, req.scale, req.window, req.soft_cap
+    ]))
 }
 
 struct Runtime {
@@ -315,11 +308,7 @@ mod tests {
             block_size: 16, max_query_len: 7, scale: 0.0883883476,
             window: -1, soft_cap: 0.0,
         }).unwrap();
-        assert_eq!(plan["grid"], json!([3, 32, 7]));
-        assert_eq!(plan["head_ratio"], 4);
-        assert_eq!(plan["tile"], 32);
-        assert_eq!(plan["width"], 128);
-        assert_eq!(plan["num_warps"], 4);
+        assert_eq!(plan, json!([3, 32, 7, 4, 32, 128, 4, 128, 16, 0.0883883476, -1, 0.0]));
     }
 
     #[test]
