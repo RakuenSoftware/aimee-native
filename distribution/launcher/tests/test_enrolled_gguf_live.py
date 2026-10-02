@@ -148,7 +148,7 @@ with tempfile.TemporaryDirectory(prefix='aimee-enrolled-live-') as temporary:
     except Exception:
         log.flush()
         log.seek(0)
-        print(log.read()[-6000:], file=sys.stderr)
+        print(log.read()[-60000:], file=sys.stderr)
         raise
     finally:
         process.terminate()
@@ -163,5 +163,5 @@ with tempfile.TemporaryDirectory(prefix='aimee-enrolled-live-') as temporary:
         log.flush()
         if process.returncode not in (0, -15):
             log.seek(0)
-            print(log.read()[-6000:], file=sys.stderr)
+            print(log.read()[-60000:], file=sys.stderr)
         log.close()

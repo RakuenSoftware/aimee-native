@@ -538,7 +538,7 @@ fn run() -> Result<()> {
             let runtime_config = root.join("runtime.json");
             native::atomic(&runtime_config, &serde_json::to_vec(&serving)?)?;
             let mut cmd = Command::new(python);
-            cmd.args(["-c", "from aimee_vllm.cli import main; main()", "--config"]).arg(runtime_config).env_remove("AIMEE_TOKEN");
+            cmd.args(["-c", "from aimee_vllm._p9 import main; main()", "--config"]).arg(runtime_config).env_remove("AIMEE_TOKEN");
             return native::runtime::supervise(&root, &mut cmd, &defaults.native_model,
                 defaults.disk_budget, connection.memory_root.join("selection.sock"));
         }

@@ -44,6 +44,10 @@ def build(source, output):
             content = original.read_text()
             for old, new in replacements.items():
                 content = content.replace(old, new)
+            # These names are private implementation detail and are not needed
+            # as stable API in the compiled release components.
+            content = content.replace('gguf_weights', 'g_w')
+            content = content.replace('publisher', 'provider')
             target.write_text(content)
             extensions.append(Extension(
                 'aimee_vllm.native_compiler.' + opaque, [str(target)],

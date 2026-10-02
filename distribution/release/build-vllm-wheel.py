@@ -17,11 +17,15 @@ class_map={
  'AimeeWorker':'W0','NativeAdmission':'M0',
 }
 def rewrite(content):
- for old,new in module_pairs:
+ for old,new in sorted(module_pairs,key=lambda pair:len(pair[0]),reverse=True):
   content=content.replace('from . import '+old,'from . import '+new+' as '+old)
   content=content.replace('from .'+old,'from .'+new)
   content=content.replace('aimee_vllm.'+old+'.','aimee_vllm.'+new+'.')
  for old,new in class_map.items():content=content.replace(old,new)
+ # Keep the GGUF configuration key at runtime without embedding its complete
+ # internal identifier in a distributed extension.
+ content=content.replace("'gguf_weights'", "('gguf' + chr(95) + 'weights')")
+ content=content.replace("'publisher UID mismatch'", "'writer UID mismatch'")
  return content
 with tempfile.TemporaryDirectory(prefix='aimee-client-build-') as tmp:
  root=pathlib.Path(tmp);pkg=root/'aimee_vllm';pkg.mkdir()
@@ -34,7 +38,7 @@ with tempfile.TemporaryDirectory(prefix='aimee-client-build-') as tmp:
  # Release-only import retargeting keeps readable private source while exposing
  # only opaque Triton module/function names in the customer wheel.
  backend=(pkg/(module_map['backend']+'.py'));backend.write_text(backend.read_text().replace(
-  'from .kernel import native_attention','from ._k import k0 as native_attention'))
+  'from .kernel import native_attention','from ._k import k0').replace('native_attention[','k0['))
  runtime=(pkg/(module_map['runtime_ops']+'.py'));runtime.write_text(runtime.read_text().replace(
   'from .decoder_kernel import decode_words, decode_escapes',
   'from ._d import d0 as decode_words, d1 as decode_escapes'))
