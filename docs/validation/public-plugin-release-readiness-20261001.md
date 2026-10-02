@@ -38,11 +38,12 @@ wheel hash above. The first public-wheel ROCm attempt reached vLLM startup
 while both XTXs were occupied by another workload and served no requests. Its
 [probe record](artifacts/public-plugin-20261001/gemma12-amd-public-build2-probe-infrastructure-failure.json)
 and [VRAM error excerpt](artifacts/public-plugin-20261001/amd-busy-startup-excerpt.txt)
-are retained. A fresh AMD probe is queued for when both cards have sufficient
-free VRAM. It is additional confirmation, not a release blocker: all compiled
-runtime members are byte-identical to the reviewed wheel whose Qwen 27B,
-Gemma 12B and Gemma 26B ROCm probes and four-client matrices passed. The
-public build's separate installed-wheel CUDA probe passed.
+are retained. When GPU memory became available, the exact public build's
+[fresh AMD probe](artifacts/public-plugin-20261001/gemma12-amd-public-build2-probe-r2.json)
+passed four native-memory answers and five empty-memory controls on Gemma 4
+12B. The installed-wheel CUDA probe also passed. The signed manifest predates
+this supplemental AMD result and conservatively lists only the CUDA execution
+of the public build; its signed bytes are unchanged.
 
 The public asset set has now been signed in a non-web stage. Independent
 verification passed for all four asset signatures and hashes. The

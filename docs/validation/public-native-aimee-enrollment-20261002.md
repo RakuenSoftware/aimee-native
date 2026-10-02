@@ -51,3 +51,7 @@ enrollment fixtures. The ported C bridge compiles against current Aimee main.
 Neither result establishes the fresh-install service behavior in items 2–4.
 The old signed wheel remains useful as controlled-preview evidence but cannot
 be relabeled a general public release.
+
+The exact public-build wheel's supplemental Gemma 4 12B AMD probe subsequently
+passed, as did its earlier RTX 5080 probe. These demonstrate the packaged
+consumer, not the missing ordinary-user server installation path.
