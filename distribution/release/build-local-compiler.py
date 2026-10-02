@@ -32,7 +32,6 @@ def build(source, output):
             '.gemma_compile': '._c3', 'from gemma_compile': 'from _c3',
             '.bounded_compile': '._c4', 'from bounded_compile': 'from _c4',
             '.local_compile': '._c5', 'from local_compile': 'from _c5',
-            'publish_local': 'p1', 'publish': 'p0',
             'CheckpointWeights': 'C0', 'GgufWeights': 'C1',
             'GemmaCompiler': 'C2', 'BoundedTextCompiler': 'C3',
         }
