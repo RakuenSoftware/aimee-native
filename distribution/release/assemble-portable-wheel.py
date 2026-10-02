@@ -47,7 +47,7 @@ def assemble(wheel, launcher, library, notices, output, gguf_wheel_url, gguf_whe
              for name, data in files.items()}
     files[info + '/METADATA'] = re.sub(rb'(?m)^Version: [^\r\n]+', f'Version: {version}'.encode(), files[info + '/METADATA'])
     for name in files:
-        if name.startswith('aimee_vllm/') and name.endswith(('.py', '.pyc', '.pyx', '.c')) and name not in ('aimee_vllm/__init__.py', 'aimee_vllm/kernel.py', 'aimee_vllm/decoder_kernel.py'):
+        if name.startswith('aimee_vllm/') and name.endswith(('.py', '.pyc', '.pyx', '.c')) and name not in ('aimee_vllm/__init__.py', 'aimee_vllm/_k.py', 'aimee_vllm/_d.py'):
             raise ValueError('Private implementation source in wheel: ' + name)
     files['aimee_vllm/client.py'] = (Path(__file__).resolve().parents[1] / 'vllm/aimee_vllm/client.py').read_bytes()
     files['aimee_vllm/native/aimee-native'] = launcher.read_bytes()
