@@ -34,7 +34,16 @@ def audit_elf(data, name, temporary):
     leaked_markers = [marker.decode('utf-8', 'replace') for marker in FORBIDDEN_BYTES if marker in data]
     if leaked_markers:
         raise ValueError(f'{name}: private/build markers retained: {leaked_markers}')
-    return {'name': name, 'sha256': hashlib.sha256(data).hexdigest(), 'bytes': len(data)}
+    exports = []
+    if name.endswith('.so'):
+        raw = subprocess.check_output(['nm', '-D', '--defined-only', str(path)], text=True)
+        exports = [line.split()[-1].split('@')[0] for line in raw.splitlines() if line.split()]
+        if name != 'aimee_vllm/native/libaimee_native.so':
+            unexpected = [symbol for symbol in exports if not symbol.startswith('PyInit_')]
+            if unexpected:
+                raise ValueError(f'{name}: unexpected extension exports: {unexpected}')
+    return {'name': name, 'sha256': hashlib.sha256(data).hexdigest(),
+            'bytes': len(data), 'dynamic_exports': exports}
 
 
 p = argparse.ArgumentParser(description=__doc__)
