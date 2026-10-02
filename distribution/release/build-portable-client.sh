@@ -3,7 +3,7 @@
 set -eu
 repo=$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd)
 export PYTHON_INCLUDE="${PYTHON_INCLUDE:-$(python3 -c 'import sysconfig;print(sysconfig.get_path("include"))')}"
-export RUSTFLAGS="${RUSTFLAGS:-} --remap-path-prefix=$repo=/aimee-native -C link-arg=-Wl,--build-id=none"
+export RUSTFLAGS="${RUSTFLAGS:-} --remap-path-prefix=$repo=/aimee-native -C link-arg=-Wl,--build-id=none -C link-arg=-Wl,--exclude-libs,ALL -C link-arg=-Wl,--gc-sections"
 export CXXFLAGS="${CXXFLAGS:-} -ffile-prefix-map=$repo=/aimee-native -ffile-prefix-map=$PYTHON_INCLUDE=/runtime/python"
 cd "$repo"
 cargo build --locked --release --lib --no-default-features --features vllm-portable
