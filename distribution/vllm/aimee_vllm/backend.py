@@ -75,7 +75,7 @@ class AimeeAttentionImpl(TritonAttentionImpl):
             attn_metadata.block_table,kp,vp,lengths,
             query.stride(0),query.stride(1),kv_cache.stride(0),kv_cache.stride(1),kv_cache.stride(2),
             view.stride(0),view.stride(1),attn_metadata.block_table.stride(0),
-            plan['heads'],plan['kv_heads'],plan['head_size'],plan['block_size'],plan['scale'],
+            plan['head_ratio'],plan['head_size'],plan['block_size'],plan['scale'],
             plan['window'],plan['soft_cap'],plan['tile'],plan['width'],
             )
         kernel = native_attention[tuple(plan['grid'])](*args,num_warps=plan['num_warps'])
