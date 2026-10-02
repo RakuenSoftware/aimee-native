@@ -5,17 +5,37 @@ Run in the pinned runtime's Python with Cython/setuptools/wheel installed.
 import argparse,os,pathlib,shutil,subprocess,sys,tempfile,zipfile
 p=argparse.ArgumentParser();p.add_argument('--output',required=True);p.add_argument('--version',default='0.2.2');a=p.parse_args()
 repo=pathlib.Path(__file__).resolve().parents[2];out=pathlib.Path(a.output).resolve();out.mkdir(parents=True,exist_ok=True)
-modules=['stream_completion','selection','gguf_loader','control','admission','backend','binary_kernel','cache','cache_identity','cli','state','store','worker','runtime_ops','runtime_owner','compatibility']
+module_pairs=[
+ ('stream_completion','_p0'),('selection','_p1'),('gguf_loader','_p2'),('control','_p3'),
+ ('admission','_p4'),('backend','_p5'),('binary_kernel','_p6'),('cache','_p7'),
+ ('cache_identity','_p8'),('cli','_p9'),('state','_p10'),('store','_p11'),
+ ('worker','_p12'),('runtime_ops','_p13'),('runtime_owner','_p14'),('compatibility','_p15')]
+modules=[opaque for _,opaque in module_pairs]
+module_map=dict(module_pairs)
+class_map={
+ 'AimeeMetadataBuilder':'B0','AimeeAttentionBackend':'B1','AimeeAttentionImpl':'B2',
+ 'AimeeWorker':'W0','NativeAdmission':'M0',
+}
+def rewrite(content):
+ for old,new in module_pairs:
+  content=content.replace('from . import '+old,'from . import '+new+' as '+old)
+  content=content.replace('from .'+old,'from .'+new)
+  content=content.replace('aimee_vllm.'+old+'.','aimee_vllm.'+new+'.')
+ for old,new in class_map.items():content=content.replace(old,new)
+ return content
 with tempfile.TemporaryDirectory(prefix='aimee-client-build-') as tmp:
  root=pathlib.Path(tmp);pkg=root/'aimee_vllm';pkg.mkdir()
  source=repo/'distribution/vllm/aimee_vllm'
- shutil.copyfile(source/'__init__.py',pkg/'__init__.py')
- for name in modules:shutil.copyfile(source/(name+'.py'),pkg/(name+'.py'))
+ init=rewrite((source/'__init__.py').read_text())
+ (pkg/'__init__.py').write_text(init)
+ for name,opaque in module_pairs:
+  target=pkg/(opaque+'.py')
+  target.write_text(rewrite((source/(name+'.py')).read_text()))
  # Release-only import retargeting keeps readable private source while exposing
  # only opaque Triton module/function names in the customer wheel.
- backend=(pkg/'backend.py');backend.write_text(backend.read_text().replace(
+ backend=(pkg/(module_map['backend']+'.py'));backend.write_text(backend.read_text().replace(
   'from .kernel import native_attention','from ._k import k0 as native_attention'))
- runtime=(pkg/'runtime_ops.py');runtime.write_text(runtime.read_text().replace(
+ runtime=(pkg/(module_map['runtime_ops']+'.py'));runtime.write_text(runtime.read_text().replace(
   'from .decoder_kernel import decode_words, decode_escapes',
   'from ._d import d0 as decode_words, d1 as decode_escapes'))
  subprocess.run([sys.executable,str(repo/'distribution/release/obfuscate-triton.py'),
@@ -35,10 +55,8 @@ setup(name='aimee-vllm',version='''+repr(a.version)+''',packages=['aimee_vllm'],
  subprocess.run([sys.executable,'setup.py','build_ext','--inplace'],cwd=root,env=env,check=True)
  for artifact in pkg.glob('*.so'):
   subprocess.run([sys.executable,str(repo/'distribution/release/harden-elf.py'),str(artifact)],check=True)
- # Cython compiled from .py; remove every private source/generated C before wheel assembly.
  for name in modules:
   (pkg/(name+'.py')).unlink();(pkg/(name+'.c')).unlink()
- # No ext_modules rebuild: stage already compiled .so files as explicit data.
  (root/'setup.py').write_text('''from setuptools import setup,Distribution
 class BinaryDistribution(Distribution):
  def has_ext_modules(self):return True
