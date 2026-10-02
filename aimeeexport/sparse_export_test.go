@@ -87,7 +87,7 @@ func TestSelectedExportNeverFallsBackToWholeStore(t *testing.T) {
 		t.Fatal("invalid ID reached source")
 	}
 	rows, e := ExportSparseRecordsSelected(context.Background(), db, memory.PlacementServer, memory.Scope{}, "personal", []string{"5"})
-	if e != nil || len(rows) != 1 || !strings.Contains(db.sql, "WHERE id IN") || !reflect.DeepEqual(db.args, []any{`["5"]`}) {
+	if e != nil || len(rows) != 1 || !strings.Contains(db.sql, "m.id IN") || !strings.Contains(db.sql, "m.lifecycle_state='active'") || !reflect.DeepEqual(db.args, []any{`["5"]`}) {
 		t.Fatalf("not parameterized: %s %+v %v", db.sql, db.args, e)
 	}
 }

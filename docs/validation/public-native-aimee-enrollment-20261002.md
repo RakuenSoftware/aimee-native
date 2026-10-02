@@ -53,10 +53,18 @@ fresh Aimee install **without a KB**, with no preview infrastructure:
 
 Current verification: the Rust launcher suite passes in a Linux build container
 (23 tests total), including complete and incomplete local enrollment fixtures.
-The ported C bridge compiles against current Aimee main. The unchanged Aimee
-CLI uses its established enrollment path; a full server build needed an
-unrelated const-qualifier warning relaxed locally under `-Werror`.
-Neither result establishes the fresh-install service behavior in items 2–4.
+The ported C bridge compiles against current Aimee main. The current-main
+compatibility branch now restores Aimee-owned explicit release policy, scoped
+source export and restricted search contracts. The private publisher, read
+ingress and delivery Go packages compile and pass tests against that branch.
+The restricted search and selected personal export also pass against a
+disposable PostgreSQL instance, including multi-record composition, filter
+before limit, expired/retired exclusion and empty-selection refusal. The
+unchanged Aimee CLI uses its established enrollment path; a full server build
+needed an unrelated const-qualifier warning relaxed locally under `-Werror`.
+These results do not establish the fresh-install service behavior in items 2–4:
+an ordinary install still has no service that derives the enrolled owner's
+publication and model profiles, and the signed wheel predates `connect-aimee`.
 The old signed wheel remains useful as controlled-preview evidence but cannot
 be relabeled a general public release.
 
