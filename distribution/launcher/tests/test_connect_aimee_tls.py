@@ -7,10 +7,12 @@ import json
 import os
 import pathlib
 import ssl
+import socket
 import subprocess
 import sys
 import tempfile
 import threading
+import time
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 if len(sys.argv) != 2:
@@ -36,21 +38,27 @@ def cert(base, name, extra, authority=None):
     return key, crt
 
 class Handler(BaseHTTPRequestHandler):
+    revision = 3
+    reject = False
     def do_POST(self):
-        if (self.path != "/v1/native/primitive"
+        if (self.reject or self.path != "/v1/native/primitive"
                 or self.headers.get("Authorization") != "Bearer enrolled-token"
                 or not self.connection.getpeercert()):
             self.send_error(403)
             return
         request = json.loads(self.rfile.read(int(self.headers["Content-Length"])))
         if (request.get("store") != "user" or request.get("task_hint") not in
-                ("native memory connection", "test query")):
+                ("native memory connection", "test query", "broker query")):
             self.send_error(400)
             return
         records = [] if request["task_hint"] == "native memory connection" else [
             {"id": 7, "content": "fixture fact", "version": {"schema_version": 1,
              "owner_id": "00000000-0000-0000-0000-000000000001",
-             "record_id": "7", "record_revision": "3"}}]
+             "record_id": "7", "record_revision": str(self.revision)}}]
+        if request["task_hint"] == "broker query":
+            records.append({"id": 8, "content": "second fixture fact", "version": {
+                "schema_version": 1, "owner_id": "00000000-0000-0000-0000-000000000001",
+                "record_id": "8", "record_revision": "1"}})
         body = json.dumps({"schema": 1, "records": records}).encode()
         self.send_response(200)
         self.send_header("Content-Type", "application/json")
@@ -94,6 +102,82 @@ with tempfile.TemporaryDirectory() as tmp:
                              text=True, capture_output=True, env=environment)
     assert fetched.returncode == 0, (fetched.stdout, fetched.stderr)
     assert json.loads(fetched.stdout) == {"records": 1, "schema": 1}
+    connection = json.loads((root / "config.json").read_text())
+    memory = pathlib.Path(connection["memory_root"])
+    catalog = memory / "catalog.json"
+    catalog.write_text(json.dumps({"recipient": "test-recipient", "model_config_sha256": "a" * 64,
+                                   "publications": {}, "selections": []}))
+    compiler = base / "compile.py"
+    compiler.write_text("""import argparse,json,pathlib,sys
+p=argparse.ArgumentParser();p.add_argument('--output');p.add_argument('--identity');p.add_argument('--key');a=p.parse_args()
+request=json.load(sys.stdin)
+assert len(request['identity']['records']) == len(request['response']['facts']) == 2
+out=pathlib.Path(a.output);out.mkdir()
+(out/'index.json').write_text(json.dumps({'version':1,'model':a.identity,'native_layout':True,'records':{a.key:{'tokens':[1,2]}}}))
+(out/'compact.pack').write_bytes(bytes(4096)+b'bank')
+""")
+    serving = root / "serving.json"
+    serving.write_text(json.dumps({"recipient": "test-recipient", "catalog": str(catalog),
+        "selection_socket": str(memory / "selection.sock"),
+        "control_socket": str(memory / "control.sock"),
+        "local_preparation": {"compiler": [sys.executable, str(compiler)],
+            "model_config_sha256": "a" * 64, "runtime_profile": "test-vllm",
+            "encoding_revision": "one", "position_policy": "negative", "limit_tokens": 1024}}))
+    control = socket.socket(socket.AF_UNIX)
+    control.bind(str(memory / "control.sock"))
+    control.listen()
+    state = {"value": "active", "generation": 0, "done": False}
+    def control_loop():
+        while not state["done"]:
+            try:
+                peer, _ = control.accept()
+            except OSError:
+                return
+            with peer:
+                request = json.loads(peer.makefile().readline())
+                if request["op"] == "withdraw":
+                    state["generation"] += 1
+                    state["value"] = "paused"
+                elif request["op"] == "refresh":
+                    state["value"] = "active"
+                peer.sendall((json.dumps({"state": state["value"],
+                    "generation": state["generation"]}) + "\n").encode())
+    control_thread = threading.Thread(target=control_loop, daemon=True)
+    control_thread.start()
+    broker = subprocess.Popen([LAUNCHER, "--root", str(root), "memory-agent",
+        "--serving", str(serving), "--model", "gemma", "--disk-budget", "1048576"],
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=environment)
+    try:
+        selection = memory / "selection.sock"
+        for _ in range(100):
+            if selection.exists():
+                break
+            assert broker.poll() is None, broker.stderr.read().decode()
+            time.sleep(0.05)
+        assert selection.exists()
+        def select():
+            with socket.socket(socket.AF_UNIX) as peer:
+                peer.connect(str(selection))
+                peer.sendall(b'{"query":"broker query"}\n')
+                return json.loads(peer.makefile().readline())
+        first = select()
+        assert first.get("publication") and "error" not in first, first
+        initial = json.loads(catalog.read_text())
+        assert len(initial["selections"][0]["records"]) == 2
+        Handler.revision = 4
+        second = select()
+        assert second.get("publication") != first["publication"], second
+        assert len(json.loads(catalog.read_text())["selections"][0]["records"]) == 2
+        Handler.reject = True
+        denied = select()
+        assert denied == {"error": "native_selection_unavailable"}, denied
+        print("local broker activated both records, replaced changed revision, and denied revoked access")
+    finally:
+        broker.terminate()
+        broker.communicate(timeout=5)
+        state["done"] = True
+        control.close()
+        control_thread.join(timeout=1)
     os.chmod(home / "tls/client.key", 0o644)
     refused = subprocess.run(command, text=True, capture_output=True, env=environment)
     assert refused.returncode != 0

@@ -26,9 +26,22 @@ launcher change, the wheel was rebuilt and audited with SHA-256
 `a9000ade44a52e408635caa7224fb1b299a0f4f9644a2afe08ecc8660a4a213f`.
 This is a local candidate, not a published release asset.
 
-The full vLLM answer check remains pending because another active process is
-using most of one RX 7900 XTX. Initial local encoding also currently requires
-Hugging Face safetensors on the inference host even when the serving path uses
-GGUF weights. GGUF-only initial encoding is not yet validated. These are
-release gates; passing local bank activation alone does not establish live
-answer correctness for the final wheel.
+The RX 7900 XTXs were occupied, so a separate RTX 5080 served Gemma4 12B
+using the same locally prepared two-record bank. A no-memory control answered
+that it needed the missing context. With native memory, the model answered
+"The project codename is Halcyon, and the owner prefers blue notebooks."
+Both requests reported 34 prompt tokens; the two facts were not inserted as
+prompt text. The temporary CUDA server was stopped after the check. This is a
+live consumer check using the established vLLM plugin path and the new bank;
+it does not yet exercise the complete enrolled broker lifecycle from the final
+wheel on a GPU.
+
+An enrolled mTLS broker integration test did exercise the host lifecycle with
+two selected records: it activated the initial bank, replaced it after Aimee
+changed a record revision, and returned an error instead of a publication after
+the server revoked access. The test used a fake compiler and control socket, so it checks the
+authorization and replacement flow rather than GPU execution.
+
+Initial local encoding currently requires Hugging Face safetensors on the
+inference host even when the serving path uses GGUF weights. GGUF-only initial
+encoding and the final wheel's enrolled broker lifecycle remain release gates.
