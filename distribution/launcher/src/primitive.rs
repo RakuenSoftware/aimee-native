@@ -51,6 +51,10 @@ impl Primitive {
 }
 
 pub fn fetch(http: &Client, connection: &Config, query: &str, limit_tokens: u32) -> Result<Primitive> {
+    if connection.thinclient_home.is_some() {
+        let current = crate::thin_client::open(connection)?;
+        return fetch_with_token(&current.http, &connection.endpoint, &current.token, query, limit_tokens);
+    }
     let token = fs::read_to_string(&connection.token_file)?;
     fetch_with_token(http, &connection.endpoint, &token, query, limit_tokens)
 }

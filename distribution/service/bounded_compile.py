@@ -13,15 +13,17 @@ from accelerate import cpu_offload, init_empty_weights
 from transformers import AutoConfig, AutoTokenizer, Gemma4TextModel, Qwen3_5TextModel
 try:
     from .checkpoint_weights import CheckpointWeights
+    from .gguf_weights import GgufWeights
     from .gemma_compile import GemmaCompiler
 except ImportError:  # private standalone preparation tests
     from checkpoint_weights import CheckpointWeights
+    from gguf_weights import GgufWeights
     from gemma_compile import GemmaCompiler
 
 
 class BoundedTextCompiler(GemmaCompiler):
     def __init__(self, model, max_memory_tokens=1024, threads=12, reuse_library=None,
-                 compute_dtype='float32', memory_positions=None):
+                 compute_dtype='float32', memory_positions=None, gguf_weights=None):
         if compute_dtype != 'float32':
             raise ValueError('bounded preparation requires FP32 compute')
         if reuse_library is not None:
@@ -30,13 +32,14 @@ class BoundedTextCompiler(GemmaCompiler):
             raise ValueError('unsupported memory position policy')
         torch.set_num_threads(threads)
         self.model_path = model
+        self.gguf_weights = gguf_weights
         self.max_memory_tokens = max_memory_tokens
         self.compute_dtype = torch.float32
         self.tokenizer = AutoTokenizer.from_pretrained(model, local_files_only=True)
         self.config = AutoConfig.from_pretrained(model, local_files_only=True)
-        if self.config.model_type not in ('gemma4', 'qwen3_5'):
+        if self.config.model_type not in ('gemma4', 'gemma4_unified', 'qwen3_5'):
             raise ValueError('unsupported bounded preparation architecture')
-        self.memory_positions = memory_positions or ('negative' if self.config.model_type == 'gemma4' else 'nonnegative')
+        self.memory_positions = memory_positions or ('negative' if self.config.model_type in ('gemma4', 'gemma4_unified') else 'nonnegative')
         self.model = None
         self.weights = None
         self.last_metrics = {}
@@ -46,15 +49,18 @@ class BoundedTextCompiler(GemmaCompiler):
             return
         text = self.config.get_text_config()
         text._attn_implementation = 'eager'
-        cls = Gemma4TextModel if self.config.model_type == 'gemma4' else Qwen3_5TextModel
+        cls = Gemma4TextModel if self.config.model_type in ('gemma4', 'gemma4_unified') else Qwen3_5TextModel
         with init_empty_weights():
             model = cls(text).eval()
-        index = json.loads((Path(self.model_path) / 'model.safetensors.index.json').read_text())['weight_map']
         aliases = {name: 'model.language_model.' + name for name in model.state_dict()}
-        absent = [name for name, canonical in aliases.items() if canonical not in index]
-        if absent:
-            raise ValueError('checkpoint missing text-model tensors: ' + repr(absent))
-        weights = CheckpointWeights(self.model_path, aliases=aliases)
+        if self.gguf_weights:
+            weights = GgufWeights(self.gguf_weights, model, aliases)
+        else:
+            index = json.loads((Path(self.model_path) / 'model.safetensors.index.json').read_text())['weight_map']
+            absent = [name for name, canonical in aliases.items() if canonical not in index]
+            if absent:
+                raise ValueError('checkpoint missing text-model tensors: ' + repr(absent))
+            weights = CheckpointWeights(self.model_path, aliases=aliases)
         try:
             cpu_offload(model, execution_device=torch.device('cpu'), offload_buffers=True, state_dict=weights,
                 preload_module_classes=['Qwen3_5GatedDeltaNet'] if self.config.model_type == 'qwen3_5' else [])
@@ -76,7 +82,7 @@ class BoundedTextCompiler(GemmaCompiler):
         if sum(len(s.encode()) for s in contents) > 1024**2:
             raise ValueError('selected content exceeds preparation budget')
         framed = 'Authoritative memory:\n' + '\n'.join(contents)
-        if self.config.model_type == 'gemma4':
+        if self.config.model_type in ('gemma4', 'gemma4_unified'):
             framed = self.tokenizer.apply_chat_template(
                 [{'role': 'system', 'content': framed}],
                 tokenize=False, add_generation_prompt=False, enable_thinking=False)

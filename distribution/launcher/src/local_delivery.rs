@@ -6,7 +6,7 @@ use reqwest::blocking::Client;
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
-use std::{fs, io::Write, os::unix::{fs::PermissionsExt, process::CommandExt}, path::Path, process::{Command, Stdio}, time::{Duration, Instant}};
+use std::{fs, io::Write, os::unix::{fs::{OpenOptionsExt, PermissionsExt}, process::CommandExt}, path::Path, process::{Command, Stdio}, time::{Duration, Instant}};
 
 #[derive(Clone, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
@@ -70,12 +70,15 @@ fn compile(settings: &Settings, primitive: &primitive::Primitive, recipient: &st
         "model_revision":model,"runtime_profile":settings.runtime_profile,
         "encoding_revision":settings.encoding_revision,"position_policy":settings.position_policy,
         "records":records},"response":{"facts":facts}});
+    let diagnostic_path = output.with_extension("compiler-stderr");
+    let diagnostics = fs::OpenOptions::new().write(true).create_new(true).mode(0o600)
+        .open(&diagnostic_path)?;
     let mut child = Command::new(&settings.compiler[0]);
     child.args(&settings.compiler[1..]).arg("--output").arg(output)
         .arg("--identity").arg(model).arg("--key").arg(key)
         .env("AIMEE_NATIVE_PUBLISHER", std::env::current_exe()?)
         .env("HF_HUB_OFFLINE", "1")
-        .stdin(Stdio::piped()).stdout(Stdio::null()).stderr(Stdio::null());
+        .stdin(Stdio::piped()).stdout(Stdio::null()).stderr(Stdio::from(diagnostics));
     unsafe {
         child.pre_exec(|| {
             if libc::setpgid(0, 0) != 0 { return Err(std::io::Error::last_os_error()); }
@@ -86,17 +89,26 @@ fn compile(settings: &Settings, primitive: &primitive::Primitive, recipient: &st
     let sent = child.stdin.take().context("compiler stdin")?.write_all(&serde_json::to_vec(&request)?);
     if let Err(error) = sent {
         unsafe { libc::kill(-(child.id() as i32), libc::SIGKILL); }
-        let _ = child.wait(); return Err(error.into());
+        let _ = child.wait();
+        let _ = fs::remove_file(&diagnostic_path);
+        return Err(error.into());
     }
     let deadline = Instant::now() + Duration::from_secs(600);
     loop {
         if let Some(status) = child.try_wait()? {
+            if !status.success() {
+                if let Ok(message) = fs::read_to_string(&diagnostic_path) {
+                    eprintln!("local native compiler failed: {}", message.chars().take(4096).collect::<String>());
+                }
+            }
+            let _ = fs::remove_file(&diagnostic_path);
             ensure!(status.success(), "local native preparation failed");
             return Ok(());
         }
         if Instant::now() >= deadline {
             unsafe { libc::kill(-(child.id() as i32), libc::SIGKILL); }
             let _ = child.wait();
+            let _ = fs::remove_file(&diagnostic_path);
             anyhow::bail!("local native preparation timed out");
         }
         std::thread::sleep(Duration::from_millis(100));
@@ -190,7 +202,7 @@ pathlib.Path(a.output).mkdir();root=pathlib.Path(a.output)
 "#).unwrap();
         let connection = Config { schema:1, endpoint:"https://memory.example".into(),
             token_file:root.join("unused"), memory_root:memory, ca_file:None,
-            client_identity:None, connect_address:None };
+            client_identity:None, connect_address:None, thinclient_home:None };
         let settings = Settings { compiler:vec!["/usr/bin/python3".into(), compiler.to_string_lossy().into_owned()],
             model_config_sha256:"a".repeat(64),runtime_profile:"test".into(),
             encoding_revision:"one".into(),position_policy:"negative".into(),limit_tokens:1024 };

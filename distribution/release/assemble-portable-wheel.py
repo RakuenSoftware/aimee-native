@@ -53,7 +53,7 @@ def assemble(wheel, launcher, library, notices, output, gguf_wheel_url, gguf_whe
     files['aimee_vllm/native/aimee-native'] = launcher.read_bytes()
     files['aimee_vllm/native/libaimee_native.so'] = library.read_bytes()
     if compiler_dir is not None:
-        modules = ('publisher', 'checkpoint_weights', 'gemma_compile',
+        modules = ('publisher', 'checkpoint_weights', 'gguf_weights', 'gemma_compile',
                    'bounded_compile', 'local_compile')
         files['aimee_vllm/native_compiler/__init__.py'] = b''
         for module in modules:
@@ -77,7 +77,9 @@ def assemble(wheel, launcher, library, notices, output, gguf_wheel_url, gguf_whe
     buf = io.StringIO(); entries.write(buf)
     files[info + '/entry_points.txt'] = buf.getvalue().encode()
     headers, _, body = files[info + '/METADATA'].decode().partition('\n\n')
-    headers = headers.rstrip('\n') + ('\nProvides-Extra: gguf\nRequires-Dist: vllm-gguf-plugin @ '
+    compiler_requirements = ('\nRequires-Dist: accelerate>=1.15,<2'
+        '\nRequires-Dist: gguf>=0.19,<0.20') if compiler_dir is not None else ''
+    headers = headers.rstrip('\n') + compiler_requirements + ('\nProvides-Extra: gguf\nRequires-Dist: vllm-gguf-plugin @ '
         + gguf_wheel_url + '#sha256=' + gguf_wheel_sha256 + ' ; extra == "gguf"\n')
     files[info + '/METADATA'] = (headers + '\n' + body).encode()
     files['aimee_vllm/native/compatibility.json'] = json.dumps({

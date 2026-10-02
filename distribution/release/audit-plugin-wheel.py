@@ -40,7 +40,10 @@ with zipfile.ZipFile(a.wheel) as z:
         if n.endswith('.py'): assert n in ['aimee_vllm/__init__.py', 'aimee_vllm/client.py',
             'aimee_vllm/native_compiler/__init__.py'] + (['aimee_vllm/kernel.py', 'aimee_vllm/decoder_kernel.py'] if portable else [])
     if version >= (0, 2, 3):
-        for module in ('publisher', 'checkpoint_weights', 'gemma_compile', 'bounded_compile', 'local_compile'):
+        requirements = metadata.get_all('Requires-Dist', [])
+        assert any(v.startswith('accelerate>=1.15,<2') for v in requirements)
+        assert any(v.startswith('gguf>=0.19,<0.20') for v in requirements)
+        for module in ('publisher', 'checkpoint_weights', 'gguf_weights', 'gemma_compile', 'bounded_compile', 'local_compile'):
             assert len([n for n in names if n.startswith('aimee_vllm/native_compiler/' + module + '.') and n.endswith('.so')]) == 1
     records = list(csv.reader(io.StringIO(z.read(info + '/RECORD').decode())))
     assert {r[0] for r in records} == set(names)

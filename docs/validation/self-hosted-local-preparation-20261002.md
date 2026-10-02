@@ -42,6 +42,25 @@ changed a record revision, and returned an error instead of a publication after
 the server revoked access. The test used a fake compiler and control socket, so it checks the
 authorization and replacement flow rather than GPU execution.
 
-Initial local encoding currently requires Hugging Face safetensors on the
-inference host even when the serving path uses GGUF weights. GGUF-only initial
-encoding and the final wheel's enrolled broker lifecycle remain release gates.
+The next encoder revision accepts GGUF-only model directories on the inference
+host. With a Gemma4 12B Q8 GGUF and no safetensors, it prepared a two-record
+bank with 26 memory positions and 8,945,664 tensor bytes. The same GGUF served
+on the RTX 5080: the no-memory control asked for the missing facts, while the
+native request answered both facts correctly; each request used 34 prompt
+tokens. For Qwen3.8 27B Q8, all 850 text-model tensors were mapped from the
+GGUF and sampled restorations agreed with safetensors within expected
+quantization error. The GGUF-only encoder then prepared a two-record Qwen
+bank with 21 memory positions and 1,376,256 tensor bytes. A live Qwen GGUF
+consumer check has not run in this revision because the available RTX 5080
+cannot hold its 28 GB GGUF and both RX 7900 XTX GPUs are occupied by other
+tests. The subsequent installed 0.2.3 candidate ran the complete path on the
+RTX 5080: disposable enrolled Aimee thin client, mTLS primitive retrieval,
+local GGUF-only preparation, publication, live vLLM consumption and authority
+withdrawal. Gemma4 12B answered both selected facts correctly with 34 prompt
+tokens, and a request after revocation returned HTTP 503. The first integrated
+attempt exposed two packaging problems, both fixed before this passing check:
+resolving the virtualenv Python symlink lost installed extensions, and the
+clean serving environment lacked Accelerate. The candidate now preserves the
+virtualenv path and declares `accelerate>=1.15,<2` and `gguf>=0.19,<0.20` as
+dependencies. The final public asset still needs offline staging and an
+external clean install from its published URL.

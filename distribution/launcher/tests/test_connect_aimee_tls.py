@@ -40,10 +40,14 @@ def cert(base, name, extra, authority=None):
 class Handler(BaseHTTPRequestHandler):
     revision = 3
     reject = False
+    token = "enrolled-token"
+    client_cn = "thin-client"
     def do_POST(self):
+        peer = self.connection.getpeercert()
+        common_name = dict(item[0] for item in peer.get("subject", ())).get("commonName") if peer else None
         if (self.reject or self.path != "/v1/native/primitive"
-                or self.headers.get("Authorization") != "Bearer enrolled-token"
-                or not self.connection.getpeercert()):
+                or self.headers.get("Authorization") != "Bearer " + self.token
+                or common_name != self.client_cn):
             self.send_error(403)
             return
         request = json.loads(self.rfile.read(int(self.headers["Content-Length"])))
@@ -96,8 +100,22 @@ with tempfile.TemporaryDirectory() as tmp:
     environment = dict(os.environ, NO_PROXY="localhost,127.0.0.1", no_proxy="localhost,127.0.0.1")
     done = subprocess.run(command, text=True, capture_output=True, env=environment)
     assert done.returncode == 0, (done.stdout, done.stderr)
-    assert json.loads((root / "config.json").read_text())["endpoint"].rstrip("/") == endpoint
+    connected = json.loads((root / "config.json").read_text())
+    assert connected["endpoint"].rstrip("/") == endpoint
+    assert connected["thinclient_home"] == str(home)
+    assert not pathlib.Path(connected["token_file"]).exists()
+    assert not (root / "credentials").exists()
     assert not (root / "native-profile.json").exists()
+    Handler.token = "renewed-token"
+    (home / "remote.conf").write_text(endpoint + "\nrenewed-token\n")
+    os.chmod(home / "remote.conf", 0o600)
+    renewed_key, renewed_crt = cert(base, "thin-client-renewed",
+        "extendedKeyUsage=clientAuth", (ca_key, ca_crt))
+    (home / "tls/client.crt").write_bytes(renewed_crt.read_bytes())
+    (home / "tls/client.key").write_bytes(renewed_key.read_bytes())
+    os.chmod(home / "tls/client.crt", 0o600)
+    os.chmod(home / "tls/client.key", 0o600)
+    Handler.client_cn = "thin-client-renewed"
     fetched = subprocess.run([LAUNCHER, "--root", str(root), "fetch-primitive", "test query"],
                              text=True, capture_output=True, env=environment)
     assert fetched.returncode == 0, (fetched.stdout, fetched.stderr)

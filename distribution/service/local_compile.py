@@ -16,6 +16,7 @@ except ImportError:  # private standalone validation
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--model', required=True)
+    parser.add_argument('--gguf')
     parser.add_argument('--output', required=True)
     parser.add_argument('--identity', required=True)
     parser.add_argument('--key', required=True)
@@ -24,15 +25,20 @@ def main():
     args = parser.parse_args()
     model = Path(args.model)
     config = AutoConfig.from_pretrained(model, local_files_only=True)
+    gguf = Path(args.gguf) if args.gguf else None
+    has_safetensors = any(model.glob('*.safetensors'))
+    if not has_safetensors and (gguf is None or not gguf.is_file()):
+        raise ValueError('local native preparation requires local safetensors or GGUF weights')
     if config.model_type in ('gemma4', 'gemma4_unified'):
         index = model / 'model.safetensors.index.json'
         total = json.loads(index.read_text()).get('metadata', {}).get('total_size', 0) if index.exists() else 0
         compiler = (BoundedTextCompiler(args.model, args.max_memory_tokens, args.threads,
-            compute_dtype='float32') if total > 30 * 1024**3 else
+            compute_dtype='float32', gguf_weights=str(gguf) if not has_safetensors else None)
+            if not has_safetensors or total > 30 * 1024**3 else
             GemmaCompiler(args.model, args.max_memory_tokens, args.threads))
     elif config.model_type == 'qwen3_5':
         compiler = BoundedTextCompiler(args.model, args.max_memory_tokens, args.threads,
-            compute_dtype='float32')
+            compute_dtype='float32', gguf_weights=str(gguf) if not has_safetensors else None)
     else:
         raise ValueError('local native encoder has no certified implementation for this model')
     try:

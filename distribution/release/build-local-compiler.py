@@ -7,7 +7,7 @@ import tempfile
 from setuptools import Extension, setup
 from Cython.Build import cythonize
 
-MODULES = ('publisher', 'checkpoint_weights', 'gemma_compile',
+MODULES = ('publisher', 'checkpoint_weights', 'gguf_weights', 'gemma_compile',
            'bounded_compile', 'local_compile')
 
 

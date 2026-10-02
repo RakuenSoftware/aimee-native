@@ -17,6 +17,7 @@ pub mod delivery;
 pub mod local_delivery;
 pub mod local_publisher;
 pub mod primitive;
+pub mod thin_client;
 pub mod runtime;
 
 pub const ABI: u32 = 1;
@@ -72,6 +73,8 @@ pub struct Config {
     pub client_identity: Option<PathBuf>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub connect_address: Option<std::net::SocketAddr>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub thinclient_home: Option<PathBuf>,
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -452,6 +455,21 @@ pub fn connect_with_tls(
 ) -> Result<()> {
     connect_with_address(root, endpoint, token, ca, identity, None)
 }
+pub fn connect_with_thinclient(root: &Path, endpoint: &str, home: &Path) -> Result<()> {
+    let endpoint = validate_endpoint(endpoint)?.to_string();
+    let home = fs::canonicalize(home)?;
+    ensure!(home.is_dir(), "Aimee thin-client home must be a directory");
+    let _guard = lock(root)?;
+    let memory_root = root.join("memory");
+    private_dir(&memory_root)?;
+    let config = Config {
+        schema: 1, endpoint, token_file: root.join("thinclient-managed"),
+        memory_root, ca_file: None, client_identity: None,
+        connect_address: None, thinclient_home: Some(home),
+    };
+    atomic(&root.join("config.json"), &serde_json::to_vec_pretty(&config)?)?;
+    Ok(())
+}
 pub fn connect_with_address(
     root: &Path,
     endpoint: &str,
@@ -510,6 +528,7 @@ pub fn connect_with_address(
         ca_file: save_tls("ca-", ca)?,
         client_identity: save_tls("identity-", identity)?,
         connect_address,
+        thinclient_home: None,
     };
     atomic(
         &root.join("config.json"),

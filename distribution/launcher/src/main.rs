@@ -162,8 +162,8 @@ fn local_model_fingerprint(model: &std::path::Path, gguf: Option<&str>) -> Resul
             files.push((name, entry.path()));
         }
     }
-    ensure!(files.iter().any(|(name, _)| name.ends_with(".safetensors")),
-        "local native preparation requires model safetensors on the inference host");
+    ensure!(files.iter().any(|(name, _)| name.ends_with(".safetensors")) || gguf.is_some(),
+        "local native preparation requires model safetensors or GGUF on the inference host");
     if let Some(path) = gguf {
         let path = fs::canonicalize(path)?;
         ensure!(path.is_file(), "GGUF weights must be a regular file");
@@ -192,8 +192,7 @@ fn connect_from_aimee(root: &std::path::Path, home: &std::path::Path) -> Result<
             Some(&credentials.endpoint), None)?,
         &credentials.endpoint, &credentials.token, "native memory connection", 64,
     )?;
-    native::connect_with_tls(root, &credentials.endpoint, &credentials.token,
-        credentials.ca.as_deref(), Some(&credentials.identity))?;
+    native::connect_with_thinclient(root, &credentials.endpoint, home)?;
     println!("Authenticated Aimee native-memory connection established.");
     Ok(())
 }
@@ -444,21 +443,45 @@ fn run() -> Result<()> {
             )?;
             let _runtime_lock = native::runtime::lock(&root)?;
             let mut settings: serde_json::Value = serde_json::from_slice(&fs::read(config)?)?;
+            ensure!(settings.is_object(), "serving configuration must be an object");
             let model = fs::canonicalize(settings["model"].as_str().context("model directory required")?)?;
+            if settings["gguf_weights"].is_null() {
+                let candidates: Vec<PathBuf> = fs::read_dir(&model)?
+                    .filter_map(|entry| entry.ok())
+                    .filter(|entry| {
+                        let name = entry.file_name().to_string_lossy().into_owned();
+                        name.ends_with(".gguf") && !name.to_ascii_lowercase().contains("mmproj")
+                            && entry.metadata().is_ok_and(|metadata| metadata.is_file())
+                    })
+                    .map(|entry| entry.path()).collect();
+                if candidates.len() == 1 {
+                    settings["gguf_weights"] = serde_json::json!(candidates[0]);
+                }
+            }
             let model_config_sha256 = hex::encode(Sha256::digest(fs::read(model.join("config.json"))?));
             let fingerprint = local_model_fingerprint(&model, settings["gguf_weights"].as_str())?;
             let native_model = format!("local-{}", &fingerprint[..24]);
             let ca = connection.ca_file.as_ref().map(fs::read).transpose()?;
             let identity = connection.client_identity.as_ref().map(fs::read).transpose()?;
-            let http = tls_client(ca.as_deref(), identity.as_deref(), Some(&connection.endpoint), connection.connect_address)?;
-            let token = fs::read_to_string(&connection.token_file)?;
+            let (http, token) = if connection.thinclient_home.is_some() {
+                let authorization = native::thin_client::open(&connection)?;
+                (authorization.http, authorization.token)
+            } else {
+                (tls_client(ca.as_deref(), identity.as_deref(),
+                    Some(&connection.endpoint), connection.connect_address)?,
+                 fs::read_to_string(&connection.token_file)?)
+            };
             native::primitive::fetch_with_token(&http, &connection.endpoint, &token,
                 "native memory connection", 64)?;
             let mut recipient_identity = Sha256::new();
             recipient_identity.update(b"aimee-local-recipient-v1\0");
             recipient_identity.update(connection.endpoint.as_bytes());
-            recipient_identity.update(token.as_bytes());
-            if let Some(identity) = &identity { recipient_identity.update(identity); }
+            if let Some(home) = &connection.thinclient_home {
+                recipient_identity.update(home.as_os_str().as_encoded_bytes());
+            } else {
+                recipient_identity.update(token.as_bytes());
+                if let Some(identity) = &identity { recipient_identity.update(identity); }
+            }
             let profile = native::delivery::Profile { schema:1,
                 recipient:format!("self-{}", hex::encode(recipient_identity.finalize())),
                 model:native_model.clone(), model_config_sha256 };
@@ -480,10 +503,18 @@ fn run() -> Result<()> {
             let limit_tokens: u32 = settings["max_memory_tokens"].as_u64().unwrap_or(1024).try_into()?;
             let compiler: Vec<String> = match settings.get("local_compiler") {
                 Some(value) => serde_json::from_value(value.clone())?,
-                None => vec![fs::canonicalize(&python)?.to_string_lossy().into_owned(),
+                None => {
+                    // Keep the venv interpreter path: canonicalizing its symlink
+                    // switches to the base Python and loses installed extensions.
+                    let mut command = vec![PathBuf::from(&python).to_string_lossy().into_owned(),
                     "-c".into(), "from aimee_vllm.native_compiler.local_compile import main; main()".into(),
                     "--model".into(), model.to_string_lossy().into_owned(),
-                    "--max-memory-tokens".into(), limit_tokens.to_string()],
+                    "--max-memory-tokens".into(), limit_tokens.to_string()];
+                    if let Some(gguf) = settings["gguf_weights"].as_str() {
+                        command.extend(["--gguf".into(), fs::canonicalize(gguf)?.to_string_lossy().into_owned()]);
+                    }
+                    command
+                },
             };
             let model_config: serde_json::Value = serde_json::from_slice(&fs::read(model.join("config.json"))?)?;
             let position_policy = if model_config["model_type"] == "qwen3_5" { "nonnegative" } else { "negative" };
@@ -775,6 +806,10 @@ mod aimee_enrollment_tests {
         let gguf = dir.path().join("model.gguf");
         fs::write(&gguf, b"served weights").unwrap();
         assert_ne!(first, local_model_fingerprint(dir.path(), gguf.to_str()).unwrap());
+        fs::remove_file(&checkpoint).unwrap();
+        let gguf_only = local_model_fingerprint(dir.path(), gguf.to_str()).unwrap();
+        fs::write(&gguf, b"updated served weights").unwrap();
+        assert_ne!(gguf_only, local_model_fingerprint(dir.path(), gguf.to_str()).unwrap());
     }
 
 }
