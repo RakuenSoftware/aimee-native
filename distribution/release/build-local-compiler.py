@@ -10,8 +10,8 @@ import tempfile
 from setuptools import Extension, setup
 from Cython.Build import cythonize
 
-MODULES = ('publisher', 'checkpoint_weights', 'gguf_weights', 'gemma_compile',
-           'bounded_compile', 'local_compile')
+MODULES = (('publisher', '_c0'), ('checkpoint_weights', '_c1'), ('gguf_weights', '_c2'),
+           ('gemma_compile', '_c3'), ('bounded_compile', '_c4'), ('local_compile', '_c5'))
 
 
 def build(source, output):
@@ -25,14 +25,25 @@ def build(source, output):
         (root / 'aimee_vllm' / '__init__.py').write_bytes(b'')
         (package / '__init__.py').write_bytes(b'')
         extensions = []
-        for name in MODULES:
+        replacements = {
+            '.publisher': '._c0', 'from publisher': 'from _c0',
+            '.checkpoint_weights': '._c1', 'from checkpoint_weights': 'from _c1',
+            '.gguf_weights': '._c2', 'from gguf_weights': 'from _c2',
+            '.gemma_compile': '._c3', 'from gemma_compile': 'from _c3',
+            '.bounded_compile': '._c4', 'from bounded_compile': 'from _c4',
+            '.local_compile': '._c5', 'from local_compile': 'from _c5',
+        }
+        for name, opaque in MODULES:
             original = source / (name + '.py')
             if not original.is_file():
                 raise FileNotFoundError(original)
-            target = package / original.name
-            shutil.copyfile(original, target)
+            target = package / (opaque + '.py')
+            content = original.read_text()
+            for old, new in replacements.items():
+                content = content.replace(old, new)
+            target.write_text(content)
             extensions.append(Extension(
-                'aimee_vllm.native_compiler.' + name, [str(target)],
+                'aimee_vllm.native_compiler.' + opaque, [str(target)],
                 extra_compile_args=['-O3', '-g0', '-fvisibility=hidden',
                                     '-ffunction-sections', '-fdata-sections'],
                 extra_link_args=['-s', '-Wl,--gc-sections', '-Wl,--build-id=none']))
@@ -51,10 +62,10 @@ def build(source, output):
         finally:
             os.environ['CFLAGS'] = old_cflags
         built = root / 'build' / 'aimee_vllm' / 'native_compiler'
-        for name in MODULES:
-            choices = list(built.glob(name + '.*.so'))
+        for name, opaque in MODULES:
+            choices = list(built.glob(opaque + '.*.so'))
             if len(choices) != 1:
-                raise RuntimeError('missing compiled native encoder: ' + name)
+                raise RuntimeError('missing compiled native encoder component')
             target = output / choices[0].name
             shutil.copyfile(choices[0], target)
             subprocess.run([sys.executable, str(repo / 'distribution/release/harden-elf.py'),
