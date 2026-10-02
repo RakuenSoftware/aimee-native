@@ -6,7 +6,7 @@ import shutil
 import subprocess
 
 
-FORBIDDEN_SECTIONS = ('.debug_', '.symtab', '.comment', '.note.gnu.build-id')
+FORBIDDEN_SECTIONS = ('.debug_', '.symtab', '.comment', '.note.gnu.build-id', '.gnu_debuglink', '.gnu_debugdata', '.GCC.command.line', '.llvm_addrsig', '.note.go.buildid', '.note.rustc')
 
 
 def sections(path):
@@ -26,6 +26,12 @@ def harden(path):
         objcopy,
         '--remove-section=.comment',
         '--remove-section=.note.gnu.build-id',
+        '--remove-section=.gnu_debuglink',
+        '--remove-section=.gnu_debugdata',
+        '--remove-section=.GCC.command.line',
+        '--remove-section=.llvm_addrsig',
+        '--remove-section=.note.go.buildid',
+        '--remove-section=.note.rustc',
         str(path),
     ], check=True)
     table = sections(path)
