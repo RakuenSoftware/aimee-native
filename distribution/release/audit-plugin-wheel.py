@@ -21,7 +21,7 @@ FORBIDDEN_BYTES = (
     b'distribution/service/',
     b'distribution/release/',
 )
-FORBIDDEN_SECTIONS = ('.debug_', '.symtab', '.comment', '.note.gnu.build-id')
+FORBIDDEN_SECTIONS = ('.debug_', '.symtab', '.comment', '.note.gnu.build-id', '.gnu_debuglink', '.gnu_debugdata', '.GCC.command.line', '.llvm_addrsig', '.note.go.buildid', '.note.rustc')
 
 
 def audit_elf(data, name, temporary):
@@ -78,7 +78,8 @@ with zipfile.ZipFile(a.wheel) as z:
             assert len([n for n in names if n.startswith('aimee_vllm/native_compiler/' + module + '.') and n.endswith('.so')]) == 1
         for descriptive in (b'publisher', b'checkpoint_weights', b'gguf_weights', b'gemma_compile',
                             b'bounded_compile', b'local_compile', b'native_attention',
-                            b'decode_words', b'decode_escapes'):
+                            b'decode_words', b'decode_escapes', b'GemmaCompiler',
+                            b'BoundedTextCompiler', b'CheckpointWeights', b'GgufWeights'):
             if any(descriptive in z.read(n) for n in names if n.endswith(('.so', '.py'))):
                 raise ValueError('descriptive private identifier in release artifact')
     records = list(csv.reader(io.StringIO(z.read(info + '/RECORD').decode())))
