@@ -11,10 +11,19 @@ with tempfile.TemporaryDirectory(prefix='aimee-client-build-') as tmp:
  source=repo/'distribution/vllm/aimee_vllm'
  shutil.copyfile(source/'__init__.py',pkg/'__init__.py')
  for name in modules:shutil.copyfile(source/(name+'.py'),pkg/(name+'.py'))
- # Triton requires Python source at the customer GPU. Keep only generic device
- # operations here; proprietary selection/encoding/control remains compiled.
- for name in ('kernel', 'decoder_kernel'):
-  shutil.copyfile(source/(name+'.py'),pkg/(name+'.py'))
+ # Release-only import retargeting keeps readable private source while exposing
+ # only opaque Triton module/function names in the customer wheel.
+ backend=(pkg/'backend.py');backend.write_text(backend.read_text().replace(
+  'from .kernel import native_attention','from ._k import k0 as native_attention'))
+ runtime=(pkg/'runtime_ops.py');runtime.write_text(runtime.read_text().replace(
+  'from .decoder_kernel import decode_words, decode_escapes',
+  'from ._d import d0 as decode_words, d1 as decode_escapes'))
+ subprocess.run([sys.executable,str(repo/'distribution/release/obfuscate-triton.py'),
+                 str(source/'kernel.py'),str(pkg/'_k.py'),
+                 '--functions','native_attention=k0'],check=True)
+ subprocess.run([sys.executable,str(repo/'distribution/release/obfuscate-triton.py'),
+                 str(source/'decoder_kernel.py'),str(pkg/'_d.py'),
+                 '--functions','decode_words=d0,decode_escapes=d1'],check=True)
  (root/'setup.py').write_text('''from setuptools import setup,Extension
 from Cython.Build import cythonize
 setup(name='aimee-vllm',version='''+repr(a.version)+''',packages=['aimee_vllm'],
@@ -42,7 +51,7 @@ setup(name='aimee-vllm',version='''+repr(a.version)+''',packages=['aimee_vllm'],
  wheels=list(out.glob('aimee_vllm-'+a.version+'-*.whl'));assert len(wheels)==1,'use an empty output directory'
  with zipfile.ZipFile(wheels[0]) as wheel:
   names=wheel.namelist()
-  assert all(not n.endswith(('.py','.pyc','.c','.pyx')) or n in ('aimee_vllm/__init__.py','aimee_vllm/kernel.py','aimee_vllm/decoder_kernel.py') for n in names)
+  assert all(not n.endswith(('.py','.pyc','.c','.pyx')) or n in ('aimee_vllm/__init__.py','aimee_vllm/_k.py','aimee_vllm/_d.py') for n in names)
   assert all(sum(n.startswith('aimee_vllm/'+m+'.') and n.endswith('.so') for n in names)==1 for m in modules)
   assert not any('/export_kernel.' in n or '/tests/' in n for n in names)
  print(wheels[0])
