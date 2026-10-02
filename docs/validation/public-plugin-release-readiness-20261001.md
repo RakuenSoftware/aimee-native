@@ -1,5 +1,16 @@
 # Public Aimee native-memory plugin release preparation — 1 October 2026
 
+**Superseded release decision, 2 October 2026:** The first public release must
+work with any user of the latest public Aimee installation, using an invitation
+issued by that user's own Aimee instance. The signed files below are retained
+as a validated controlled-preview candidate, **not approved for public upload**.
+The current public Aimee release has no `/v1/native/*` routes or installed
+native delivery/preparation service. The private service still requires
+operator-maintained principal bindings, model profiles and release policies.
+Publishing these wheels today would give an ordinary Aimee user a plugin that
+cannot obtain native memory from their instance. See
+[the public-install gate](public-native-aimee-enrollment-20261002.md).
+
 The [controlled 0.2.2 preview](plugin-0.2.2-release-review-20261001.md)
 is signed and staged, and its `aimee-qwen` branch is pushed. Its optional GGUF
 extra points to a private download address, so those bytes are **not** the

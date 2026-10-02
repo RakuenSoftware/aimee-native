@@ -2,6 +2,7 @@ use aimee_native_launcher as native;
 use anyhow::{Context, Result, ensure};
 use clap::{Parser, Subcommand};
 use std::os::unix::process::CommandExt;
+use std::os::unix::fs::{MetadataExt, OpenOptionsExt, PermissionsExt};
 use std::{
     fs,
     io::{self, Read},
@@ -31,6 +32,12 @@ enum Action {
         /// Dial this address while verifying the HTTPS endpoint hostname.
         #[arg(long)]
         connect_address: Option<std::net::SocketAddr>,
+    },
+    /// Connect using an existing, certificate-enrolled Aimee thin client.
+    ConnectAimee {
+        /// Aimee's client home; defaults to AIMEE_HOME, AIMEE_PROFILE, or ~/.config/aimee.
+        #[arg(long)]
+        aimee_home: Option<PathBuf>,
     },
     /// Run the private host-side native selection broker.
     MemoryAgent {
@@ -67,6 +74,62 @@ enum Action {
     Rollback,
     /// Show installation/hardware information without reading credentials.
     Doctor,
+}
+struct AimeeCredentials {
+    endpoint: String,
+    token: String,
+    ca: Option<Vec<u8>>,
+    identity: Vec<u8>,
+}
+fn aimee_home(explicit: Option<PathBuf>) -> Result<PathBuf> {
+    if let Some(home) = explicit.or_else(|| std::env::var_os("AIMEE_HOME").map(PathBuf::from)) {
+        ensure!(home.is_absolute(), "Aimee home must be an absolute path");
+        return Ok(home);
+    }
+    let home = PathBuf::from(std::env::var_os("HOME").context("HOME or --aimee-home is required")?);
+    let mut path = home.join(".config/aimee");
+    if let Some(profile) = std::env::var_os("AIMEE_PROFILE") {
+        let profile = profile.to_string_lossy();
+        if !profile.trim().is_empty() {
+            ensure!(profile != "." && profile != ".." && !profile.contains('/'), "invalid AIMEE_PROFILE");
+            path = path.join("profiles").join(profile.as_ref());
+        }
+    }
+    Ok(path)
+}
+fn private_aimee_file(path: &std::path::Path) -> Result<Vec<u8>> {
+    let mut file = fs::OpenOptions::new().read(true).custom_flags(libc::O_NOFOLLOW | libc::O_CLOEXEC)
+        .open(path).with_context(|| format!("missing Aimee enrollment file: {}", path.display()))?;
+    let metadata = file.metadata()?;
+    ensure!(metadata.is_file() && metadata.uid() == unsafe { libc::geteuid() }
+        && metadata.permissions().mode() & 0o077 == 0,
+        "Aimee enrollment file must be a regular, owner-only file: {}", path.display());
+    let mut contents = Vec::new();
+    file.read_to_end(&mut contents)?;
+    Ok(contents)
+}
+fn read_aimee_credentials(home: &std::path::Path) -> Result<AimeeCredentials> {
+    let remote = String::from_utf8(private_aimee_file(&home.join("remote.conf"))?)?;
+    let mut lines = remote.lines();
+    let endpoint = lines.next().context("Aimee remote URL is missing")?.to_owned();
+    let token = lines.next().context("Aimee enrollment bearer is missing")?.to_owned();
+    ensure!(lines.next().is_none() && !token.is_empty(), "invalid Aimee remote configuration");
+    native::validate_endpoint(&endpoint)?;
+    // Aimee stores a pin for self-signed servers. Publicly trusted servers
+    // need no local pin and use the runtime's normal trust roots instead.
+    let ca = match fs::read(home.join("remote-ca.pem")) {
+        Ok(pem) => Some(pem),
+        Err(error) if error.kind() == io::ErrorKind::NotFound => None,
+        Err(error) => return Err(error.into()),
+    };
+    if let Some(pem) = &ca {
+        reqwest::Certificate::from_pem(pem)?;
+    }
+    let mut identity = private_aimee_file(&home.join("tls/client.crt"))?;
+    identity.push(b'\n');
+    identity.extend(private_aimee_file(&home.join("tls/client.key"))?);
+    reqwest::Identity::from_pem(&identity)?;
+    Ok(AimeeCredentials { endpoint, token, ca, identity })
 }
 fn root(explicit: Option<PathBuf>) -> Result<PathBuf> {
     if let Some(p) = explicit {
@@ -169,6 +232,18 @@ fn run() -> Result<()> {
                 &root.join("native-profile.json"),
                 &serde_json::to_vec(&profile)?,
             )?;
+            println!("Authenticated Aimee native-memory connection established.");
+        }
+        Action::ConnectAimee { aimee_home: explicit } => {
+            let credentials = read_aimee_credentials(&aimee_home(explicit)?)?;
+            let profile = native::delivery::bootstrap(
+                &tls_client(credentials.ca.as_deref(), Some(&credentials.identity),
+                    Some(&credentials.endpoint), None)?,
+                &credentials.endpoint, &credentials.token,
+            )?;
+            native::connect_with_tls(&root, &credentials.endpoint, &credentials.token,
+                credentials.ca.as_deref(), Some(&credentials.identity))?;
+            native::atomic(&root.join("native-profile.json"), &serde_json::to_vec(&profile)?)?;
             println!("Authenticated Aimee native-memory connection established.");
         }
         Action::MemoryAgent {
@@ -539,5 +614,48 @@ fn main() {
     if let Err(e) = run() {
         eprintln!("Aimee Native: {e}");
         std::process::exit(1);
+    }
+}
+
+#[cfg(test)]
+mod aimee_enrollment_tests {
+    use super::*;
+
+    #[test]
+    fn incomplete_or_exposed_enrollment_fails_closed() {
+        let dir = tempfile::tempdir().unwrap();
+        let remote = dir.path().join("remote.conf");
+        fs::write(&remote, "https://memory.example:8743\ninvitation\n").unwrap();
+        fs::set_permissions(&remote, fs::Permissions::from_mode(0o600)).unwrap();
+        assert!(read_aimee_credentials(dir.path()).is_err()); // no certificate
+        fs::set_permissions(&remote, fs::Permissions::from_mode(0o644)).unwrap();
+        assert!(private_aimee_file(&remote).is_err());
+    }
+
+    #[test]
+    fn reads_existing_aimee_client_identity() {
+        let dir = tempfile::tempdir().unwrap();
+        let tls = dir.path().join("tls");
+        fs::create_dir(&tls).unwrap();
+        let cert = tls.join("client.crt");
+        let key = tls.join("client.key");
+        let output = Command::new("openssl")
+            .args(["req", "-x509", "-newkey", "rsa:2048", "-nodes", "-days", "1",
+                "-subj", "/CN=thin-client", "-keyout", key.to_str().unwrap(),
+                "-out", cert.to_str().unwrap()])
+            .output().unwrap();
+        assert!(output.status.success());
+        fs::set_permissions(&key, fs::Permissions::from_mode(0o600)).unwrap();
+        fs::set_permissions(&cert, fs::Permissions::from_mode(0o600)).unwrap();
+        let remote = dir.path().join("remote.conf");
+        fs::write(&remote, "https://memory.example:8743\ninvitation\n").unwrap();
+        fs::set_permissions(&remote, fs::Permissions::from_mode(0o600)).unwrap();
+        fs::copy(&cert, dir.path().join("remote-ca.pem")).unwrap();
+        let credentials = read_aimee_credentials(dir.path()).unwrap();
+        assert_eq!(credentials.endpoint, "https://memory.example:8743");
+        assert_eq!(credentials.token, "invitation");
+        assert!(credentials.identity.windows(17).any(|v| v == b"BEGIN PRIVATE KEY"));
+        fs::remove_file(dir.path().join("remote-ca.pem")).unwrap();
+        assert!(read_aimee_credentials(dir.path()).unwrap().ca.is_none());
     }
 }

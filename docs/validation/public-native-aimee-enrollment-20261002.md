@@ -1,0 +1,53 @@
+# Public native memory must enroll through each user's Aimee
+
+Decision, 2 October 2026: the first public GitHub release belongs to
+`RakuenSoftware/aimee` and must work for anyone running the latest Aimee. It
+must not depend on a separately provisioned preview account or a Rakuen-owned
+endpoint.
+
+The existing Aimee flow already issues a short-lived, single-device invitation
+in **Settings → Clients**. `aimee remote set URL INVITATION` pins the server
+certificate, creates a client key locally, sends a CSR, and receives a
+certificate tied to that user's account. Aimee owns invitation issuance,
+expiry, one-use redemption, grants and revocation. The plugin should use this
+identity; it should not create a second account system or ask for an unrelated
+long-lived scoped token. The new `aimee-native connect-aimee` source command
+imports the resulting local URL, TLS pin, certificate/key and bearer, then
+checks `/v1/native/bootstrap`. It rejects absent or exposed credential files.
+The command is **not in the previously signed 0.2.2 wheel**.
+
+The server half is not done. The previous authenticated native bridge has been
+ported onto current public `aimee` main in branch
+`feature/native-delivery-current`; it is disabled until a private Unix delivery
+socket is configured. Current public Aimee releases have neither those native
+routes nor the private publisher, preparer and delivery processes. The present
+private service also requires an operator-maintained principal-to-release-policy
+binding and explicit model profiles. That static preview configuration cannot
+serve arbitrary newly enrolled users.
+
+Release acceptance requires the following end-to-end behavior on an ordinary
+fresh Aimee install, with no preview infrastructure:
+
+1. Aimee issues the normal short-lived client invitation. Enrollment creates a
+   certificate-bound identity and the plugin adopts it through
+   `connect-aimee`; a copied bearer without the certificate fails.
+2. The installed Aimee server exposes the native API through its normal
+   authorization path and starts the delivery/preparation service. The service
+   derives the recipient, source view and release policy from the authenticated
+   Aimee account rather than an operator-edited bindings file. It prepares only
+   records that account may read, for a model identity the user has installed.
+3. Selection, download and final approval work after an update. Another user's
+   invitation or publication cannot be used, and revoking the enrolled client
+   blocks fresh selection and lease approval.
+4. A clean, supported CUDA and HIP install consumes its own Aimee memory
+   through the public wheel. The exact released wheel, server image and source
+   commit pass a no-memory control, authorized memory, revision, revocation and
+   cross-user isolation checks. A clean public `[gguf]` install resolves the
+   pinned dependency from the public Aimee GitHub Release.
+
+Current verification: the imported-identity command's Rust suite passes in a
+Linux build container (23 tests total), including complete and incomplete local
+enrollment fixtures. The ported C bridge compiles against current Aimee main.
+Neither result establishes the fresh-install service behavior in items 2–4.
+The old signed wheel remains useful as controlled-preview evidence but cannot
+be relabeled a general public release.

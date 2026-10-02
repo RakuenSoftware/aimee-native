@@ -1,5 +1,11 @@
 # Aimee native memory for vLLM — first public binary preview
 
+**DRAFT HELD — NOT FOR PUBLICATION.** The 2 October public-release requirement
+is an install that works with each user's latest Aimee instance through its
+existing invitation flow. The signed 0.2.2 candidate below still depends on a
+separately provisioned native service and is not that release. See
+`docs/validation/public-native-aimee-enrollment-20261002.md`.
+
 This release provides a compiled vLLM plugin and Aimee connection client. It
 lets a supported model consume Aimee-approved memory through native attention
 without placing the memory text in the conversation. An enrolled Aimee account
