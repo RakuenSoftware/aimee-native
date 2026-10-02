@@ -11,18 +11,21 @@ with tempfile.TemporaryDirectory(prefix='aimee-client-build-') as tmp:
  source=repo/'distribution/vllm/aimee_vllm'
  shutil.copyfile(source/'__init__.py',pkg/'__init__.py')
  for name in modules:shutil.copyfile(source/(name+'.py'),pkg/(name+'.py'))
- # Only the generic device operations need source for runtime compilation.
+ # Triton requires Python source at the customer GPU. Keep only generic device
+ # operations here; proprietary selection/encoding/control remains compiled.
  for name in ('kernel', 'decoder_kernel'):
   shutil.copyfile(source/(name+'.py'),pkg/(name+'.py'))
  (root/'setup.py').write_text('''from setuptools import setup,Extension
 from Cython.Build import cythonize
 setup(name='aimee-vllm',version='''+repr(a.version)+''',packages=['aimee_vllm'],
- ext_modules=cythonize([Extension('aimee_vllm.'+m,['aimee_vllm/'+m+'.py'],extra_compile_args=['-O3','-g0'],extra_link_args=['-s']) for m in '''+repr(modules)+'''],compiler_directives={'language_level':3,'binding':True,'annotation_typing':False,'embedsignature':False}),
+ ext_modules=cythonize([Extension('aimee_vllm.'+m,['aimee_vllm/'+m+'.py'],extra_compile_args=['-O3','-g0','-fvisibility=hidden','-ffunction-sections','-fdata-sections'],extra_link_args=['-s','-Wl,--gc-sections','-Wl,--build-id=none']) for m in '''+repr(modules)+'''],compiler_directives={'language_level':3,'binding':False,'annotation_typing':False,'embedsignature':False,'docstrings':False}),
  entry_points={'vllm.general_plugins':['aimee_native=aimee_vllm:register'],'console_scripts':['aimee-vllm=aimee_vllm.cli:main']},
  install_requires=['vllm>=0.30.0,<0.31'],python_requires='>=3.12')
 ''')
  env=dict(os.environ);env['CFLAGS']=env.get('CFLAGS','')+' -ffile-prefix-map='+str(root)+'=/aimee-client'
  subprocess.run([sys.executable,'setup.py','build_ext','--inplace'],cwd=root,env=env,check=True)
+ for artifact in pkg.glob('*.so'):
+  subprocess.run([sys.executable,str(repo/'distribution/release/harden-elf.py'),str(artifact)],check=True)
  # Cython compiled from .py; remove every private source/generated C before wheel assembly.
  for name in modules:
   (pkg/(name+'.py')).unlink();(pkg/(name+'.c')).unlink()
