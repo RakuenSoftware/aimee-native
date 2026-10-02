@@ -53,8 +53,7 @@ def assemble(wheel, launcher, library, notices, output, gguf_wheel_url, gguf_whe
     files['aimee_vllm/native/aimee-native'] = launcher.read_bytes()
     files['aimee_vllm/native/libaimee_native.so'] = library.read_bytes()
     if compiler_dir is not None:
-        modules = ('publisher', 'checkpoint_weights', 'gguf_weights', 'gemma_compile',
-                   'bounded_compile', 'local_compile')
+        modules = ('_c0', '_c1', '_c2', '_c3', '_c4', '_c5')
         files['aimee_vllm/native_compiler/__init__.py'] = b''
         for module in modules:
             matches = list(compiler_dir.glob(module + '.*.so'))
