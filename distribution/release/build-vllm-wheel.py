@@ -27,7 +27,7 @@ with tempfile.TemporaryDirectory(prefix='aimee-client-build-') as tmp:
  (root/'setup.py').write_text('''from setuptools import setup,Extension
 from Cython.Build import cythonize
 setup(name='aimee-vllm',version='''+repr(a.version)+''',packages=['aimee_vllm'],
- ext_modules=cythonize([Extension('aimee_vllm.'+m,['aimee_vllm/'+m+'.py'],extra_compile_args=['-O3','-g0','-fvisibility=hidden','-ffunction-sections','-fdata-sections'],extra_link_args=['-s','-Wl,--gc-sections','-Wl,--build-id=none']) for m in '''+repr(modules)+'''],compiler_directives={'language_level':3,'binding':False,'annotation_typing':False,'embedsignature':False,'docstrings':False}),
+ ext_modules=cythonize([Extension('aimee_vllm.'+m,['aimee_vllm/'+m+'.py'],extra_compile_args=['-O3','-g0','-fvisibility=hidden','-fno-ident','-fno-record-gcc-switches','-ffunction-sections','-fdata-sections','-flto'],extra_link_args=['-s','-flto','-Wl,--gc-sections','-Wl,--build-id=none','-Wl,--exclude-libs,ALL']) for m in '''+repr(modules)+'''],compiler_directives={'language_level':3,'binding':False,'annotation_typing':False,'embedsignature':False,'docstrings':False}),
  entry_points={'vllm.general_plugins':['aimee_native=aimee_vllm:register'],'console_scripts':['aimee-vllm=aimee_vllm.cli:main']},
  install_requires=['vllm>=0.30.0,<0.31'],python_requires='>=3.12')
 ''')
