@@ -29,6 +29,8 @@ def main():
     audit = json.loads(args.audit.read_text())
     if audit['status'] != 'passed' or audit['wheel'] != WHEEL or audit['sha256'] != sha(args.wheel):
         raise ValueError('wheel does not match its audited bytes')
+    if audit.get('disclosure_hardening', {}).get('status') != 'passed':
+        raise ValueError('wheel did not pass binary disclosure hardening audit')
     live = args.live_output.read_text().splitlines()
     answers = [json.loads(line) for line in live if line.startswith('{')]
     if not any('Halcyon' in result.get('answer', '') and
@@ -45,6 +47,10 @@ def main():
             raise ValueError('GGUF dependency is not pinned to this asset')
         if any(b'192.168.' in archive.read(name) for name in names):
             raise ValueError('private-network address in public wheel')
+        for marker in (b'RakuenSoftware/aimee-qwen', b'/opt/aimee-qwen',
+                       b'distribution/service/', b'distribution/release/'):
+            if any(marker in archive.read(name) for name in names):
+                raise ValueError('private implementation/build marker in public wheel')
         if any(name.endswith(('.safetensors', '.gguf', '.pyx', '.c', '.cpp')) for name in names):
             raise ValueError('source or model weights in public wheel')
     public_key = args.public_key_hex.read_text().strip()
@@ -63,7 +69,8 @@ def main():
         'validated': {'installed_wheel': WHEEL, 'model': 'Gemma4 12B Q8 GGUF',
                       'gpu': 'RTX 5080', 'enrolled_thinclient': True,
                       'selected_records': 2, 'prompt_tokens': 34,
-                      'revoked_request_http_status': 503},
+                      'revoked_request_http_status': 503,
+                      'binary_disclosure_audit': True},
         'source_included': False, 'model_weights_included': False,
         'vllm_runtime_included': False}
     manifest_path = args.stage / 'manifest.json'
