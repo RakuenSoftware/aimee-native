@@ -32,6 +32,9 @@ def build(source, output):
             '.gemma_compile': '._c3', 'from gemma_compile': 'from _c3',
             '.bounded_compile': '._c4', 'from bounded_compile': 'from _c4',
             '.local_compile': '._c5', 'from local_compile': 'from _c5',
+            'publish_local': 'p1', 'publish': 'p0',
+            'CheckpointWeights': 'C0', 'GgufWeights': 'C1',
+            'GemmaCompiler': 'C2', 'BoundedTextCompiler': 'C3',
         }
         for name, opaque in MODULES:
             original = source / (name + '.py')
@@ -44,9 +47,11 @@ def build(source, output):
             target.write_text(content)
             extensions.append(Extension(
                 'aimee_vllm.native_compiler.' + opaque, [str(target)],
-                extra_compile_args=['-O3', '-g0', '-fvisibility=hidden',
-                                    '-ffunction-sections', '-fdata-sections'],
-                extra_link_args=['-s', '-Wl,--gc-sections', '-Wl,--build-id=none']))
+                extra_compile_args=['-O3', '-g0', '-fvisibility=hidden', '-fno-ident',
+                                    '-fno-record-gcc-switches', '-ffunction-sections',
+                                    '-fdata-sections', '-flto'],
+                extra_link_args=['-s', '-flto', '-Wl,--gc-sections', '-Wl,--build-id=none',
+                                 '-Wl,--exclude-libs,ALL']))
         old_cflags = os.environ.get('CFLAGS', '')
         os.environ['CFLAGS'] = old_cflags + ' -ffile-prefix-map=' + str(root) + '=/aimee-compiler'
         try:
