@@ -26,10 +26,13 @@ socket is configured. Current public Aimee releases have neither those native
 routes nor the private publisher, preparer and delivery processes. The present
 private service also requires an operator-maintained principal-to-release-policy
 binding and explicit model profiles. That static preview configuration cannot
-serve arbitrary newly enrolled users.
+serve arbitrary newly enrolled users. Aimee's normal single-user install has
+personal memory without a KB, while the preview preparer reads a separately
+published image; the self-host path must connect the personal memory authority
+to preparation as well. Enrollment alone cannot supply missing source records.
 
 Release acceptance requires the following end-to-end behavior on an ordinary
-fresh Aimee install, with no preview infrastructure:
+fresh Aimee install **without a KB**, with no preview infrastructure:
 
 1. Aimee issues the normal short-lived client invitation. `enroll-aimee`
    redeems it through the installed Aimee client, creating a certificate-bound
