@@ -21,7 +21,7 @@ absent or exposed credential files. They are **not in the previously signed
 
 The server half is not done. The previous authenticated native bridge has been
 ported onto current public `aimee` main in branch
-`feature/native-delivery-current`; it is disabled until a private Unix delivery
+`feature/native-delivery-current` ([draft PR #3001](https://github.com/RakuenSoftware/aimee/pull/3001)); it is disabled until a private Unix delivery
 socket is configured. Current public Aimee releases have neither those native
 routes nor the private publisher, preparer and delivery processes. The present
 private service also requires an operator-maintained principal-to-release-policy
