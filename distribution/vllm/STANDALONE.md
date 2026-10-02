@@ -1,10 +1,13 @@
 # Standalone Aimee vLLM plugin
 
-The next source build can reuse a normally enrolled Aimee thin-client identity
-with `aimee-native connect-aimee`. Pair that client through Aimee's existing
-Settings → Clients invitation first. This command is not in the staged 0.2.2
-wheel, and the current public Aimee release does not yet provide the native
-delivery service. See [the public-install gate](../../docs/validation/public-native-aimee-enrollment-20261002.md)
+The next source build accepts a short-lived invitation issued in Aimee's
+Settings → Clients. `aimee-native enroll-aimee https://your-aimee-endpoint`
+reads that code from standard input, invokes the installed Aimee thin client
+to pin TLS and enroll its certificate, then connects the native plugin using
+that identity. Already enrolled users can run `aimee-native connect-aimee`.
+These commands are not in the staged 0.2.2 wheel, and the current public Aimee
+release does not yet provide the native delivery service. See
+[the public-install gate](../../docs/validation/public-native-aimee-enrollment-20261002.md)
 before describing the staged preview as a general public release.
 
 Install the compiled wheel into your existing supported vLLM environment. The

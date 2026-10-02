@@ -5,9 +5,9 @@ use std::os::unix::process::CommandExt;
 use std::os::unix::fs::{MetadataExt, OpenOptionsExt, PermissionsExt};
 use std::{
     fs,
-    io::{self, Read},
+    io::{self, BufRead, Read, Write},
     path::PathBuf,
-    process::Command,
+    process::{Command, Stdio},
     time::Duration,
 };
 
@@ -36,6 +36,12 @@ enum Action {
     /// Connect using an existing, certificate-enrolled Aimee thin client.
     ConnectAimee {
         /// Aimee's client home; defaults to AIMEE_HOME, AIMEE_PROFILE, or ~/.config/aimee.
+        #[arg(long)]
+        aimee_home: Option<PathBuf>,
+    },
+    /// Redeem an invitation from your Aimee's Settings → Clients, then connect.
+    EnrollAimee {
+        endpoint: String,
         #[arg(long)]
         aimee_home: Option<PathBuf>,
     },
@@ -130,6 +136,33 @@ fn read_aimee_credentials(home: &std::path::Path) -> Result<AimeeCredentials> {
     identity.extend(private_aimee_file(&home.join("tls/client.key"))?);
     reqwest::Identity::from_pem(&identity)?;
     Ok(AimeeCredentials { endpoint, token, ca, identity })
+}
+fn connect_from_aimee(root: &std::path::Path, home: &std::path::Path) -> Result<()> {
+    let credentials = read_aimee_credentials(home)?;
+    let profile = native::delivery::bootstrap(
+        &tls_client(credentials.ca.as_deref(), Some(&credentials.identity),
+            Some(&credentials.endpoint), None)?,
+        &credentials.endpoint, &credentials.token,
+    )?;
+    native::connect_with_tls(root, &credentials.endpoint, &credentials.token,
+        credentials.ca.as_deref(), Some(&credentials.identity))?;
+    native::atomic(&root.join("native-profile.json"), &serde_json::to_vec(&profile)?)?;
+    println!("Authenticated Aimee native-memory connection established.");
+    Ok(())
+}
+fn redeem_aimee_invitation(program: &std::path::Path, endpoint: &str,
+    home: &std::path::Path, code: &str) -> Result<()> {
+    let mut child = Command::new(program)
+        .args(["remote", "set", endpoint, "--token-stdin"])
+        .env("AIMEE_HOME", home)
+        .stdin(Stdio::piped())
+        .spawn().context("Aimee thin client is required for enrollment")?;
+    let mut input = child.stdin.take().context("could not open Aimee enrollment input")?;
+    input.write_all(code.as_bytes())?;
+    input.write_all(b"\n")?;
+    drop(input);
+    ensure!(child.wait()?.success(), "Aimee enrollment did not complete");
+    Ok(())
 }
 fn root(explicit: Option<PathBuf>) -> Result<PathBuf> {
     if let Some(p) = explicit {
@@ -235,16 +268,18 @@ fn run() -> Result<()> {
             println!("Authenticated Aimee native-memory connection established.");
         }
         Action::ConnectAimee { aimee_home: explicit } => {
-            let credentials = read_aimee_credentials(&aimee_home(explicit)?)?;
-            let profile = native::delivery::bootstrap(
-                &tls_client(credentials.ca.as_deref(), Some(&credentials.identity),
-                    Some(&credentials.endpoint), None)?,
-                &credentials.endpoint, &credentials.token,
-            )?;
-            native::connect_with_tls(&root, &credentials.endpoint, &credentials.token,
-                credentials.ca.as_deref(), Some(&credentials.identity))?;
-            native::atomic(&root.join("native-profile.json"), &serde_json::to_vec(&profile)?)?;
-            println!("Authenticated Aimee native-memory connection established.");
+            connect_from_aimee(&root, &aimee_home(explicit)?)?;
+        }
+        Action::EnrollAimee { endpoint, aimee_home: explicit } => {
+            native::validate_endpoint(&endpoint)?;
+            let home = aimee_home(explicit)?;
+            let mut invitation = String::new();
+            io::BufReader::new(io::stdin().take(257)).read_line(&mut invitation)?;
+            let code = invitation.trim_end_matches(['\r', '\n']);
+            ensure!(!code.is_empty() && code.len() < 256 &&
+                code.bytes().all(|b| b.is_ascii_graphic()), "invalid Aimee invitation code");
+            redeem_aimee_invitation(std::path::Path::new("aimee"), &endpoint, &home, code)?;
+            connect_from_aimee(&root, &home)?;
         }
         Action::MemoryAgent {
             serving,
@@ -657,5 +692,17 @@ mod aimee_enrollment_tests {
         assert!(credentials.identity.windows(17).any(|v| v == b"BEGIN PRIVATE KEY"));
         fs::remove_file(dir.path().join("remote-ca.pem")).unwrap();
         assert!(read_aimee_credentials(dir.path()).unwrap().ca.is_none());
+    }
+
+    #[test]
+    fn invitation_goes_to_aimee_stdin_not_process_arguments() {
+        let dir = tempfile::tempdir().unwrap();
+        let executable = dir.path().join("aimee");
+        fs::write(&executable, "#!/bin/sh\nprintf '%s\\n' \"$@\" > \"$AIMEE_HOME/args\"\ncat > \"$AIMEE_HOME/stdin\"\n").unwrap();
+        fs::set_permissions(&executable, fs::Permissions::from_mode(0o700)).unwrap();
+        redeem_aimee_invitation(&executable, "https://memory.example:8743", dir.path(), "one-use-code").unwrap();
+        assert_eq!(fs::read_to_string(dir.path().join("args")).unwrap(),
+            "remote\nset\nhttps://memory.example:8743\n--token-stdin\n");
+        assert_eq!(fs::read_to_string(dir.path().join("stdin")).unwrap(), "one-use-code\n");
     }
 }
