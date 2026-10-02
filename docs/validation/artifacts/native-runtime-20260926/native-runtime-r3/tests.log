@@ -1,0 +1,60 @@
+   Compiling aimee-qwen v0.1.0 (/opt/aimee-memory-lab/vllm-native-build)
+warning: struct `Transport` is never constructed
+  --> src/native_transport.rs:96:12
+   |
+96 | pub struct Transport {
+   |            ^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: associated items `prepare`, `source`, and `fill` are never used
+   --> src/native_transport.rs:108:12
+    |
+107 | impl Transport {
+    | -------------- associated items in this implementation
+108 |     pub fn prepare(
+    |            ^^^^^^^
+...
+161 |     pub fn source(&self) -> serde_json::Value {
+    |            ^^^^^^
+...
+165 |     pub unsafe fn fill(&self, target: *mut u8) -> Result<()> {
+    |                   ^^^^
+
+warning: `aimee-qwen` (lib test) generated 2 warnings
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.19s
+     Running unittests src/lib.rs (target/debug/deps/aimee_qwen-2d5ca1ac3a2f8655)
+
+running 29 tests
+test device_cache::admission_tests::different_revisions_compete_and_rejection_preserves_reservations ... ok
+test device_cache::admission_tests::shared_bank_counts_once_but_releases_after_last_request ... ok
+test device_cache::tests::duplicate_revision_change_and_overflow_rejected ... ok
+test device_cache::tests::idle_lru_eviction_preserves_active_pins ... ok
+test device_cache::tests::rejected_pressure_does_not_change_residency ... ok
+test device_cache::tests::reloading_evicted_bank_requires_upload ... ok
+test knowledge::tests::new_revision_replaces_only_same_source_object ... ok
+test knowledge::tests::same_content_is_not_semantically_merged_by_adapter ... ok
+test memory_encoding::tests::serialization_and_neutral_control_preserve_content_token_slots ... ok
+test knowledge::tests::unqualified_fact_is_rejected ... ok
+test knowledge::tests::same_numeric_id_across_layers_keeps_both_objects ... ok
+test native_transport::tests::arena_reuses_one_descriptor_and_reclaims_only_retired_extents ... ok
+test preparation_reuse::tests::positions_scope_and_successful_commit_bound_reuse ... ok
+test native_store::tests::heterogeneous_views_preserve_every_byte_without_files ... ok
+test native_packing::tests::malformed_payloads_are_rejected ... ok
+test native_store::tests::admission_rejects_wrong_identity_budget_corruption_and_incomplete_pairs ... ok
+test preparation_cache::tests::missing_identity_or_duplicate_records_rejected ... ok
+test preparation_cache::tests::exact_selection_reuses_without_reencoding ... ok
+test preparation_cache::tests::failed_compilation_never_becomes_visible ... ok
+test prepared_files::tests::append_admission_and_short_read_failure ... ok
+test native_store::tests::disk_mapping_pins_old_inode_across_replacement_and_page_release ... ok
+test preparation_cache::tests::every_record_order_revision_recipient_and_model_affect_reuse ... ok
+test native_store::tests::packed_rank_matches_all_partitioned_and_replicated_heads ... ok
+test preparation_cache::tests::concurrent_preparation_is_coalesced ... ok
+test native_transport_codec::tests::every_bf16_bit_pattern_and_partial_vectors_roundtrip ... ok
+test native_compression::tests::every_bit_is_preserved_including_float_special_values ... ok
+test native_packing::tests::exact_all_bits_and_all_blocks ... ok
+test streaming_copy::tests::streaming_preserves_misaligned_extents_and_guards ... ok
+test prepared_files::tests::one_file_multiple_ranges_retained_then_closed_after_idle ... ok
+
+test result: ok. 29 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+

@@ -1,0 +1,292 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790085427565034836-2256",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place San Lorenzo MX 4024778, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    5655,
+    70902,
+    26690,
+    220,
+    19,
+    15,
+    17,
+    19,
+    22,
+    22,
+    23,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    23,
+    22,
+    17
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -92,
+  "answer": "872",
+  "finish_reason": "stop",
+  "elapsed_ms": 2619.864927,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place San Lorenzo MX 4024778, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place San Lorenzo (ID 4024778): country code MX; latitude 20.02745; longitude -100.48572; administrative codes 11/019; population 872; time zone America/Mexico_City. The source record was modified on 2026-05-12.",
+            "id": "geonames.4024778",
+            "key": "place San Lorenzo MX 4024778",
+            "kind": "fact",
+            "memory_hash": "df8bfe96220ed3fc53b5949ed9bed5f7ab0d6a02cff1a8e89148de9de4e74b7b",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.4024778",
+              "revision": "97d63d60096193b58aa4fd3e27e81f8d51b1334c48085518584ef00faea98cf4"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 92,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.4024778",
+          "revision": "97d63d60096193b58aa4fd3e27e81f8d51b1334c48085518584ef00faea98cf4"
+        }
+      ],
+      "encoding_elapsed_ms": 603.337848,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 92,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2026-05-12 Answer user 4024778 what is its population assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.027596235275268555
+        },
+        {
+          "text": "2026-05-12",
+          "source": "aimee",
+          "positions": [
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90
+          ],
+          "score": 0.01873968626750866
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            95
+          ],
+          "score": 0.02440224401652813
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.01565731316804886
+        },
+        {
+          "text": "4024778",
+          "source": "sequence",
+          "positions": [
+            132,
+            133,
+            134,
+            135,
+            136,
+            137,
+            138
+          ],
+          "score": 0.020427233597729355
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            140
+          ],
+          "score": 0.038716383278369904
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            141
+          ],
+          "score": 0.015694454312324524
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            142
+          ],
+          "score": 0.03421492129564285
+        },
+        {
+          "text": "population",
+          "source": "sequence",
+          "positions": [
+            143
+          ],
+          "score": 0.012999902479350567
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.02073737606406212
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            156
+          ],
+          "score": 0.027526047080755234
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            158
+          ],
+          "score": 0.06367330998182297
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 92,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.4024778",
+          "revision": "97d63d60096193b58aa4fd3e27e81f8d51b1334c48085518584ef00faea98cf4"
+        }
+      ],
+      "encoding_elapsed_ms": 0.0059499999999999996,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 71
+}

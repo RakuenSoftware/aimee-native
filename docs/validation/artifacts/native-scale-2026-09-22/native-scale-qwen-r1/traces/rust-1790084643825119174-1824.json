@@ -1,0 +1,291 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790084643825119174-1824",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Dahab EG 358245, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    72725,
+    365,
+    54226,
+    220,
+    18,
+    20,
+    23,
+    17,
+    19,
+    20,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    71090,
+    10968,
+    24736
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -86,
+  "answer": "Africa/Cairo",
+  "finish_reason": "stop",
+  "elapsed_ms": 2741.587715,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Dahab EG 358245, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Dahab (ID 358245): country code EG; latitude 28.48208; longitude 34.49505; administrative codes 26/unspecified; population 8000; time zone Africa/Cairo. The source record was modified on 2017-11-24.",
+            "id": "geonames.358245",
+            "key": "place Dahab EG 358245",
+            "kind": "fact",
+            "memory_hash": "c5e88d81f26152c867e5866e8a1fca169c8b9607a0df05b7f697689acdc58682",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.358245",
+              "revision": "aabe879b35ec0d97d1238e18f030cf30de352d69d9f78a8a624c0fc04d9c5c28"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 86,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.358245",
+          "revision": "aabe879b35ec0d97d1238e18f030cf30de352d69d9f78a8a624c0fc04d9c5c28"
+        }
+      ],
+      "encoding_elapsed_ms": 601.063655,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 86,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2017-11-24 Answer user According 358245 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.027671476360410452
+        },
+        {
+          "text": "2017-11-24",
+          "source": "aimee",
+          "positions": [
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84
+          ],
+          "score": 0.011409209750127047
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            89
+          ],
+          "score": 0.023702286183834076
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            112
+          ],
+          "score": 0.016045456752181053
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            114
+          ],
+          "score": 0.012341493740677834
+        },
+        {
+          "text": "358245",
+          "source": "sequence",
+          "positions": [
+            126,
+            127,
+            128,
+            129,
+            130,
+            131
+          ],
+          "score": 0.015585857443511486
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            133
+          ],
+          "score": 0.03814021870493889
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            134
+          ],
+          "score": 0.013518090359866619
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            135
+          ],
+          "score": 0.030447572469711304
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            148
+          ],
+          "score": 0.02238154225051403
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            150
+          ],
+          "score": 0.030383288860321045
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.06667403131723404
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 86,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.358245",
+          "revision": "aabe879b35ec0d97d1238e18f030cf30de352d69d9f78a8a624c0fc04d9c5c28"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00869,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 71
+}

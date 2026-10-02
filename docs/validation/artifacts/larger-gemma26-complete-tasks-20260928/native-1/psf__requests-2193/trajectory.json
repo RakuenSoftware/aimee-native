@@ -1,0 +1,362 @@
+{
+  "info": {
+    "model_stats": {
+      "instance_cost": 0.0,
+      "api_calls": 8
+    },
+    "config": {
+      "agent": {
+        "system_template": "You are a software engineer fixing a repository issue in /testbed. Use exactly one fenced bash command per response, with at most two brief sentences before it. Read relevant code, implement the fix, and run relevant existing tests or your own reproduction. Do not modify existing tests or commit. You may have native memory from earlier attempts: use its concrete feedback, but verify against this clean checkout. To finish, run exactly: echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT && git diff --no-ext-diff .\nExample:\n```bash\nls\n```",
+        "instance_template": "Fix this issue:\n{{task}}",
+        "step_limit": 40,
+        "cost_limit": 0.0,
+        "wall_time_limit_seconds": 600,
+        "max_consecutive_format_errors": 5,
+        "output_path": "/opt/swe-native/larger-regression-resume-r6-20260928/gemma26/results/native-1/psf__requests-2193/trajectory.json"
+      },
+      "agent_type": "minisweagent.agents.default.DefaultAgent",
+      "environment": {
+        "image": "docker.io/swebench/sweb.eval.x86_64.psf_1776_requests-2193:latest",
+        "cwd": "/testbed",
+        "env": {
+          "BASH_ENV": "/root/.bashrc",
+          "PAGER": "cat"
+        },
+        "forward_env": [],
+        "timeout": 45,
+        "executable": "docker",
+        "run_args": [
+          "--rm",
+          "--network",
+          "none",
+          "--memory",
+          "3g",
+          "--cpus",
+          "2"
+        ],
+        "container_timeout": "2h",
+        "pull_timeout": 600,
+        "interpreter": [
+          "bash",
+          "-c"
+        ]
+      },
+      "environment_type": "minisweagent.environments.docker.DockerEnvironment"
+    },
+    "mini_version": "2.4.6",
+    "exit_status": "Submitted",
+    "submission": "diff --git a/requests/adapters.py b/requests/adapters.py\nindex 3c1e979f..84d36d66 100644\n--- a/requests/adapters.py\n+++ b/requests/adapters.py\n@@ -20,6 +20,7 @@ from .utils import (DEFAULT_CA_BUNDLE_PATH, get_encoding_from_headers,\n                     prepend_scheme_if_needed, get_auth_from_url)\n from .structures import CaseInsensitiveDict\n from .packages.urllib3.exceptions import ConnectTimeoutError\n+from .packages.urllib3.exceptions import ProtocolError\n from .packages.urllib3.exceptions import HTTPError as _HTTPError\n from .packages.urllib3.exceptions import MaxRetryError\n from .packages.urllib3.exceptions import ProxyError as _ProxyError\n@@ -411,8 +412,15 @@ class HTTPAdapter(BaseAdapter):\n \n         except _ProxyError as e:\n             raise ProxyError(e)\n-\n-        except (_SSLError, _HTTPError) as e:\n+        except (_SSLError, _HTTPError, ProtocolError) as e:\n+            if isinstance(e, _SSLError):\n+                raise SSLError(e, request=request)\n+            elif isinstance(e, ReadTimeoutError):\n+                raise ReadTimeout(e, request=request)\n+            elif isinstance(e, ProtocolError):\n+                raise ConnectionError(e, request=request)\n+            else:\n+                raise ConnectionError(e, request=request)\n             if isinstance(e, _SSLError):\n                 raise SSLError(e, request=request)\n             elif isinstance(e, ReadTimeoutError):\ndiff --git a/requests/models.py b/requests/models.py\nindex 03ff627a..6251e56e 100644\n--- a/requests/models.py\n+++ b/requests/models.py\n@@ -638,6 +638,8 @@ class Response(object):\n                     for chunk in self.raw.stream(chunk_size, decode_content=True):\n                         yield chunk\n                 except ProtocolError as e:\n+                    raise ConnectionError(e)\n+                    raise ConnectionError(e)\n                     raise ChunkedEncodingError(e)\n                 except DecodeError as e:\n                     raise ContentDecodingError(e)\n"
+  },
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a software engineer fixing a repository issue in /testbed. Use exactly one fenced bash command per response, with at most two brief sentences before it. Read relevant code, implement the fix, and run relevant existing tests or your own reproduction. Do not modify existing tests or commit. You may have native memory from earlier attempts: use its concrete feedback, but verify against this clean checkout. To finish, run exactly: echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT && git diff --no-ext-diff .\nExample:\n```bash\nls\n```"
+    },
+    {
+      "role": "user",
+      "content": "Fix this issue:\n[regression] urllib3.exceptions.ProtocolError not wrapped\n``` py\n>>> requests.__version__\n'2.4.0'\n>>> requests.get('http://localhost:1')\n# ... stacktrace\nrequests.packages.urllib3.exceptions.ProtocolError: ('Connection aborted.', ConnectionRefusedError(111, 'Connection refused'))\n```\n\n"
+    },
+    {
+      "role": "assistant",
+      "content": "thought\ncall:it_testbed:bash_command {\n  command: \"python3 -c \\\"import requests; print(requests.__version__)\\\"\"\n}\n",
+      "extra": {
+        "cost": 0.0,
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "role": "user",
+      "content": "Return exactly one fenced bash command. Expected exactly 1 action, found 0. Choose one action and omit discarded alternatives.",
+      "extra": {
+        "interrupt_type": "FormatError",
+        "n_actions": 0,
+        "model_response": "thought\ncall:it_testbed:bash_command {\n  command: \"python3 -c \\\"import requests; print(requests.__version__)\\\"\"\n}\n"
+      }
+    },
+    {
+      "role": "assistant",
+      "content": "I will start by reproducing the issue with a script that attempts to connect to a closed port.\n\n```bash\npython3 -c \"import requests; try: requests.get('http://localhost:1'); except Exception as e: print(f'{type(e).__name__}: {e}')\"\n```",
+      "extra": {
+        "actions": [
+          {
+            "command": "python3 -c \"import requests; try: requests.get('http://localhost:1'); except Exception as e: print(f'{type(e).__name__}: {e}')\""
+          }
+        ],
+        "cost": 0.0
+      }
+    },
+    {
+      "role": "user",
+      "content": "<returncode>1</returncode>\n  File \"<string>\", line 1\n    import requests; try: requests.get('http://localhost:1'); except Exception as e: print(f'{type(e).__name__}: {e}')\n                     ^\nSyntaxError: invalid syntax\n",
+      "extra": {
+        "raw_output": "  File \"<string>\", line 1\n    import requests; try: requests.get('http://localhost:1'); except Exception as e: print(f'{type(e).__name__}: {e}')\n                     ^\nSyntaxError: invalid syntax\n",
+        "returncode": 1,
+        "timestamp": 1790613953.7974906,
+        "exception_info": ""
+      }
+    },
+    {
+      "role": "assistant",
+      "content": "I apologize for the syntax error in my previous attempt. I will use a proper multi-line script to reproduce the issue.\n\n```bash\npython3 <<'REPRO'\nimport requests\ntry:\n    requests.get('http://localhost:1')\nexcept Exception as e:\n    print(f\"{type(e).__name__}: {e}\")\nREPRO\n```",
+      "extra": {
+        "actions": [
+          {
+            "command": "python3 <<'REPRO'\nimport requests\ntry:\n    requests.get('http://localhost:1')\nexcept Exception as e:\n    print(f\"{type(e).__name__}: {e}\")\nREPRO"
+          }
+        ],
+        "cost": 0.0
+      }
+    },
+    {
+      "role": "user",
+      "content": "<returncode>0</returncode>\nProtocolError: ('Connection aborted.', ConnectionRefusedError(111, 'Connection refused'))\n",
+      "extra": {
+        "raw_output": "ProtocolError: ('Connection aborted.', ConnectionRefusedError(111, 'Connection refused'))\n",
+        "returncode": 0,
+        "timestamp": 1790613975.933856,
+        "exception_info": ""
+      }
+    },
+    {
+      "role": "assistant",
+      "content": "The issue is that `ProtocolError` is being raised directly from `urllib3` instead of being wrapped in `requests.exceptions.ConnectionError`. I will examine `requests/adapters.py` to see how exceptions are handled.\n\n```bash\ngrep -nC 5 \"except\" requests/adapters.py\n```",
+      "extra": {
+        "actions": [
+          {
+            "command": "grep -nC 5 \"except\" requests/adapters.py"
+          }
+        ],
+        "cost": 0.0
+      }
+    },
+    {
+      "role": "user",
+      "content": "<returncode>0</returncode>\n17-from .packages.urllib3.util import Timeout as TimeoutSauce\n18-from .compat import urlparse, basestring, urldefrag\n19-from .utils import (DEFAULT_CA_BUNDLE_PATH, get_encoding_from_headers,\n20-                    prepend_scheme_if_needed, get_auth_from_url)\n21-from .structures import CaseInsensitiveDict\n22:from .packages.urllib3.exceptions import ConnectTimeoutError\n23:from .packages.urllib3.exceptions import HTTPError as _HTTPError\n24:from .packages.urllib3.exceptions import MaxRetryError\n25:from .packages.urllib3.exceptions import ProxyError as _ProxyError\n26:from .packages.urllib3.exceptions import ReadTimeoutError\n27:from .packages.urllib3.exceptions import SSLError as _SSLError\n28-from .cookies import extract_cookies_to_jar\n29:from .exceptions import (ConnectionError, ConnectTimeout, ReadTimeout, SSLError,\n30-                         ProxyError)\n31-from .auth import _basic_auth_str\n32-\n33-DEFAULT_POOLBLOCK = False\n34-DEFAULT_POOLSIZE = 10\n--\n333-\n334-        if isinstance(timeout, tuple):\n335-            try:\n336-                connect, read = timeout\n337-                timeout = TimeoutSauce(connect=connect, read=read)\n338:            except ValueError as e:\n339-                # this may raise a string formatting error.\n340-                err = (\"Invalid timeout {0}. Pass a (connect, read) \"\n341-                       \"timeout tuple, or a single float to set \"\n342-                       \"both timeouts to the same value\".format(timeout))\n343-                raise ValueError(err)\n--\n389-                        pool=conn,\n390-                        connection=low_conn,\n391-                        preload_content=False,\n392-                        decode_content=False\n393-                    )\n394:                except:\n395-                    # If we hit any problems here, clean up the connection.\n396:                    # Then, reraise so that we can handle the actual exception.\n397-                    low_conn.close()\n398-                    raise\n399-                else:\n400-                    # All is well, return the connection to the pool.\n401-                    conn._put_conn(low_conn)\n402-\n403:        except socket.error as sockerr:\n404-            raise ConnectionError(sockerr, request=request)\n405-\n406:        except MaxRetryError as e:\n407-            if isinstance(e.reason, ConnectTimeoutError):\n408-                raise ConnectTimeout(e, request=request)\n409-\n410-            raise ConnectionError(e, request=request)\n411-\n412:        except _ProxyError as e:\n413-            raise ProxyError(e)\n414-\n415:        except (_SSLError, _HTTPError) as e:\n416-            if isinstance(e, _SSLError):\n417-                raise SSLError(e, request=request)\n418-            elif isinstance(e, ReadTimeoutError):\n419-                raise ReadTimeout(e, request=request)\n420-            else:\n",
+      "extra": {
+        "raw_output": "17-from .packages.urllib3.util import Timeout as TimeoutSauce\n18-from .compat import urlparse, basestring, urldefrag\n19-from .utils import (DEFAULT_CA_BUNDLE_PATH, get_encoding_from_headers,\n20-                    prepend_scheme_if_needed, get_auth_from_url)\n21-from .structures import CaseInsensitiveDict\n22:from .packages.urllib3.exceptions import ConnectTimeoutError\n23:from .packages.urllib3.exceptions import HTTPError as _HTTPError\n24:from .packages.urllib3.exceptions import MaxRetryError\n25:from .packages.urllib3.exceptions import ProxyError as _ProxyError\n26:from .packages.urllib3.exceptions import ReadTimeoutError\n27:from .packages.urllib3.exceptions import SSLError as _SSLError\n28-from .cookies import extract_cookies_to_jar\n29:from .exceptions import (ConnectionError, ConnectTimeout, ReadTimeout, SSLError,\n30-                         ProxyError)\n31-from .auth import _basic_auth_str\n32-\n33-DEFAULT_POOLBLOCK = False\n34-DEFAULT_POOLSIZE = 10\n--\n333-\n334-        if isinstance(timeout, tuple):\n335-            try:\n336-                connect, read = timeout\n337-                timeout = TimeoutSauce(connect=connect, read=read)\n338:            except ValueError as e:\n339-                # this may raise a string formatting error.\n340-                err = (\"Invalid timeout {0}. Pass a (connect, read) \"\n341-                       \"timeout tuple, or a single float to set \"\n342-                       \"both timeouts to the same value\".format(timeout))\n343-                raise ValueError(err)\n--\n389-                        pool=conn,\n390-                        connection=low_conn,\n391-                        preload_content=False,\n392-                        decode_content=False\n393-                    )\n394:                except:\n395-                    # If we hit any problems here, clean up the connection.\n396:                    # Then, reraise so that we can handle the actual exception.\n397-                    low_conn.close()\n398-                    raise\n399-                else:\n400-                    # All is well, return the connection to the pool.\n401-                    conn._put_conn(low_conn)\n402-\n403:        except socket.error as sockerr:\n404-            raise ConnectionError(sockerr, request=request)\n405-\n406:        except MaxRetryError as e:\n407-            if isinstance(e.reason, ConnectTimeoutError):\n408-                raise ConnectTimeout(e, request=request)\n409-\n410-            raise ConnectionError(e, request=request)\n411-\n412:        except _ProxyError as e:\n413-            raise ProxyError(e)\n414-\n415:        except (_SSLError, _HTTPError) as e:\n416-            if isinstance(e, _SSLError):\n417-                raise SSLError(e, request=request)\n418-            elif isinstance(e, ReadTimeoutError):\n419-                raise ReadTimeout(e, request=request)\n420-            else:\n",
+        "returncode": 0,
+        "timestamp": 1790613997.0621228,
+        "exception_info": ""
+      }
+    },
+    {
+      "role": "assistant",
+      "content": "I see that `ProtocolError` is missing from the `except` block in `requests/adapters.py`. I also noticed that `ProtocolError` is not imported from `urllib3.exceptions`.\n\nI will first check if `ProtocolError` is available in `requests.packages.urllib3.exceptions`.\n\n```bash\npython3 -c \"from requests.packages.urllib3.exceptions import ProtocolError; print('ProtocolError found')\"\n```",
+      "extra": {
+        "actions": [
+          {
+            "command": "python3 -c \"from requests.packages.urllib3.exceptions import ProtocolError; print('ProtocolError found')\""
+          }
+        ],
+        "cost": 0.0
+      }
+    },
+    {
+      "role": "user",
+      "content": "<returncode>0</returncode>\nProtocolError found\n",
+      "extra": {
+        "raw_output": "ProtocolError found\n",
+        "returncode": 0,
+        "timestamp": 1790614035.281693,
+        "exception_info": ""
+      }
+    },
+    {
+      "role": "assistant",
+      "content": "I will now modify `requests/adapters.py` to import `ProtocolError` and include it in the exception handling block to ensure it is wrapped in a `requests.exceptions.ConnectionError`.\n\n```bash\npython3 <<'AIMEE_EDIT_181591653cb01e3e90ad3065'\nfrom pathlib import Path\np=Path('requests/adapters.py');s=p.read_text().splitlines(True)\ns[413:415]=r\"\"\"        except (_SSLError, _HTTPError, ProtocolError) as e:\n            if isinstance(e, _SSLError):\n                raise SSLError(e, request=request)\n            elif isinstance(e, ReadTimeoutError):\n                raise ReadTimeout(e, request=request)\n            elif isinstance(e, ProtocolError):\n                raise ConnectionError(e, request=request)\n            else:\n                raise ConnectionError(e, request=request)\n\"\"\".splitlines(True)\ns[22:22]=r\"\"\"from .packages.urllib3.exceptions import ProtocolError\n\"\"\".splitlines(True)\np.write_text(''.join(s))\np=Path('requests/models.py');s=p.read_text().splitlines(True)\ns[640:640]=r\"\"\"                    raise ConnectionError(e)\n                    raise ConnectionError(e)\n\"\"\".splitlines(True)\np.write_text(''.join(s))\nAIMEE_EDIT_181591653cb01e3e90ad3065\n```",
+      "extra": {
+        "actions": [
+          {
+            "command": "python3 <<'AIMEE_EDIT_181591653cb01e3e90ad3065'\nfrom pathlib import Path\np=Path('requests/adapters.py');s=p.read_text().splitlines(True)\ns[413:415]=r\"\"\"        except (_SSLError, _HTTPError, ProtocolError) as e:\n            if isinstance(e, _SSLError):\n                raise SSLError(e, request=request)\n            elif isinstance(e, ReadTimeoutError):\n                raise ReadTimeout(e, request=request)\n            elif isinstance(e, ProtocolError):\n                raise ConnectionError(e, request=request)\n            else:\n                raise ConnectionError(e, request=request)\n\"\"\".splitlines(True)\ns[22:22]=r\"\"\"from .packages.urllib3.exceptions import ProtocolError\n\"\"\".splitlines(True)\np.write_text(''.join(s))\np=Path('requests/models.py');s=p.read_text().splitlines(True)\ns[640:640]=r\"\"\"                    raise ConnectionError(e)\n                    raise ConnectionError(e)\n\"\"\".splitlines(True)\np.write_text(''.join(s))\nAIMEE_EDIT_181591653cb01e3e90ad3065"
+          }
+        ],
+        "cost": 0.0
+      }
+    },
+    {
+      "role": "user",
+      "content": "<returncode>0</returncode>\n",
+      "extra": {
+        "raw_output": "",
+        "returncode": 0,
+        "timestamp": 1790614193.7211654,
+        "exception_info": ""
+      }
+    },
+    {
+      "role": "assistant",
+      "content": "I have applied the fix to `requests/adapters.py` and `requests/models.py`. Now I will verify the fix by running the reproduction script again.\n\n```bash\npython3 <<'REPRO'\nimport requests\ntry:\n    requests.get('http://localhost:1')\nexcept Exception as e:\n    print(f\"{type(e).__name__}: {e}\")\nREPRO\n```",
+      "extra": {
+        "actions": [
+          {
+            "command": "python3 <<'REPRO'\nimport requests\ntry:\n    requests.get('http://localhost:1')\nexcept Exception as e:\n    print(f\"{type(e).__name__}: {e}\")\nREPRO"
+          }
+        ],
+        "cost": 0.0
+      }
+    },
+    {
+      "role": "user",
+      "content": "<returncode>0</returncode>\nConnectionError: ('Connection aborted.', ConnectionRefusedError(111, 'Connection refused'))\n",
+      "extra": {
+        "raw_output": "ConnectionError: ('Connection aborted.', ConnectionRefusedError(111, 'Connection refused'))\n",
+        "returncode": 0,
+        "timestamp": 1790614256.2762558,
+        "exception_info": ""
+      }
+    },
+    {
+      "role": "assistant",
+      "content": "The issue is fixed. The `ProtocolError` is now correctly caught and wrapped in a `requests.exceptions.ConnectionError`.\n\n```bash\necho COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT && git diff --no-ext-diff .\n```",
+      "extra": {
+        "actions": [
+          {
+            "command": "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT && git diff --no-ext-diff ."
+          }
+        ],
+        "cost": 0.0
+      }
+    },
+    {
+      "role": "exit",
+      "content": "diff --git a/requests/adapters.py b/requests/adapters.py\nindex 3c1e979f..84d36d66 100644\n--- a/requests/adapters.py\n+++ b/requests/adapters.py\n@@ -20,6 +20,7 @@ from .utils import (DEFAULT_CA_BUNDLE_PATH, get_encoding_from_headers,\n                     prepend_scheme_if_needed, get_auth_from_url)\n from .structures import CaseInsensitiveDict\n from .packages.urllib3.exceptions import ConnectTimeoutError\n+from .packages.urllib3.exceptions import ProtocolError\n from .packages.urllib3.exceptions import HTTPError as _HTTPError\n from .packages.urllib3.exceptions import MaxRetryError\n from .packages.urllib3.exceptions import ProxyError as _ProxyError\n@@ -411,8 +412,15 @@ class HTTPAdapter(BaseAdapter):\n \n         except _ProxyError as e:\n             raise ProxyError(e)\n-\n-        except (_SSLError, _HTTPError) as e:\n+        except (_SSLError, _HTTPError, ProtocolError) as e:\n+            if isinstance(e, _SSLError):\n+                raise SSLError(e, request=request)\n+            elif isinstance(e, ReadTimeoutError):\n+                raise ReadTimeout(e, request=request)\n+            elif isinstance(e, ProtocolError):\n+                raise ConnectionError(e, request=request)\n+            else:\n+                raise ConnectionError(e, request=request)\n             if isinstance(e, _SSLError):\n                 raise SSLError(e, request=request)\n             elif isinstance(e, ReadTimeoutError):\ndiff --git a/requests/models.py b/requests/models.py\nindex 03ff627a..6251e56e 100644\n--- a/requests/models.py\n+++ b/requests/models.py\n@@ -638,6 +638,8 @@ class Response(object):\n                     for chunk in self.raw.stream(chunk_size, decode_content=True):\n                         yield chunk\n                 except ProtocolError as e:\n+                    raise ConnectionError(e)\n+                    raise ConnectionError(e)\n                     raise ChunkedEncodingError(e)\n                 except DecodeError as e:\n                     raise ContentDecodingError(e)\n",
+      "extra": {
+        "exit_status": "Submitted",
+        "submission": "diff --git a/requests/adapters.py b/requests/adapters.py\nindex 3c1e979f..84d36d66 100644\n--- a/requests/adapters.py\n+++ b/requests/adapters.py\n@@ -20,6 +20,7 @@ from .utils import (DEFAULT_CA_BUNDLE_PATH, get_encoding_from_headers,\n                     prepend_scheme_if_needed, get_auth_from_url)\n from .structures import CaseInsensitiveDict\n from .packages.urllib3.exceptions import ConnectTimeoutError\n+from .packages.urllib3.exceptions import ProtocolError\n from .packages.urllib3.exceptions import HTTPError as _HTTPError\n from .packages.urllib3.exceptions import MaxRetryError\n from .packages.urllib3.exceptions import ProxyError as _ProxyError\n@@ -411,8 +412,15 @@ class HTTPAdapter(BaseAdapter):\n \n         except _ProxyError as e:\n             raise ProxyError(e)\n-\n-        except (_SSLError, _HTTPError) as e:\n+        except (_SSLError, _HTTPError, ProtocolError) as e:\n+            if isinstance(e, _SSLError):\n+                raise SSLError(e, request=request)\n+            elif isinstance(e, ReadTimeoutError):\n+                raise ReadTimeout(e, request=request)\n+            elif isinstance(e, ProtocolError):\n+                raise ConnectionError(e, request=request)\n+            else:\n+                raise ConnectionError(e, request=request)\n             if isinstance(e, _SSLError):\n                 raise SSLError(e, request=request)\n             elif isinstance(e, ReadTimeoutError):\ndiff --git a/requests/models.py b/requests/models.py\nindex 03ff627a..6251e56e 100644\n--- a/requests/models.py\n+++ b/requests/models.py\n@@ -638,6 +638,8 @@ class Response(object):\n                     for chunk in self.raw.stream(chunk_size, decode_content=True):\n                         yield chunk\n                 except ProtocolError as e:\n+                    raise ConnectionError(e)\n+                    raise ConnectionError(e)\n                     raise ChunkedEncodingError(e)\n                 except DecodeError as e:\n                     raise ContentDecodingError(e)\n"
+      }
+    }
+  ],
+  "trajectory_format": "mini-swe-agent-1.1",
+  "native_calls": [
+    {
+      "seconds": 85.36488082201686,
+      "usage": {
+        "prompt_tokens": 221,
+        "total_tokens": 263,
+        "completion_tokens": 42,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
+      },
+      "input_messages": 2,
+      "publication": "f9499f6299d4bf46589625ed317da1e5c5f346176b896ae3c722ea89a10aeaf0",
+      "finish_reason": "stop",
+      "prompt_sha256": "af5f1a9aa0bdb30ae458241e2eecd68f814f12ece524eb03a37410f782c98912",
+      "response_sha256": "dde3936770ea4833cd4ce9d425118562d7cd5ffe3c2ee00c06c91c9ae7610d10",
+      "thought_count": 1
+    },
+    {
+      "seconds": 31.680762869073078,
+      "usage": {
+        "prompt_tokens": 292,
+        "total_tokens": 358,
+        "completion_tokens": 66,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
+      },
+      "input_messages": 4,
+      "publication": "f9499f6299d4bf46589625ed317da1e5c5f346176b896ae3c722ea89a10aeaf0",
+      "finish_reason": "stop",
+      "prompt_sha256": "7a6a5a77dbee56142abc2b08020e3324d602f376c5d3741d493f00deae2ba63c",
+      "response_sha256": "fb83344df94e77e7c024a19f4d4003a8c142f7ccf97f50f8eaaf3fafde3ecbdd",
+      "thought_count": 0
+    },
+    {
+      "seconds": 21.867535241064616,
+      "usage": {
+        "prompt_tokens": 430,
+        "total_tokens": 512,
+        "completion_tokens": 82,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
+      },
+      "input_messages": 6,
+      "publication": "f9499f6299d4bf46589625ed317da1e5c5f346176b896ae3c722ea89a10aeaf0",
+      "finish_reason": "stop",
+      "prompt_sha256": "daac99a8a39fc02de6c63c118d5518a19d5e78ddd35738b10263b70597032809",
+      "response_sha256": "54bdf556257237d9653a7ee10f1a2ca910c3039a6caf6792ace10720fb9197c5",
+      "thought_count": 0
+    },
+    {
+      "seconds": 20.958403144963086,
+      "usage": {
+        "prompt_tokens": 551,
+        "total_tokens": 620,
+        "completion_tokens": 69,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
+      },
+      "input_messages": 8,
+      "publication": "f9499f6299d4bf46589625ed317da1e5c5f346176b896ae3c722ea89a10aeaf0",
+      "finish_reason": "stop",
+      "prompt_sha256": "2a2f6128c13340c64606e12d5b4c07fbb7d9b03e7c25aaf56ea1b8e10f779a5f",
+      "response_sha256": "9d38903da2756f7cb267a51918c82b712af94815b3eb18dba0a136cf794cd508",
+      "thought_count": 0
+    },
+    {
+      "seconds": 37.990334891015664,
+      "usage": {
+        "prompt_tokens": 1474,
+        "total_tokens": 1572,
+        "completion_tokens": 98,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
+      },
+      "input_messages": 10,
+      "publication": "f9499f6299d4bf46589625ed317da1e5c5f346176b896ae3c722ea89a10aeaf0",
+      "finish_reason": "stop",
+      "prompt_sha256": "5c795e5606172261ff8ade24ef5fc1971f7111d0738f987ac0c8e833a889a663",
+      "response_sha256": "ed57ac377877e4fe4d40453d9b19f760d49fa4ce121cca1a380afa961fc1ebfe",
+      "thought_count": 0
+    },
+    {
+      "seconds": 158.25636916805524,
+      "usage": {
+        "prompt_tokens": 1594,
+        "total_tokens": 1963,
+        "completion_tokens": 369,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
+      },
+      "input_messages": 12,
+      "publication": "f9499f6299d4bf46589625ed317da1e5c5f346176b896ae3c722ea89a10aeaf0",
+      "finish_reason": "stop",
+      "prompt_sha256": "ae77372302150d4bc50616042c87a375ae92e30c1781e549328fc3069b1b7d0c",
+      "response_sha256": "3c747d40c8009482af9bcb7e9d94dfbbb1bcf4bdfc5f06bd4422798189293101",
+      "thought_count": 0
+    },
+    {
+      "seconds": 62.31762813695241,
+      "usage": {
+        "prompt_tokens": 1981,
+        "total_tokens": 2072,
+        "completion_tokens": 91,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
+      },
+      "input_messages": 14,
+      "publication": "f9499f6299d4bf46589625ed317da1e5c5f346176b896ae3c722ea89a10aeaf0",
+      "finish_reason": "stop",
+      "prompt_sha256": "e355d298e8d6679ead1837180d75718f6696bdc7b70e839e4550e7f9a4797fae",
+      "response_sha256": "8522b45e4bab07e8442fbd92b6b62c799e97473961206c6623c81ef873427af5",
+      "thought_count": 0
+    },
+    {
+      "seconds": 62.04143096401822,
+      "usage": {
+        "prompt_tokens": 2111,
+        "total_tokens": 2167,
+        "completion_tokens": 56,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
+      },
+      "input_messages": 16,
+      "publication": "f9499f6299d4bf46589625ed317da1e5c5f346176b896ae3c722ea89a10aeaf0",
+      "finish_reason": "stop",
+      "prompt_sha256": "9e61aab6a3e1ce7ef5dd043ee8f8ff9d6d492d971de14c3049d425fe9d148d0f",
+      "response_sha256": "f8419a142d60a2f52bbca744572294253f83e5e4ebb2029115bd61438f8c7626",
+      "thought_count": 0
+    }
+  ],
+  "native_publication": "f9499f6299d4bf46589625ed317da1e5c5f346176b896ae3c722ea89a10aeaf0",
+  "text_memory": null
+}

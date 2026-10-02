@@ -1,0 +1,23 @@
+[
+  "podman",
+  "run",
+  "-d",
+  "--name",
+  "aimee-gemma26-moe-numerics-20260928-r2",
+  "--network",
+  "none",
+  "--device",
+  "/dev/kfd",
+  "--device",
+  "/dev/dri/renderD128",
+  "--memory",
+  "12g",
+  "-v",
+  "/opt/aimee-memory-lab/gemma26-moe-numerics-20260928-r2:/evidence",
+  "-v",
+  "/opt/aimee-memory-lab/gemma26-release-20260928:/weights:ro",
+  "--entrypoint",
+  "python",
+  "79d7f03eedc74943f2ffd9c1271141086ea0813bcd3f697c718e09501908cf58",
+  "/evidence/gemma_moe_numerics.py"
+]

@@ -1,0 +1,32 @@
+Traceback (most recent call last):
+  File "/opt/aimee-large-release-validation/regression/audit.py", line 6, in <module>
+    from transformers import AutoTokenizer
+  File "/opt/aimee-memory-lab/venv/lib/python3.13/site-packages/transformers/utils/import_utils.py", line 2560, in __getattr__
+    module = self._get_module(self._class_to_module[name])
+  File "/opt/aimee-memory-lab/venv/lib/python3.13/site-packages/transformers/utils/import_utils.py", line 2794, in _get_module
+    raise e
+  File "/opt/aimee-memory-lab/venv/lib/python3.13/site-packages/transformers/utils/import_utils.py", line 2792, in _get_module
+    return importlib.import_module("." + module_name, self.__name__)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/importlib/__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/aimee-memory-lab/venv/lib/python3.13/site-packages/transformers/models/auto/tokenization_auto.py", line 26, in <module>
+    from ...configuration_utils import PreTrainedConfig
+  File "/opt/aimee-memory-lab/venv/lib/python3.13/site-packages/transformers/configuration_utils.py", line 32, in <module>
+    from .generation.configuration_utils import GenerationConfig
+  File "/opt/aimee-memory-lab/venv/lib/python3.13/site-packages/transformers/generation/configuration_utils.py", line 62, in <module>
+    from .logits_process import SynthIDTextWatermarkLogitsProcessor, WatermarkLogitsProcessor
+  File "/opt/aimee-memory-lab/venv/lib/python3.13/site-packages/transformers/generation/logits_process.py", line 21, in <module>
+    import torch
+  File "/opt/aimee-memory-lab/venv/lib/python3.13/site-packages/torch/__init__.py", line 3312, in <module>
+    from torch import (
+    ...<4 lines>...
+    )
+  File "/opt/aimee-memory-lab/venv/lib/python3.13/site-packages/torch/export/__init__.py", line 11, in <module>
+    from torch.fx.passes.infra.pass_base import PassResult
+  File "/opt/aimee-memory-lab/venv/lib/python3.13/site-packages/torch/fx/passes/infra/__init__.py", line 1, in <module>
+    from . import pass_manager
+  File "/opt/aimee-memory-lab/venv/lib/python3.13/site-packages/torch/fx/passes/infra/pass_manager.py", line 5, in <module>
+    from queue import Queue
+ImportError: cannot import name 'Queue' from 'queue' (consider renaming '/opt/aimee-large-release-validation/regression/queue.py' since it has the same name as the standard library module named 'queue' and prevents importing that standard library module)

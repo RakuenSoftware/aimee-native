@@ -1,0 +1,295 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790082913508198748-872",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Vynohradne UA 689549, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    629,
+    1807,
+    2194,
+    12896,
+    785,
+    44053,
+    220,
+    21,
+    23,
+    24,
+    20,
+    19,
+    24,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    29774,
+    31766,
+    88,
+    340
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -93,
+  "answer": "Europe/Kyiv",
+  "finish_reason": "stop",
+  "elapsed_ms": 3122.622523,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Vynohradne UA 689549, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Vynohradne (ID 689549): country code UA; latitude 47.09391; longitude 37.68556; administrative codes 05/1414; population 1738; time zone Europe/Kyiv. The source record was modified on 2026-08-28.",
+            "id": "geonames.689549",
+            "key": "place Vynohradne UA 689549",
+            "kind": "fact",
+            "memory_hash": "a361ae274e897090082dcdee4aa4382b5cf590225e95908d5c8064adfd93c8b0",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.689549",
+              "revision": "ce4208b6d94c49c4235d305cce2ba6289384f3d06c5b0a48dd67d119e6e176ef"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 93,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.689549",
+          "revision": "ce4208b6d94c49c4235d305cce2ba6289384f3d06c5b0a48dd67d119e6e176ef"
+        }
+      ],
+      "encoding_elapsed_ms": 614.672071,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 93,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2026-08-28 Answer user According 689549 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02665757341310382
+        },
+        {
+          "text": "2026-08-28",
+          "source": "aimee",
+          "positions": [
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90,
+            91
+          ],
+          "score": 0.01956655879621394
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            96
+          ],
+          "score": 0.025620371103286743
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            119
+          ],
+          "score": 0.013519305735826492
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            121
+          ],
+          "score": 0.011421017348766327
+        },
+        {
+          "text": "689549",
+          "source": "sequence",
+          "positions": [
+            136,
+            137,
+            138,
+            139,
+            140,
+            141
+          ],
+          "score": 0.020280853379517794
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            143
+          ],
+          "score": 0.03622788190841675
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            144
+          ],
+          "score": 0.01292756013572216
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            145
+          ],
+          "score": 0.030654560774564743
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            158
+          ],
+          "score": 0.021848760545253754
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            160
+          ],
+          "score": 0.030594652518630028
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            162
+          ],
+          "score": 0.065053790807724
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 93,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.689549",
+          "revision": "ce4208b6d94c49c4235d305cce2ba6289384f3d06c5b0a48dd67d119e6e176ef"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00918,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 75
+}

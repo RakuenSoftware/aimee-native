@@ -1,0 +1,292 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790084345126125610-1664",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Grez-en-Bouère FR 3014683, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    13140,
+    89,
+    20134,
+    7428,
+    282,
+    11725,
+    16164,
+    220,
+    18,
+    15,
+    16,
+    19,
+    21,
+    23,
+    18,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    24,
+    24,
+    19
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -90,
+  "answer": "994",
+  "finish_reason": "stop",
+  "elapsed_ms": 2623.3263,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Grez-en-Bouère FR 3014683, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Grez-en-Bouère (ID 3014683): country code FR; latitude 47.87393; longitude -0.52198; administrative codes 52/53; population 994; time zone Europe/Paris. The source record was modified on 2020-12-10.",
+            "id": "geonames.3014683",
+            "key": "place Grez-en-Bouère FR 3014683",
+            "kind": "fact",
+            "memory_hash": "25c592c85e0da753c366431dc7c9fb884eef51947eae098aac7baf22f48a7cd1",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.3014683",
+              "revision": "202682c916dea79ad87cad9126f2f96968b8e3641ccbbd37fd1f1fe3ff40e6d5"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 90,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3014683",
+          "revision": "202682c916dea79ad87cad9126f2f96968b8e3641ccbbd37fd1f1fe3ff40e6d5"
+        }
+      ],
+      "encoding_elapsed_ms": 605.641028,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 90,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user Grez-en-Bouère 3014683 what is its population assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.0286607276648283
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            93
+          ],
+          "score": 0.023969240486621857
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            116
+          ],
+          "score": 0.013467366807162762
+        },
+        {
+          "text": "Grez-en-Bouère",
+          "source": "sequence",
+          "positions": [
+            126,
+            127,
+            128,
+            129,
+            130,
+            131
+          ],
+          "score": 0.01195629732683301
+        },
+        {
+          "text": "3014683",
+          "source": "sequence",
+          "positions": [
+            134,
+            135,
+            136,
+            137,
+            138,
+            139,
+            140
+          ],
+          "score": 0.024156665545888245
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            142
+          ],
+          "score": 0.03921069949865341
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            143
+          ],
+          "score": 0.014653745107352734
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            144
+          ],
+          "score": 0.03290455788373947
+        },
+        {
+          "text": "population",
+          "source": "sequence",
+          "positions": [
+            145
+          ],
+          "score": 0.011719491332769394
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            156
+          ],
+          "score": 0.021731320768594742
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            158
+          ],
+          "score": 0.031052937731146812
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            160
+          ],
+          "score": 0.0652368888258934
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 90,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3014683",
+          "revision": "202682c916dea79ad87cad9126f2f96968b8e3641ccbbd37fd1f1fe3ff40e6d5"
+        }
+      ],
+      "encoding_elapsed_ms": 0.0054600000000000004,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 75
+}

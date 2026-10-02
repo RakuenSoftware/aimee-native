@@ -1,0 +1,12 @@
+STEP 1/4: FROM localhost/aimee-native:gemma-preview-r13
+STEP 2/4: COPY aimee_vllm-0.1.0-cp312-cp312-linux_x86_64.whl /tmp/plugin.whl
+--> Using cache 405feae4f298d9cc85b8cf2f27ae8a176ebb88d3b6ace5e22cc0f81d6ddd2946
+--> 405feae4f298
+STEP 3/4: RUN mv /tmp/plugin.whl /tmp/aimee_vllm-0.1.0-cp312-cp312-linux_x86_64.whl && python -m pip install --no-deps --force-reinstall /tmp/aimee_vllm-0.1.0-cp312-cp312-linux_x86_64.whl && rm /tmp/aimee_vllm-0.1.0-cp312-cp312-linux_x86_64.whl
+--> Using cache 2f8564a4aaf4557b7070e641608b0c1bbbefb3c81698f126103c89d61a0ff835
+--> 2f8564a4aaf4
+STEP 4/4: COPY libaimee_native.so /opt/aimee/libaimee_native.so
+COMMIT localhost/aimee-native:gemma-packed-r2
+--> 11707e73baba
+Successfully tagged localhost/aimee-native:gemma-packed-r2
+11707e73baba3b6c08d8228a8e5742123bb62239a0f3cd742cb7fe02599f5d06

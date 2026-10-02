@@ -1,0 +1,35 @@
+E
+======================================================================
+ERROR: test_admission (unittest.loader._FailedTest.test_admission)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_admission
+Traceback (most recent call last):
+  File "/root/.local/share/uv/python/cpython-3.12.14-linux-x86_64-gnu/lib/python3.12/unittest/loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.local/share/uv/python/cpython-3.12.14-linux-x86_64-gnu/lib/python3.12/unittest/loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "/opt/aimee-memory-lab/vllm-native-build/distribution/vllm/tests/test_admission.py", line 6, in <module>
+    from aimee_vllm.admission import Ledger,NativeAdmission
+  File "/opt/aimee-memory-lab/vllm-native-build/distribution/vllm/aimee_vllm/admission.py", line 10, in <module>
+    from .store import PreparedStore
+  File "/opt/aimee-memory-lab/vllm-native-build/distribution/vllm/aimee_vllm/store.py", line 5, in <module>
+    import torch
+  File "/opt/aimee-memory-lab/vllm-env/lib/python3.12/site-packages/torch/__init__.py", line 443, in <module>
+    _load_global_deps()
+  File "/opt/aimee-memory-lab/vllm-env/lib/python3.12/site-packages/torch/__init__.py", line 401, in _load_global_deps
+    _preload_cuda_deps(err)
+  File "/opt/aimee-memory-lab/vllm-env/lib/python3.12/site-packages/torch/__init__.py", line 357, in _preload_cuda_deps
+    raise err
+  File "/opt/aimee-memory-lab/vllm-env/lib/python3.12/site-packages/torch/__init__.py", line 379, in _load_global_deps
+    ctypes.CDLL(global_deps_lib_path, mode=ctypes.RTLD_GLOBAL)
+  File "/root/.local/share/uv/python/cpython-3.12.14-linux-x86_64-gnu/lib/python3.12/ctypes/__init__.py", line 379, in __init__
+    self._handle = _dlopen(self._name, mode)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: libmpi_cxx.so.40: cannot open shared object file: No such file or directory
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)

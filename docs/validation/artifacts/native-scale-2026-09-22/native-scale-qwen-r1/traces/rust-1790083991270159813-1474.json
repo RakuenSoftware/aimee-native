@@ -1,0 +1,299 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790083991270159813-1474",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Albești-Muru RO 686543, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    1615,
+    1323,
+    160398,
+    5084,
+    20277,
+    11474,
+    220,
+    21,
+    23,
+    21,
+    20,
+    19,
+    18,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    29774,
+    15797,
+    1339,
+    14981
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -94,
+  "answer": "Europe/Bucharest",
+  "finish_reason": "stop",
+  "elapsed_ms": 3131.4022760000003,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Albești-Muru RO 686543, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Albești-Muru (ID 686543): country code RO; latitude 44.9444; longitude 26.20899; administrative codes 30/131933; population 1114; time zone Europe/Bucharest. The source record was modified on 2013-04-21.",
+            "id": "geonames.686543",
+            "key": "place Albești-Muru RO 686543",
+            "kind": "fact",
+            "memory_hash": "7f836f0dae21bc44fdd7e4b64c43ba875b5214ef299222e02124ade0cba6bee4",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.686543",
+              "revision": "9603a1f98bfdbc26e41727e70e96505afae6423eba95f1bf3aecc11cfa53732a"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 94,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.686543",
+          "revision": "9603a1f98bfdbc26e41727e70e96505afae6423eba95f1bf3aecc11cfa53732a"
+        }
+      ],
+      "encoding_elapsed_ms": 606.456989,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 94,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2013-04-21 Answer user Albești-Muru 686543 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02469516871497035
+        },
+        {
+          "text": "2013-04-21",
+          "source": "aimee",
+          "positions": [
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90,
+            91,
+            92
+          ],
+          "score": 0.013455731626891065
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            97
+          ],
+          "score": 0.024401366710662842
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            120
+          ],
+          "score": 0.013375277630984783
+        },
+        {
+          "text": "Albești-Muru",
+          "source": "sequence",
+          "positions": [
+            130,
+            131,
+            132,
+            133,
+            134
+          ],
+          "score": 0.017571174539625645
+        },
+        {
+          "text": "686543",
+          "source": "sequence",
+          "positions": [
+            137,
+            138,
+            139,
+            140,
+            141,
+            142
+          ],
+          "score": 0.021428850246593356
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            144
+          ],
+          "score": 0.039126090705394745
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            145
+          ],
+          "score": 0.013572165742516518
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            146
+          ],
+          "score": 0.031983308494091034
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            159
+          ],
+          "score": 0.020493468269705772
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.02995915710926056
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            163
+          ],
+          "score": 0.06334017217159271
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 94,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.686543",
+          "revision": "9603a1f98bfdbc26e41727e70e96505afae6423eba95f1bf3aecc11cfa53732a"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00539,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 75
+}

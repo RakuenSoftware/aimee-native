@@ -1,0 +1,282 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790085751069244537-2434",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Xiangyang CN 9014697, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    1543,
+    26346,
+    38913,
+    24083,
+    220,
+    24,
+    15,
+    16,
+    19,
+    21,
+    24,
+    22,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    15
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -89,
+  "answer": "0",
+  "finish_reason": "stop",
+  "elapsed_ms": 1648.6874970000001,
+  "memory_encoding_passes": 1,
+  "native_reads": 32,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Xiangyang CN 9014697, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Xiangyang (ID 9014697): country code CN; latitude 26.75991; longitude 103.25395; administrative codes 29/5306; population 0; time zone Asia/Shanghai. The source record was modified on 2021-09-20.",
+            "id": "geonames.9014697",
+            "key": "place Xiangyang CN 9014697",
+            "kind": "fact",
+            "memory_hash": "604907ef9351f77789e95f641ec86b1b7d03110e86d8b8a21384e9890b7b0847",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.9014697",
+              "revision": "2cdaa806d3ba69d025fcba6d15321a761227e142e3e59188324a2260f13b34eb"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 89,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.9014697",
+          "revision": "2cdaa806d3ba69d025fcba6d15321a761227e142e3e59188324a2260f13b34eb"
+        }
+      ],
+      "encoding_elapsed_ms": 600.0913869999999,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 89,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user According 9014697 what is its population assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.024260579608380795
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            92
+          ],
+          "score": 0.026909654960036278
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            115
+          ],
+          "score": 0.0154191879555583
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            117
+          ],
+          "score": 0.012055454775691032
+        },
+        {
+          "text": "9014697",
+          "source": "sequence",
+          "positions": [
+            130,
+            131,
+            132,
+            133,
+            134,
+            135,
+            136
+          ],
+          "score": 0.01654407411115244
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            138
+          ],
+          "score": 0.03903024643659592
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            139
+          ],
+          "score": 0.014741203747689724
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            140
+          ],
+          "score": 0.03240828961133957
+        },
+        {
+          "text": "population",
+          "source": "sequence",
+          "positions": [
+            141
+          ],
+          "score": 0.012527327053248882
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.022749587893486023
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.031066223978996277
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            156
+          ],
+          "score": 0.06549832224845886
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 89,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.9014697",
+          "revision": "2cdaa806d3ba69d025fcba6d15321a761227e142e3e59188324a2260f13b34eb"
+        }
+      ],
+      "encoding_elapsed_ms": 0.008661,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 70
+}

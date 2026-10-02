@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/opt/aimee-memory-lab/larger-native-smoke-20260928/larger_native_smoke.py", line 110, in <module>
+    prepare(a)
+    ~~~~~~~^^^
+  File "/opt/aimee-memory-lab/larger-native-smoke-20260928/larger_native_smoke.py", line 26, in prepare
+    publish(root / 'memory', identity, 'three', saved['tokens'], saved['banks'])
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/aimee-native-compiler/publisher.py", line 18, in publish
+    fn = getattr(library, 'aimee_native_' + name)
+  File "/usr/lib/python3.13/ctypes/__init__.py", line 403, in __getattr__
+    func = self.__getitem__(name)
+  File "/usr/lib/python3.13/ctypes/__init__.py", line 408, in __getitem__
+    func = self._FuncPtr((name_or_ordinal, self))
+AttributeError: /opt/aimee-native-compiler/libaimee_prepare.so: undefined symbol: aimee_native_error

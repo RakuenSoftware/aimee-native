@@ -1,0 +1,36 @@
+Traceback (most recent call last):
+  File "/evidence/gemma_moe_numerics.py", line 9, in <module>
+    import gguf
+  File "/usr/local/lib/python3.12/dist-packages/gguf/__init__.py", line 7, in <module>
+    from .vocab import *
+  File "/usr/local/lib/python3.12/dist-packages/gguf/vocab.py", line 17, in <module>
+    from mistral_common.tokens.tokenizers.mistral import MistralTokenizer # type: ignore[import-not-found, ty:unresolved-import]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/mistral_common/tokens/tokenizers/mistral.py", line 9, in <module>
+    from mistral_common.protocol.instruct.messages import (
+  File "/usr/local/lib/python3.12/dist-packages/mistral_common/protocol/instruct/messages.py", line 11, in <module>
+    from mistral_common.protocol.instruct.chunk import (
+  File "/usr/local/lib/python3.12/dist-packages/mistral_common/protocol/instruct/chunk.py", line 14, in <module>
+    from mistral_common.image import SerializableImage
+  File "/usr/local/lib/python3.12/dist-packages/mistral_common/image.py", line 4, in <module>
+    import requests
+  File "/usr/local/lib/python3.12/dist-packages/requests/__init__.py", line 45, in <module>
+    import urllib3
+  File "/usr/local/lib/python3.12/dist-packages/urllib3/__init__.py", line 18, in <module>
+    from .connectionpool import HTTPConnectionPool, HTTPSConnectionPool, connection_from_url
+  File "/usr/local/lib/python3.12/dist-packages/urllib3/connectionpool.py", line 5, in <module>
+    import queue
+  File "/evidence/queue.py", line 5, in <module>
+    state=json.loads(subprocess.check_output(['podman','inspect',previous],stderr=subprocess.DEVNULL))[0]['State']
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 466, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'podman'

@@ -1,0 +1,293 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790082303482601992-528",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Vesëlyy RU 474059, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    75773,
+    11831,
+    391,
+    88,
+    66496,
+    220,
+    19,
+    22,
+    19,
+    15,
+    20,
+    24,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    23,
+    23,
+    17,
+    15
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -89,
+  "answer": "8820",
+  "finish_reason": "stop",
+  "elapsed_ms": 3113.928144,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Vesëlyy RU 474059, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Vesëlyy (ID 474059): country code RU; latitude 47.09245; longitude 40.74209; administrative codes 61/unspecified; population 8820; time zone Europe/Moscow. The source record was modified on 2024-09-12.",
+            "id": "geonames.474059",
+            "key": "place Vesëlyy RU 474059",
+            "kind": "fact",
+            "memory_hash": "cfe065233dfa2ad70baf75ce04f8ed3e593cc1c7ef80483b5c5f6a26dc78f320",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.474059",
+              "revision": "ee0585b94b1430e30740efe12446b8d2938a22e2fba48c70494f21a9ce753e6c"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 89,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.474059",
+          "revision": "ee0585b94b1430e30740efe12446b8d2938a22e2fba48c70494f21a9ce753e6c"
+        }
+      ],
+      "encoding_elapsed_ms": 598.385827,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 89,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2024-09-12 Answer user 474059 what is its population assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.023878603242337704
+        },
+        {
+          "text": "2024-09-12",
+          "source": "aimee",
+          "positions": [
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87
+          ],
+          "score": 0.013117109687300399
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            92
+          ],
+          "score": 0.025008823722600937
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            115
+          ],
+          "score": 0.015008214861154556
+        },
+        {
+          "text": "474059",
+          "source": "sequence",
+          "positions": [
+            131,
+            132,
+            133,
+            134,
+            135,
+            136
+          ],
+          "score": 0.02510843996424228
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            138
+          ],
+          "score": 0.03765150159597397
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            139
+          ],
+          "score": 0.01520649716258049
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            140
+          ],
+          "score": 0.034246381372213364
+        },
+        {
+          "text": "population",
+          "source": "sequence",
+          "positions": [
+            141
+          ],
+          "score": 0.012984627857804298
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.021818656474351883
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.03126700595021248
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            156
+          ],
+          "score": 0.06406451761722565
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 89,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.474059",
+          "revision": "ee0585b94b1430e30740efe12446b8d2938a22e2fba48c70494f21a9ce753e6c"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00977,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 73
+}

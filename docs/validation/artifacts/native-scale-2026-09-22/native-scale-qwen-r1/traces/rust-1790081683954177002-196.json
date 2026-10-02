@@ -1,0 +1,299 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790081683954177002-196",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Montaud FR 2992991, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    9503,
+    7632,
+    16164,
+    220,
+    17,
+    24,
+    24,
+    17,
+    24,
+    24,
+    16,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    21,
+    24,
+    23
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -86,
+  "answer": "698",
+  "finish_reason": "stop",
+  "elapsed_ms": 2556.795997,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Montaud FR 2992991, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Montaud (ID 2992991): country code FR; latitude 43.75131; longitude 3.95559; administrative codes 76/34; population 698; time zone Europe/Paris. The source record was modified on 2020-06-10.",
+            "id": "geonames.2992991",
+            "key": "place Montaud FR 2992991",
+            "kind": "fact",
+            "memory_hash": "8a05f53db67e7a125951a39bdf1e8f74f89d11159780a30df8a12be40d39cf7d",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.2992991",
+              "revision": "2b9187fa67d6a5ab8878cfec75ae860aacd8d6f67384bc5267d64153c17b75c5"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 86,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.2992991",
+          "revision": "2b9187fa67d6a5ab8878cfec75ae860aacd8d6f67384bc5267d64153c17b75c5"
+        }
+      ],
+      "encoding_elapsed_ms": 596.3873600000001,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 86,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 43.75131 2020-06-10 Answer user 2992991 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.026220344472676516
+        },
+        {
+          "text": "43.75131",
+          "source": "aimee",
+          "positions": [
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35
+          ],
+          "score": 0.016097863612230867
+        },
+        {
+          "text": "2020-06-10",
+          "source": "aimee",
+          "positions": [
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84
+          ],
+          "score": 0.014198538090568036
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            89
+          ],
+          "score": 0.023678787052631378
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            112
+          ],
+          "score": 0.01565585844218731
+        },
+        {
+          "text": "2992991",
+          "source": "sequence",
+          "positions": [
+            126,
+            127,
+            128,
+            129,
+            130,
+            131,
+            132
+          ],
+          "score": 0.03297738602850586
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            134
+          ],
+          "score": 0.03772139176726341
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            135
+          ],
+          "score": 0.014895875006914139
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            136
+          ],
+          "score": 0.03397237882018089
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            148
+          ],
+          "score": 0.02125975489616394
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            150
+          ],
+          "score": 0.028707876801490784
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.06636061519384384
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 86,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.2992991",
+          "revision": "2b9187fa67d6a5ab8878cfec75ae860aacd8d6f67384bc5267d64153c17b75c5"
+        }
+      ],
+      "encoding_elapsed_ms": 0.011941,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 71
+}

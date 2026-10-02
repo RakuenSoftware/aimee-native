@@ -1,0 +1,295 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790083280126923597-1072",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Süderau DE 2825196, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    74898,
+    1071,
+    2770,
+    3276,
+    220,
+    17,
+    23,
+    17,
+    20,
+    16,
+    24,
+    21,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    29774,
+    15797,
+    261,
+    3606
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -88,
+  "answer": "Europe/Berlin",
+  "finish_reason": "stop",
+  "elapsed_ms": 3085.4728379999997,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Süderau DE 2825196, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Süderau (ID 2825196): country code DE; latitude 53.82047; longitude 9.51206; administrative codes 10/00; population 776; time zone Europe/Berlin. The source record was modified on 2025-06-12.",
+            "id": "geonames.2825196",
+            "key": "place Süderau DE 2825196",
+            "kind": "fact",
+            "memory_hash": "560a49b570f7e277ab135e273ce6c1c7c9f7f463fec25e7aa98dfd5c536ef743",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.2825196",
+              "revision": "cfb62b7fb873a541817bb22542c5b3e6e8100dc1325661061fa5b11c9274f2ea"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 88,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.2825196",
+          "revision": "cfb62b7fb873a541817bb22542c5b3e6e8100dc1325661061fa5b11c9274f2ea"
+        }
+      ],
+      "encoding_elapsed_ms": 585.659266,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 88,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2025-06-12 Answer user According 2825196 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02419046964496374
+        },
+        {
+          "text": "2025-06-12",
+          "source": "aimee",
+          "positions": [
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84,
+            85,
+            86
+          ],
+          "score": 0.020742656131915282
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            91
+          ],
+          "score": 0.024915514513850212
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            114
+          ],
+          "score": 0.014509186148643494
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            116
+          ],
+          "score": 0.01125328242778778
+        },
+        {
+          "text": "2825196",
+          "source": "sequence",
+          "positions": [
+            129,
+            130,
+            131,
+            132,
+            133,
+            134,
+            135
+          ],
+          "score": 0.02428184769814834
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            137
+          ],
+          "score": 0.03733834996819496
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            138
+          ],
+          "score": 0.012766736559569836
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            139
+          ],
+          "score": 0.02872166596353054
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.02109687775373459
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.03086771070957184
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            156
+          ],
+          "score": 0.06490466743707657
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 88,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.2825196",
+          "revision": "cfb62b7fb873a541817bb22542c5b3e6e8100dc1325661061fa5b11c9274f2ea"
+        }
+      ],
+      "encoding_elapsed_ms": 0.012041,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 74
+}

@@ -1,0 +1,295 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790085283591509749-2172",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Pozzo d'Adda IT 6534487, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    76280,
+    12373,
+    293,
+    6,
+    2143,
+    64,
+    8435,
+    220,
+    21,
+    20,
+    18,
+    19,
+    19,
+    23,
+    22,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    17,
+    23,
+    16,
+    15
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -90,
+  "answer": "2810",
+  "finish_reason": "stop",
+  "elapsed_ms": 3009.64678,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Pozzo d'Adda IT 6534487, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Pozzo d'Adda (ID 6534487): country code IT; latitude 45.57258; longitude 9.50295; administrative codes 09/MI; population 2810; time zone Europe/Rome. The source record was modified on 2014-01-16.",
+            "id": "geonames.6534487",
+            "key": "place Pozzo d'Adda IT 6534487",
+            "kind": "fact",
+            "memory_hash": "7e801b2490cc73d73af876e5388b07e99ff32bdbd334e8bcee25785bdb2de020",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.6534487",
+              "revision": "c9c833a78435f0666e8f60a93e42c6924998bf016c9e9b86dab78467eb2d1a37"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 90,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.6534487",
+          "revision": "c9c833a78435f0666e8f60a93e42c6924998bf016c9e9b86dab78467eb2d1a37"
+        }
+      ],
+      "encoding_elapsed_ms": 588.630622,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 90,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 45.57258 Answer user 6534487 what is its Return assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02849158924072981
+        },
+        {
+          "text": "45.57258",
+          "source": "aimee",
+          "positions": [
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39
+          ],
+          "score": 0.012810227693989873
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            93
+          ],
+          "score": 0.023670388385653496
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            116
+          ],
+          "score": 0.013416079804301262
+        },
+        {
+          "text": "6534487",
+          "source": "sequence",
+          "positions": [
+            134,
+            135,
+            136,
+            137,
+            138,
+            139,
+            140
+          ],
+          "score": 0.027279812493361533
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            142
+          ],
+          "score": 0.03902719169855118
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            143
+          ],
+          "score": 0.01394395437091589
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            144
+          ],
+          "score": 0.031700748950242996
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            147
+          ],
+          "score": 0.01113409735262394
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            156
+          ],
+          "score": 0.02333090454339981
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            158
+          ],
+          "score": 0.030957957729697227
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            160
+          ],
+          "score": 0.06552483141422272
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 90,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.6534487",
+          "revision": "c9c833a78435f0666e8f60a93e42c6924998bf016c9e9b86dab78467eb2d1a37"
+        }
+      ],
+      "encoding_elapsed_ms": 0.009949999999999999,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 76
+}

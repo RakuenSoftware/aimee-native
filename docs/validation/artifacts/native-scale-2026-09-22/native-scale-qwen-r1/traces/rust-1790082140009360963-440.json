@@ -1,0 +1,293 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790082140009360963-440",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhat orbital period in days does the NASA archive give for planet Qatar-2 b? Return the number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    3710,
+    62409,
+    4031,
+    303,
+    2756,
+    1503,
+    279,
+    20774,
+    17593,
+    2873,
+    364,
+    11247,
+    40536,
+    12,
+    17,
+    292,
+    30,
+    3301,
+    279,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    16,
+    13,
+    18,
+    18,
+    22,
+    16,
+    16,
+    21,
+    19,
+    22,
+    15,
+    15,
+    15
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -100,
+  "answer": "1.33711647000",
+  "finish_reason": "stop",
+  "elapsed_ms": 7373.286822,
+  "memory_encoding_passes": 1,
+  "native_reads": 224,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "What orbital period in days does the NASA archive give for planet Qatar-2 b? Return the number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "For planet Qatar-2 b, the NASA Exoplanet Archive composite table lists: host star Qatar-2; discovery year 2011; discovery method Transit; discovery facility Qatar; orbital period 1.33711647000 days; reported planet radius 14.05600000 Earth radii; reported system distance 181.37400000 parsecs.",
+            "id": "nasa.Qatar-2 b",
+            "key": "planet Qatar-2 b",
+            "kind": "fact",
+            "memory_hash": "e1d17a8d80c77b5fa948bf85d7b32b6d0a87c5183c83cbb42cd93bca766dfe88",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "nasa.Qatar-2 b",
+              "revision": "1584afa105c9b9133385ec5afdc1d228547dd5f2c317d9470b9fb45aa52071fb"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 100,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.Qatar-2 b",
+          "revision": "1584afa105c9b9133385ec5afdc1d228547dd5f2c317d9470b9fb45aa52071fb"
+        }
+      ],
+      "encoding_elapsed_ms": 517.2705629999999,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 100,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 1.33711647000 parsecs Answer user What does give Qatar-2 assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02458406612277031
+        },
+        {
+          "text": "1.33711647000",
+          "source": "aimee",
+          "positions": [
+            47,
+            48,
+            49,
+            50,
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57,
+            58,
+            59
+          ],
+          "score": 0.01579354688874446
+        },
+        {
+          "text": "parsecs",
+          "source": "aimee",
+          "positions": [
+            97,
+            98
+          ],
+          "score": 0.015388676431030035
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            103
+          ],
+          "score": 0.022979270666837692
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            126
+          ],
+          "score": 0.015553468838334084
+        },
+        {
+          "text": "What",
+          "source": "sequence",
+          "positions": [
+            128
+          ],
+          "score": 0.019786853343248367
+        },
+        {
+          "text": "does",
+          "source": "sequence",
+          "positions": [
+            133
+          ],
+          "score": 0.02157183550298214
+        },
+        {
+          "text": "give",
+          "source": "sequence",
+          "positions": [
+            137
+          ],
+          "score": 0.018304862082004547
+        },
+        {
+          "text": "Qatar-2",
+          "source": "sequence",
+          "positions": [
+            140,
+            141,
+            142
+          ],
+          "score": 0.021548151271417737
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.02721196971833706
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.030780553817749023
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            157
+          ],
+          "score": 0.07261582463979721
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 100,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.Qatar-2 b",
+          "revision": "1584afa105c9b9133385ec5afdc1d228547dd5f2c317d9470b9fb45aa52071fb"
+        }
+      ],
+      "encoding_elapsed_ms": 0.012320000000000001,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 72
+}

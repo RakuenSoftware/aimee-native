@@ -1,0 +1,117 @@
+diff --git a/include/llama.h b/include/llama.h
+index 1805ed0..fd9032b 100644
+--- a/include/llama.h
++++ b/include/llama.h
+@@ -362,6 +362,17 @@ extern "C" {
+ 
+     // NOTE: changing the default values of parameters marked as [EXPERIMENTAL] may cause crashes or incorrect results in certain configurations
+     //       https://github.com/ggml-org/llama.cpp/pull/7544
++    // Optional external attention-state integration. The provider owns all
++    // model-specific transformations and preparation. Return 0 on success.
++    // Called while building a graph, never from a tokenization/chat-template path.
++    // Tensors and provider state must remain alive through graph completion.
++    // No exceptions may cross this C callback. Null disables the integration.
++    typedef int (*llama_native_attention_callback)(
++            void * user_data, struct ggml_context * graph_context, int32_t layer,
++            struct ggml_tensor ** query, struct ggml_tensor ** key,
++            struct ggml_tensor ** value, struct ggml_tensor ** mask,
++            int64_t * n_kv_max);
++
+     struct llama_context_params {
+         uint32_t n_ctx;                 // text context, 0 = from model
+         uint32_t n_batch;               // logical maximum batch size that can be submitted to llama_decode
+@@ -391,6 +402,8 @@ extern "C" {
+ 
+         ggml_backend_sched_eval_callback cb_eval;
+         void * cb_eval_user_data;
++        llama_native_attention_callback native_attention;
++        void * native_attention_user_data;
+ 
+         enum ggml_type type_k; // data type for K cache [EXPERIMENTAL]
+         enum ggml_type type_v; // data type for V cache [EXPERIMENTAL]
+diff --git a/src/llama-context.cpp b/src/llama-context.cpp
+index 8675f60..b3ec730 100644
+--- a/src/llama-context.cpp
++++ b/src/llama-context.cpp
+@@ -140,6 +140,8 @@ llama_context::llama_context(
+ 
+     cparams.cb_eval           = params.cb_eval;
+     cparams.cb_eval_user_data = params.cb_eval_user_data;
++    cparams.native_attention = params.native_attention;
++    cparams.native_attention_user_data = params.native_attention_user_data;
+ 
+     cparams.ctx_other = nullptr;
+ 
+@@ -3719,6 +3721,8 @@ llama_context_params llama_context_default_params() {
+         /*.defrag_thold                =*/ -1.0f,
+         /*.cb_eval                     =*/ nullptr,
+         /*.cb_eval_user_data           =*/ nullptr,
++        /*.native_attention            =*/ nullptr,
++        /*.native_attention_user_data  =*/ nullptr,
+         /*.type_k                      =*/ GGML_TYPE_F16,
+         /*.type_v                      =*/ GGML_TYPE_F16,
+         /*.abort_callback              =*/ nullptr,
+diff --git a/src/llama-cparams.h b/src/llama-cparams.h
+index b592de1..a042669 100644
+--- a/src/llama-cparams.h
++++ b/src/llama-cparams.h
+@@ -62,6 +62,8 @@ struct llama_cparams {
+ 
+     ggml_backend_sched_eval_callback cb_eval;
+     void * cb_eval_user_data;
++    llama_native_attention_callback native_attention = nullptr;
++    void * native_attention_user_data = nullptr;
+ 
+     llama_context * ctx_other;
+ };
+diff --git a/src/llama-graph.cpp b/src/llama-graph.cpp
+index 0b3bab6..320cd70 100644
+--- a/src/llama-graph.cpp
++++ b/src/llama-graph.cpp
+@@ -21,6 +21,7 @@
+ #include <cstring>
+ #include <numeric>
+ #include <sstream>
++#include <stdexcept>
+ #include <string>
+ #include <unordered_set>
+ 
+@@ -2619,6 +2620,21 @@ ggml_tensor * llm_graph_context::build_attn_mha(
+              int64_t   n_kv_max,
+                float   kq_scale,
+                  int   il) const {
++    if (cparams.native_attention) {
++        // The first binding intentionally supports one sequence. Batch/session
++        // mappings must be explicit before enabling shared inference contexts.
++        // Compressed attention needs its own provider contract; never silently
++        // reinterpret those states as ordinary K/V.
++        if (ubatch.n_seqs_unq != 1 || kq_b != nullptr || v_mla != nullptr) {
++            throw std::runtime_error("native attention configuration unsupported");
++        }
++        const int status = cparams.native_attention(
++            cparams.native_attention_user_data, ctx0, il,
++            &q, &k, &v, &kq_mask, &n_kv_max);
++        if (status != 0 || q == nullptr || k == nullptr || v == nullptr) {
++            throw std::runtime_error("native attention provider failed");
++        }
++    }
+     const bool v_trans = v->nb[1] > v->nb[2];
+ 
+     // split the batch into streams if needed
+diff --git a/src/llama-graph.h b/src/llama-graph.h
+index 3daa425..76698a4 100644
+--- a/src/llama-graph.h
++++ b/src/llama-graph.h
+@@ -816,6 +816,12 @@ struct llm_graph_params {
+     // return true if the "other" params would result in a graph with the same topology as with the current params
+     //   having the same topology allows us to reuse the graph in some cases
+     bool allow_reuse(const llm_graph_params & other) const {
++        // Initial integration: prevent a stale selection/revision from surviving
++        // graph reuse. Restore reuse only with an explicit provider epoch/lifetime
++        // contract and passing cross-session/revision tests.
++        if (cparams.native_attention || other.cparams.native_attention) {
++            return false;
++        }
+         // first check the ubatch
+         bool can_reuse_ubatch =
+             ubatch.equal_seqs() == other.ubatch.equal_seqs() &&

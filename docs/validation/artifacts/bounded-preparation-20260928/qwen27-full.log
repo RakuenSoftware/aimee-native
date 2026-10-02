@@ -1,0 +1,36 @@
+Traceback (most recent call last):
+  File "/opt/aimee-memory-lab/bounded-preparation-20260928/full_bounded_preparation.py", line 43, in <module>
+    tokens,banks=compiler.encode(request)
+                 ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/opt/aimee-memory-lab/bounded-preparation-20260928/bounded_compile.py", line 71, in encode
+    framed = self.tokenizer.apply_chat_template(
+        [{'role': 'system', 'content': 'Authoritative memory:\n' + '\n'.join(contents)}],
+        tokenize=False, add_generation_prompt=False, enable_thinking=False)
+  File "/opt/aimee-memory-lab/venv/lib/python3.13/site-packages/transformers/tokenization_utils_base.py", line 3108, in apply_chat_template
+    rendered_chat, generation_indices = render_jinja_template(
+                                        ~~~~~~~~~~~~~~~~~~~~~^
+        conversations=conversations,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        **template_kwargs,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/aimee-memory-lab/venv/lib/python3.13/site-packages/transformers/utils/chat_template_utils.py", line 581, in render_jinja_template
+    rendered_chat = compiled_template.render(
+        messages=chat,
+    ...<3 lines>...
+        **kwargs,
+    )
+  File "/opt/aimee-memory-lab/venv/lib/python3.13/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/opt/aimee-memory-lab/venv/lib/python3.13/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "<template>", line 100, in top-level template code
+  File "/opt/aimee-memory-lab/venv/lib/python3.13/site-packages/jinja2/sandbox.py", line 401, in call
+    return __context.call(__obj, *args, **kwargs)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/aimee-memory-lab/venv/lib/python3.13/site-packages/transformers/utils/chat_template_utils.py", line 479, in raise_exception
+    raise jinja2.exceptions.TemplateError(message)
+jinja2.exceptions.TemplateError: No user query found in messages.

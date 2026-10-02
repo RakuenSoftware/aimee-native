@@ -1,0 +1,20 @@
+{"case": "disabled", "answer": "unknown", "expected": "unknown", "pass": true, "error": null, "seconds": 2.2500679240038153}
+{"case": "initial", "answer": "unknown", "expected": "cobalt", "pass": false, "error": null, "seconds": 0.3188940370018827}
+delivery conflict: current generation changed
+Traceback (most recent call last):
+  File "/opt/aimee-memory-lab/aimee-qwen/benchmarks/gemma_native/run.py", line 47, in <module>
+    before=time.perf_counter();publication=publish(value,revision) if revision else None
+                                           ~~~~~~~^^^^^^^^^^^^^^^^
+  File "/opt/aimee-memory-lab/aimee-qwen/benchmarks/gemma_native/run.py", line 32, in publish
+    result=cli('install-published','--root',compiled,'--output-root',root/'image','--reader-gid',gid)
+  File "/opt/aimee-memory-lab/aimee-qwen/benchmarks/gemma_native/run.py", line 19, in cli
+    out=subprocess.check_output([str(reader),*map(str,args)],text=True)
+  File "/usr/lib/python3.13/subprocess.py", line 472, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               **kwargs).stdout
+               ^^^^^^^^^
+  File "/usr/lib/python3.13/subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['/opt/aimee-memory-lab/aimee-qwen/.local/bin/aimee-memory-image', 'install-published', '--root', '/opt/aimee-memory-lab/gemma-native-r2/private/update-1/image', '--output-root', '/opt/aimee-memory-lab/gemma-native-r2/image', '--reader-gid', '991']' returned non-zero exit status 1.

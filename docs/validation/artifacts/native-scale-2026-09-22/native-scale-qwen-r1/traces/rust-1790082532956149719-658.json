@@ -1,0 +1,301 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790082532956149719-658",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Churuja PE 3698056, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    882,
+    20277,
+    5405,
+    21132,
+    220,
+    18,
+    21,
+    24,
+    23,
+    15,
+    20,
+    21,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    30014,
+    7199,
+    7287
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -89,
+  "answer": "America/Lima",
+  "finish_reason": "stop",
+  "elapsed_ms": 2723.899979,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Churuja PE 3698056, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Churuja (ID 3698056): country code PE; latitude -6.01417; longitude -77.95333; administrative codes 01/0103; population 248; time zone America/Lima. The source record was modified on 2020-05-06.",
+            "id": "geonames.3698056",
+            "key": "place Churuja PE 3698056",
+            "kind": "fact",
+            "memory_hash": "6c9585a19e5a995209efd95f0a551009d3ca1ff5271055d420a5108b399df45b",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.3698056",
+              "revision": "24bb9cbde8f54689ff5d8299b92b588d474664989f3e2c115f99dfb36e2bdf84"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 89,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3698056",
+          "revision": "24bb9cbde8f54689ff5d8299b92b588d474664989f3e2c115f99dfb36e2bdf84"
+        }
+      ],
+      "encoding_elapsed_ms": 597.906412,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 89,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 77.95333 2020-05-06 Answer user 3698056 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02711939811706543
+        },
+        {
+          "text": "77.95333",
+          "source": "aimee",
+          "positions": [
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46
+          ],
+          "score": 0.013303889951203018
+        },
+        {
+          "text": "2020-05-06",
+          "source": "aimee",
+          "positions": [
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87
+          ],
+          "score": 0.016273534289211966
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            92
+          ],
+          "score": 0.02642158977687359
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            115
+          ],
+          "score": 0.014084279537200928
+        },
+        {
+          "text": "3698056",
+          "source": "sequence",
+          "positions": [
+            130,
+            131,
+            132,
+            133,
+            134,
+            135,
+            136
+          ],
+          "score": 0.02254520996939391
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            138
+          ],
+          "score": 0.03789928928017616
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            139
+          ],
+          "score": 0.013378066942095757
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            140
+          ],
+          "score": 0.03102455660700798
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.021259799599647522
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.028899863362312317
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            157
+          ],
+          "score": 0.06407960504293442
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 89,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3698056",
+          "revision": "24bb9cbde8f54689ff5d8299b92b588d474664989f3e2c115f99dfb36e2bdf84"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00969,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 73
+}

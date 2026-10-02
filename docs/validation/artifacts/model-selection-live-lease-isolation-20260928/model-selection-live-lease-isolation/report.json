@@ -1,0 +1,91 @@
+{
+  "status": "failed",
+  "scope": "Live model-scoped lease checks; reports never include credentials or leases.",
+  "results": [
+    {
+      "case": "0:select",
+      "status": 200,
+      "expected": 200,
+      "passed": true
+    },
+    {
+      "case": "0:own-approve",
+      "status": 200,
+      "expected": 200,
+      "passed": true
+    },
+    {
+      "case": "0:own-index",
+      "status": 200,
+      "expected": 200,
+      "passed": true
+    },
+    {
+      "case": "0->1:approve",
+      "status": 403,
+      "expected": 403,
+      "passed": true
+    },
+    {
+      "case": "0->1:index.json",
+      "status": 403,
+      "expected": 403,
+      "passed": true
+    },
+    {
+      "case": "0->1:compact.pack",
+      "status": 403,
+      "expected": 403,
+      "passed": true
+    },
+    {
+      "case": "0->2:approve",
+      "status": 403,
+      "expected": 403,
+      "passed": true
+    },
+    {
+      "case": "0->2:index.json",
+      "status": 403,
+      "expected": 403,
+      "passed": true
+    },
+    {
+      "case": "0->2:compact.pack",
+      "status": 403,
+      "expected": 403,
+      "passed": true
+    },
+    {
+      "case": "0:omitted-selector",
+      "status": 200,
+      "expected": 200,
+      "passed": true
+    },
+    {
+      "case": "1:select",
+      "status": 200,
+      "expected": 200,
+      "passed": true
+    },
+    {
+      "case": "1:own-approve",
+      "status": 200,
+      "expected": 200,
+      "passed": true
+    },
+    {
+      "case": "1:own-index",
+      "status": 200,
+      "expected": 200,
+      "passed": true
+    },
+    {
+      "case": "1->0:approve",
+      "status": 503,
+      "expected": 403,
+      "passed": false
+    }
+  ],
+  "error": "AssertionError"
+}

@@ -1,0 +1,132 @@
+INFO 09-28 08:49:28 [__init__.py:112] Registered model loader `<class 'aimee_vllm.gguf_loader.UnifiedGGUFLoader'>` with load format `aimee_gguf_unified`
+(APIServer pid=1) INFO 09-28 08:49:28 [api_utils.py:347] 
+(APIServer pid=1) INFO 09-28 08:49:28 [api_utils.py:347]        █     █     █▄   ▄█
+(APIServer pid=1) INFO 09-28 08:49:28 [api_utils.py:347]  ▄▄ ▄█ █     █     █ ▀▄▀ █  version 0.30.0
+(APIServer pid=1) INFO 09-28 08:49:28 [api_utils.py:347]   █▄█▀ █     █     █     █  model   /model
+(APIServer pid=1) INFO 09-28 08:49:28 [api_utils.py:347]    ▀▀  ▀▀▀▀▀ ▀▀▀▀▀ ▀     ▀
+(APIServer pid=1) INFO 09-28 08:49:28 [api_utils.py:347] 
+(APIServer pid=1) INFO 09-28 08:49:28 [api_utils.py:286] non-default args: {'model_tag': '/model', 'host': '127.0.0.1', 'port': 8176, 'model': '/model', 'dtype': 'bfloat16', 'max_model_len': 4096, 'quantization': 'gguf', 'enforce_eager': True, 'served_model_name': ['qwen3.8-27b-q8-baseline'], 'load_format': 'aimee_gguf_unified', 'model_loader_extra_config': {'gguf_weights': '/weights/qwen27-q8.gguf', 'mm_proj': '/weights/qwen27-mmproj-f32.gguf'}, 'tensor_parallel_size': 2, 'disable_custom_all_reduce': True, 'gpu_memory_utilization': 0.85, 'enable_prefix_caching': False, 'limit_mm_per_prompt': {'image': 0, 'audio': 0, 'video': 0}, 'max_num_batched_tokens': 256, 'max_num_seqs': 2, 'async_scheduling': False}
+(APIServer pid=1) INFO 09-28 08:49:41 [model.py:692] Resolved architecture: Qwen3_5ForConditionalGeneration
+(APIServer pid=1) INFO 09-28 08:49:41 [model.py:2030] Using max model len 4096
+(APIServer pid=1) INFO 09-28 08:49:42 [registry.py:146] All limits of multimodal modalities supported by the model are set to 0, running in text-only mode.
+(APIServer pid=1) INFO 09-28 08:49:42 [model.py:900] Disabled mm_prefix attention mode because multimodal inputs are configuration-disabled. Attention backends without mm_prefix support may now be selected.
+(APIServer pid=1) INFO 09-28 08:49:42 [scheduler.py:288] Chunked prefill is enabled with max_num_batched_tokens=256.
+(APIServer pid=1) WARNING 09-28 08:49:42 [indexer_topk.py:29] Failed to import the DeepSelect extension (vllm._deepselect_C): No module named 'vllm._deepselect_C'
+(APIServer pid=1) WARNING 09-28 08:49:42 [vllm.py:1547] Enforce eager set, disabling torch.compile and CUDAGraphs. This is equivalent to setting -cc.mode=none -cc.cudagraph_mode=none
+(APIServer pid=1) WARNING 09-28 08:49:42 [vllm.py:1570] Inductor compilation was disabled by user settings, optimizations settings that are only active during inductor compilation will be ignored.
+(APIServer pid=1) INFO 09-28 08:49:42 [kernel.py:416] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['native'])
+(APIServer pid=1) INFO 09-28 08:49:42 [vllm.py:1780] Cudagraph is disabled under eager mode
+(APIServer pid=1) INFO 09-28 08:49:42 [compilation.py:336] Enabled custom fusions: norm_quant, act_quant
+(EngineCore pid=146) INFO 09-28 08:49:54 [__init__.py:112] Registered model loader `<class 'aimee_vllm.gguf_loader.UnifiedGGUFLoader'>` with load format `aimee_gguf_unified`
+(EngineCore pid=146) INFO 09-28 08:49:54 [core.py:123] Initializing a V1 LLM engine (v0.30.0) with config: model='/model', speculative_config=None, tokenizer='/model', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=4096, download_dir=None, load_format=aimee_gguf_unified, tensor_parallel_size=2, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=True, quantization=gguf, quantization_config=None, enforce_eager=True, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=qwen3.8-27b-q8-baseline, enable_prefix_caching=False, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.NONE: 0>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['+sparse_attn_indexer', 'all'], 'ir_enable_torch_wrap': False, 'splitting_ops': [], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [256], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.NONE: 0>, 'cudagraph_num_of_warmups': 0, 'cudagraph_capture_sizes': [], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': True, 'fuse_act_quant': True, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 0, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['native']), enable_flashinfer_autotune=True, enable_cutedsl_warmup=True, enable_jit_warmup=True, moe_backend='auto', sparse_indexer_topk_backend='auto', linear_backend='auto', linear_backend_per_quant=None)
+(EngineCore pid=146) INFO 09-28 08:49:54 [multiproc_executor.py:153] DP group leader: node_rank=0, node_rank_within_dp=0, master_addr=127.0.0.1, mq_connect_ip=127.0.0.1 (local), world_size=2, local_world_size=2
+INFO 09-28 08:50:03 [__init__.py:112] Registered model loader `<class 'aimee_vllm.gguf_loader.UnifiedGGUFLoader'>` with load format `aimee_gguf_unified`
+INFO 09-28 08:50:03 [__init__.py:112] Registered model loader `<class 'aimee_vllm.gguf_loader.UnifiedGGUFLoader'>` with load format `aimee_gguf_unified`
+INFO 09-28 08:50:04 [registry.py:146] All limits of multimodal modalities supported by the model are set to 0, running in text-only mode.
+(Worker pid=210) INFO 09-28 08:50:04 [parallel_state.py:1827] world_size=2 rank=1 local_rank=1 distributed_init_method=file:///tmp/vllm_dist_7d27696902f2413d86ac4607587d02e8 backend=nccl
+INFO 09-28 08:50:04 [registry.py:146] All limits of multimodal modalities supported by the model are set to 0, running in text-only mode.
+(Worker pid=209) INFO 09-28 08:50:04 [parallel_state.py:1827] world_size=2 rank=0 local_rank=0 distributed_init_method=file:///tmp/vllm_dist_7d27696902f2413d86ac4607587d02e8 backend=nccl
+(Worker pid=209) INFO 09-28 08:50:04 [pynccl.py:148] vLLM is using nccl==2.27.7
+(Worker pid=209) INFO 09-28 08:50:18 [flashinfer_all_reduce.py:361] FlashInfer All Reduce is disabled because flashinfer is not available
+(Worker pid=210) INFO 09-28 08:50:18 [flashinfer_all_reduce.py:361] FlashInfer All Reduce is disabled because flashinfer is not available
+(Worker pid=209) INFO 09-28 08:50:18 [cuda_communicator.py:318] Using ['PYNCCL'] all-reduce backends (in dispatch order) for group 'tp:0' out of potential backends: ['FLASHINFER_PCIE_IPC', 'FLASHINFER', 'NCCL_SYMM_MEM', 'QUICK_REDUCE', 'AITER_CUSTOM', 'CUSTOM', 'SYMM_MEM', 'PYNCCL'].
+(Worker pid=209) INFO 09-28 08:50:18 [parallel_state.py:2267] rank 0 in world size 2 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, ETP rank 0, EP rank N/A, EPLB rank N/A
+(Worker pid=209) WARNING 09-28 08:50:19 [indexer_topk.py:29] Failed to import the DeepSelect extension (vllm._deepselect_C): No module named 'vllm._deepselect_C'
+(Worker pid=210) WARNING 09-28 08:50:19 [indexer_topk.py:29] Failed to import the DeepSelect extension (vllm._deepselect_C): No module named 'vllm._deepselect_C'
+(Worker_TP0 pid=209) INFO 09-28 08:50:19 [gpu_model_runner.py:5317] Starting to load model /model...
+(Worker_TP1 pid=210) INFO 09-28 08:51:20 [rocm.py:708] Found incompatible backend(s) [TURBOQUANT] with AttentionType.DECODER. Overriding with ROCM_ATTN out of potential backends: ['ROCM_ATTN', 'TRITON_ATTN'].
+(Worker_TP0 pid=209) INFO 09-28 08:51:20 [rocm.py:439] Set FLASH_ATTENTION_TRITON_AMD_ENABLE=TRUE to enable Flash Attention Triton backend on RDNA.
+(Worker_TP0 pid=209) INFO 09-28 08:51:20 [rocm.py:776] Using Torch SDPA backend for ViT model.
+(Worker_TP0 pid=209) WARNING 09-28 08:51:20 [activation.py:814] [ROCm] PyTorch's native GELU with tanh approximation is unstable. Falling back to GELU(approximate='none').
+(Worker_TP0 pid=209) INFO 09-28 08:51:20 [mm_encoder_attention.py:372] Using AttentionBackendEnum.TORCH_SDPA for MMEncoderAttention.
+(Worker_TP0 pid=209) INFO 09-28 08:51:20 [qwen_gdn_linear_attn.py:176] Using Triton/FLA GDN prefill kernel (requested=auto, head_k_dim=128).
+(Worker_TP0 pid=209) INFO 09-28 08:51:20 [qwen_gdn_linear_attn.py:520] Falling back to the Triton GDN decode path: torch.ops._C.fused_gdn_decode_post_conv_mtp is not built
+(Worker_TP0 pid=209) INFO 09-28 08:51:20 [qwen_gdn_linear_attn.py:528] GDN decode kernel: triton
+(Worker_TP0 pid=209) INFO 09-28 08:51:21 [rocm.py:708] Found incompatible backend(s) [TURBOQUANT] with AttentionType.DECODER. Overriding with ROCM_ATTN out of potential backends: ['ROCM_ATTN', 'TRITON_ATTN'].
+(Worker_TP0 pid=209) WARNING 09-28 08:51:21 [compilation.py:1361] Op 'sparse_attn_indexer' not present in model, enabling with '+sparse_attn_indexer' has no effect
+(Worker_TP1 pid=210) INFO 09-28 08:52:09 [interface.py:933] Setting attention block size to 784 tokens to ensure that attention page size is >= mamba page size.
+(Worker_TP1 pid=210) INFO 09-28 08:52:09 [interface.py:957] Padding mamba page size by 0.13% to ensure that mamba page size and attention page size are exactly equal.
+(Worker_TP0 pid=209) INFO 09-28 08:52:09 [gpu_model_runner.py:5416] Model loading took 13.48 GiB memory and 109.022162 seconds
+(Worker_TP0 pid=209) INFO 09-28 08:52:09 [interface.py:933] Setting attention block size to 784 tokens to ensure that attention page size is >= mamba page size.
+(Worker_TP0 pid=209) INFO 09-28 08:52:09 [interface.py:957] Padding mamba page size by 0.13% to ensure that mamba page size and attention page size are exactly equal.
+(EngineCore pid=146) INFO 09-28 08:52:09 [torch_utils.py:287] Reducing Torch threads from 8 to 1 for serving. Set OMP_NUM_THREADS in the external environment to override.
+(EngineCore pid=146) INFO 09-28 08:52:09 [utils.py:320] Using LBHNC KV cache layout.
+(Worker_TP1 pid=210) /usr/local/lib/python3.12/dist-packages/triton/language/core.py:2284: UserWarning: tl.make_block_ptr is deprecated. Use TensorDescriptor or tl.make_tensor_descriptor instead.
+(Worker_TP1 pid=210)   warn("tl.make_block_ptr is deprecated. Use TensorDescriptor or tl.make_tensor_descriptor instead.")
+(Worker_TP0 pid=209) /usr/local/lib/python3.12/dist-packages/triton/language/core.py:2284: UserWarning: tl.make_block_ptr is deprecated. Use TensorDescriptor or tl.make_tensor_descriptor instead.
+(Worker_TP0 pid=209)   warn("tl.make_block_ptr is deprecated. Use TensorDescriptor or tl.make_tensor_descriptor instead.")
+(EngineCore pid=146) INFO 09-28 08:53:10 [shm_broadcast.py:801] No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation, weight/kv cache quantization).
+(EngineCore pid=146) INFO 09-28 08:54:10 [shm_broadcast.py:801] No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation, weight/kv cache quantization).
+(Worker_TP0 pid=209) INFO 09-28 08:54:28 [gpu_worker.py:640] Available KV cache memory: 5.17 GiB
+(EngineCore pid=146) INFO 09-28 08:54:28 [kv_cache_utils.py:2395] GPU KV cache size: 98,304 tokens, Maximum concurrency for 4,096 tokens per request: 24.00x
+(Worker_TP0 pid=209) INFO 09-28 08:54:28 [kernel_warmup.py:172] JIT kernel warmup starting.
+(Worker_TP1 pid=210) INFO 09-28 08:54:28 [kernel_warmup.py:172] JIT kernel warmup starting.
+(Worker_TP1 pid=210) INFO 09-28 08:55:00 [kernel_warmup.py:185] JIT kernel warmup finished in 31.52s.
+(Worker_TP1 pid=210) INFO 09-28 08:55:00 [qwen_triton_warmup.py:294] Warming up Qwen GDN Triton kernels for model_type=qwen3_5_text.
+(Worker_TP0 pid=209) JIT kernel warmup (50 compile keys):   0%|          | 0/5 [00:00<?, ?kernel/s]JIT kernel warmup (50 compile keys):  20%|██        | 1/5 [00:17<01:08, 17.21s/kernel, _DecoratedTritonJitKernel (8 keys)]JIT kernel warmup (50 compile keys):  40%|████      | 2/5 [00:18<00:23,  7.79s/kernel, _DecoratedTritonJitKernel (8 keys)]JIT kernel warmup (50 compile keys):  60%|██████    | 3/5 [00:26<00:15,  7.96s/kernel, _DecoratedTritonJitKernel (24 keys)]JIT kernel warmup (50 compile keys):  80%|████████  | 4/5 [00:31<00:06,  6.64s/kernel, _DecoratedTritonJitKernel (8 keys)] JIT kernel warmup (50 compile keys): 100%|██████████| 5/5 [00:31<00:00,  4.38s/kernel, ComputeSlotMappingKernel (2 keys)] JIT kernel warmup (50 compile keys): 100%|██████████| 5/5 [00:31<00:00,  6.31s/kernel, ComputeSlotMappingKernel (2 keys)]
+(Worker_TP0 pid=209) INFO 09-28 08:55:00 [kernel_warmup.py:185] JIT kernel warmup finished in 31.57s.
+(Worker_TP0 pid=209) INFO 09-28 08:55:00 [qwen_triton_warmup.py:294] Warming up Qwen GDN Triton kernels for model_type=qwen3_5_text.
+(Worker_TP1 pid=210) INFO 09-28 08:55:01 [qwen_vl_triton_warmup.py:98] Warmed M-RoPE Triton kernels.
+(Worker_TP0 pid=209) INFO 09-28 08:55:02 [qwen_vl_triton_warmup.py:98] Warmed M-RoPE Triton kernels.
+(Worker_TP1 pid=210) INFO 09-28 08:55:02 [mamba_triton_warmup.py:42] Warmed Mamba batch_memcpy_kernel.
+(Worker_TP1 pid=210) INFO 09-28 08:55:02 [ll_bf16.py:30] cuteDSL (CUTLASS Python) not available, ll_bf16_gemm disabled
+(Worker_TP1 pid=210) INFO 09-28 08:55:02 [gpu_worker.py:888] Free memory on device (23.62/23.98 GiB) on startup. Desired GPU memory utilization is (0.85, 20.39 GiB). Actual usage is 14.95 GiB for consumed memory (weights + non-torch), 0.26 GiB for peak activation, and 0.0 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=5392048128` (5.02 GiB) to fit into requested memory, or `--kv-cache-memory=8858640384` (8.25 GiB) to fully utilize gpu memory. Current kv cache memory in use is 5.17 GiB.
+(Worker_TP0 pid=209) INFO 09-28 08:55:02 [mamba_triton_warmup.py:42] Warmed Mamba batch_memcpy_kernel.
+(Worker_TP0 pid=209) INFO 09-28 08:55:02 [ll_bf16.py:30] cuteDSL (CUTLASS Python) not available, ll_bf16_gemm disabled
+(Worker_TP0 pid=209) INFO 09-28 08:55:02 [gpu_worker.py:888] Free memory on device (23.61/23.98 GiB) on startup. Desired GPU memory utilization is (0.85, 20.39 GiB). Actual usage is 14.95 GiB for consumed memory (weights + non-torch), 0.26 GiB for peak activation, and 0.0 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=5392048128` (5.02 GiB) to fit into requested memory, or `--kv-cache-memory=8848154624` (8.24 GiB) to fully utilize gpu memory. Current kv cache memory in use is 5.17 GiB.
+(Worker_TP1 pid=210) INFO 09-28 08:55:02 [jit_monitor.py:85] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(Worker_TP0 pid=209) INFO 09-28 08:55:02 [jit_monitor.py:85] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(Worker_TP0 pid=209) INFO 09-28 08:55:03 [torch_utils.py:287] Reducing Torch threads from 8 to 1 for serving. Set OMP_NUM_THREADS in the external environment to override.
+(EngineCore pid=146) INFO 09-28 08:55:03 [core.py:379] init engine (profile, create kv cache, warmup model) took 174.08 s
+(EngineCore pid=146) INFO 09-28 08:55:03 [kv_cache_utils.py:748] kv cache group sizes [4096, 4096, 4096, 784]
+(EngineCore pid=146) INFO 09-28 08:55:03 [kv_cache_utils.py:749] kv lcm block sizes 200704
+(EngineCore pid=146) INFO 09-28 08:55:04 [registry.py:146] All limits of multimodal modalities supported by the model are set to 0, running in text-only mode.
+(EngineCore pid=146) WARNING 09-28 08:55:04 [vllm.py:1547] Enforce eager set, disabling torch.compile and CUDAGraphs. This is equivalent to setting -cc.mode=none -cc.cudagraph_mode=none
+(EngineCore pid=146) WARNING 09-28 08:55:04 [vllm.py:1570] Inductor compilation was disabled by user settings, optimizations settings that are only active during inductor compilation will be ignored.
+(EngineCore pid=146) INFO 09-28 08:55:04 [kernel.py:416] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['native'])
+(EngineCore pid=146) INFO 09-28 08:55:04 [vllm.py:1780] Cudagraph is disabled under eager mode
+(EngineCore pid=146) INFO 09-28 08:55:04 [compilation.py:336] Enabled custom fusions: norm_quant, act_quant
+(APIServer pid=1) INFO 09-28 08:55:04 [entry.py:135] Supported tasks: ['generate']
+(APIServer pid=1) INFO 09-28 08:55:04 [factories.py:76] Scale-out endpoints are disabled. Set --enable-scale-out to enable them.
+(APIServer pid=1) INFO 09-28 08:55:05 [hf.py:642] Detected the chat template content format to be 'openai'. You can set `--chat-template-content-format` to override this.
+(APIServer pid=1) WARNING 09-28 08:55:05 [model.py:1772] Default vLLM sampling parameters have been overridden by the model's `generation_config.json`: `{'temperature': 1.0, 'top_k': 20, 'top_p': 0.95}`. If this is not intended, please relaunch vLLM instance with `--generation-config vllm`.
+(APIServer pid=1) INFO 09-28 08:55:05 [entry.py:139] Starting vLLM server on http://127.0.0.1:8176
+(APIServer pid=1) INFO 09-28 08:55:05 [launcher.py:61] Available routes are:
+(APIServer pid=1) INFO 09-28 08:55:05 [launcher.py:70] Route: /openapi.json, Methods: GET, HEAD
+(APIServer pid=1) INFO 09-28 08:55:05 [launcher.py:70] Route: /docs, Methods: GET, HEAD
+(APIServer pid=1) INFO 09-28 08:55:05 [launcher.py:70] Route: /docs/oauth2-redirect, Methods: GET, HEAD
+(APIServer pid=1) INFO 09-28 08:55:05 [launcher.py:70] Route: /redoc, Methods: GET, HEAD
+(APIServer pid=1) INFO 09-28 08:55:05 [launcher.py:70] Route: /load, Methods: GET
+(APIServer pid=1) INFO 09-28 08:55:05 [launcher.py:70] Route: /version, Methods: GET
+(APIServer pid=1) INFO 09-28 08:55:05 [launcher.py:70] Route: /health, Methods: GET
+(APIServer pid=1) INFO 09-28 08:55:05 [launcher.py:70] Route: /metrics, Methods: GET
+(APIServer pid=1) INFO 09-28 08:55:05 [launcher.py:70] Route: /tokenize, Methods: POST
+(APIServer pid=1) INFO 09-28 08:55:05 [launcher.py:70] Route: /detokenize, Methods: POST
+(APIServer pid=1) INFO 09-28 08:55:05 [launcher.py:70] Route: /v1/models, Methods: GET
+(APIServer pid=1) INFO 09-28 08:55:05 [launcher.py:70] Route: /ping, Methods: GET
+(APIServer pid=1) INFO 09-28 08:55:05 [launcher.py:70] Route: /ping, Methods: POST
+(APIServer pid=1) INFO 09-28 08:55:05 [launcher.py:70] Route: /invocations, Methods: POST
+(APIServer pid=1) INFO 09-28 08:55:05 [launcher.py:70] Route: /v1/chat/completions, Methods: POST
+(APIServer pid=1) INFO 09-28 08:55:05 [launcher.py:70] Route: /v1/chat/completions/batch, Methods: POST
+(APIServer pid=1) INFO 09-28 08:55:05 [launcher.py:70] Route: /v1/responses, Methods: POST
+(APIServer pid=1) INFO 09-28 08:55:05 [launcher.py:70] Route: /v1/responses/{response_id}, Methods: GET
+(APIServer pid=1) INFO 09-28 08:55:05 [launcher.py:70] Route: /v1/responses/{response_id}/cancel, Methods: POST
+(APIServer pid=1) INFO 09-28 08:55:05 [launcher.py:70] Route: /v1/completions, Methods: POST
+(APIServer pid=1) INFO 09-28 08:55:05 [launcher.py:70] Route: /v1/messages, Methods: POST
+(APIServer pid=1) INFO 09-28 08:55:05 [launcher.py:70] Route: /v1/messages/count_tokens, Methods: POST
+(APIServer pid=1) INFO 09-28 08:55:05 [launcher.py:70] Route: /generative_scoring, Methods: POST
+(APIServer pid=1) INFO 09-28 08:55:05 [launcher.py:70] Route: /scale_elastic_ep, Methods: POST
+(APIServer pid=1) INFO 09-28 08:55:05 [launcher.py:70] Route: /is_scaling_elastic_ep, Methods: POST
+(APIServer pid=1) INFO:     Started server process [1]
+(APIServer pid=1) INFO:     Waiting for application startup.
+(APIServer pid=1) INFO:     Application startup complete.
+(APIServer pid=1) INFO:     127.0.0.1:60826 - "GET /v1/models HTTP/1.1" 200 OK
+(Worker_TP0 pid=209) WARNING 09-28 08:55:24 [jit_monitor.py:141] Triton kernel JIT compilation during inference: _fwd_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.
+(Worker_TP0 pid=209) WARNING 09-28 08:55:24 [chunked_prefill_paged_decode.py:433] Cannot use ROCm custom paged attention kernel, falling back to Triton implementation.
+(Worker_TP0 pid=209) WARNING 09-28 08:55:27 [jit_monitor.py:141] Triton kernel JIT compilation during inference: kernel_paged_attention_2d. This causes a latency spike; consider extending warmup to cover this shape/config.
+(Worker_TP0 pid=209) WARNING 09-28 08:55:28 [jit_monitor.py:141] Triton kernel JIT compilation during inference: _causal_conv1d_update_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.
+(Worker_TP0 pid=209) WARNING 09-28 08:55:28 [jit_monitor.py:141] Triton kernel JIT compilation during inference: fused_recurrent_gated_delta_rule_packed_decode_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.
+(APIServer pid=1) INFO:     127.0.0.1:60838 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=1) INFO:     127.0.0.1:40006 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=1) INFO:     127.0.0.1:40018 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=1) INFO:     127.0.0.1:40022 - "POST /v1/chat/completions HTTP/1.1" 200 OK

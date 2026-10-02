@@ -1,0 +1,301 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790082626308128731-710",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Tantow DE 2824020, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    185997,
+    358,
+    3276,
+    220,
+    17,
+    23,
+    17,
+    19,
+    15,
+    17,
+    15,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    29774,
+    15797,
+    261,
+    3606
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -88,
+  "answer": "Europe/Berlin",
+  "finish_reason": "stop",
+  "elapsed_ms": 3181.498974,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Tantow DE 2824020, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Tantow (ID 2824020): country code DE; latitude 53.27163; longitude 14.35098; administrative codes 11/00; population 793; time zone Europe/Berlin. The source record was modified on 2011-04-25.",
+            "id": "geonames.2824020",
+            "key": "place Tantow DE 2824020",
+            "kind": "fact",
+            "memory_hash": "39b24de469071505251f7decc2d43fb04297cf333bbb28a0bcfa58eb99a676f5",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.2824020",
+              "revision": "f6c090487b48a562439576edaebb1d18881a493667f629153c15cd23eea65dad"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 88,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.2824020",
+          "revision": "f6c090487b48a562439576edaebb1d18881a493667f629153c15cd23eea65dad"
+        }
+      ],
+      "encoding_elapsed_ms": 590.35008,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 88,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 53.27163 2011-04-25 Answer user 2824020 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02318139374256134
+        },
+        {
+          "text": "53.27163",
+          "source": "aimee",
+          "positions": [
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35
+          ],
+          "score": 0.016494327632244676
+        },
+        {
+          "text": "2011-04-25",
+          "source": "aimee",
+          "positions": [
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84,
+            85,
+            86
+          ],
+          "score": 0.013617568620247766
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            91
+          ],
+          "score": 0.02467741072177887
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            114
+          ],
+          "score": 0.015296872705221176
+        },
+        {
+          "text": "2824020",
+          "source": "sequence",
+          "positions": [
+            128,
+            129,
+            130,
+            131,
+            132,
+            133,
+            134
+          ],
+          "score": 0.02956648333929479
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            136
+          ],
+          "score": 0.03710407391190529
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            137
+          ],
+          "score": 0.012772912159562111
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            138
+          ],
+          "score": 0.029378142207860947
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            151
+          ],
+          "score": 0.02178497239947319
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.02986133098602295
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.06429342180490494
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 88,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.2824020",
+          "revision": "f6c090487b48a562439576edaebb1d18881a493667f629153c15cd23eea65dad"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00868,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 73
+}

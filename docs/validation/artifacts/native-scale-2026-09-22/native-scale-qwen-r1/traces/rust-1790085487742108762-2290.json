@@ -1,0 +1,300 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790085487742108762-2290",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhat orbital period in days does the NASA archive give for planet Kepler-1496 b? Return the number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    3710,
+    62409,
+    4031,
+    303,
+    2756,
+    1503,
+    279,
+    20774,
+    17593,
+    2873,
+    364,
+    11247,
+    94370,
+    12,
+    16,
+    19,
+    24,
+    21,
+    292,
+    30,
+    3301,
+    279,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    21,
+    19,
+    13,
+    21,
+    20,
+    23,
+    23,
+    15,
+    16,
+    22,
+    15,
+    15,
+    15,
+    15
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -107,
+  "answer": "64.65880170000",
+  "finish_reason": "stop",
+  "elapsed_ms": 7934.199262,
+  "memory_encoding_passes": 1,
+  "native_reads": 240,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "What orbital period in days does the NASA archive give for planet Kepler-1496 b? Return the number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "For planet Kepler-1496 b, the NASA Exoplanet Archive composite table lists: host star Kepler-1496; discovery year 2016; discovery method Transit; discovery facility Kepler; orbital period 64.65880170000 days; reported planet radius 2.22000000 Earth radii; reported system distance 1307.66000000 parsecs.",
+            "id": "nasa.Kepler-1496 b",
+            "key": "planet Kepler-1496 b",
+            "kind": "fact",
+            "memory_hash": "58ebc9599efd480c3048e5a59e5589a9197d242a94ba27e885486cdea85d7a5b",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "nasa.Kepler-1496 b",
+              "revision": "6a47cd1a740779e18b92afbe689f1c38bcab2d60cbead4c7abfb808a655ed4e6"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 107,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.Kepler-1496 b",
+          "revision": "6a47cd1a740779e18b92afbe689f1c38bcab2d60cbead4c7abfb808a655ed4e6"
+        }
+      ],
+      "encoding_elapsed_ms": 517.929657,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 107,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 64.65880170000 Answer user What does give Kepler-1496 Return assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.021419040393084288
+        },
+        {
+          "text": "64.65880170000",
+          "source": "aimee",
+          "positions": [
+            53,
+            54,
+            55,
+            56,
+            57,
+            58,
+            59,
+            60,
+            61,
+            62,
+            63,
+            64,
+            65,
+            66
+          ],
+          "score": 0.016420290325186215
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            110
+          ],
+          "score": 0.025538399815559387
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            133
+          ],
+          "score": 0.017759904265403748
+        },
+        {
+          "text": "What",
+          "source": "sequence",
+          "positions": [
+            135
+          ],
+          "score": 0.01981811597943306
+        },
+        {
+          "text": "does",
+          "source": "sequence",
+          "positions": [
+            140
+          ],
+          "score": 0.020713109523057938
+        },
+        {
+          "text": "give",
+          "source": "sequence",
+          "positions": [
+            144
+          ],
+          "score": 0.018739547580480576
+        },
+        {
+          "text": "Kepler-1496",
+          "source": "sequence",
+          "positions": [
+            147,
+            148,
+            149,
+            150,
+            151,
+            152
+          ],
+          "score": 0.021763050346635282
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.01687960885465145
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            163
+          ],
+          "score": 0.02586776576936245
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            165
+          ],
+          "score": 0.030979296192526817
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            167
+          ],
+          "score": 0.07099568843841553
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 107,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.Kepler-1496 b",
+          "revision": "6a47cd1a740779e18b92afbe689f1c38bcab2d60cbead4c7abfb808a655ed4e6"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00839,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 76
+}

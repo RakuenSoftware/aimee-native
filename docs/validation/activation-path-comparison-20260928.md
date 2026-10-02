@@ -1,0 +1,103 @@
+# Activation path diagnosis
+
+The requested cold/warm microsecond application target remains unmet. This
+bounded diagnostic tests two implementation choices before modifying the
+validated runtime: container overlay versus a direct Optane-backed directory,
+and overlapping chunk uploads versus one upload after parallel reads finish.
+
+Both storage arms use Optane. The original temporary arena resides in the
+container overlay backed by CT101's Optane root filesystem. The shared fixture
+source resides on the host's SATA pool, but the timed lossless-transport reads
+use the prepared arena, not that fixture file. Earlier attribution of the
+measured cold latency to the SATA pool was incorrect.
+
+The unchanged image is
+`56e44a78b4ddbb228d5728311a709ee8118acc51f685b9f0e428a809b5ad2935`.
+The fixed Gemma bank has 36,632,124 source bytes and 60 rank-zero tensor
+segments. Each arm checks byte fidelity and measures 10 independently cold
+applications, 100 warm applications, and 100 resident lookups. Four arms run
+in forward and reverse order. This isolates application overhead; it does
+not measure answer generation or establish performance across every bank.
+
+Coordinator: `distribution/tests/activation_path_comparison.py`.
+Remote output: `/opt/aimee-large-release-validation/activation-path-comparison-r1`.
+The coordinator completed all eight runs. The direct arena mount was confirmed
+as ext4 on `/dev/mapper/storage-vm--101--disk--0`, not tmpfs.
+
+## Completed measurements
+
+Ranges below are the two per-run medians, not pooled sample estimates.
+
+| Path | Cold application (ms) | Warm application (ms) |
+|---|---:|---:|
+| Overlay, overlapping upload (current) | 14.84–14.87 | 5.01–5.24 |
+| Direct, overlapping upload | 14.85–15.11 | 5.00–5.27 |
+| Overlay, bulk upload | 17.61–17.93 | 5.89–6.53 |
+| Direct, bulk upload | 17.59–17.63 | 6.24–6.60 |
+
+All eight runs passed exact reconstruction of 60 tensor segments. Sample counts
+were verified: 80 independent cold applications, 800 warm applications and
+800 resident lookups overall. Raw files and coordinator-recorded result hashes
+are preserved in [the evidence archive](artifacts/activation-path-comparison-20260928/).
+
+The container overlay does not explain the cold-read bottleneck in this bank.
+Removing overlap worsens both measured cold and warm application. Keep the
+existing pipeline; neither alternative is a supported performance fix.
+
+The current transport carries a losslessly encoded BF16 bank, not a few
+kilobytes of token IDs that can simply be reinterpreted as the same tensors.
+For this bank, even the stored transport payload is 36.6 MB per rank. A
+microsecond-scale cold application therefore needs substantially less data
+movement, rather than just different file placement or upload scheduling.
+A replacement representation must be evaluated against native task quality;
+lossy reconstruction cannot be passed off as the byte-identical representation
+validated here. Already-resident lookup timings do not establish cold-load
+performance. The existing candidate remains unchanged, and the requested
+cold/warm performance target remains unmet.
+
+## Offline payload follow-up
+
+The same largest Gemma bank contains 432 positions and 48,660,480 dense bytes
+for rank zero. A CPU-only exact-roundtrip diagnostic tested ordinary zlib and
+byte-plane zlib coding. The smallest result was 33,884,732 bytes (69.6% of dense),
+versus the existing 36,632,124-byte transport. Reconstruction in this diagnostic
+took a median 242.7 ms, excluding disk and GPU transfer, so this is rejected as
+a serving optimization. All five reconstructions per variant were byte checked.
+These CPU measurements do not predict an optimized Rust/SIMD decoder's speed;
+the size result itself also falls far short of the desired small payload.
+
+Empirical 16-bit word entropy was 11.19 bits and the exact-zero fraction was
+zero. These describe this bank and do not prove a general information-theoretic
+limit or rule out structured representations. They do show that treating this
+particular dense bank as mostly zero values is not supported.
+
+The current implementation compresses prepared K/V state. It does not implement
+the requested few-kilobyte intermediate with cheap expansion into this same
+large native state. Further work needs to address that representation gap;
+neither token-ID byte counts nor resident-cache timings establish that it has
+been solved. No codec or serving candidate was changed by this diagnostic.
+[Raw result](artifacts/native-payload-compressibility-20260928/report.json).
+
+## Low-rank feasibility follow-up
+
+A CPU-only singular-value analysis covered every rank-zero K/V head matrix in
+the same bank (60 segments, 432 positions). Factor storage counts below assume
+BF16 factors; errors are the optimistic best-rank error before factor rounding.
+
+| Per-head rank | Factor bytes (MB) | Relative Frobenius error |
+|---|---:|---:|
+| 4 | 1.18 | 69.8% |
+| 8 | 2.35 | 64.0% |
+| 16 | 4.71 | 56.6% |
+| 32 | 9.41 | 47.0% |
+| 64 | 18.82 | 34.7% |
+| 128 | 37.64 | 19.4% |
+
+This does not measure answer accuracy, and it cannot prove that every possible
+structured representation fails. It rejects an assumption that a simple small
+per-head factorization reconstructs these states with little error. There is no
+basis here for promoting it as preservation of the validated native behavior.
+No serving path changed. The first probe failed because this Torch build lacks
+CPU LAPACK; the retained corrected run used NumPy's SVD on exactly expanded BF16
+values. The failure and corrected result are both preserved in
+[the evidence archive](artifacts/native-low-rank-feasibility-20260928/).

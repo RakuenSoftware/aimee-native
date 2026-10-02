@@ -1,0 +1,16 @@
+STEP 1/3: FROM localhost/aimee-native:gemma-preview-r11
+STEP 2/3: COPY aimee_vllm-0.1.0-cp312-cp312-linux_x86_64.whl /opt/aimee/client/
+--> 0e08a42f33cd
+STEP 3/3: RUN python3 -m pip install --no-deps --force-reinstall /opt/aimee/client/aimee_vllm-0.1.0-cp312-cp312-linux_x86_64.whl && rm -rf /opt/aimee/client
+Processing /opt/aimee/client/aimee_vllm-0.1.0-cp312-cp312-linux_x86_64.whl
+Installing collected packages: aimee-vllm
+  Attempting uninstall: aimee-vllm
+    Found existing installation: aimee-vllm 0.1.0
+    Uninstalling aimee-vllm-0.1.0:
+      Successfully uninstalled aimee-vllm-0.1.0
+Successfully installed aimee-vllm-0.1.0
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+COMMIT localhost/aimee-native:gemma-preview-r12
+--> 5243ee266c20
+Successfully tagged localhost/aimee-native:gemma-preview-r12
+5243ee266c208bc11d8c5a23f3d9ead6edf6c15834ae32b70252946ed873fe3a

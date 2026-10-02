@@ -1,0 +1,292 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790084143529936320-1558",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Saldenburg DE 2842311, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    326,
+    4594,
+    52561,
+    3276,
+    220,
+    17,
+    23,
+    19,
+    17,
+    18,
+    16,
+    16,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    29774,
+    15797,
+    261,
+    3606
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -90,
+  "answer": "Europe/Berlin",
+  "finish_reason": "stop",
+  "elapsed_ms": 3219.56419,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Saldenburg DE 2842311, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Saldenburg (ID 2842311): country code DE; latitude 48.7731; longitude 13.35586; administrative codes 02/092; population 2040; time zone Europe/Berlin. The source record was modified on 2012-12-11.",
+            "id": "geonames.2842311",
+            "key": "place Saldenburg DE 2842311",
+            "kind": "fact",
+            "memory_hash": "c0054a20546f29b3ebd921814b21084b1e76565d0468a48196dc36db26a963aa",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.2842311",
+              "revision": "32b311bdd1ccbbbce8786636b43955165246e0e1823b2bf88b761bea9ed7131a"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 90,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.2842311",
+          "revision": "32b311bdd1ccbbbce8786636b43955165246e0e1823b2bf88b761bea9ed7131a"
+        }
+      ],
+      "encoding_elapsed_ms": 607.943879,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 90,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 48.7731 Answer user DE 2842311 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02696856763213873
+        },
+        {
+          "text": "48.7731",
+          "source": "aimee",
+          "positions": [
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35
+          ],
+          "score": 0.02218117064330727
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            93
+          ],
+          "score": 0.025062544271349907
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            116
+          ],
+          "score": 0.014462059363722801
+        },
+        {
+          "text": "DE",
+          "source": "sequence",
+          "positions": [
+            129
+          ],
+          "score": 0.01475051324814558
+        },
+        {
+          "text": "2842311",
+          "source": "sequence",
+          "positions": [
+            131,
+            132,
+            133,
+            134,
+            135,
+            136,
+            137
+          ],
+          "score": 0.025619257881771773
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            139
+          ],
+          "score": 0.035826195031404495
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            140
+          ],
+          "score": 0.012475412338972092
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            141
+          ],
+          "score": 0.02849988453090191
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.02213592454791069
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            156
+          ],
+          "score": 0.0285147987306118
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            158
+          ],
+          "score": 0.06673682481050491
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 90,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.2842311",
+          "revision": "32b311bdd1ccbbbce8786636b43955165246e0e1823b2bf88b761bea9ed7131a"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00887,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 74
+}

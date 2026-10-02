@@ -1,0 +1,64 @@
+{
+  "status": "passed",
+  "image": "7303c9e9b0785a8574885594aafe87d8f65b54acdf3a3c20a003901be5f40605",
+  "probe_sha256": "fba8bedec92fa5714969026bf9d92983196f51b5653209ed68f2097bbbe09163",
+  "scope": "Run the existing cold/warm activation probe in the exact release image.\n\nRun only after the study server has stopped. This measures rank-zero transfer\nand tensor wrapping with byte equality checks, not model answer latency. A\npassing report means measurements and fidelity checks completed; it does not\nassert that a microsecond cold-activation target was met.\n",
+  "cases": {
+    "three": {
+      "summary": {
+        "os_page_cache_cold": {
+          "n": 20,
+          "median_us": 3463.0015,
+          "p95_us": 3617.885,
+          "min_us": 3418.591,
+          "max_us": 3657.185
+        },
+        "os_page_cache_warm": {
+          "n": 100,
+          "median_us": 1231.508,
+          "p95_us": 1463.482,
+          "min_us": 1143.047,
+          "max_us": 1560.243
+        },
+        "already_device_resident": {
+          "n": 100,
+          "median_us": 0.57,
+          "p95_us": 0.81,
+          "min_us": 0.55,
+          "max_us": 3.56
+        }
+      },
+      "result_sha256": "a5fb7143f6e31351104b147b6142be66afa0b68c740b2fe28a455b5df787ebf5",
+      "exact_segments_verified": 96,
+      "source_bytes": 7198332
+    },
+    "wide": {
+      "summary": {
+        "os_page_cache_cold": {
+          "n": 20,
+          "median_us": 31323.5445,
+          "p95_us": 31708.186,
+          "min_us": 31069.596,
+          "max_us": 34271.964
+        },
+        "os_page_cache_warm": {
+          "n": 100,
+          "median_us": 11018.445,
+          "p95_us": 12843.053,
+          "min_us": 9847.848,
+          "max_us": 13214.149
+        },
+        "already_device_resident": {
+          "n": 100,
+          "median_us": 0.57,
+          "p95_us": 0.75,
+          "min_us": 0.55,
+          "max_us": 10.08
+        }
+      },
+      "result_sha256": "a19696e71cdbb4963469d6890bf749103cf3ac91baab12a396f1fb77d7d0a48b",
+      "exact_segments_verified": 96,
+      "source_bytes": 79484370
+    }
+  }
+}

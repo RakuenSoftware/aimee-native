@@ -1,0 +1,294 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790083075237416283-964",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Mank AT 2772012, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    380,
+    1140,
+    7135,
+    220,
+    17,
+    22,
+    22,
+    17,
+    15,
+    16,
+    17,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    29774,
+    26355,
+    72,
+    14517
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -90,
+  "answer": "Europe/Vienna",
+  "finish_reason": "stop",
+  "elapsed_ms": 3070.8752289999998,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Mank AT 2772012, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Mank (ID 2772012): country code AT; latitude 48.11024; longitude 15.33915; administrative codes 03/315; population 2021; time zone Europe/Vienna. The source record was modified on 2018-07-28.",
+            "id": "geonames.2772012",
+            "key": "place Mank AT 2772012",
+            "kind": "fact",
+            "memory_hash": "1b9f9734b74ec18f78830e209780ad6e868f081d2f1dd8693bd0f6ac2034e392",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.2772012",
+              "revision": "e2057a825a7b4360ef3aed6ac7502b0a2de512e34d86da14eecaf57f79d1f22d"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 90,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.2772012",
+          "revision": "e2057a825a7b4360ef3aed6ac7502b0a2de512e34d86da14eecaf57f79d1f22d"
+        }
+      ],
+      "encoding_elapsed_ms": 600.979554,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 90,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2018-07-28 Answer user According 2772012 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.027266213670372963
+        },
+        {
+          "text": "2018-07-28",
+          "source": "aimee",
+          "positions": [
+            79,
+            80,
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88
+          ],
+          "score": 0.013639482633152511
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            93
+          ],
+          "score": 0.02764175646007061
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            116
+          ],
+          "score": 0.015577239915728569
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.01187703013420105
+        },
+        {
+          "text": "2772012",
+          "source": "sequence",
+          "positions": [
+            130,
+            131,
+            132,
+            133,
+            134,
+            135,
+            136
+          ],
+          "score": 0.026199970627203584
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            138
+          ],
+          "score": 0.03429187834262848
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            139
+          ],
+          "score": 0.012789428234100342
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            140
+          ],
+          "score": 0.028746550902724266
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.022888392210006714
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.030168566852808
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            157
+          ],
+          "score": 0.06661032140254974
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 90,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.2772012",
+          "revision": "e2057a825a7b4360ef3aed6ac7502b0a2de512e34d86da14eecaf57f79d1f22d"
+        }
+      ],
+      "encoding_elapsed_ms": 0.010159999999999999,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 73
+}

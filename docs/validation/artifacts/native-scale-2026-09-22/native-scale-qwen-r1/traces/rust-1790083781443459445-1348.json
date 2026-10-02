@@ -1,0 +1,263 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790083781443459445-1348",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhich TCP port is registered for IANA service sst? Return the number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    22365,
+    25804,
+    2548,
+    369,
+    9393,
+    364,
+    353,
+    37492,
+    2393,
+    274,
+    267,
+    30,
+    3301,
+    279,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    17,
+    21,
+    21
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -30,
+  "answer": "266",
+  "finish_reason": "stop",
+  "elapsed_ms": 2373.761384,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "Which TCP port is registered for IANA service sst? Return the number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service sst has these registered transport/port assignments: TCP port 266; UDP port 266.",
+            "id": "iana.sst",
+            "key": "IANA service sst",
+            "kind": "fact",
+            "memory_hash": "4a55586d2660be3428717cc60bd7544b6113435865d1e2ea1c326673706a4c8f",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.sst",
+              "revision": "37cefaa434948787e168924c914ad45cd1b55300eebd50264d56076ad0c34c46"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 30,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.sst",
+          "revision": "37cefaa434948787e168924c914ad45cd1b55300eebd50264d56076ad0c34c46"
+        }
+      ],
+      "encoding_elapsed_ms": 499.124754,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 30,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user Which TCP is for Return the assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02830291260033846
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            33
+          ],
+          "score": 0.022090911865234375
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            56
+          ],
+          "score": 0.018431931734085083
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            58
+          ],
+          "score": 0.024863962084054947
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            59
+          ],
+          "score": 0.016008572652935982
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            61
+          ],
+          "score": 0.030304884538054466
+        },
+        {
+          "text": "for",
+          "source": "sequence",
+          "positions": [
+            63
+          ],
+          "score": 0.012109058909118176
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            70
+          ],
+          "score": 0.015638533979654312
+        },
+        {
+          "text": "the",
+          "source": "sequence",
+          "positions": [
+            71
+          ],
+          "score": 0.014237834140658379
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.028807630762457848
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            80
+          ],
+          "score": 0.03123391792178154
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            82
+          ],
+          "score": 0.07048259675502777
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 30,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.sst",
+          "revision": "37cefaa434948787e168924c914ad45cd1b55300eebd50264d56076ad0c34c46"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00928,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 57
+}

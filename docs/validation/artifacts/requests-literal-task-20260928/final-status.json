@@ -1,0 +1,60 @@
+{
+  "status": "complete",
+  "started": 1790579470.5971966,
+  "scope": "Post-hoc full-agent regression validation on Requests 2193. Three matched delivery conditions; not a population effect estimate.",
+  "results": {
+    "literal-native": {
+      "instance_id": "psf__requests-2193",
+      "arm": "literal-native",
+      "publication": "0610a0c04493ab6da2d7c7d7214afa1a0d291f60c542734975b532b62e5c7c16",
+      "text_memory_sha256": null,
+      "status": "predicted",
+      "started": 1790579474.698382,
+      "image_inspect": "sha256:3059ae8969ec17d8324ac63f7ab086c16d5152adb0aa863b4e124d59af5c8fd0",
+      "exit_status": "Submitted",
+      "steps": 7,
+      "model_patch": "diff --git a/requests/adapters.py b/requests/adapters.py\nindex 3c1e979f..84d36d66 100644\n--- a/requests/adapters.py\n+++ b/requests/adapters.py\n@@ -20,6 +20,7 @@ from .utils import (DEFAULT_CA_BUNDLE_PATH, get_encoding_from_headers,\n                     prepend_scheme_if_needed, get_auth_from_url)\n from .structures import CaseInsensitiveDict\n from .packages.urllib3.exceptions import ConnectTimeoutError\n+from .packages.urllib3.exceptions import ProtocolError\n from .packages.urllib3.exceptions import HTTPError as _HTTPError\n from .packages.urllib3.exceptions import MaxRetryError\n from .packages.urllib3.exceptions import ProxyError as _ProxyError\n@@ -411,8 +412,15 @@ class HTTPAdapter(BaseAdapter):\n \n         except _ProxyError as e:\n             raise ProxyError(e)\n-\n-        except (_SSLError, _HTTPError) as e:\n+        except (_SSLError, _HTTPError, ProtocolError) as e:\n+            if isinstance(e, _SSLError):\n+                raise SSLError(e, request=request)\n+            elif isinstance(e, ReadTimeoutError):\n+                raise ReadTimeout(e, request=request)\n+            elif isinstance(e, ProtocolError):\n+                raise ConnectionError(e, request=request)\n+            else:\n+                raise ConnectionError(e, request=request)\n             if isinstance(e, _SSLError):\n                 raise SSLError(e, request=request)\n             elif isinstance(e, ReadTimeoutError):\ndiff --git a/requests/models.py b/requests/models.py\nindex 03ff627a..6251e56e 100644\n--- a/requests/models.py\n+++ b/requests/models.py\n@@ -638,6 +638,8 @@ class Response(object):\n                     for chunk in self.raw.stream(chunk_size, decode_content=True):\n                         yield chunk\n                 except ProtocolError as e:\n+                    raise ConnectionError(e)\n+                    raise ConnectionError(e)\n                     raise ChunkedEncodingError(e)\n                 except DecodeError as e:\n                     raise ContentDecodingError(e)\n",
+      "agent_seconds": 46.802263498306274,
+      "grade_timeout_seconds": 3600,
+      "resolved": true,
+      "grade_status": "graded",
+      "finished": 1790581103.5594223
+    },
+    "literal-text": {
+      "instance_id": "psf__requests-2193",
+      "arm": "literal-text",
+      "publication": null,
+      "text_memory_sha256": "25747f2e44dee5a910d3e21b1e3d6b11c280085198a4459d1b76d6f8185cc2ec",
+      "status": "predicted",
+      "started": 1790579474.6981943,
+      "image_inspect": "sha256:3059ae8969ec17d8324ac63f7ab086c16d5152adb0aa863b4e124d59af5c8fd0",
+      "exit_status": "Submitted",
+      "steps": 10,
+      "model_patch": "diff --git a/requests/adapters.py b/requests/adapters.py\nindex 3c1e979f..84d36d66 100644\n--- a/requests/adapters.py\n+++ b/requests/adapters.py\n@@ -20,6 +20,7 @@ from .utils import (DEFAULT_CA_BUNDLE_PATH, get_encoding_from_headers,\n                     prepend_scheme_if_needed, get_auth_from_url)\n from .structures import CaseInsensitiveDict\n from .packages.urllib3.exceptions import ConnectTimeoutError\n+from .packages.urllib3.exceptions import ProtocolError\n from .packages.urllib3.exceptions import HTTPError as _HTTPError\n from .packages.urllib3.exceptions import MaxRetryError\n from .packages.urllib3.exceptions import ProxyError as _ProxyError\n@@ -411,8 +412,15 @@ class HTTPAdapter(BaseAdapter):\n \n         except _ProxyError as e:\n             raise ProxyError(e)\n-\n-        except (_SSLError, _HTTPError) as e:\n+        except (_SSLError, _HTTPError, ProtocolError) as e:\n+            if isinstance(e, _SSLError):\n+                raise SSLError(e, request=request)\n+            elif isinstance(e, ReadTimeoutError):\n+                raise ReadTimeout(e, request=request)\n+            elif isinstance(e, ProtocolError):\n+                raise ConnectionError(e, request=request)\n+            else:\n+                raise ConnectionError(e, request=request)\n             if isinstance(e, _SSLError):\n                 raise SSLError(e, request=request)\n             elif isinstance(e, ReadTimeoutError):\ndiff --git a/requests/models.py b/requests/models.py\nindex 03ff627a..6251e56e 100644\n--- a/requests/models.py\n+++ b/requests/models.py\n@@ -638,6 +638,8 @@ class Response(object):\n                     for chunk in self.raw.stream(chunk_size, decode_content=True):\n                         yield chunk\n                 except ProtocolError as e:\n+                    raise ConnectionError(e)\n+                    raise ConnectionError(e)\n                     raise ChunkedEncodingError(e)\n                 except DecodeError as e:\n                     raise ContentDecodingError(e)\n",
+      "agent_seconds": 59.39591574668884,
+      "grade_timeout_seconds": 3600,
+      "resolved": true,
+      "grade_status": "graded",
+      "finished": 1790581116.6637902
+    },
+    "literal-control": {
+      "instance_id": "psf__requests-2193",
+      "arm": "literal-control",
+      "publication": null,
+      "text_memory_sha256": null,
+      "status": "predicted",
+      "started": 1790581103.5602598,
+      "image_inspect": "sha256:3059ae8969ec17d8324ac63f7ab086c16d5152adb0aa863b4e124d59af5c8fd0",
+      "exit_status": "TimeExceeded",
+      "steps": 37,
+      "model_patch": "diff --git a/requests/exceptions.py b/requests/exceptions.py\nindex 6dbd98a9..886477f0 100644\n--- a/requests/exceptions.py\n+++ b/requests/exceptions.py\n@@ -8,9 +8,19 @@ This module contains the set of Requests' exceptions.\n \n \"\"\"\n from .packages.urllib3.exceptions import HTTPError as BaseHTTPError\n-\n-\n-class RequestException(IOError):\n+from .packages.urllib3.exceptions import ProtocolError as urllib3_ProtocolError\n+from .packages.urllib3.exceptions import ProtocolError as urllib3_ProtocolError\n+from .packages.urllib3.exceptions import ProtocolError as urllib3_ProtocolError\n+from .packages.urllib3.exceptions import ProtocolError as urllib3_ProtocolError\n+from .packages.urllib3.exceptions import ProtocolError as urllib3_ProtocolError\n+from .packages.urllib3.exceptions import ProtocolError as urllib3_ProtocolError\n+from .packages.urllib3.exceptions import ProtocolError as urllib3_ProtocolError\n+from .packages.urllib3.exceptions import ProtocolError as urllib3_ProtocolError\n+from .packages.urllib3.exceptions import ProtocolError as urllib3_ProtocolError\n+from .packages.urllib3.exceptions import ProtocolError as urllib3_ProtocolError\n+\n+\n+class RequestException(IOError, urllib3_ProtocolError):\n     \"\"\"There was an ambiguous exception that occurred while handling your\n     request.\"\"\"\n \n@@ -31,7 +41,7 @@ class HTTPError(RequestException):\n     \"\"\"An HTTP error occurred.\"\"\"\n \n \n-class ConnectionError(RequestException):\n+class ConnectionError(RequestException, urllib3_ProtocolError):\n     \"\"\"A Connection error occurred.\"\"\"\n \n \n",
+      "agent_seconds": 688.0383052825928,
+      "grade_timeout_seconds": 3600,
+      "resolved": false,
+      "grade_status": "graded",
+      "finished": 1790582389.377041
+    }
+  },
+  "updated": 1790582389.3782334,
+  "publication": "0610a0c04493ab6da2d7c7d7214afa1a0d291f60c542734975b532b62e5c7c16"
+}

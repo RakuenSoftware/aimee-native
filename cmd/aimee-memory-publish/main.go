@@ -183,6 +183,14 @@ func (p *publisher) resolve(r *http.Request) (result sparse.Store, err error) {
 		if e != nil {
 			return sparse.Store{}, e
 		}
+		// Validate serving invariants before advertising the new generation. A
+		// structurally valid manifest can still contain unusable retrieval cues.
+		stage = "validate_release"
+		reader, e := p.out.OpenPublished(head)
+		if e != nil {
+			return sparse.Store{}, e
+		}
+		reader.Close()
 		stage = "commit_release"
 		check, _, e := readPolicy(p.policyPath)
 		if e != nil || check.Digest() != release.Digest() || check.Validate(p.recipient, uid, time.Now().UTC()) != nil {

@@ -1,0 +1,296 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790084632409765053-1818",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Sarubetsu JP 2128279, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    13244,
+    386,
+    1367,
+    84,
+    47148,
+    220,
+    17,
+    16,
+    17,
+    23,
+    17,
+    22,
+    24,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    17,
+    20,
+    22,
+    21,
+    21
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -97,
+  "answer": "25766",
+  "finish_reason": "stop",
+  "elapsed_ms": 3605.6054619999995,
+  "memory_encoding_passes": 1,
+  "native_reads": 96,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Sarubetsu JP 2128279, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Sarubetsu (ID 2128279): country code JP; latitude 42.87242; longitude 143.3376; administrative codes 12/7428097; population 25766; time zone Asia/Tokyo. The source record was modified on 2024-12-02.",
+            "id": "geonames.2128279",
+            "key": "place Sarubetsu JP 2128279",
+            "kind": "fact",
+            "memory_hash": "b1aa864730c71fb49387858dfd6a86b9fbf9f19e3535fdc8ccc35ee16c6fc5b6",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.2128279",
+              "revision": "9c726f78368ef2e038386d6e4b2cdfccef3b3689d2967b44aae1ee608f0d2e89"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 97,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.2128279",
+          "revision": "9c726f78368ef2e038386d6e4b2cdfccef3b3689d2967b44aae1ee608f0d2e89"
+        }
+      ],
+      "encoding_elapsed_ms": 520.831957,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 97,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2024-12-02 Answer user 2128279 what is its population assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.024397464003413916
+        },
+        {
+          "text": "2024-12-02",
+          "source": "aimee",
+          "positions": [
+            86,
+            87,
+            88,
+            89,
+            90,
+            91,
+            92,
+            93,
+            94,
+            95
+          ],
+          "score": 0.012287463534448761
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            100
+          ],
+          "score": 0.026469498872756958
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            123
+          ],
+          "score": 0.014498716220259666
+        },
+        {
+          "text": "2128279",
+          "source": "sequence",
+          "positions": [
+            139,
+            140,
+            141,
+            142,
+            143,
+            144,
+            145
+          ],
+          "score": 0.015492987353354692
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            147
+          ],
+          "score": 0.04060400649905205
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            148
+          ],
+          "score": 0.014997503720223904
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            149
+          ],
+          "score": 0.03495105728507042
+        },
+        {
+          "text": "population",
+          "source": "sequence",
+          "positions": [
+            150
+          ],
+          "score": 0.013048022985458374
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.021947933360934258
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            163
+          ],
+          "score": 0.029586777091026306
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            165
+          ],
+          "score": 0.06425741314888
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 97,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.2128279",
+          "revision": "9c726f78368ef2e038386d6e4b2cdfccef3b3689d2967b44aae1ee608f0d2e89"
+        }
+      ],
+      "encoding_elapsed_ms": 0.01089,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 75
+}

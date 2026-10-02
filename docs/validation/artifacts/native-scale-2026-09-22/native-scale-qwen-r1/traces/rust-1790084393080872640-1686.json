@@ -1,0 +1,288 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790084393080872640-1686",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Rambangaru ID 8445529, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    423,
+    242357,
+    29160,
+    2937,
+    220,
+    23,
+    19,
+    19,
+    20,
+    20,
+    17,
+    24,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    37186,
+    9964,
+    570,
+    162197
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -87,
+  "answer": "Asia/Makassar",
+  "finish_reason": "stop",
+  "elapsed_ms": 3108.7102569999997,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Rambangaru ID 8445529, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Rambangaru (ID 8445529): country code ID; latitude -9.4499; longitude 120.0524; administrative codes 18/5302; population 0; time zone Asia/Makassar. The source record was modified on 2022-12-31.",
+            "id": "geonames.8445529",
+            "key": "place Rambangaru ID 8445529",
+            "kind": "fact",
+            "memory_hash": "a3900eca2055a7a8d70381937383cded2fca073c176e99fb4fed5d96adc31a9d",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.8445529",
+              "revision": "8b3264adba17241e74ec5218d15e76c3dd08639633519687f795c0b41270d5b7"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 87,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.8445529",
+          "revision": "8b3264adba17241e74ec5218d15e76c3dd08639633519687f795c0b41270d5b7"
+        }
+      ],
+      "encoding_elapsed_ms": 603.5057489999999,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 87,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user According Rambangaru 8445529 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02419566549360752
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            90
+          ],
+          "score": 0.025440922006964684
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            113
+          ],
+          "score": 0.01415640115737915
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            115
+          ],
+          "score": 0.01129413302987814
+        },
+        {
+          "text": "Rambangaru",
+          "source": "sequence",
+          "positions": [
+            123,
+            124,
+            125
+          ],
+          "score": 0.01447311497759074
+        },
+        {
+          "text": "8445529",
+          "source": "sequence",
+          "positions": [
+            128,
+            129,
+            130,
+            131,
+            132,
+            133,
+            134
+          ],
+          "score": 0.01575291226617992
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            136
+          ],
+          "score": 0.03669098764657974
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            137
+          ],
+          "score": 0.01275816559791565
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            138
+          ],
+          "score": 0.030564796179533005
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            151
+          ],
+          "score": 0.020674027502536774
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.029391204938292503
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.06434650719165802
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 87,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.8445529",
+          "revision": "8b3264adba17241e74ec5218d15e76c3dd08639633519687f795c0b41270d5b7"
+        }
+      ],
+      "encoding_elapsed_ms": 0.009850000000000001,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 74
+}

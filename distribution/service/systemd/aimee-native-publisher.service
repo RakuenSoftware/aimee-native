@@ -1,0 +1,28 @@
+[Unit]
+Description=Aimee scoped native-memory publication
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=aimee
+Group=aimee
+RuntimeDirectory=aimee-native-publication
+RuntimeDirectoryMode=0700
+StateDirectory=aimee-native
+StateDirectoryMode=0700
+UMask=0077
+LoadCredentialEncrypted=database:/etc/aimee-native/database.cred
+ExecStart=/usr/bin/python3 /opt/aimee-native/service/credential_exec.py /opt/aimee-native/bin/aimee-memory-publish --socket /run/aimee-native-publication/source.sock --release-policy /etc/aimee-native/release.json --recipient native-preview --base /var/lib/aimee-native/base --root /var/lib/aimee-native/history --database-server-name aimee-store-db --read-authority aimee-native-preview --interval 1s
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/aimee-native /run/aimee-native-publication
+TimeoutStopSec=15
+KillMode=control-group
+
+[Install]
+WantedBy=multi-user.target

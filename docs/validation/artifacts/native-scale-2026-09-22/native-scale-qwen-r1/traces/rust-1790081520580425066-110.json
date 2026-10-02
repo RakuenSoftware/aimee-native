@@ -1,0 +1,271 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790081520580425066-110",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhich TCP port is registered for IANA service msft-dpm-cert? Return the number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    22365,
+    25804,
+    2548,
+    369,
+    9393,
+    364,
+    353,
+    37492,
+    2393,
+    9537,
+    703,
+    1676,
+    5022,
+    58977,
+    30,
+    3301,
+    279,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    21,
+    15,
+    22,
+    21
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -27,
+  "answer": "6076",
+  "finish_reason": "stop",
+  "elapsed_ms": 2796.3240140000003,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "Which TCP port is registered for IANA service msft-dpm-cert? Return the number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service msft-dpm-cert has these registered transport/port assignments: TCP port 6076.",
+            "id": "iana.msft-dpm-cert",
+            "key": "IANA service msft-dpm-cert",
+            "kind": "fact",
+            "memory_hash": "6ecd45b377ec613f08022af228c606baf618f3140382f90a1aba61f737e84e71",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.msft-dpm-cert",
+              "revision": "d28c0c40d2a280bbf303f33e341b0f30664b5a991482254dfd168eda19f70aee"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 27,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.msft-dpm-cert",
+          "revision": "d28c0c40d2a280bbf303f33e341b0f30664b5a991482254dfd168eda19f70aee"
+        }
+      ],
+      "encoding_elapsed_ms": 514.087021,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 27,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user Which is for msft-dpm-cert Return the assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02683315332978964
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            30
+          ],
+          "score": 0.02450779639184475
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            53
+          ],
+          "score": 0.018705148249864578
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            55
+          ],
+          "score": 0.023391230031847954
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            58
+          ],
+          "score": 0.030684858560562134
+        },
+        {
+          "text": "for",
+          "source": "sequence",
+          "positions": [
+            60
+          ],
+          "score": 0.012941180728375912
+        },
+        {
+          "text": "msft-dpm-cert",
+          "source": "sequence",
+          "positions": [
+            64,
+            65,
+            66,
+            67,
+            68
+          ],
+          "score": 0.01511268992908299
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            70
+          ],
+          "score": 0.016849074512720108
+        },
+        {
+          "text": "the",
+          "source": "sequence",
+          "positions": [
+            71
+          ],
+          "score": 0.014549024403095245
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.028539352118968964
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            80
+          ],
+          "score": 0.03153763711452484
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            82
+          ],
+          "score": 0.07091760635375977
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 27,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.msft-dpm-cert",
+          "revision": "d28c0c40d2a280bbf303f33e341b0f30664b5a991482254dfd168eda19f70aee"
+        }
+      ],
+      "encoding_elapsed_ms": 0.007700000000000001,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 61
+}

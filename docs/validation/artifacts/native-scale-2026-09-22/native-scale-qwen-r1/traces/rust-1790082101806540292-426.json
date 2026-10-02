@@ -1,0 +1,301 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790082101806540292-426",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Lowry Crossing US 4708236, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    11698,
+    856,
+    62796,
+    2201,
+    220,
+    19,
+    22,
+    15,
+    23,
+    17,
+    18,
+    21,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    30014,
+    14,
+    44635
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -88,
+  "answer": "America/Chicago",
+  "finish_reason": "stop",
+  "elapsed_ms": 2736.0086739999997,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Lowry Crossing US 4708236, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Lowry Crossing (ID 4708236): country code US; latitude 33.15484; longitude -96.54721; administrative codes TX/085; population 1780; time zone America/Chicago. The source record was modified on 2026-09-17.",
+            "id": "geonames.4708236",
+            "key": "place Lowry Crossing US 4708236",
+            "kind": "fact",
+            "memory_hash": "53b165c35b168bc299e33afc8a9c9dbbf10896b1d9a518ed7c235539566ee202",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.4708236",
+              "revision": "8d8ed8a79d6b0c58769630e187371f637168d822d74dbb8ecfb283fa26a8e2d1"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 88,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.4708236",
+          "revision": "8d8ed8a79d6b0c58769630e187371f637168d822d74dbb8ecfb283fa26a8e2d1"
+        }
+      ],
+      "encoding_elapsed_ms": 587.765003,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 88,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 96.54721 2026-09-17 Answer user 4708236 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.024284271523356438
+        },
+        {
+          "text": "96.54721",
+          "source": "aimee",
+          "positions": [
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47
+          ],
+          "score": 0.012450003297999501
+        },
+        {
+          "text": "2026-09-17",
+          "source": "aimee",
+          "positions": [
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84,
+            85,
+            86
+          ],
+          "score": 0.017915339311002754
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            91
+          ],
+          "score": 0.025895005092024803
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            114
+          ],
+          "score": 0.01383148692548275
+        },
+        {
+          "text": "4708236",
+          "source": "sequence",
+          "positions": [
+            129,
+            130,
+            131,
+            132,
+            133,
+            134,
+            135
+          ],
+          "score": 0.017423750134184957
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            137
+          ],
+          "score": 0.03702192381024361
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            138
+          ],
+          "score": 0.013493036851286888
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            139
+          ],
+          "score": 0.03249499201774597
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.02149045094847679
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.029599374160170555
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            156
+          ],
+          "score": 0.06582440435886383
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 88,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.4708236",
+          "revision": "8d8ed8a79d6b0c58769630e187371f637168d822d74dbb8ecfb283fa26a8e2d1"
+        }
+      ],
+      "encoding_elapsed_ms": 0.012150000000000001,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 73
+}

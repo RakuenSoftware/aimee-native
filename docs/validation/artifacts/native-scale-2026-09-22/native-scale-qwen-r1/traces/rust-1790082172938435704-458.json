@@ -1,0 +1,300 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790082172938435704-458",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhat orbital period in days does the NASA archive give for planet WASP-132 b? Return the number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    3710,
+    62409,
+    4031,
+    303,
+    2756,
+    1503,
+    279,
+    20774,
+    17593,
+    2873,
+    364,
+    11247,
+    36527,
+    47,
+    12,
+    16,
+    18,
+    17,
+    292,
+    30,
+    3301,
+    279,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    22,
+    13,
+    16,
+    18,
+    18,
+    20,
+    16,
+    21,
+    19
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -110,
+  "answer": "7.1335164",
+  "finish_reason": "stop",
+  "elapsed_ms": 5524.078246,
+  "memory_encoding_passes": 1,
+  "native_reads": 160,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "What orbital period in days does the NASA archive give for planet WASP-132 b? Return the number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "For planet WASP-132 b, the NASA Exoplanet Archive composite table lists: host star WASP-132; discovery year 2016; discovery method Transit; discovery facility SuperWASP-South; orbital period 7.13351640000 days; reported planet radius 10.09929161 Earth radii; reported system distance 122.91000000 parsecs.",
+            "id": "nasa.WASP-132 b",
+            "key": "planet WASP-132 b",
+            "kind": "fact",
+            "memory_hash": "216313625bc09dc8c3b5c4725c37de4118635b6ac67548aa66eb4f7e088dd922",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "nasa.WASP-132 b",
+              "revision": "4094bce29c5e1d6445cf0d732614eeaa2fad749bb618a116cf9b06c66a35568a"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 110,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.WASP-132 b",
+          "revision": "4094bce29c5e1d6445cf0d732614eeaa2fad749bb618a116cf9b06c66a35568a"
+        }
+      ],
+      "encoding_elapsed_ms": 515.744423,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 110,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 7.13351640000 122.91000000 Answer user What does give Return assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.023563049733638763
+        },
+        {
+          "text": "7.13351640000",
+          "source": "aimee",
+          "positions": [
+            57,
+            58,
+            59,
+            60,
+            61,
+            62,
+            63,
+            64,
+            65,
+            66,
+            67,
+            68,
+            69
+          ],
+          "score": 0.016209438632358797
+        },
+        {
+          "text": "122.91000000",
+          "source": "aimee",
+          "positions": [
+            95,
+            96,
+            97,
+            98,
+            99,
+            100,
+            101,
+            102,
+            103,
+            104,
+            105,
+            106
+          ],
+          "score": 0.016839296542457305
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            113
+          ],
+          "score": 0.025078196078538895
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            136
+          ],
+          "score": 0.017780132591724396
+        },
+        {
+          "text": "What",
+          "source": "sequence",
+          "positions": [
+            138
+          ],
+          "score": 0.02012208104133606
+        },
+        {
+          "text": "does",
+          "source": "sequence",
+          "positions": [
+            143
+          ],
+          "score": 0.020836088806390762
+        },
+        {
+          "text": "give",
+          "source": "sequence",
+          "positions": [
+            147
+          ],
+          "score": 0.0191037580370903
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            158
+          ],
+          "score": 0.017089301720261574
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            166
+          ],
+          "score": 0.026416700333356857
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            168
+          ],
+          "score": 0.030618026852607727
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            170
+          ],
+          "score": 0.06969267129898071
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 110,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.WASP-132 b",
+          "revision": "4094bce29c5e1d6445cf0d732614eeaa2fad749bb618a116cf9b06c66a35568a"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00915,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 71
+}

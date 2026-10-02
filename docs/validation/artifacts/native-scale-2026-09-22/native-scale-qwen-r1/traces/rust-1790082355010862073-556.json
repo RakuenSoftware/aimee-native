@@ -1,0 +1,263 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790082355010862073-556",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhat capital city does the World Bank list for economy Mexico? Return only the city name.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    3710,
+    6511,
+    3177,
+    1503,
+    279,
+    4196,
+    8285,
+    1103,
+    364,
+    8322,
+    11920,
+    30,
+    3301,
+    1132,
+    279,
+    3177,
+    803,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    66502,
+    4170
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -40,
+  "answer": "Mexico City",
+  "finish_reason": "stop",
+  "elapsed_ms": 1923.516926,
+  "memory_encoding_passes": 1,
+  "native_reads": 48,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "What capital city does the World Bank list for economy Mexico? Return only the city name.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "The World Bank country endpoint lists economy Mexico: code MEX; two-letter code MX; capital city Mexico City; region Latin America & Caribbean; income group Upper middle income.",
+            "id": "worldbank.MEX",
+            "key": "economy Mexico",
+            "kind": "fact",
+            "memory_hash": "bb5e1b4e7a50fcf045f62661ba1b1704e0d12ece29dae5ffd2d14b9c4bf22b22",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "worldbank.MEX",
+              "revision": "ac819861b6ad3a9f6bd28f331674a588bff6653a9e09df7aed8cc93214988ff1"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 40,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "worldbank.MEX",
+          "revision": "ac819861b6ad3a9f6bd28f331674a588bff6653a9e09df7aed8cc93214988ff1"
+        }
+      ],
+      "encoding_elapsed_ms": 495.439647,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 40,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Bank Answer user What does list for Mexico assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.028900926001369953
+        },
+        {
+          "text": "Bank",
+          "source": "aimee",
+          "positions": [
+            7
+          ],
+          "score": 0.011719661764800549
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            43
+          ],
+          "score": 0.019549790769815445
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            66
+          ],
+          "score": 0.017284154891967773
+        },
+        {
+          "text": "What",
+          "source": "sequence",
+          "positions": [
+            68
+          ],
+          "score": 0.02324814721941948
+        },
+        {
+          "text": "does",
+          "source": "sequence",
+          "positions": [
+            71
+          ],
+          "score": 0.029588904231786728
+        },
+        {
+          "text": "list",
+          "source": "sequence",
+          "positions": [
+            75
+          ],
+          "score": 0.012878197245299816
+        },
+        {
+          "text": "for",
+          "source": "sequence",
+          "positions": [
+            76
+          ],
+          "score": 0.013287807814776897
+        },
+        {
+          "text": "Mexico",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.018775682896375656
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            89
+          ],
+          "score": 0.027358097955584526
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            91
+          ],
+          "score": 0.029883064329624176
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            93
+          ],
+          "score": 0.07033383101224899
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 40,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "worldbank.MEX",
+          "revision": "ac819861b6ad3a9f6bd28f331674a588bff6653a9e09df7aed8cc93214988ff1"
+        }
+      ],
+      "encoding_elapsed_ms": 0.0096,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 57
+}

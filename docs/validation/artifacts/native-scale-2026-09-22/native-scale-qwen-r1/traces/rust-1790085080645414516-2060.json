@@ -1,0 +1,264 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790085080645414516-2060",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhat capital city does the World Bank list for economy Cameroon? Return only the city name.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    3710,
+    6511,
+    3177,
+    1503,
+    279,
+    4196,
+    8285,
+    1103,
+    364,
+    8322,
+    90763,
+    30,
+    3301,
+    1132,
+    279,
+    3177,
+    803,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    60775,
+    770,
+    68
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -40,
+  "answer": "Yaounde",
+  "finish_reason": "stop",
+  "elapsed_ms": 2394.429807,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "What capital city does the World Bank list for economy Cameroon? Return only the city name.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "The World Bank country endpoint lists economy Cameroon: code CMR; two-letter code CM; capital city Yaounde; region Sub-Saharan Africa; income group Lower middle income.",
+            "id": "worldbank.CMR",
+            "key": "economy Cameroon",
+            "kind": "fact",
+            "memory_hash": "15b785b7757a01127a68fb3bce20bdab4543e4d5054362f5309f0d63645e1a39",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "worldbank.CMR",
+              "revision": "9dafe1b3e3d675bf4874b4d9988bb986fa0f0e7ec8f94d0fe8c388061cd8d780"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 40,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "worldbank.CMR",
+          "revision": "9dafe1b3e3d675bf4874b4d9988bb986fa0f0e7ec8f94d0fe8c388061cd8d780"
+        }
+      ],
+      "encoding_elapsed_ms": 497.688377,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 40,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user What does list for Cameroon Return assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.028091339394450188
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            43
+          ],
+          "score": 0.01903161033987999
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            66
+          ],
+          "score": 0.017120912671089172
+        },
+        {
+          "text": "What",
+          "source": "sequence",
+          "positions": [
+            68
+          ],
+          "score": 0.022647321224212646
+        },
+        {
+          "text": "does",
+          "source": "sequence",
+          "positions": [
+            71
+          ],
+          "score": 0.029097920283675194
+        },
+        {
+          "text": "list",
+          "source": "sequence",
+          "positions": [
+            75
+          ],
+          "score": 0.012384540401399136
+        },
+        {
+          "text": "for",
+          "source": "sequence",
+          "positions": [
+            76
+          ],
+          "score": 0.013108469545841217
+        },
+        {
+          "text": "Cameroon",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.015268023125827312
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            80
+          ],
+          "score": 0.011942295357584953
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            89
+          ],
+          "score": 0.02755109965801239
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            91
+          ],
+          "score": 0.029025521129369736
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            93
+          ],
+          "score": 0.07164786756038666
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 40,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "worldbank.CMR",
+          "revision": "9dafe1b3e3d675bf4874b4d9988bb986fa0f0e7ec8f94d0fe8c388061cd8d780"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00462,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 58
+}

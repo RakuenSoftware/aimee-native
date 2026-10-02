@@ -1,0 +1,295 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790085584020422771-2340",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Solec Kujawski PL 3085172, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    326,
+    12108,
+    710,
+    9348,
+    654,
+    31466,
+    10009,
+    220,
+    18,
+    15,
+    23,
+    20,
+    16,
+    22,
+    17,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    16,
+    20,
+    16,
+    17,
+    20
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -96,
+  "answer": "15125",
+  "finish_reason": "stop",
+  "elapsed_ms": 3357.587341,
+  "memory_encoding_passes": 1,
+  "native_reads": 96,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Solec Kujawski PL 3085172, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Solec Kujawski (ID 3085172): country code PL; latitude 53.08371; longitude 18.22572; administrative codes 73/0403; population 15125; time zone Europe/Warsaw. The source record was modified on 2010-09-13.",
+            "id": "geonames.3085172",
+            "key": "place Solec Kujawski PL 3085172",
+            "kind": "fact",
+            "memory_hash": "4164a9023fdd256d12debdb0af45f32506c352470e8090b5d2e0a2bcb141764b",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.3085172",
+              "revision": "0bd7415cbabe9d3702c206589e81622f5c6581728e42f923e505ca09b9b4cf09"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 96,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3085172",
+          "revision": "0bd7415cbabe9d3702c206589e81622f5c6581728e42f923e505ca09b9b4cf09"
+        }
+      ],
+      "encoding_elapsed_ms": 512.5106780000001,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 96,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Kujawski Answer user Kujawski 3085172 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.024313587695360184
+        },
+        {
+          "text": "Kujawski",
+          "source": "aimee",
+          "positions": [
+            11,
+            12,
+            13,
+            14
+          ],
+          "score": 0.014182363403961062
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            99
+          ],
+          "score": 0.024229733273386955
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            122
+          ],
+          "score": 0.013295303098857403
+        },
+        {
+          "text": "Kujawski",
+          "source": "sequence",
+          "positions": [
+            134,
+            135,
+            136,
+            137
+          ],
+          "score": 0.0155001807725057
+        },
+        {
+          "text": "3085172",
+          "source": "sequence",
+          "positions": [
+            140,
+            141,
+            142,
+            143,
+            144,
+            145,
+            146
+          ],
+          "score": 0.02238348638638854
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            148
+          ],
+          "score": 0.03908882290124893
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            149
+          ],
+          "score": 0.013980790972709656
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            150
+          ],
+          "score": 0.0325235053896904
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            162
+          ],
+          "score": 0.022466275840997696
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            164
+          ],
+          "score": 0.031574755907058716
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            166
+          ],
+          "score": 0.06614325940608978
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 96,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3085172",
+          "revision": "0bd7415cbabe9d3702c206589e81622f5c6581728e42f923e505ca09b9b4cf09"
+        }
+      ],
+      "encoding_elapsed_ms": 0.01322,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 77
+}

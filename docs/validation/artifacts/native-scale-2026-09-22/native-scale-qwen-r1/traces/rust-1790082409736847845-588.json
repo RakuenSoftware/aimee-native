@@ -1,0 +1,302 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790082409736847845-588",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place São José do Bonfim BR 3388439, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    46101,
+    41839,
+    635,
+    13093,
+    244288,
+    18235,
+    220,
+    18,
+    18,
+    23,
+    23,
+    19,
+    18,
+    24,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    30014,
+    11965,
+    366,
+    76437
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -95,
+  "answer": "America/Fortaleza",
+  "finish_reason": "stop",
+  "elapsed_ms": 3151.390444,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place São José do Bonfim BR 3388439, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place São José do Bonfim (ID 3388439): country code BR; latitude -7.1625; longitude -37.30889; administrative codes 17/2514602; population 3242; time zone America/Fortaleza. The source record was modified on 2025-06-09.",
+            "id": "geonames.3388439",
+            "key": "place São José do Bonfim BR 3388439",
+            "kind": "fact",
+            "memory_hash": "fb4c37e439e14356b1438db5a2fc06b1eca1fa6b2615b57f817341aba788cbe7",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.3388439",
+              "revision": "2462cfa1abad280c534ecc7994310c1979e95e3334b7e95d2b65115536c0d5dc"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 95,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3388439",
+          "revision": "2462cfa1abad280c534ecc7994310c1979e95e3334b7e95d2b65115536c0d5dc"
+        }
+      ],
+      "encoding_elapsed_ms": 611.461757,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 95,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 7.1625 2025-06-09 Answer user 3388439 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.024238958954811096
+        },
+        {
+          "text": "7.1625",
+          "source": "aimee",
+          "positions": [
+            31,
+            32,
+            33,
+            34,
+            35,
+            36
+          ],
+          "score": 0.011518539511598647
+        },
+        {
+          "text": "2025-06-09",
+          "source": "aimee",
+          "positions": [
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90,
+            91,
+            92,
+            93
+          ],
+          "score": 0.01882089982245816
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            98
+          ],
+          "score": 0.023256510496139526
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            121
+          ],
+          "score": 0.013244478031992912
+        },
+        {
+          "text": "3388439",
+          "source": "sequence",
+          "positions": [
+            138,
+            139,
+            140,
+            141,
+            142,
+            143,
+            144
+          ],
+          "score": 0.01643534901086241
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            146
+          ],
+          "score": 0.03739467263221741
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            147
+          ],
+          "score": 0.012872396036982536
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            148
+          ],
+          "score": 0.029945243149995804
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.021244369447231293
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            163
+          ],
+          "score": 0.028260625898838043
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            165
+          ],
+          "score": 0.06385254859924316
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 95,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3388439",
+          "revision": "2462cfa1abad280c534ecc7994310c1979e95e3334b7e95d2b65115536c0d5dc"
+        }
+      ],
+      "encoding_elapsed_ms": 0.010171,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 76
+}

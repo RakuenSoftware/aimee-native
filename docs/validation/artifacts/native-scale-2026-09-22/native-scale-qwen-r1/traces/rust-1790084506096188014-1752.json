@@ -1,0 +1,269 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790084506096188014-1752",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhich TCP port is registered for IANA service brlp-1? Return the number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    22365,
+    25804,
+    2548,
+    369,
+    9393,
+    364,
+    353,
+    37492,
+    2393,
+    1363,
+    13153,
+    12,
+    16,
+    30,
+    3301,
+    279,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    19,
+    16,
+    15,
+    17
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -34,
+  "answer": "4102",
+  "finish_reason": "stop",
+  "elapsed_ms": 3006.7504679999997,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "Which TCP port is registered for IANA service brlp-1? Return the number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service brlp-1 has these registered transport/port assignments: TCP port 4102; UDP port 4102.",
+            "id": "iana.brlp-1",
+            "key": "IANA service brlp-1",
+            "kind": "fact",
+            "memory_hash": "16ad133072ce0704cafcca30222acc18a5cf1197c1df12a41adc0a8c4a995583",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.brlp-1",
+              "revision": "b0291eb4f54f36faf58cc958654be75564d149f5ac9a46c9a881102bea11a6de"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 34,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.brlp-1",
+          "revision": "b0291eb4f54f36faf58cc958654be75564d149f5ac9a46c9a881102bea11a6de"
+        }
+      ],
+      "encoding_elapsed_ms": 496.715143,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 34,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user Which TCP is brlp-1 Return the assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.03249163459986448
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            37
+          ],
+          "score": 0.02368163876235485
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            60
+          ],
+          "score": 0.019862022250890732
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            62
+          ],
+          "score": 0.02387811802327633
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            63
+          ],
+          "score": 0.014879917725920677
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            65
+          ],
+          "score": 0.03049677610397339
+        },
+        {
+          "text": "brlp-1",
+          "source": "sequence",
+          "positions": [
+            71,
+            72,
+            73,
+            74
+          ],
+          "score": 0.021631384268403053
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            76
+          ],
+          "score": 0.01517627015709877
+        },
+        {
+          "text": "the",
+          "source": "sequence",
+          "positions": [
+            77
+          ],
+          "score": 0.014058961533010006
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            84
+          ],
+          "score": 0.02750859037041664
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            86
+          ],
+          "score": 0.03129521757364273
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            88
+          ],
+          "score": 0.0695260614156723
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 34,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.brlp-1",
+          "revision": "b0291eb4f54f36faf58cc958654be75564d149f5ac9a46c9a881102bea11a6de"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00899,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 60
+}

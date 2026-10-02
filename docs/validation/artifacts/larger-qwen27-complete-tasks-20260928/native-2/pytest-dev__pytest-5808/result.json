@@ -1,0 +1,17 @@
+{
+  "instance_id": "pytest-dev__pytest-5808",
+  "arm": "native-2",
+  "publication": "dd07ecf4713875a05bcbcbd71daa0c910959d30a67478cb3c8894dc62a1a6cee",
+  "text_memory_sha256": null,
+  "status": "predicted",
+  "started": 1790605040.4664974,
+  "image_inspect": "sha256:06abb57000eaae4839a1cfc74446619d2b55b7b292e0c1e130d4964529a10497",
+  "exit_status": "Submitted",
+  "steps": 8,
+  "model_patch": "diff --git a/src/_pytest/pastebin.py b/src/_pytest/pastebin.py\nindex 38ff97f2d..77b4e2621 100644\n--- a/src/_pytest/pastebin.py\n+++ b/src/_pytest/pastebin.py\n@@ -65,7 +65,7 @@ def create_new_paste(contents):\n     from urllib.request import urlopen\n     from urllib.parse import urlencode\n \n-    params = {\"code\": contents, \"lexer\": \"python3\", \"expiry\": \"1week\"}\n+    params = {\"code\": contents, \"lexer\": \"text\", \"expiry\": \"1week\"}\n     url = \"https://bpaste.net\"\n     try:\n         response = (\ndiff --git a/testing/test_pastebin.py b/testing/test_pastebin.py\nindex a1bc0622e..86a42f9e8 100644\n--- a/testing/test_pastebin.py\n+++ b/testing/test_pastebin.py\n@@ -165,7 +165,7 @@ class TestPaste:\n         assert len(mocked_urlopen) == 1\n         url, data = mocked_urlopen[0]\n         assert type(data) is bytes\n-        lexer = \"python3\"\n+        lexer = \"text\"\n         assert url == \"https://bpaste.net\"\n         assert \"lexer=%s\" % lexer in data.decode()\n         assert \"code=full-paste-contents\" in data.decode()\n",
+  "agent_seconds": 62.397626876831055,
+  "grade_timeout_seconds": 300,
+  "resolved": true,
+  "grade_status": "graded",
+  "finished": 1790605137.3554573
+}

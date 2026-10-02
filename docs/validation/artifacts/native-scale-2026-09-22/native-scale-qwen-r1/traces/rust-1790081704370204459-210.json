@@ -1,0 +1,273 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790081704370204459-210",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhich TCP port is registered for IANA service etb4j? Return the number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    22365,
+    25804,
+    2548,
+    369,
+    9393,
+    364,
+    353,
+    37492,
+    2393,
+    1778,
+    65,
+    19,
+    73,
+    30,
+    3301,
+    279,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    16,
+    21,
+    18,
+    15,
+    24
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -36,
+  "answer": "16309",
+  "finish_reason": "stop",
+  "elapsed_ms": 3268.389333,
+  "memory_encoding_passes": 1,
+  "native_reads": 96,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "Which TCP port is registered for IANA service etb4j? Return the number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service etb4j has these registered transport/port assignments: TCP port 16309; UDP port 16309.",
+            "id": "iana.etb4j",
+            "key": "IANA service etb4j",
+            "kind": "fact",
+            "memory_hash": "59a7dbc7655738d6e95fe80c1e19f4baeec5d2d0be39f7f4254944f83c55af69",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.etb4j",
+              "revision": "3b1111334ac05546939daa239f9ac38a35e3e16cc9b04b55db5c7988628fe3a4"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 36,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.etb4j",
+          "revision": "3b1111334ac05546939daa239f9ac38a35e3e16cc9b04b55db5c7988628fe3a4"
+        }
+      ],
+      "encoding_elapsed_ms": 500.86500099999995,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 36,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative etb4j Answer user Which is etb4j Return the assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.03221867373213172
+        },
+        {
+          "text": "etb4j",
+          "source": "aimee",
+          "positions": [
+            7,
+            8,
+            9,
+            10
+          ],
+          "score": 0.014231697423383594
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            39
+          ],
+          "score": 0.022111017256975174
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            62
+          ],
+          "score": 0.01990072801709175
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            64
+          ],
+          "score": 0.023356109857559204
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            67
+          ],
+          "score": 0.030464552342891693
+        },
+        {
+          "text": "etb4j",
+          "source": "sequence",
+          "positions": [
+            73,
+            74,
+            75,
+            76
+          ],
+          "score": 0.020331324310973287
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.016578730195760727
+        },
+        {
+          "text": "the",
+          "source": "sequence",
+          "positions": [
+            79
+          ],
+          "score": 0.015488730743527412
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            86
+          ],
+          "score": 0.02825739048421383
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            88
+          ],
+          "score": 0.031915582716464996
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            90
+          ],
+          "score": 0.06795268505811691
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 36,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.etb4j",
+          "revision": "3b1111334ac05546939daa239f9ac38a35e3e16cc9b04b55db5c7988628fe3a4"
+        }
+      ],
+      "encoding_elapsed_ms": 0.0062,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 61
+}

@@ -1,0 +1,11 @@
+{
+  "initial_failure": "Python 3.13 strict certificate verification rejected the release CA because keyUsage was missing",
+  "fix": "Reissued the CA certificate using the same private key and subject with critical CA constraints and keyCertSign/cRLSign; preserved signing authority, rebuilt embedded-CA launchers and re-signed the bootstrap binary",
+  "checks": [
+    "openssl verify -x509_strict against release leaf passed",
+    "Python 3.13 default strict HTTPS verification passed",
+    "Ed25519 detached bootstrap signature passed",
+    "launcher unit and CLI integration tests passed after rebuild"
+  ],
+  "scope": "The packaged runtime artifact set and signed manifests did not change"
+}

@@ -1,0 +1,55 @@
+{
+  "status": "collected",
+  "scope": "Collect exact publication source files and check DSC identity/SHA-256 entries.\n\nDSC files are retrieved over HTTPS from recorded Launchpad publication URLs.\nTheir OpenPGP signatures are retained, not verified by this collector. No source\nis unpacked or executed; this is not full redistribution approval.\n",
+  "plan_sha256": "fe4c102d4ddff8103e34c1e12a840f3fd81814f6eae825a3024d06d40d3e5b00",
+  "results": [
+    {
+      "source": "curl",
+      "version": "7.81.0-1ubuntu1.27",
+      "publication": "https://api.launchpad.net/1.0/ubuntu/+archive/primary/+sourcepub/18697846",
+      "files": [
+        {
+          "name": "curl_7.81.0-1ubuntu1.27.dsc",
+          "bytes": 3183,
+          "sha256": "95ca0621f44b81f429291d0b43eed475950aa241917bd3d7b8cc87c5d06d4835",
+          "url": "https://snapshot.ubuntu.com/ubuntu/20260923T000000Z/pool/main/c/curl/curl_7.81.0-1ubuntu1.27.dsc",
+          "prior_errors": [
+            {
+              "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/curl/7.81.0-1ubuntu1.27/curl_7.81.0-1ubuntu1.27.dsc",
+              "error": "<HTTPError 503: 'Service Unavailable'>"
+            }
+          ],
+          "verification": "HTTPS publication retrieval; signature unverified"
+        },
+        {
+          "name": "curl_7.81.0.orig.tar.gz",
+          "bytes": 4188040,
+          "sha256": "ac8e1087711084548d788ef18b9b732c8de887457b81f616fc681d1044b32f98",
+          "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/curl/7.81.0-1ubuntu1.27/curl_7.81.0.orig.tar.gz",
+          "prior_errors": [],
+          "verification": "matched DSC SHA-256"
+        },
+        {
+          "name": "curl_7.81.0.orig.tar.gz.asc",
+          "bytes": 488,
+          "sha256": "e0f0053bef0afd5c8bed7973f94f92a731c91b9152d64ce9c55fd3bb633aa735",
+          "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/curl/7.81.0-1ubuntu1.27/curl_7.81.0.orig.tar.gz.asc",
+          "prior_errors": [],
+          "verification": "matched DSC SHA-256"
+        },
+        {
+          "name": "curl_7.81.0-1ubuntu1.27.debian.tar.xz",
+          "bytes": 104392,
+          "sha256": "a4e2c393087c7aa6c59f042d75c2b4fd9c02fec92d15afae5456f1051b17f545",
+          "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/curl/7.81.0-1ubuntu1.27/curl_7.81.0-1ubuntu1.27.debian.tar.xz",
+          "prior_errors": [],
+          "verification": "matched DSC SHA-256"
+        }
+      ],
+      "status": "identity_and_file_checksums_matched"
+    }
+  ],
+  "selected_sources": [
+    "curl"
+  ]
+}

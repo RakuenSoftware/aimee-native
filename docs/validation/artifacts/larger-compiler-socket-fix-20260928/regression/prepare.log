@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/opt/aimee-large-release-validation/regression/prepare.py", line 85, in <module>
+    main()
+    ~~~~^^
+  File "/opt/aimee-large-release-validation/regression/prepare.py", line 55, in main
+    result.check_returncode()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.13/subprocess.py", line 508, in check_returncode
+    raise CalledProcessError(self.returncode, self.args, self.stdout,
+                             self.stderr)
+subprocess.CalledProcessError: Command '['runuser', '-u', 'aimee-compiler', '--', '/opt/aimee-memory-lab/venv/bin/python', '/opt/aimee-native-compiler/remote_compile.py', 'worker', '--config', '/opt/aimee-native-compiler/larger-20260928/gemma26-worker.json']' returned non-zero exit status 1.

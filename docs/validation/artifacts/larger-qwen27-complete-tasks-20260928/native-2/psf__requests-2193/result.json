@@ -1,0 +1,17 @@
+{
+  "instance_id": "psf__requests-2193",
+  "arm": "native-2",
+  "publication": "5ca6e80ece6522e1e3b135ae061adcc316a022972c2661968057499288ebebd9",
+  "text_memory_sha256": null,
+  "status": "predicted",
+  "started": 1790611719.4246771,
+  "image_inspect": "sha256:3059ae8969ec17d8324ac63f7ab086c16d5152adb0aa863b4e124d59af5c8fd0",
+  "exit_status": "Submitted",
+  "steps": 22,
+  "model_patch": "diff --git a/requests/adapters.py b/requests/adapters.py\nindex 3c1e979f..4c04f2f2 100644\n--- a/requests/adapters.py\n+++ b/requests/adapters.py\n@@ -20,6 +20,7 @@ from .utils import (DEFAULT_CA_BUNDLE_PATH, get_encoding_from_headers,\n                     prepend_scheme_if_needed, get_auth_from_url)\n from .structures import CaseInsensitiveDict\n from .packages.urllib3.exceptions import ConnectTimeoutError\n+from .packages.urllib3.exceptions import ProtocolError\n from .packages.urllib3.exceptions import HTTPError as _HTTPError\n from .packages.urllib3.exceptions import MaxRetryError\n from .packages.urllib3.exceptions import ProxyError as _ProxyError\n@@ -412,11 +413,13 @@ class HTTPAdapter(BaseAdapter):\n         except _ProxyError as e:\n             raise ProxyError(e)\n \n-        except (_SSLError, _HTTPError) as e:\n+        except (_SSLError, _HTTPError, ProtocolError) as e:\n             if isinstance(e, _SSLError):\n                 raise SSLError(e, request=request)\n             elif isinstance(e, ReadTimeoutError):\n                 raise ReadTimeout(e, request=request)\n+            elif isinstance(e, ProtocolError):\n+                raise ConnectionError(e, request=request)\n             else:\n                 raise\n \n",
+  "agent_seconds": 208.5746431350708,
+  "grade_timeout_seconds": 3600,
+  "resolved": true,
+  "grade_status": "graded",
+  "finished": 1790613505.3716352
+}

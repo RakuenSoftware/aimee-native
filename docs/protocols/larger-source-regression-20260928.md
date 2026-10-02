@@ -1,0 +1,95 @@
+# Larger-model source-procedure transfer and regression validation
+
+Frozen before these model-specific coding outcomes are observed. This is a
+selected regression/transfer check, not a random sample or population learning
+effect estimate. Prior task-selection and source outcomes remain visible in
+`larger-release-followup-20260928/regression/frozen-inputs.json`.
+
+## Inputs and conditions
+
+Six cases: Flask-4169, Pytest-5808, Astropy-7336, Sympy-20590,
+Matplotlib-25340, and Requests-2193. Use each complete initial issue and the
+complete previously accepted source procedure, including literal patch text
+where present. No new summarizer, no gold patch or grader test text in memory.
+Retain the accepted procedure regardless of a target model's later failure.
+
+For Gemma4 26B Q8, then Qwen3.8 27B Q8, run each task from a clean dataset
+base in four conditions: no memory, matched text memory, native attempt one,
+and native attempt two. Alternate no-memory/text ordering across task indices.
+Both native attempts use the identical frozen procedure and publication;
+the second is repeated reuse, not evidence of a new acquired lesson. Total:
+24 attempts per model, 48 planned attempts. Report all paired outcomes,
+including regressions and both-fail cases. A selected pass does not erase an
+original broader-study regression.
+
+Use the signed-install candidate weights and their exact compiled client image
+with the supported GGUF plugin settings. Require that model's initial signed
+installation and installed native-answer probe to pass before allocating the
+paired GPUs to coding tests. A shared lock serializes coding and later lifecycle
+probes, while CPU-only package downloads may overlap coding. All signed lifecycle
+gates remain mandatory for release. This scheduling amendment was made before
+any larger-model coding outcomes, to avoid leaving GPUs idle during downloads;
+it changes no cases, conditions, scoring or agent budgets. This coding test admits
+public research fixtures directly; it does not independently prove live Aimee
+authorization. The live-authority lifecycle has separate evidence.
+
+## Budgets and integrity
+
+4,096-token model context; 1,536 maximum output tokens; 280-token input reserve;
+40 agent steps; 600 agent seconds; two concurrent tasks. Official grading is
+outside the agent containers, with a 300-second grading deadline. Every task
+starts at its dataset base commit with networking disabled. Use the same
+history-trimming rule in all arms and never trim the initial issue or memory.
+Record prompt hashes, native publication IDs, usage, trajectory, own patch,
+official result and timings. Infrastructure errors remain ungraded, not failures.
+
+Before running, verify input/fact hashes, actual tokenizer fit, and the encoded
+memory-token count against the complete preflight record. The corrected
+`preflight-r3.json` is the only accepted preflight; the two earlier failed or
+invalid attempts remain archived. The preparer must fail on any unexpected
+truncation. Two concurrent tasks and a 256 MiB device-memory budget are retained;
+resource failures must be diagnosed rather than scored as model failure.
+Record overlapping installation activity when interpreting timings: these are
+operational agent durations, not an isolated application-latency comparison.
+
+## Interpretation
+
+These runs can show whether a complete source-backed procedure transfers to a
+larger model, whether it helps or harms a paired coding attempt, and whether
+repeated native reuse retains that outcome. They cannot establish a general
+SWE-bench effect, autonomous acquisition by these larger target models, or a
+change in underlying weights/reasoning. Existing 12B automatic acquisition
+results and their limitations stay separate.
+
+## Requests grader-timeout amendment
+
+The Gemma text attempt on `psf__requests-2193` submitted a patch, but the official
+139-test suite timed out at 300 seconds after beginning execution. Its result is
+ungraded (`resolved: null`), not a model failure. The original result, patch and
+logs remain unchanged. The driver stops scheduling new attempts on such an
+infrastructure outcome, after any already-running attempt returns.
+
+A CPU-only regrade now runs the exact saved patch through the same official test
+specification with a 3600-second allowance. It writes separate evidence and does
+not rerun the agent, alter memory, change tests, or feed reference data back to
+the agent. All remaining Requests conditions on both larger models will use the
+same larger grading allowance when resumed; agent time, context, outputs and
+frozen memories remain unchanged. Existing completed outcomes are not rerun.
+A timeout still remains ungraded and cannot certify the campaign. The regrade
+helper records the original result hash and patch hash, and accepts only an
+infrastructure result with a nonempty saved patch.
+
+The continuation uses separate directories and coordinators. Gemma's resume
+copies completed results unchanged, preserves the original ungraded Requests
+result alongside its matching regrade supplement, and reuses cached completed
+attempts. Source-result and patch hashes must match before a supplement is
+accepted. The original campaign must be terminal before snapshotting it. The
+resume adds only missing attempts. A focused fixture verifies original-byte
+preservation, unchanged completed outcomes, mismatched-patch rejection and refusal
+to overwrite a prior resume directory.
+
+Qwen can proceed independently after its initial signed-runtime probe while the
+CPU-only Requests regrade runs. Both continuation coordinators first wait for
+the original coding coordinator to exit and share the existing GPU lock. This
+scheduling change does not change model inputs, budgets, task order within a
+model, or success criteria. Each model gets a distinct new evidence directory.

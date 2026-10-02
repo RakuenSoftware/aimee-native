@@ -1,0 +1,303 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790083760674805610-1338",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhat orbital period in days does the NASA archive give for planet Kepler-215 c? Return the number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    3710,
+    62409,
+    4031,
+    303,
+    2756,
+    1503,
+    279,
+    20774,
+    17593,
+    2873,
+    364,
+    11247,
+    94370,
+    12,
+    17,
+    16,
+    20,
+    272,
+    30,
+    3301,
+    279,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    16,
+    19,
+    13,
+    21,
+    21,
+    22,
+    16,
+    15,
+    23
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -104,
+  "answer": "14.667108",
+  "finish_reason": "stop",
+  "elapsed_ms": 5097.542877000001,
+  "memory_encoding_passes": 1,
+  "native_reads": 160,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "What orbital period in days does the NASA archive give for planet Kepler-215 c? Return the number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "For planet Kepler-215 c, the NASA Exoplanet Archive composite table lists: host star Kepler-215; discovery year 2014; discovery method Transit; discovery facility Kepler; orbital period 14.66710800000 days; reported planet radius 1.77000000 Earth radii; reported system distance 485.99700000 parsecs.",
+            "id": "nasa.Kepler-215 c",
+            "key": "planet Kepler-215 c",
+            "kind": "fact",
+            "memory_hash": "63e7a996f81fa6e0ae89ca865b75cdf4e10cfafa58b3a034405b38af71f1f2a4",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "nasa.Kepler-215 c",
+              "revision": "e1f88070e54aa80d2dac2302e26aea5bdeac0966fa5862e70007ad96acfd7ff8"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 104,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.Kepler-215 c",
+          "revision": "e1f88070e54aa80d2dac2302e26aea5bdeac0966fa5862e70007ad96acfd7ff8"
+        }
+      ],
+      "encoding_elapsed_ms": 516.5268910000001,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 104,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 14.66710800000 1.77000000 parsecs Answer What does give Kepler-215 assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.020953441970050335
+        },
+        {
+          "text": "14.66710800000",
+          "source": "aimee",
+          "positions": [
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57,
+            58,
+            59,
+            60,
+            61,
+            62,
+            63,
+            64
+          ],
+          "score": 0.017481106740888208
+        },
+        {
+          "text": "1.77000000",
+          "source": "aimee",
+          "positions": [
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80
+          ],
+          "score": 0.017108455358538777
+        },
+        {
+          "text": "parsecs",
+          "source": "aimee",
+          "positions": [
+            101,
+            102
+          ],
+          "score": 0.01792789762839675
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            107
+          ],
+          "score": 0.02441779524087906
+        },
+        {
+          "text": "What",
+          "source": "sequence",
+          "positions": [
+            132
+          ],
+          "score": 0.017520055174827576
+        },
+        {
+          "text": "does",
+          "source": "sequence",
+          "positions": [
+            137
+          ],
+          "score": 0.021401455625891685
+        },
+        {
+          "text": "give",
+          "source": "sequence",
+          "positions": [
+            141
+          ],
+          "score": 0.018965082243084908
+        },
+        {
+          "text": "Kepler-215",
+          "source": "sequence",
+          "positions": [
+            144,
+            145,
+            146,
+            147,
+            148
+          ],
+          "score": 0.017147707170806825
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            159
+          ],
+          "score": 0.025677453726530075
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.029301777482032776
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            163
+          ],
+          "score": 0.07111436873674393
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 104,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "nasa.Kepler-215 c",
+          "revision": "e1f88070e54aa80d2dac2302e26aea5bdeac0966fa5862e70007ad96acfd7ff8"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00505,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 70
+}

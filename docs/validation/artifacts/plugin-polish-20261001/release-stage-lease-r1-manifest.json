@@ -1,0 +1,81 @@
+{
+  "version": "0.2.2",
+  "wheel": "aimee_vllm-0.2.2-1-cp312-cp312-linux_x86_64.whl",
+  "url": "https://192.168.0.126:8445/plugins/portable/0.2.2/aimee_vllm-0.2.2-1-cp312-cp312-linux_x86_64.whl",
+  "sha256": "ff069f26ff20316e91576e3f901275b41e74599b5c2b73b5f307eb297fa9d46e",
+  "bytes": 4814570,
+  "compatibility": {
+    "schema": 2,
+    "vllm": ">=0.30.0,<0.31",
+    "backends": [
+      "cuda",
+      "hip"
+    ],
+    "gpu_arch": "runtime",
+    "tensor_bridge": "public-torch-api",
+    "scope": "Runtime-compiled GPU operations. Execution coverage is recorded separately."
+  },
+  "scope": "Controlled standalone vLLM plugin preview with revision-safe prefix caching, optional async scheduling, and optional piecewise compilation; user supplies supported vLLM and model files.",
+  "models": {
+    "gemma12": {
+      "native_probe": 4,
+      "native_matrix": 8,
+      "empty_matrix": 8,
+      "runner": "V2"
+    },
+    "gemma26": {
+      "native_probe": 4,
+      "native_matrix": 8,
+      "empty_matrix": 8,
+      "runner": "V2"
+    },
+    "qwen27": {
+      "native_probe": 4,
+      "native_matrix": 8,
+      "empty_matrix": 8,
+      "runner": "V1"
+    }
+  },
+  "option_validation": {
+    "eager_v1": {
+      "native": 6,
+      "empty": 6
+    },
+    "prefix_v1": {
+      "native": 6,
+      "empty": 6
+    },
+    "async_v1": {
+      "native": 6,
+      "empty": 6
+    },
+    "piecewise_v1": {
+      "native": 6,
+      "empty": 6
+    },
+    "eager_v2": {
+      "native": 6,
+      "empty": 6
+    },
+    "combined_v2": {
+      "native": 6,
+      "empty": 6
+    }
+  },
+  "rtx_5080_v2_probe": {
+    "native": 4,
+    "empty": 5
+  },
+  "hybrid_model_runner": "V1; vLLM 0.30 hybrid V2 omits request slots and is rejected",
+  "revision_request_started_during_old_stream": true,
+  "revision_activation_drains_old_stream": true,
+  "replacement_first_attempt_status": 200,
+  "live_selection_followups": 30,
+  "executed_gpu_architectures": [
+    "gfx1100",
+    "sm120"
+  ],
+  "native_library_sha256": "a14ad42649729a927e74aa03c60d116919b7a3705c89e36c1172bb88b2e91ce8",
+  "private_encoder_source_included": false,
+  "runtime_image_included": false
+}

@@ -1,0 +1,265 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790082477438607751-624",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhich TCP port is registered for IANA service snmpssh? Return the number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    22365,
+    25804,
+    2548,
+    369,
+    9393,
+    364,
+    353,
+    37492,
+    2393,
+    3995,
+    1261,
+    24724,
+    30,
+    3301,
+    279,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    20,
+    16,
+    21,
+    16
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -25,
+  "answer": "5161",
+  "finish_reason": "stop",
+  "elapsed_ms": 2859.1336890000002,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "Which TCP port is registered for IANA service snmpssh? Return the number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service snmpssh has these registered transport/port assignments: TCP port 5161.",
+            "id": "iana.snmpssh",
+            "key": "IANA service snmpssh",
+            "kind": "fact",
+            "memory_hash": "e4cdf2f6d769657993b87c8fc94800a8db0b26afaab703f012a5e3104ea03d47",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.snmpssh",
+              "revision": "8178ac9014f0673e517e014028ce1c84309368a321dfff591f6a698a1802eb58"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 25,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.snmpssh",
+          "revision": "8178ac9014f0673e517e014028ce1c84309368a321dfff591f6a698a1802eb58"
+        }
+      ],
+      "encoding_elapsed_ms": 512.096265,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 25,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user Which TCP is for Return the assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.03196613397449255
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            28
+          ],
+          "score": 0.021288909018039703
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            51
+          ],
+          "score": 0.019092019647359848
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            53
+          ],
+          "score": 0.02288111113011837
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            54
+          ],
+          "score": 0.013394560664892197
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            56
+          ],
+          "score": 0.0279314573854208
+        },
+        {
+          "text": "for",
+          "source": "sequence",
+          "positions": [
+            58
+          ],
+          "score": 0.011009467765688896
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            66
+          ],
+          "score": 0.0205437783151865
+        },
+        {
+          "text": "the",
+          "source": "sequence",
+          "positions": [
+            67
+          ],
+          "score": 0.015713166445493698
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            74
+          ],
+          "score": 0.02914496511220932
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            76
+          ],
+          "score": 0.032143380492925644
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.06933753937482834
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 25,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.snmpssh",
+          "revision": "8178ac9014f0673e517e014028ce1c84309368a321dfff591f6a698a1802eb58"
+        }
+      ],
+      "encoding_elapsed_ms": 0.009281,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 59
+}

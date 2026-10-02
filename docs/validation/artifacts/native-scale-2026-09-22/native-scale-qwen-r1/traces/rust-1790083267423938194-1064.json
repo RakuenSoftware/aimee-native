@@ -1,0 +1,294 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790083267423938194-1064",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Sot RS 3190309, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    326,
+    349,
+    22505,
+    220,
+    18,
+    16,
+    24,
+    15,
+    18,
+    15,
+    24,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    29774,
+    15797,
+    300,
+    6721
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -85,
+  "answer": "Europe/Belgrade",
+  "finish_reason": "stop",
+  "elapsed_ms": 3139.459142,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Sot RS 3190309, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Sot (ID 3190309): country code RS; latitude 45.16077; longitude 19.31782; administrative codes VO/7; population 679; time zone Europe/Belgrade. The source record was modified on 2023-12-15.",
+            "id": "geonames.3190309",
+            "key": "place Sot RS 3190309",
+            "kind": "fact",
+            "memory_hash": "dd8bb8e3354fe53af2f56767807365578c9253a5be8307f7b42fedb13af2c527",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.3190309",
+              "revision": "4bea4b7bbe3f84de4b5499e2784a601d33543a3e59536de1912b922a6bb04f98"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 85,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3190309",
+          "revision": "4bea4b7bbe3f84de4b5499e2784a601d33543a3e59536de1912b922a6bb04f98"
+        }
+      ],
+      "encoding_elapsed_ms": 596.9318000000001,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 85,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2023-12-15 Answer user According 3190309 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.027721119113266468
+        },
+        {
+          "text": "2023-12-15",
+          "source": "aimee",
+          "positions": [
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83
+          ],
+          "score": 0.011193552272743545
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            88
+          ],
+          "score": 0.027214359492063522
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            111
+          ],
+          "score": 0.015542693436145782
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            113
+          ],
+          "score": 0.011880287900567055
+        },
+        {
+          "text": "3190309",
+          "source": "sequence",
+          "positions": [
+            125,
+            126,
+            127,
+            128,
+            129,
+            130,
+            131
+          ],
+          "score": 0.02186335832811892
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            133
+          ],
+          "score": 0.03754080832004547
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            134
+          ],
+          "score": 0.013301065191626549
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            135
+          ],
+          "score": 0.03156951069831848
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            148
+          ],
+          "score": 0.022203346714377403
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            150
+          ],
+          "score": 0.02996828220784664
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.06515026837587357
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 85,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3190309",
+          "revision": "4bea4b7bbe3f84de4b5499e2784a601d33543a3e59536de1912b922a6bb04f98"
+        }
+      ],
+      "encoding_elapsed_ms": 0.01021,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 73
+}

@@ -1,0 +1,64 @@
+STEP 1/9: FROM docker.io/vllm/vllm-openai-rocm@sha256:2e7da1ad1c66836802072588adea75f9f4991da5f9545b4318e91d422c22ce6a
+Trying to pull docker.io/vllm/vllm-openai-rocm@sha256:2e7da1ad1c66836802072588adea75f9f4991da5f9545b4318e91d422c22ce6a...
+Getting image source signatures
+Copying blob sha256:42041b00303d460a69e53c63f49a4e86fc48dd1149cfc79bf21abcad82ed3f75
+Copying blob sha256:dfb4312294c51c0e55df65cba239098347fe8385374e918025c1dd3843088e86
+Copying blob sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1
+Copying blob sha256:3a07dcd11d8d11d10b649982a5260f1d1d0cb621b259d64e83609a18424c92a4
+Copying blob sha256:c8ecd8287c0bb9cda7a84d0de091a8771e3630179fec0efa2ebd0b02f54d224c
+Copying blob sha256:49f843952c8f760646efc32533b36bebfe542d9bd387ec9cf7b274b6f5ecbd69
+Copying blob sha256:40475778b3982cf1e8e427e521f1681581f6ea7256cd932d90fbdd41d225947a
+Copying blob sha256:8bda70c198f674743191efbec5335362261efc18e556a990d179785bd04caef0
+Copying blob sha256:20f2f347984940ef1e4ebdf16f76ff12583a62c5e834913a1390d79e4ef95e27
+Copying blob sha256:7bfe2c3b98d583ef8ff8b3c91e31b8f8193bee71440301bf9779dfe40ea935f8
+Copying blob sha256:7499177b4713475cc30c8134c855a38b50addb5b3037aa562473f3426ff04523
+Copying blob sha256:c9effcc363ab902e70e5eec75bb80466b9b5724e10c1290c90d32daecb8881ab
+Copying blob sha256:1348bd86a28b60a5dc9825ab8f06f040a955f554795417ced62963e1bfcffdb3
+Copying blob sha256:e65442baf1e1d31eb15772dda616b6817669894aeca7bbda3b1051d2ead92914
+Copying blob sha256:a5308053e7cb96a2ded38f058197a8c33883df1f13a2f7aae228ab2df8dfcee6
+Copying blob sha256:49ce1bf598f182a927e95871645a2fc2bfac94184c96add40ae2a74a55778325
+Copying blob sha256:506d2e9016d2e387deb4a536844a2283a467fde60563da8325a954029f32005e
+Copying blob sha256:cb76454ae7d67724b06691b0ba75ec82038cc738e013a6176f5f579c323fe3cc
+Copying blob sha256:71a7242f0631b57cf9ffc09ec96b9205b6546ffa03ec6a9262d49456bf56f106
+Copying blob sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1
+Copying blob sha256:2e19348d29b01532e331c63074a55de02f01945e77e08b52bdeeb9c93a7079f5
+Copying blob sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1
+Copying blob sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1
+Copying blob sha256:249178d4493ab78fc8f13ceb78f274b0e9c6e6bc7fa9d1ae3057d8231197bdae
+Copying blob sha256:780d27d7c32a7af59899d101ac7905c31a4bbbe25d2266485aea5fef36068e1f
+Copying blob sha256:6a88327b33fc8703771aa2079a9aa0ca62be2160e71a35ff1de741f275837309
+Copying blob sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1
+Copying blob sha256:1fc8f5d897158f911112be043c24b8b35c598127524636220f5d508946b6b2b5
+Copying blob sha256:a0bc3ffc8a4cc0652d1bd4579971b9784cba7d55d24284892026484b1b011d8e
+Copying blob sha256:dae0b2e856bfb7e190615b543e127889d32a00c4b1589d245053d09b6b5cca87
+Copying blob sha256:77e02c3fc1422a9426b1961791820529eea33d0a1ba67fdd85eb8536240c756f
+Copying blob sha256:52a86d631c276ea038fc48a0a3eb98a59fff84ebf52b6f686a599c9aa730b550
+Copying blob sha256:8185d22db654d34f5b13f2ee85087fb16eeab7d2a6483bc9ee340591b93ea71a
+Copying blob sha256:fe26e45aee05f4a0cadcbdf11025d868cb4f1ec45f8c8607e688003a3437da41
+Copying blob sha256:926e10ecd760e11d8545255f70b03880d9a58739a1979b30c4895bfe5c7a0fd2
+Copying blob sha256:48aa856d304ace84f4b98029ad8e76bdfce65c64b73b046041e29939c48f9702
+Copying config sha256:4599ea638415cb603d8e6ef192a0bf5020a9293c374eee4fcd377ce3b9a4f676
+Writing manifest to image destination
+STEP 2/9: COPY client.whl /opt/aimee/client.whl
+--> bc8dab1dd0ce
+STEP 3/9: COPY libaimee_native.so /opt/aimee/libaimee_native.so
+--> 5e93c86c7e47
+STEP 4/9: COPY kernels /opt/aimee/kernels
+--> 0dd50e05badd
+STEP 5/9: COPY wheel-name.txt /opt/aimee/wheel-name.txt
+--> 0cc4d735c6e0
+STEP 6/9: RUN name=$(cat /opt/aimee/wheel-name.txt) && mv /opt/aimee/client.whl /opt/aimee/$name && python3 -m pip install --no-deps /opt/aimee/$name && rm /opt/aimee/$name /opt/aimee/wheel-name.txt
+Processing /opt/aimee/aimee_vllm-0.1.0-cp312-cp312-linux_x86_64.whl
+Installing collected packages: aimee-vllm
+Successfully installed aimee-vllm-0.1.0
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+--> 0e4333a13b1d
+STEP 7/9: ENV AIMEE_KERNEL_BANK=/opt/aimee/kernels
+--> 635770689dff
+STEP 8/9: ENV VLLM_USE_V2_MODEL_RUNNER=0 VLLM_PLUGINS=aimee_native VLLM_ROCM_USE_AITER=0
+--> 93bf730b899d
+STEP 9/9: ENTRYPOINT ["aimee-vllm"]
+COMMIT localhost/aimee-native:gemma-preview-r2
+--> f183ff1feef1
+Successfully tagged localhost/aimee-native:gemma-preview-r2
+f183ff1feef18eaa8aaa6266177aae04ceb21ce3d97f4ed0cb70d78404f97550

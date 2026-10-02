@@ -12,6 +12,8 @@ native states reside in RAM/disk, with temporary device copies for attention.
 
 ## Start here
 
+- [Native distribution implementation and remaining release gates](distribution/README.md)
+
 - [Publication latency: immutable base, overlays, and measured update reductions](docs/validation/publication-latency.md)
 
 - [Live incremental publication and native cache retention](docs/validation/incremental-publication.md)

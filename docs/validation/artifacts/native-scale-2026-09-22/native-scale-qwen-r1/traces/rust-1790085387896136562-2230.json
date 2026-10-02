@@ -1,0 +1,264 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790085387896136562-2230",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhich TCP port is registered for IANA service erpc? Return the number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    22365,
+    25804,
+    2548,
+    369,
+    9393,
+    364,
+    353,
+    37492,
+    2393,
+    2627,
+    3858,
+    30,
+    3301,
+    279,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    16,
+    17,
+    16
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -30,
+  "answer": "121",
+  "finish_reason": "stop",
+  "elapsed_ms": 2348.217268,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "Which TCP port is registered for IANA service erpc? Return the number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service erpc has these registered transport/port assignments: TCP port 121; UDP port 121.",
+            "id": "iana.erpc",
+            "key": "IANA service erpc",
+            "kind": "fact",
+            "memory_hash": "992ede149db4e382c581a260ca86b9f6ac49963f0b1302e86d07b628fc3ea8d7",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.erpc",
+              "revision": "e821db2643482e2375015c28b51931d0ff0987df26a41710dc566ee69e6ecf0a"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 30,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.erpc",
+          "revision": "e821db2643482e2375015c28b51931d0ff0987df26a41710dc566ee69e6ecf0a"
+        }
+      ],
+      "encoding_elapsed_ms": 498.662971,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 30,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user Which TCP is erpc Return the assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02755742473527789
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            33
+          ],
+          "score": 0.020802877843379974
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            56
+          ],
+          "score": 0.01804410107433796
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            58
+          ],
+          "score": 0.024427330121397972
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            59
+          ],
+          "score": 0.015312239527702332
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            61
+          ],
+          "score": 0.030681181699037552
+        },
+        {
+          "text": "erpc",
+          "source": "sequence",
+          "positions": [
+            67,
+            68
+          ],
+          "score": 0.016908643767237663
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            70
+          ],
+          "score": 0.016704054549336433
+        },
+        {
+          "text": "the",
+          "source": "sequence",
+          "positions": [
+            71
+          ],
+          "score": 0.013698751106858253
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            78
+          ],
+          "score": 0.02849555015563965
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            80
+          ],
+          "score": 0.03291269391775131
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            82
+          ],
+          "score": 0.07037435472011566
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 30,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.erpc",
+          "revision": "e821db2643482e2375015c28b51931d0ff0987df26a41710dc566ee69e6ecf0a"
+        }
+      ],
+      "encoding_elapsed_ms": 0.0056,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 57
+}

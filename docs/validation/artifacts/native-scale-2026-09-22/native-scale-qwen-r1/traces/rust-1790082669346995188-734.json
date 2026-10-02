@@ -1,0 +1,294 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790082669346995188-734",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Valinda US 5405326, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    3968,
+    16902,
+    2201,
+    220,
+    20,
+    19,
+    15,
+    20,
+    18,
+    17,
+    21,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    17,
+    17,
+    23,
+    17,
+    17
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -92,
+  "answer": "22822",
+  "finish_reason": "stop",
+  "elapsed_ms": 3639.91546,
+  "memory_encoding_passes": 1,
+  "native_reads": 96,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Valinda US 5405326, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Valinda (ID 5405326): country code US; latitude 34.04529; longitude -117.94367; administrative codes CA/037; population 22822; time zone America/Los_Angeles. The source record was modified on 2026-09-16.",
+            "id": "geonames.5405326",
+            "key": "place Valinda US 5405326",
+            "kind": "fact",
+            "memory_hash": "3f2ca20b0591836d43297a16974802b28759b3e5cdfc52d4d9a5b6139497a7c4",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.5405326",
+              "revision": "92e93a74ecb7f003bd2960376eabb65ee6f8310c1a392c56108d6b57104bfb51"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 92,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.5405326",
+          "revision": "92e93a74ecb7f003bd2960376eabb65ee6f8310c1a392c56108d6b57104bfb51"
+        }
+      ],
+      "encoding_elapsed_ms": 602.558226,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 92,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2026-09-16 Answer user 5405326 what is its population assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02925107069313526
+        },
+        {
+          "text": "2026-09-16",
+          "source": "aimee",
+          "positions": [
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90
+          ],
+          "score": 0.018466698849806562
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            95
+          ],
+          "score": 0.02471526525914669
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.015462431125342846
+        },
+        {
+          "text": "5405326",
+          "source": "sequence",
+          "positions": [
+            132,
+            133,
+            134,
+            135,
+            136,
+            137,
+            138
+          ],
+          "score": 0.018420073320157826
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            140
+          ],
+          "score": 0.03693331405520439
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            141
+          ],
+          "score": 0.014485970139503479
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            142
+          ],
+          "score": 0.033743858337402344
+        },
+        {
+          "text": "population",
+          "source": "sequence",
+          "positions": [
+            143
+          ],
+          "score": 0.011379077099263668
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.022084591910243034
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            156
+          ],
+          "score": 0.030789505690336227
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            158
+          ],
+          "score": 0.06645617634057999
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 92,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.5405326",
+          "revision": "92e93a74ecb7f003bd2960376eabb65ee6f8310c1a392c56108d6b57104bfb51"
+        }
+      ],
+      "encoding_elapsed_ms": 0.010180000000000002,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 73
+}

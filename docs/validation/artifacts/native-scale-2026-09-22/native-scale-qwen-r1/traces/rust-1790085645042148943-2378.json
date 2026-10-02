@@ -1,0 +1,267 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790085645042148943-2378",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhich TCP port is registered for IANA service hivestor? Return the number only.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    22365,
+    25804,
+    2548,
+    369,
+    9393,
+    364,
+    353,
+    37492,
+    2393,
+    206595,
+    467,
+    269,
+    30,
+    3301,
+    279,
+    1324,
+    1132,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    19,
+    23,
+    23,
+    19
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -33,
+  "answer": "4884",
+  "finish_reason": "stop",
+  "elapsed_ms": 2828.916158,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "Which TCP port is registered for IANA service hivestor? Return the number only.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "IANA service hivestor has these registered transport/port assignments: TCP port 4884; UDP port 4884.",
+            "id": "iana.hivestor",
+            "key": "IANA service hivestor",
+            "kind": "fact",
+            "memory_hash": "05225af37a1b50bbd84d64e5d5214a0806baf720b56d543b856386cbd8c8b82a",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "iana.hivestor",
+              "revision": "e3416da2b21d6f7d89266e890544a7eae4e5ebc8877bcceaa91a9881e0af819e"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 33,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.hivestor",
+          "revision": "e3416da2b21d6f7d89266e890544a7eae4e5ebc8877bcceaa91a9881e0af819e"
+        }
+      ],
+      "encoding_elapsed_ms": 497.955546,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 33,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user Which TCP is hivestor Return the assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.03079411806538701
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            36
+          ],
+          "score": 0.02113388478755951
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            59
+          ],
+          "score": 0.019150592386722565
+        },
+        {
+          "text": "Which",
+          "source": "sequence",
+          "positions": [
+            61
+          ],
+          "score": 0.024597488343715668
+        },
+        {
+          "text": "TCP",
+          "source": "sequence",
+          "positions": [
+            62
+          ],
+          "score": 0.014939574524760246
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            64
+          ],
+          "score": 0.030734173953533173
+        },
+        {
+          "text": "hivestor",
+          "source": "sequence",
+          "positions": [
+            70,
+            71,
+            72
+          ],
+          "score": 0.012108171242289245
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            74
+          ],
+          "score": 0.019211960956454277
+        },
+        {
+          "text": "the",
+          "source": "sequence",
+          "positions": [
+            75
+          ],
+          "score": 0.015993507578969002
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            82
+          ],
+          "score": 0.027916669845581055
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            84
+          ],
+          "score": 0.03166019544005394
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            86
+          ],
+          "score": 0.06971399486064911
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 33,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "iana.hivestor",
+          "revision": "e3416da2b21d6f7d89266e890544a7eae4e5ebc8877bcceaa91a9881e0af819e"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00924,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 59
+}

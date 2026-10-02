@@ -1,0 +1,263 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790083353826928758-1112",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nWhat capital city does the World Bank list for economy Belgium? Return only the city name.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    3710,
+    6511,
+    3177,
+    1503,
+    279,
+    4196,
+    8285,
+    1103,
+    364,
+    8322,
+    31868,
+    30,
+    3301,
+    1132,
+    279,
+    3177,
+    803,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    6614,
+    30818
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -37,
+  "answer": "Brussels",
+  "finish_reason": "stop",
+  "elapsed_ms": 1946.181331,
+  "memory_encoding_passes": 1,
+  "native_reads": 48,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "What capital city does the World Bank list for economy Belgium? Return only the city name.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "The World Bank country endpoint lists economy Belgium: code BEL; two-letter code BE; capital city Brussels; region Europe & Central Asia; income group High income.",
+            "id": "worldbank.BEL",
+            "key": "economy Belgium",
+            "kind": "fact",
+            "memory_hash": "4f311e88b09c767426c205867e7b6879a7ef0ca243c7461fe4d2a2a096cbff55",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "worldbank.BEL",
+              "revision": "c477731a474819fde3910983b90a305878b1e67fa2311de7d23e632c52c4062f"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 37,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "worldbank.BEL",
+          "revision": "c477731a474819fde3910983b90a305878b1e67fa2311de7d23e632c52c4062f"
+        }
+      ],
+      "encoding_elapsed_ms": 502.273482,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 37,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user What does list for Belgium Return assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.029620439745485783
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            40
+          ],
+          "score": 0.01998729072511196
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            63
+          ],
+          "score": 0.01736539416015148
+        },
+        {
+          "text": "What",
+          "source": "sequence",
+          "positions": [
+            65
+          ],
+          "score": 0.023268794640898705
+        },
+        {
+          "text": "does",
+          "source": "sequence",
+          "positions": [
+            68
+          ],
+          "score": 0.02921483665704727
+        },
+        {
+          "text": "list",
+          "source": "sequence",
+          "positions": [
+            72
+          ],
+          "score": 0.01300833560526371
+        },
+        {
+          "text": "for",
+          "source": "sequence",
+          "positions": [
+            73
+          ],
+          "score": 0.013477715663611889
+        },
+        {
+          "text": "Belgium",
+          "source": "sequence",
+          "positions": [
+            75
+          ],
+          "score": 0.01219840906560421
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            77
+          ],
+          "score": 0.012252802029252052
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            86
+          ],
+          "score": 0.02725186198949814
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            88
+          ],
+          "score": 0.029932644218206406
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            90
+          ],
+          "score": 0.07094641029834747
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 37,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "worldbank.BEL",
+          "revision": "c477731a474819fde3910983b90a305878b1e67fa2311de7d23e632c52c4062f"
+        }
+      ],
+      "encoding_elapsed_ms": 0.012841,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 57
+}

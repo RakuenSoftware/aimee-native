@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "scope": "CPU-only exact source-patch replay; not model recall or official regrading",
+  "instance_id": "psf__requests-2193",
+  "base_commit": "95161ed313db11296c3bd473336340dbb19bb347",
+  "image": "docker.io/swebench/sweb.eval.x86_64.psf_1776_requests-2193:latest",
+  "command": "python3 <<'AIMEE_EDIT_181591653cb01e3e90ad3065'\nfrom pathlib import Path\np=Path('requests/adapters.py');s=p.read_text().splitlines(True)\ns[413:415]=['        except (_SSLError, _HTTPError, ProtocolError) as e:\\n', '            if isinstance(e, _SSLError):\\n', '                raise SSLError(e, request=request)\\n', '            elif isinstance(e, ReadTimeoutError):\\n', '                raise ReadTimeout(e, request=request)\\n', '            elif isinstance(e, ProtocolError):\\n', '                raise ConnectionError(e, request=request)\\n', '            else:\\n', '                raise ConnectionError(e, request=request)\\n']\ns[22:22]=['from .packages.urllib3.exceptions import ProtocolError\\n']\np.write_text(''.join(s))\np=Path('requests/models.py');s=p.read_text().splitlines(True)\ns[640:640]=['                    raise ConnectionError(e)\\n', '                    raise ConnectionError(e)\\n']\np.write_text(''.join(s))\nAIMEE_EDIT_181591653cb01e3e90ad3065",
+  "returncode": 0,
+  "patch_sha256": "181591653cb01e3e90ad3065a0f6570f45856e40733dfb3ddbfe6629503f4a27",
+  "observed_patch_sha256": "181591653cb01e3e90ad3065a0f6570f45856e40733dfb3ddbfe6629503f4a27",
+  "seconds": 0.404465913772583
+}

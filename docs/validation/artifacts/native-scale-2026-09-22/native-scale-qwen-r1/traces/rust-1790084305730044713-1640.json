@@ -1,0 +1,291 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790084305730044713-1640",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Magdalena HN 3605179, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    235920,
+    201916,
+    220,
+    18,
+    21,
+    15,
+    20,
+    16,
+    22,
+    24,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    24,
+    21,
+    21
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -85,
+  "answer": "966",
+  "finish_reason": "stop",
+  "elapsed_ms": 2723.134414,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Magdalena HN 3605179, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Magdalena (ID 3605179): country code HN; latitude 13.86667; longitude -88.3; administrative codes 10/unspecified; population 966; time zone America/Tegucigalpa. The source record was modified on 2006-01-17.",
+            "id": "geonames.3605179",
+            "key": "place Magdalena HN 3605179",
+            "kind": "fact",
+            "memory_hash": "8377fe6a9b4e6f99e6248095cce51141bdb1c188f6fb570444bc09a7d8941b6f",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.3605179",
+              "revision": "993fc8c538fc4e7ca0f3816121a63a9682099a711aca2766372275107e3a312f"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 85,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3605179",
+          "revision": "993fc8c538fc4e7ca0f3816121a63a9682099a711aca2766372275107e3a312f"
+        }
+      ],
+      "encoding_elapsed_ms": 606.631461,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 85,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2006-01-17 Answer user 3605179 what is its Return assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.027557149529457092
+        },
+        {
+          "text": "2006-01-17",
+          "source": "aimee",
+          "positions": [
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83
+          ],
+          "score": 0.012586685057613067
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            88
+          ],
+          "score": 0.022363414987921715
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            111
+          ],
+          "score": 0.015690913423895836
+        },
+        {
+          "text": "3605179",
+          "source": "sequence",
+          "positions": [
+            124,
+            125,
+            126,
+            127,
+            128,
+            129,
+            130
+          ],
+          "score": 0.02162452705670148
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            132
+          ],
+          "score": 0.03859468176960945
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            133
+          ],
+          "score": 0.014688001945614815
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            134
+          ],
+          "score": 0.03237837925553322
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            137
+          ],
+          "score": 0.01209416426718235
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            146
+          ],
+          "score": 0.021550673991441727
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            148
+          ],
+          "score": 0.029698770493268967
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            150
+          ],
+          "score": 0.06517928838729858
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 85,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3605179",
+          "revision": "993fc8c538fc4e7ca0f3816121a63a9682099a711aca2766372275107e3a312f"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00972,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 70
+}

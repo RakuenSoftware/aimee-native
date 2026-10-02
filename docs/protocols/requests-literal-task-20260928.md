@@ -1,0 +1,7 @@
+# Requests full-agent literal-memory follow-up
+
+Prospective follow-up to the post-hoc frozen-prompt diagnostic. Start only after its eight calls complete and release the GPU server. Run Requests 2193 from its original clean dataset base, with no memory, automatically acquired literal procedure supplied natively, and that same procedure supplied as text. Acquire through the source capture path from the already graded successful control; require independent replay and identity equality with the declared literal fixture. No hidden reference solution crosses into memory.
+
+Use unchanged final Q8 runtime, FP32 full-pass preparation, 600-second agent budget checked between steps, 40 calls, 1536 output tokens, 6376 input tokens, seed 20260926, temperature zero, and the existing matched history rule. Two pipelines permit CPU grading to overlap generation. Requests grading receives 3600 seconds because its network timeout tests previously took roughly 25 minutes. The agent remains network-isolated. Preserve all trajectories, preparations, official grades and failures.
+
+The primary outcome is official task resolution, not exact patch equality. Secondary observations are format failures, calls and elapsed time (not an isolated latency benchmark). Report all three arms; no selective retries. This selected regression case cannot establish a broad learning gain or clear retained-success validation by itself. It tests whether automatic source-backed memory use restores the previously lost solve under a complete agent workflow.

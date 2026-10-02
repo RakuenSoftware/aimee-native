@@ -1,0 +1,17 @@
+STEP 1/4: FROM 79d7f03eedc74943f2ffd9c1271141086ea0813bcd3f697c718e09501908cf58
+STEP 2/4: COPY wheels/aimee_vllm-0.1.0-cp312-cp312-linux_x86_64.whl /tmp/aimee_vllm-0.1.0-cp312-cp312-linux_x86_64.whl
+--> ee5a134c022c
+STEP 3/4: RUN python -m pip install --no-deps --force-reinstall /tmp/aimee_vllm-0.1.0-cp312-cp312-linux_x86_64.whl && rm /tmp/aimee_vllm-0.1.0-cp312-cp312-linux_x86_64.whl
+Processing /tmp/aimee_vllm-0.1.0-cp312-cp312-linux_x86_64.whl
+Installing collected packages: aimee-vllm
+  Attempting uninstall: aimee-vllm
+    Found existing installation: aimee-vllm 0.1.0
+    Uninstalling aimee-vllm-0.1.0:
+      Successfully uninstalled aimee-vllm-0.1.0
+Successfully installed aimee-vllm-0.1.0
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+--> fe1f39ebff8f
+STEP 4/4: COPY kernels/ /opt/aimee/kernels/
+COMMIT
+--> 56e44a78b4dd
+56e44a78b4ddbb228d5728311a709ee8118acc51f685b9f0e428a809b5ad2935

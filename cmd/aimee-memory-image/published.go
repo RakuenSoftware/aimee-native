@@ -74,7 +74,7 @@ func servePublished(s sparse.Store, in io.Reader, out io.Writer) error {
 				} else {
 					result = map[string]any{"view": current.View.ID, "retained": current.Retain(req.Proofs, time.Now())}
 				}
-			case "search_restriction", "authorize_response", "resolve_response":
+			case "search_restriction", "authorize_response", "resolve_response", "resolve_local_response":
 				var id string
 				id, err = s.Current()
 				if err != nil {
@@ -88,7 +88,11 @@ func servePublished(s sparse.Store, in io.Reader, out io.Writer) error {
 						result, err = current.RestrictRemote(req.Authority)
 					} else {
 						var refs []sparse.Ref
-						refs, err = current.ResolveRemote(req.Response, time.Now())
+						if req.Op == "resolve_local_response" {
+							refs, err = current.ResolveLocal(req.Response, time.Now())
+						} else {
+							refs, err = current.ResolveRemote(req.Response, time.Now())
+						}
 						if err == nil {
 							result = map[string]any{"refs": refs, "authorized": current.Publication, "authorization": current.Publication, "view": current.View.ID}
 						}

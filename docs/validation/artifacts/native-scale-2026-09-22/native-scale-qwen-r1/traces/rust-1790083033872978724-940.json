@@ -1,0 +1,292 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790083033872978724-940",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Lüjiabao CN 8507360, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    219606,
+    7508,
+    365,
+    3331,
+    24083,
+    220,
+    23,
+    20,
+    15,
+    22,
+    18,
+    21,
+    15,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    15
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -89,
+  "answer": "0",
+  "finish_reason": "stop",
+  "elapsed_ms": 1675.732173,
+  "memory_encoding_passes": 1,
+  "native_reads": 32,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Lüjiabao CN 8507360, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Lüjiabao (ID 8507360): country code CN; latitude 40.18953; longitude 94.70175; administrative codes 15/6209; population 0; time zone Asia/Shanghai. The source record was modified on 2021-09-20.",
+            "id": "geonames.8507360",
+            "key": "place Lüjiabao CN 8507360",
+            "kind": "fact",
+            "memory_hash": "efe9baa92aace35bafab7653bb809d4dd4da28f02dad4be64d1844a08abe9ca9",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.8507360",
+              "revision": "c9d5e27ad9442bfb61b8aedc2ea983bba07434fe0438bf1bd4c4e5f7ced8e5b3"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 89,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.8507360",
+          "revision": "c9d5e27ad9442bfb61b8aedc2ea983bba07434fe0438bf1bd4c4e5f7ced8e5b3"
+        }
+      ],
+      "encoding_elapsed_ms": 599.316892,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 89,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2021-09-20 Answer user 8507360 what is its population assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.026296359486877918
+        },
+        {
+          "text": "2021-09-20",
+          "source": "aimee",
+          "positions": [
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87
+          ],
+          "score": 0.012751314483466558
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            92
+          ],
+          "score": 0.028032099828124046
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            115
+          ],
+          "score": 0.014506086707115173
+        },
+        {
+          "text": "8507360",
+          "source": "sequence",
+          "positions": [
+            131,
+            132,
+            133,
+            134,
+            135,
+            136,
+            137
+          ],
+          "score": 0.016747282817959785
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            139
+          ],
+          "score": 0.03983788192272186
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            140
+          ],
+          "score": 0.015066837891936302
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            141
+          ],
+          "score": 0.03388703987002373
+        },
+        {
+          "text": "population",
+          "source": "sequence",
+          "positions": [
+            142
+          ],
+          "score": 0.01228010468184948
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.02311534248292446
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.029797619208693504
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            157
+          ],
+          "score": 0.06512009352445602
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 89,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.8507360",
+          "revision": "c9d5e27ad9442bfb61b8aedc2ea983bba07434fe0438bf1bd4c4e5f7ced8e5b3"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00817,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 71
+}

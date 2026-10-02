@@ -1,0 +1,17 @@
+{
+  "instance_id": "astropy__astropy-7336",
+  "arm": "text",
+  "publication": null,
+  "text_memory_sha256": "c34c38c20f51b9ca4892dfbf986b2b0b71e8c3b243751774c8151ea0af30e041",
+  "status": "predicted",
+  "started": 1790605249.9574273,
+  "image_inspect": "sha256:7721dedd07ff58d11785bf17b431efe0f5dc7ce01f4eff30067eeafc4f3c34ff",
+  "exit_status": "Submitted",
+  "steps": 29,
+  "model_patch": "diff --git a/astropy/units/decorators.py b/astropy/units/decorators.py\nindex 8bece5a85..abe21adbc 100644\n--- a/astropy/units/decorators.py\n+++ b/astropy/units/decorators.py\n@@ -220,8 +220,8 @@ class QuantityInput:\n             # Call the original function with any equivalencies in force.\n             with add_enabled_equivalencies(self.equivalencies):\n                 return_ = wrapped_function(*func_args, **func_kwargs)\n-            if wrapped_signature.return_annotation is not inspect.Signature.empty:\n-                return return_.to(wrapped_signature.return_annotation)\n+            if wrapped_signature.return_annotation is not inspect.Signature.empty and wrapped_signature.return_annotation is not None:\n+                return return_.to(wrapped_signature.return_annotation) if return_ is not None else return_\n             else:\n                 return return_\n \n",
+  "agent_seconds": 372.972398519516,
+  "grade_timeout_seconds": 300,
+  "resolved": true,
+  "grade_status": "graded",
+  "finished": 1790605649.394741
+}

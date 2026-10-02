@@ -1,0 +1,283 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790084333710139350-1658",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Monterrey MX 8862780, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    62801,
+    7820,
+    26690,
+    220,
+    23,
+    23,
+    21,
+    17,
+    22,
+    23,
+    15,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    20,
+    19,
+    16
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -91,
+  "answer": "541",
+  "finish_reason": "stop",
+  "elapsed_ms": 2781.104875,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Monterrey MX 8862780, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Monterrey (ID 8862780): country code MX; latitude 18.74028; longitude -97.14639; administrative codes 30/147; population 541; time zone America/Mexico_City. The source record was modified on 2014-04-11.",
+            "id": "geonames.8862780",
+            "key": "place Monterrey MX 8862780",
+            "kind": "fact",
+            "memory_hash": "688086e4f12749cc18305e85fb407b324c0559bdde3b51e2a74dcbe3c8d09ccd",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.8862780",
+              "revision": "4ee69503a83552e05ceaf91f2080aba1fd207804a9b3f18e1af43a124e959575"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 91,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.8862780",
+          "revision": "4ee69503a83552e05ceaf91f2080aba1fd207804a9b3f18e1af43a124e959575"
+        }
+      ],
+      "encoding_elapsed_ms": 607.7096760000001,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 91,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user According 8862780 what is its population assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.025966173969209194
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            94
+          ],
+          "score": 0.023878147825598717
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            117
+          ],
+          "score": 0.01563536562025547
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            119
+          ],
+          "score": 0.0118953762575984
+        },
+        {
+          "text": "8862780",
+          "source": "sequence",
+          "positions": [
+            131,
+            132,
+            133,
+            134,
+            135,
+            136,
+            137
+          ],
+          "score": 0.014263418386690319
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            139
+          ],
+          "score": 0.037811510264873505
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            140
+          ],
+          "score": 0.0149640878662467
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            141
+          ],
+          "score": 0.03421150892972946
+        },
+        {
+          "text": "population",
+          "source": "sequence",
+          "positions": [
+            142
+          ],
+          "score": 0.012177817523479462
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.021311506628990173
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.029893120750784874
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            157
+          ],
+          "score": 0.06612096726894379
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 91,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.8862780",
+          "revision": "4ee69503a83552e05ceaf91f2080aba1fd207804a9b3f18e1af43a124e959575"
+        }
+      ],
+      "encoding_elapsed_ms": 0.01146,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 71
+}

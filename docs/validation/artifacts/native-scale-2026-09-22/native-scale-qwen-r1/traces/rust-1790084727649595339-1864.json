@@ -1,0 +1,293 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790084727649595339-1864",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Itháki GR 261708, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    353,
+    337,
+    1886,
+    6433,
+    14345,
+    220,
+    17,
+    21,
+    16,
+    22,
+    15,
+    23,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    16,
+    23,
+    19,
+    18
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -92,
+  "answer": "1843",
+  "finish_reason": "stop",
+  "elapsed_ms": 3313.891678,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Itháki GR 261708, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Itháki (ID 261708): country code GR; latitude 38.36421; longitude 20.71848; administrative codes ESYE22/27; population 1843; time zone Europe/Athens. The source record was modified on 2012-01-17.",
+            "id": "geonames.261708",
+            "key": "place Itháki GR 261708",
+            "kind": "fact",
+            "memory_hash": "634df3e4b628aeb05f9b4ae2522b679fe96703c1fbb5cdee11185c2c00b9703b",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.261708",
+              "revision": "62e179f44174408c3d8d0f2d3456cdb0241d22cd5a6b4952b6ec4eae844fdfc7"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 92,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.261708",
+          "revision": "62e179f44174408c3d8d0f2d3456cdb0241d22cd5a6b4952b6ec4eae844fdfc7"
+        }
+      ],
+      "encoding_elapsed_ms": 598.2225639999999,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 92,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2012-01-17 Answer user 261708 what is its population assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.028751626145094633
+        },
+        {
+          "text": "2012-01-17",
+          "source": "aimee",
+          "positions": [
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90
+          ],
+          "score": 0.012855313681939151
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            95
+          ],
+          "score": 0.025874778628349304
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            118
+          ],
+          "score": 0.015567122027277946
+        },
+        {
+          "text": "261708",
+          "source": "sequence",
+          "positions": [
+            134,
+            135,
+            136,
+            137,
+            138,
+            139
+          ],
+          "score": 0.022336538648232818
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            141
+          ],
+          "score": 0.037833116948604584
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            142
+          ],
+          "score": 0.015901433303952217
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            143
+          ],
+          "score": 0.034178949892520905
+        },
+        {
+          "text": "population",
+          "source": "sequence",
+          "positions": [
+            144
+          ],
+          "score": 0.012739121913909912
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.02352960966527462
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            157
+          ],
+          "score": 0.030304154381155968
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            159
+          ],
+          "score": 0.06720353662967682
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 92,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.261708",
+          "revision": "62e179f44174408c3d8d0f2d3456cdb0241d22cd5a6b4952b6ec4eae844fdfc7"
+        }
+      ],
+      "encoding_elapsed_ms": 0.009881000000000001,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 73
+}

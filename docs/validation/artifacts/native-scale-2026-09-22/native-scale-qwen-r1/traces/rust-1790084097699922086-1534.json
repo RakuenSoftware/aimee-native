@@ -1,0 +1,283 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790084097699922086-1534",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Giubega RO 677150, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    14944,
+    386,
+    10863,
+    11474,
+    220,
+    21,
+    22,
+    22,
+    16,
+    20,
+    15,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    19,
+    16,
+    21,
+    21
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -91,
+  "answer": "4166",
+  "finish_reason": "stop",
+  "elapsed_ms": 3264.012637,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Giubega RO 677150, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Giubega (ID 677150): country code RO; latitude 44.1274; longitude 23.40757; administrative codes 17/72506; population 4166; time zone Europe/Bucharest. The source record was modified on 2012-06-12.",
+            "id": "geonames.677150",
+            "key": "place Giubega RO 677150",
+            "kind": "fact",
+            "memory_hash": "7410fad9d5bfb9a8a043288df98a8f0c012c4ebdadaefcf83c49e9b38f984ea2",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.677150",
+              "revision": "fb4c39c4f77770e08cf3caa912e8c9ef57d541395a6510f8398eadb7ba3ab49c"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 91,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.677150",
+          "revision": "fb4c39c4f77770e08cf3caa912e8c9ef57d541395a6510f8398eadb7ba3ab49c"
+        }
+      ],
+      "encoding_elapsed_ms": 603.448808,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 91,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user According 677150 what is its population assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.025331556797027588
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            94
+          ],
+          "score": 0.024663439020514488
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            117
+          ],
+          "score": 0.016413023695349693
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            119
+          ],
+          "score": 0.012174999341368675
+        },
+        {
+          "text": "677150",
+          "source": "sequence",
+          "positions": [
+            132,
+            133,
+            134,
+            135,
+            136,
+            137
+          ],
+          "score": 0.02976864657830447
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            139
+          ],
+          "score": 0.039517804980278015
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            140
+          ],
+          "score": 0.015182344242930412
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            141
+          ],
+          "score": 0.03686971217393875
+        },
+        {
+          "text": "population",
+          "source": "sequence",
+          "positions": [
+            142
+          ],
+          "score": 0.013209795579314232
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.021728133782744408
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.029650691896677017
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            157
+          ],
+          "score": 0.06378211826086044
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 91,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.677150",
+          "revision": "fb4c39c4f77770e08cf3caa912e8c9ef57d541395a6510f8398eadb7ba3ab49c"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00751,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 72
+}

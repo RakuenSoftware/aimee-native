@@ -1,0 +1,298 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790082873594081084-848",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Caronno Pertusella IT 6534234, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    3156,
+    263,
+    2083,
+    78964,
+    350,
+    6628,
+    8435,
+    220,
+    21,
+    20,
+    18,
+    19,
+    17,
+    18,
+    19,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    16,
+    21,
+    18,
+    22,
+    22
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -91,
+  "answer": "16377",
+  "finish_reason": "stop",
+  "elapsed_ms": 3663.753124,
+  "memory_encoding_passes": 1,
+  "native_reads": 96,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Caronno Pertusella IT 6534234, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Caronno Pertusella (ID 6534234): country code IT; latitude 45.59777; longitude 9.04634; administrative codes 09/VA; population 16377; time zone Europe/Rome. The source record was modified on 2014-01-16.",
+            "id": "geonames.6534234",
+            "key": "place Caronno Pertusella IT 6534234",
+            "kind": "fact",
+            "memory_hash": "479f18c853368bac25ded5e07f05cf015475173dacde2b5af1d7d8bb37b4b755",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.6534234",
+              "revision": "d571afa69ede367c7a7747e3ef863ba19a019cd352b0f94a6ddba4bcc31043b9"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 91,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.6534234",
+          "revision": "d571afa69ede367c7a7747e3ef863ba19a019cd352b0f94a6ddba4bcc31043b9"
+        }
+      ],
+      "encoding_elapsed_ms": 598.4240589999999,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 91,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2014-01-16 Answer user 6534234 what is its population assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.027635527309030294
+        },
+        {
+          "text": "2014-01-16",
+          "source": "aimee",
+          "positions": [
+            80,
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89
+          ],
+          "score": 0.011507793169585057
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            94
+          ],
+          "score": 0.024216212332248688
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            117
+          ],
+          "score": 0.013289856724441051
+        },
+        {
+          "text": "6534234",
+          "source": "sequence",
+          "positions": [
+            135,
+            136,
+            137,
+            138,
+            139,
+            140,
+            141
+          ],
+          "score": 0.02546836598776281
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            143
+          ],
+          "score": 0.038909271359443665
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            144
+          ],
+          "score": 0.014863939955830574
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            145
+          ],
+          "score": 0.036031149327754974
+        },
+        {
+          "text": "population",
+          "source": "sequence",
+          "positions": [
+            146
+          ],
+          "score": 0.01240556500852108
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            157
+          ],
+          "score": 0.022339925169944763
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            159
+          ],
+          "score": 0.03116043284535408
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.0646992027759552
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 91,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.6534234",
+          "revision": "d571afa69ede367c7a7747e3ef863ba19a019cd352b0f94a6ddba4bcc31043b9"
+        }
+      ],
+      "encoding_elapsed_ms": 0.010499999999999999,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 77
+}

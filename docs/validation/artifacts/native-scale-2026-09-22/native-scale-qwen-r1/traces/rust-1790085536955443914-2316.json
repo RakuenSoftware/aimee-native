@@ -1,0 +1,295 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790085536955443914-2316",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Valle Dorado Inn MX 8858161, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    74845,
+    23481,
+    2055,
+    16455,
+    26690,
+    220,
+    23,
+    23,
+    20,
+    23,
+    16,
+    21,
+    16,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    24,
+    24,
+    21,
+    21
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -95,
+  "answer": "9966",
+  "finish_reason": "stop",
+  "elapsed_ms": 3020.6892860000003,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Valle Dorado Inn MX 8858161, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Valle Dorado Inn (ID 8858161): country code MX; latitude 20.52444; longitude -103.36194; administrative codes 14/097; population 9966; time zone America/Mexico_City. The source record was modified on 2026-09-18.",
+            "id": "geonames.8858161",
+            "key": "place Valle Dorado Inn MX 8858161",
+            "kind": "fact",
+            "memory_hash": "92361fa6fab4d1c9796c036f34aada0f3541941c0a124e15bd28a32d2d280156",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.8858161",
+              "revision": "8ef852fe9e906bd1ffa38084dc10145a51519439c626bf6e0d5a80322390c702"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 95,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.8858161",
+          "revision": "8ef852fe9e906bd1ffa38084dc10145a51519439c626bf6e0d5a80322390c702"
+        }
+      ],
+      "encoding_elapsed_ms": 606.683062,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 95,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2026-09-18 Answer user 8858161 what is its population assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.024738048668950796
+        },
+        {
+          "text": "2026-09-18",
+          "source": "aimee",
+          "positions": [
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90,
+            91,
+            92,
+            93
+          ],
+          "score": 0.014765462226932868
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            98
+          ],
+          "score": 0.026188965886831284
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            121
+          ],
+          "score": 0.014012057334184647
+        },
+        {
+          "text": "8858161",
+          "source": "sequence",
+          "positions": [
+            137,
+            138,
+            139,
+            140,
+            141,
+            142,
+            143
+          ],
+          "score": 0.0131051727803424
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            145
+          ],
+          "score": 0.03819132596254349
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            146
+          ],
+          "score": 0.0152885802090168
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            147
+          ],
+          "score": 0.03617726266384125
+        },
+        {
+          "text": "population",
+          "source": "sequence",
+          "positions": [
+            148
+          ],
+          "score": 0.014942134730517864
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            159
+          ],
+          "score": 0.021672753617167473
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.02976284734904766
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            163
+          ],
+          "score": 0.06577446311712265
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 95,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.8858161",
+          "revision": "8ef852fe9e906bd1ffa38084dc10145a51519439c626bf6e0d5a80322390c702"
+        }
+      ],
+      "encoding_elapsed_ms": 0.009931,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 74
+}

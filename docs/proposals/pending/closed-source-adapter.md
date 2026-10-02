@@ -1,3 +1,10 @@
+> **2026-09-25 runtime decision:** The llama.cpp integration described below is
+> superseded. Production integration now targets unmodified vLLM through external
+> extension interfaces: no forks or upstream patches. See
+> [the current validation record](/docs/validation/vllm-native-20260925.md) and
+> [distribution/vllm](/distribution/vllm/README.md). Historical results below remain
+> evidence of the earlier work, not the current implementation plan.
+
 # Closed-source Qwen memory adapter
 
 State: long-term distribution requirement accepted; implementation approach
@@ -193,3 +200,12 @@ preload, attention-initiated recall and authorization enforcement. Selective
 obfuscation, opaque tables and a reverse-engineering resistance evaluation remain
 future work. Public interfaces and documentation can be scoped separately when
 the distribution contract is settled.
+
+## Distribution implementation checkpoint (2026-09-25)
+
+The [private distribution implementation](../../../distribution/README.md) now
+includes a signed Rust launcher, client-only library build and binary audit,
+preparation-cache primitive, Torch-free store reader, and pinned llama.cpp hook.
+[Validation and remaining gates](../../validation/native-distribution.md) distinguish
+working components from the unfinished ggml provider, hosted preparation feed
+and end-to-end release validation. No public or production release has occurred.

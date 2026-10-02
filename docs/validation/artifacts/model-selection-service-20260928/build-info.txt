@@ -1,0 +1,14 @@
+/opt/aimee-large-release-validation/model-selection-service/aimee-native-delivery: go1.26.7
+	path	github.com/RakuenSoftware/aimee-qwen/cmd/aimee-native-delivery
+	mod	github.com/RakuenSoftware/aimee-qwen	(devel)	
+	dep	github.com/JBailes/aimee/server-go	v0.0.0
+	=>	../aimee/server-go	(devel)	
+	
+	dep	golang.org/x/sys	v0.47.0	h1:o7XGOvZQCADBQQ4Y7VNq2dRWQR7JmOUW8Kxx4ZsNgWs=
+	build	-buildmode=exe
+	build	-compiler=gc
+	build	-trimpath=true
+	build	CGO_ENABLED=0
+	build	GOARCH=amd64
+	build	GOOS=linux
+	build	GOAMD64=v1

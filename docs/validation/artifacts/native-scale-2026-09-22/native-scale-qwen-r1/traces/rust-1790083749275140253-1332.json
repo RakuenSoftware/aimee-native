@@ -1,0 +1,293 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790083749275140253-1332",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place San Bartolomé de Béjar ES 3110843, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    5655,
+    27595,
+    335,
+    224507,
+    401,
+    164033,
+    18460,
+    18704,
+    220,
+    18,
+    16,
+    16,
+    15,
+    23,
+    19,
+    18,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    20,
+    17
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -89,
+  "answer": "52",
+  "finish_reason": "stop",
+  "elapsed_ms": 2093.0488330000003,
+  "memory_encoding_passes": 1,
+  "native_reads": 48,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place San Bartolomé de Béjar ES 3110843, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place San Bartolomé de Béjar (ID 3110843): country code ES; latitude 40.40783; longitude -5.66261; administrative codes 55/AV; population 52; time zone Europe/Madrid. The source record was modified on 2012-03-04.",
+            "id": "geonames.3110843",
+            "key": "place San Bartolomé de Béjar ES 3110843",
+            "kind": "fact",
+            "memory_hash": "88f24f3a192be646e15c5554ae82e3d1e5d067c72b094a671f6a78db58f9de57",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.3110843",
+              "revision": "44f1a943d69b2ad276a7965a9e1dfe1e2a05ee5e8b08c7a2d01b30d82adab609"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 89,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3110843",
+          "revision": "44f1a943d69b2ad276a7965a9e1dfe1e2a05ee5e8b08c7a2d01b30d82adab609"
+        }
+      ],
+      "encoding_elapsed_ms": 599.7569470000001,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 89,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 5.66261 Answer user 3110843 what is its population assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.028495717328041792
+        },
+        {
+          "text": "5.66261",
+          "source": "aimee",
+          "positions": [
+            44,
+            45,
+            46,
+            47,
+            48,
+            49,
+            50
+          ],
+          "score": 0.015573447497445159
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            92
+          ],
+          "score": 0.02227940782904625
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            115
+          ],
+          "score": 0.014170551672577858
+        },
+        {
+          "text": "3110843",
+          "source": "sequence",
+          "positions": [
+            134,
+            135,
+            136,
+            137,
+            138,
+            139,
+            140
+          ],
+          "score": 0.01431848923675716
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            142
+          ],
+          "score": 0.03786304593086243
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            143
+          ],
+          "score": 0.01452526357024908
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            144
+          ],
+          "score": 0.03321582078933716
+        },
+        {
+          "text": "population",
+          "source": "sequence",
+          "positions": [
+            145
+          ],
+          "score": 0.012802477926015854
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            156
+          ],
+          "score": 0.022640584036707878
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            158
+          ],
+          "score": 0.02965502254664898
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            160
+          ],
+          "score": 0.065019890666008
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 89,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3110843",
+          "revision": "44f1a943d69b2ad276a7965a9e1dfe1e2a05ee5e8b08c7a2d01b30d82adab609"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00548,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 75
+}

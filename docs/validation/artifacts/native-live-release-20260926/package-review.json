@@ -1,0 +1,37 @@
+{
+  "scope": "Controlled private preview on the existing Rakuen test infrastructure; not public redistribution or arbitrary model/container support",
+  "runtime_image_config": "87d4ee28688c4862d2fe0bb8980fd4375d91950155c6699736c47a2bb93fc8d6",
+  "registry_manifest": "sha256:4c1bbba066a23f55ff18c0d27569833879be4073cc43273cd3990ddeb09cc52f",
+  "binary_review": {
+    "consumer_library": "Extracted from the exact r13 image; ABI/export/debug/private-marker audit passed",
+    "client_package": "Explicit allowlist: compiled consumer, signed runtime/profile metadata, model/tokenizer files and notices; no hosted compiler, source exporter, source database credential, client enrollment credential or signing key",
+    "runtime": "Unmodified pinned vLLM with the private supported extension; no monkeypatch entrypoint or fork",
+    "limitations": "Compiled code can still be reverse engineered; no secrecy guarantee is claimed"
+  },
+  "dependency_review": {
+    "native_rust_packages": 194,
+    "launcher_rust_packages": 150,
+    "reachable_rust_missing_notices": 0,
+    "rust_license_families": "MIT, Apache-2.0 (including LLVM exception), BSD, ISC, Zlib, Unicode-3.0, BSL-1.0 and CDLA-Permissive-2.0; bundled notices retained",
+    "model_notice": "Gemma 4 Apache-2.0 license and Q8_0 conversion notice retained",
+    "model_sources": ["https://huggingface.co/google/gemma-4-12B", "https://ai.google.dev/gemma/apache_2"],
+    "python_and_os": "Exact inventories and matched-image remediation retained under native-production-20260926; third-party container notices remain in the image",
+    "security_scope": "Loopback text API, signed local model files, no remote model code, no user-supplied Python/class/checkpoint execution",
+    "known_limitations": [
+      "Pinned Torch still crashes on the isolated TorchScript class reproducer; this is outside the certified text-serving interface, not a patched vulnerability",
+      "Setuptools 79.0.1 remains pinned for upstream compatibility; private package builds use an explicit ASCII file list and do not publish an sdist",
+      "Installed flash-attention training advisory modules are absent; a separate torch.load call exists outside the certified loader",
+      "OS scan retains 207 medium/low non-header entries and 3865 kernel-header entries; no available Ubuntu fix and no non-header high/critical entry remained in r13",
+      "External redistribution requires its own complete review of container source/notice obligations; this record does not approve a public release"
+    ]
+  },
+  "performance_review": {
+    "cold_activation_microsecond_target_met": false,
+    "resident_lookup_median_us": 0.54,
+    "three_record_cold_activation_median_ms": 26.65,
+    "thirty_two_record_cold_activation_median_ms": 122.36,
+    "new_ordered_working_set": "Private CPU model preparation may take tens of seconds; the observed first fallback request took 42.617 seconds including preparation and generation. Repeated request took 1.888 seconds including generation.",
+    "claim_boundary": "Preparation, activation, attention and end-to-end inference are different measurements. No universal speedup or microsecond cold-path claim. Source order is retained in the preparation identity."
+  },
+  "decision": "Reviewed for controlled private-preview installation and lifecycle validation with the stated limits; not a public-production security or redistribution clearance"
+}

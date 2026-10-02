@@ -1,0 +1,302 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790085216154506110-2134",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Sulebhāvi IN 10975920, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    326,
+    1075,
+    50125,
+    29656,
+    9676,
+    1897,
+    220,
+    16,
+    15,
+    24,
+    22,
+    20,
+    24,
+    17,
+    15,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    37186,
+    31766,
+    60579
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -93,
+  "answer": "Asia/Kolkata",
+  "finish_reason": "stop",
+  "elapsed_ms": 2556.615999,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Sulebhāvi IN 10975920, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Sulebhāvi (ID 10975920): country code IN; latitude 15.89572; longitude 74.65494; administrative codes 19/555; population 8503; time zone Asia/Kolkata. The source record was modified on 2025-06-13.",
+            "id": "geonames.10975920",
+            "key": "place Sulebhāvi IN 10975920",
+            "kind": "fact",
+            "memory_hash": "0330bcc60d8f3402d118758d2a152bc4f1a7dbf6dd54d03aadfcb27fd67f0d7d",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.10975920",
+              "revision": "efdb17ced582d0d6f539c49a9c60f1586ae04753f8196c498f41c0340784401a"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 93,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.10975920",
+          "revision": "efdb17ced582d0d6f539c49a9c60f1586ae04753f8196c498f41c0340784401a"
+        }
+      ],
+      "encoding_elapsed_ms": 602.0608400000001,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 93,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2025-06-13 Answer user Sulebhāvi 10975920 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.0260188365355134
+        },
+        {
+          "text": "2025-06-13",
+          "source": "aimee",
+          "positions": [
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90,
+            91
+          ],
+          "score": 0.018456660327501595
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            96
+          ],
+          "score": 0.023373354226350784
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            119
+          ],
+          "score": 0.014176016673445702
+        },
+        {
+          "text": "Sulebhāvi",
+          "source": "sequence",
+          "positions": [
+            129,
+            130,
+            131,
+            132,
+            133
+          ],
+          "score": 0.016539151780307293
+        },
+        {
+          "text": "10975920",
+          "source": "sequence",
+          "positions": [
+            136,
+            137,
+            138,
+            139,
+            140,
+            141,
+            142,
+            143
+          ],
+          "score": 0.027575660962611437
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            145
+          ],
+          "score": 0.03527861088514328
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            146
+          ],
+          "score": 0.01239559706300497
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            147
+          ],
+          "score": 0.028354283422231674
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            160
+          ],
+          "score": 0.022507626563310623
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            162
+          ],
+          "score": 0.03070557676255703
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            164
+          ],
+          "score": 0.06779514253139496
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 93,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.10975920",
+          "revision": "efdb17ced582d0d6f539c49a9c60f1586ae04753f8196c498f41c0340784401a"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00622,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 76
+}

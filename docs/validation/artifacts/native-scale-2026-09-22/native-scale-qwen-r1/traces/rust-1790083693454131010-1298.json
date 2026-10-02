@@ -1,0 +1,291 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790083693454131010-1298",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Diktepe TR 316681, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    414,
+    214895,
+    370,
+    4823,
+    220,
+    18,
+    16,
+    21,
+    21,
+    23,
+    16,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    21,
+    21,
+    20
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -91,
+  "answer": "665",
+  "finish_reason": "stop",
+  "elapsed_ms": 2687.0042500000004,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Diktepe TR 316681, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Diktepe (ID 316681): country code TR; latitude 37.91974; longitude 41.06119; administrative codes 21/439825; population 665; time zone Europe/Istanbul. The source record was modified on 2025-05-10.",
+            "id": "geonames.316681",
+            "key": "place Diktepe TR 316681",
+            "kind": "fact",
+            "memory_hash": "ab847b21c157a74549b0f0e40e507af2444d7e4b76306a9959d95d68f31e2c1c",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.316681",
+              "revision": "df8f6bdd6bbd30ab9036a5329cc4a599ca3620e3c611d014f6afba3d6d41f70d"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 91,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.316681",
+          "revision": "df8f6bdd6bbd30ab9036a5329cc4a599ca3620e3c611d014f6afba3d6d41f70d"
+        }
+      ],
+      "encoding_elapsed_ms": 600.1634230000001,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 91,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2025-05-10 Answer user According 316681 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.026376887690275908
+        },
+        {
+          "text": "2025-05-10",
+          "source": "aimee",
+          "positions": [
+            80,
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89
+          ],
+          "score": 0.024251988535979763
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            94
+          ],
+          "score": 0.024175172671675682
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            117
+          ],
+          "score": 0.01609746366739273
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            119
+          ],
+          "score": 0.0120593486353755
+        },
+        {
+          "text": "316681",
+          "source": "sequence",
+          "positions": [
+            132,
+            133,
+            134,
+            135,
+            136,
+            137
+          ],
+          "score": 0.0211167533416301
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            139
+          ],
+          "score": 0.036809809505939484
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            140
+          ],
+          "score": 0.014229550026357174
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            141
+          ],
+          "score": 0.033526480197906494
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.020901378244161606
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.031650789082050323
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            157
+          ],
+          "score": 0.06377518177032471
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 91,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.316681",
+          "revision": "df8f6bdd6bbd30ab9036a5329cc4a599ca3620e3c611d014f6afba3d6d41f70d"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00907,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 71
+}

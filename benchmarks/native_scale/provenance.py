@@ -1,0 +1,6 @@
+"""Capture public execution provenance, excluding private database/signing state."""
+import datetime,hashlib,json,platform,subprocess,sys
+from pathlib import Path
+repo=Path(__file__).resolve().parents[2];out=Path(sys.argv[1]);paths=list((repo/'benchmarks/native_scale').rglob('*.py'))+list((repo/'benchmarks/native_scale').rglob('*.go'))+[repo/'benchmarks/native_scale/PLAN.md',repo/'benchmarks/native_replication/reuse_worker.py',repo/'integrations/qwen_aimee/qwen_adapter.py',repo/'.local/bin/scale-ingest',repo/'.local/bin/aimee-memory-image',repo/'.local/bin/aimee-issue-fixture',repo/'target/release/aimee-qwen',repo/'integrations/qwen_aimee/placement-dual7900xtx-int8.json']
+value=dict(created= datetime.datetime.now(datetime.timezone.utc).isoformat(),aimee_source='ad3585ac5381e3f0569dd8661b41fbe82cd6501d',campaign_source_commit='1d81845',platform=platform.platform(),python=sys.version,files={str(p.relative_to(repo)):hashlib.sha256(p.read_bytes()).hexdigest() for p in paths},models={'Qwen/Qwen3.8-27B':'1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0','google/gemma-4-12B-it':'707f0a3b8a3c7ad586ed01e27eafbad8a27dd0f7'},postgres=subprocess.check_output(['psql','--version'],text=True).strip(),model_account=subprocess.check_output(['id','memory-model'],text=True).strip())
+with out.open('x') as f:json.dump(value,f,indent=2)

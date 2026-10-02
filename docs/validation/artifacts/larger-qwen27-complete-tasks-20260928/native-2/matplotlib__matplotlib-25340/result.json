@@ -1,0 +1,17 @@
+{
+  "instance_id": "matplotlib__matplotlib-25340",
+  "arm": "native-2",
+  "publication": "bc723898df11d5368a4771b1625b2be5236461bafde178f978406254ad14670f",
+  "text_memory_sha256": null,
+  "status": "predicted",
+  "started": 1790607036.9045107,
+  "image_inspect": "sha256:f3fa1c41b6d4e120909345d4a08ba9ecb02f30ee67566f7e997a60fb729eff51",
+  "exit_status": "Submitted",
+  "steps": 12,
+  "model_patch": "diff --git a/lib/matplotlib/widgets.py b/lib/matplotlib/widgets.py\nindex eb4b97da27..74b40cc0bf 100644\n--- a/lib/matplotlib/widgets.py\n+++ b/lib/matplotlib/widgets.py\n@@ -948,8 +948,10 @@ class RangeSlider(SliderBase):\n         val = np.sort(val)\n         _api.check_shape((2,), val=val)\n         vmin, vmax = val\n-        vmin = self._min_in_bounds(vmin)\n-        vmax = self._max_in_bounds(vmax)\n+        vmin = self._stepped_value(max(vmin, self.valmin))\n+        vmax = self._stepped_value(min(vmax, self.valmax))\n+        if vmin > vmax:\n+            vmin, vmax = vmax, vmin\n         self._update_selection_poly(vmin, vmax)\n         if self.orientation == \"vertical\":\n             self._handles[0].set_ydata([vmin])\n",
+  "agent_seconds": 128.86491775512695,
+  "grade_timeout_seconds": 300,
+  "resolved": true,
+  "grade_status": "graded",
+  "finished": 1790607262.6407478
+}

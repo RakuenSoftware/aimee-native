@@ -1,0 +1,291 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790082973428952158-906",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Kowalewo Pomorskie PL 3094953, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    710,
+    358,
+    1519,
+    1090,
+    37042,
+    1052,
+    29334,
+    10009,
+    220,
+    18,
+    15,
+    24,
+    19,
+    24,
+    20,
+    18,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    19,
+    15,
+    23,
+    16
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -96,
+  "answer": "4081",
+  "finish_reason": "stop",
+  "elapsed_ms": 2977.8063230000002,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Kowalewo Pomorskie PL 3094953, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Kowalewo Pomorskie (ID 3094953): country code PL; latitude 53.15432; longitude 18.89868; administrative codes 73/0405; population 4081; time zone Europe/Warsaw. The source record was modified on 2010-09-14.",
+            "id": "geonames.3094953",
+            "key": "place Kowalewo Pomorskie PL 3094953",
+            "kind": "fact",
+            "memory_hash": "26ed6244dfe9c31d0b940920f8b3fc96983b9c5871fbfedfcbeb1530e779b1ab",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.3094953",
+              "revision": "a566b49cc2adcdb76a86bd3eb06785db907b2010c98eb987b0544c1145840268"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 96,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3094953",
+          "revision": "a566b49cc2adcdb76a86bd3eb06785db907b2010c98eb987b0544c1145840268"
+        }
+      ],
+      "encoding_elapsed_ms": 514.9710640000001,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 96,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user Pomorskie 3094953 what is its population assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.024240903556346893
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            99
+          ],
+          "score": 0.022415898740291595
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            122
+          ],
+          "score": 0.013461018912494183
+        },
+        {
+          "text": "Pomorskie",
+          "source": "sequence",
+          "positions": [
+            136,
+            137,
+            138
+          ],
+          "score": 0.01234107674099505
+        },
+        {
+          "text": "3094953",
+          "source": "sequence",
+          "positions": [
+            141,
+            142,
+            143,
+            144,
+            145,
+            146,
+            147
+          ],
+          "score": 0.027422043145634234
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            149
+          ],
+          "score": 0.0389651395380497
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            150
+          ],
+          "score": 0.014504658989608288
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            151
+          ],
+          "score": 0.03330979868769646
+        },
+        {
+          "text": "population",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.012363620102405548
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            163
+          ],
+          "score": 0.022960906848311424
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            165
+          ],
+          "score": 0.03309324383735657
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            167
+          ],
+          "score": 0.06548832356929779
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 96,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3094953",
+          "revision": "a566b49cc2adcdb76a86bd3eb06785db907b2010c98eb987b0544c1145840268"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00885,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 77
+}

@@ -1,0 +1,301 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790081630900729032-168",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Soursac FR 2973937, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    326,
+    2391,
+    565,
+    16164,
+    220,
+    17,
+    24,
+    22,
+    18,
+    24,
+    18,
+    22,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    29774,
+    14,
+    57590
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -87,
+  "answer": "Europe/Paris",
+  "finish_reason": "stop",
+  "elapsed_ms": 2554.693588,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Soursac FR 2973937, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Soursac (ID 2973937): country code FR; latitude 45.27535; longitude 2.20117; administrative codes 75/19; population 533; time zone Europe/Paris. The source record was modified on 2019-04-10.",
+            "id": "geonames.2973937",
+            "key": "place Soursac FR 2973937",
+            "kind": "fact",
+            "memory_hash": "df81aa283bd0590e98907152b3b35610ff79fdb6f9d3bc987f66b91b9253c803",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.2973937",
+              "revision": "73e3099df4702e20eb7a4c6865f17be5902892b85390a3cd002778c0b393333f"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 87,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.2973937",
+          "revision": "73e3099df4702e20eb7a4c6865f17be5902892b85390a3cd002778c0b393333f"
+        }
+      ],
+      "encoding_elapsed_ms": 616.151648,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 87,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 45.27535 2019-04-10 Answer user 2973937 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.023651721887290478
+        },
+        {
+          "text": "45.27535",
+          "source": "aimee",
+          "positions": [
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36
+          ],
+          "score": 0.011734325787983835
+        },
+        {
+          "text": "2019-04-10",
+          "source": "aimee",
+          "positions": [
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84,
+            85
+          ],
+          "score": 0.011673681088723242
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            90
+          ],
+          "score": 0.026287492364645004
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            113
+          ],
+          "score": 0.014168824069201946
+        },
+        {
+          "text": "2973937",
+          "source": "sequence",
+          "positions": [
+            128,
+            129,
+            130,
+            131,
+            132,
+            133,
+            134
+          ],
+          "score": 0.03219376888591796
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            136
+          ],
+          "score": 0.03664660453796387
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            137
+          ],
+          "score": 0.01350482925772667
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            138
+          ],
+          "score": 0.030005674809217453
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            151
+          ],
+          "score": 0.02232968620955944
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            153
+          ],
+          "score": 0.02908865362405777
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            155
+          ],
+          "score": 0.06582429260015488
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 87,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.2973937",
+          "revision": "73e3099df4702e20eb7a4c6865f17be5902892b85390a3cd002778c0b393333f"
+        }
+      ],
+      "encoding_elapsed_ms": 0.005281,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 73
+}

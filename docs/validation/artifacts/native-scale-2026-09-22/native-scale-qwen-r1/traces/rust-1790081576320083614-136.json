@@ -1,0 +1,285 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790081576320083614-136",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Adamov CZ 3079842, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    14601,
+    833,
+    67413,
+    220,
+    18,
+    15,
+    22,
+    24,
+    23,
+    19,
+    17,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    29774,
+    14,
+    3417,
+    4511
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -89,
+  "answer": "Europe/Prague",
+  "finish_reason": "stop",
+  "elapsed_ms": 2982.132721,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Adamov CZ 3079842, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Adamov (ID 3079842): country code CZ; latitude 49.00052; longitude 14.5395; administrative codes 79/0311; population 509; time zone Europe/Prague. The source record was modified on 2018-09-09.",
+            "id": "geonames.3079842",
+            "key": "place Adamov CZ 3079842",
+            "kind": "fact",
+            "memory_hash": "299032c29513be4c64e2803a7c7937f42c1459904cbea5f8261d4bd9ec6f7a1b",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.3079842",
+              "revision": "926b79ba95cac61cf4ab44e78a0cec3b1556e901a8744a46d269cfc59ca64902"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 89,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3079842",
+          "revision": "926b79ba95cac61cf4ab44e78a0cec3b1556e901a8744a46d269cfc59ca64902"
+        }
+      ],
+      "encoding_elapsed_ms": 597.4067739999999,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 89,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Answer user According 3079842 what is its Return assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02527371421456337
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            92
+          ],
+          "score": 0.025923777371644974
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            115
+          ],
+          "score": 0.01546601951122284
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            117
+          ],
+          "score": 0.011961015872657299
+        },
+        {
+          "text": "3079842",
+          "source": "sequence",
+          "positions": [
+            129,
+            130,
+            131,
+            132,
+            133,
+            134,
+            135
+          ],
+          "score": 0.020807298191357404
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            137
+          ],
+          "score": 0.03999241441488266
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            138
+          ],
+          "score": 0.013379594311118126
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            139
+          ],
+          "score": 0.03196898102760315
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            143
+          ],
+          "score": 0.011615282855927944
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.021013682708144188
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.03125894069671631
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            156
+          ],
+          "score": 0.06486918777227402
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 89,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3079842",
+          "revision": "926b79ba95cac61cf4ab44e78a0cec3b1556e901a8744a46d269cfc59ca64902"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00573,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 73
+}

@@ -1,0 +1,52 @@
+{
+  "version": "0.2.0",
+  "scope": "Controlled standalone vLLM plugin preview; user supplies supported vLLM and model files.",
+  "wheel": "aimee_vllm-0.2.0-1-cp312-cp312-linux_x86_64.whl",
+  "url": "https://192.168.0.126:8445/plugins/portable/0.2.0/aimee_vllm-0.2.0-1-cp312-cp312-linux_x86_64.whl",
+  "sha256": "511a16373291774b85d427468f484fedc531310465c25ee55d22fa79ec99ce37",
+  "bytes": 3081352,
+  "compatibility": {
+    "schema": 2,
+    "vllm": ">=0.30.0,<0.31",
+    "backends": [
+      "cuda",
+      "hip"
+    ],
+    "gpu_arch": "runtime",
+    "tensor_bridge": "public-torch-api",
+    "scope": "Runtime-compiled GPU operations. Execution coverage is recorded separately."
+  },
+  "gguf_dependency": {
+    "status": "passed",
+    "scope": "Package upstream's existing Triton fallback without its optional GPU binary.\n\nNo source changes or monkey-patching. Preserve every other upstream asset.\n",
+    "original_sha256": "2520859757494f641926a2c13ad267f6ec4a103001deaa55a71f78781981ebbf",
+    "file": "vllm_gguf_plugin-0.0.5+triton-py3-none-any.whl",
+    "sha256": "616360d726fbaf88c96ebbe9ec4a62fc69ba86cba591f1a8b609199ad5339246",
+    "bytes": 230630,
+    "unchanged_code_assets": 131,
+    "omitted_optional_assets": [
+      "vllm_gguf_plugin/_C_gguf.abi3.so"
+    ],
+    "url": "https://192.168.0.126:8445/plugins/portable/0.2.0/vllm_gguf_plugin-0.0.5+triton-py3-none-any.whl"
+  },
+  "models": [
+    "Gemma4 12B",
+    "Gemma4 26B",
+    "Qwen3.8 27B"
+  ],
+  "private_encoder_source_included": false,
+  "generic_triton_kernel_source_included": true,
+  "executed_gpu_architectures": [
+    "gfx1100"
+  ],
+  "compilation_only_architectures": [
+    "sm80",
+    "sm89",
+    "sm90",
+    "sm120",
+    "gfx942",
+    "gfx1201"
+  ],
+  "public_bootstrap_source_included": true,
+  "runtime_image_included": false
+}

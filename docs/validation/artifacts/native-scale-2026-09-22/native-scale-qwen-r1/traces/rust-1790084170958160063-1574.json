@@ -1,0 +1,294 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790084170958160063-1574",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Ciriè IT 3178650, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    351,
+    20053,
+    4311,
+    8435,
+    220,
+    18,
+    16,
+    22,
+    23,
+    21,
+    20,
+    15,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    29774,
+    18794,
+    617
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -88,
+  "answer": "Europe/Rome",
+  "finish_reason": "stop",
+  "elapsed_ms": 2763.026578,
+  "memory_encoding_passes": 1,
+  "native_reads": 64,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Ciriè IT 3178650, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Ciriè (ID 3178650): country code IT; latitude 45.23486; longitude 7.60125; administrative codes 12/TO; population 17439; time zone Europe/Rome. The source record was modified on 2015-07-21.",
+            "id": "geonames.3178650",
+            "key": "place Ciriè IT 3178650",
+            "kind": "fact",
+            "memory_hash": "6a4a4920b9b9d35d40db65da2110927b0cfaeffc98912bd5aed3825a0b85c916",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.3178650",
+              "revision": "155787c8d26f72386519425db049a394ab3e84073027d94307b251f865791c7f"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 88,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3178650",
+          "revision": "155787c8d26f72386519425db049a394ab3e84073027d94307b251f865791c7f"
+        }
+      ],
+      "encoding_elapsed_ms": 605.7039589999999,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 88,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 2015-07-21 Answer user According 3178650 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02514231577515602
+        },
+        {
+          "text": "2015-07-21",
+          "source": "aimee",
+          "positions": [
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84,
+            85,
+            86
+          ],
+          "score": 0.01242227568582166
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            91
+          ],
+          "score": 0.027511660009622574
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            114
+          ],
+          "score": 0.01470369752496481
+        },
+        {
+          "text": "According",
+          "source": "sequence",
+          "positions": [
+            116
+          ],
+          "score": 0.011963929049670696
+        },
+        {
+          "text": "3178650",
+          "source": "sequence",
+          "positions": [
+            129,
+            130,
+            131,
+            132,
+            133,
+            134,
+            135
+          ],
+          "score": 0.026510824915021658
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            137
+          ],
+          "score": 0.03538975119590759
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            138
+          ],
+          "score": 0.013315275311470032
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            139
+          ],
+          "score": 0.03172723203897476
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            152
+          ],
+          "score": 0.02228507027029991
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            154
+          ],
+          "score": 0.02959178388118744
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            156
+          ],
+          "score": 0.06441248953342438
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 88,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.3178650",
+          "revision": "155787c8d26f72386519425db049a394ab3e84073027d94307b251f865791c7f"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00876,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 73
+}

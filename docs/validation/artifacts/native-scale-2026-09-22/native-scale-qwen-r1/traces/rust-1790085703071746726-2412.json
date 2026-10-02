@@ -1,0 +1,301 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790085703071746726-2412",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Saint-Maurice-de-Lignon FR 2978158, what is its population? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    13799,
+    5084,
+    3974,
+    543,
+    6596,
+    7869,
+    59617,
+    16164,
+    220,
+    17,
+    24,
+    22,
+    23,
+    16,
+    20,
+    23,
+    11,
+    1092,
+    369,
+    1141,
+    6823,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    16,
+    23,
+    24,
+    21
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -90,
+  "answer": "1896",
+  "finish_reason": "stop",
+  "elapsed_ms": 2995.6509699999997,
+  "memory_encoding_passes": 1,
+  "native_reads": 80,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Saint-Maurice-de-Lignon FR 2978158, what is its population? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Saint-Maurice-de-Lignon (ID 2978158): country code FR; latitude 45.2243; longitude 4.1388; administrative codes 84/43; population 1896; time zone Europe/Paris. The source record was modified on 2019-04-10.",
+            "id": "geonames.2978158",
+            "key": "place Saint-Maurice-de-Lignon FR 2978158",
+            "kind": "fact",
+            "memory_hash": "7dfc8abfde4ab5a0e80ed906b694c58771f3aa849cc4b9ca247b6723cf579376",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.2978158",
+              "revision": "22a04dea24e6ac2f687fc61ff8041fdf46b273001d4923d44e23c8d95ba8f8af"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 90,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.2978158",
+          "revision": "22a04dea24e6ac2f687fc61ff8041fdf46b273001d4923d44e23c8d95ba8f8af"
+        }
+      ],
+      "encoding_elapsed_ms": 592.981813,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 90,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative Saint-Maurice-de-Lignon Answer user Saint-Maurice-de-Lignon 2978158 what is its assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02702105324715376
+        },
+        {
+          "text": "Saint-Maurice-de-Lignon",
+          "source": "aimee",
+          "positions": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15
+          ],
+          "score": 0.01911007461603731
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            93
+          ],
+          "score": 0.022109907120466232
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            116
+          ],
+          "score": 0.014016623608767986
+        },
+        {
+          "text": "Saint-Maurice-de-Lignon",
+          "source": "sequence",
+          "positions": [
+            126,
+            127,
+            128,
+            129,
+            130,
+            131,
+            132
+          ],
+          "score": 0.025023791939020157
+        },
+        {
+          "text": "2978158",
+          "source": "sequence",
+          "positions": [
+            135,
+            136,
+            137,
+            138,
+            139,
+            140,
+            141
+          ],
+          "score": 0.025540310249198228
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            143
+          ],
+          "score": 0.036816101521253586
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            144
+          ],
+          "score": 0.0137740857899189
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            145
+          ],
+          "score": 0.03262576460838318
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            157
+          ],
+          "score": 0.022937528789043427
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            159
+          ],
+          "score": 0.03097883239388466
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            161
+          ],
+          "score": 0.06524744629859924
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 90,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.2978158",
+          "revision": "22a04dea24e6ac2f687fc61ff8041fdf46b273001d4923d44e23c8d95ba8f8af"
+        }
+      ],
+      "encoding_elapsed_ms": 0.00548,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 77
+}

@@ -1,0 +1,297 @@
+{
+  "cache_transition": {
+    "retained": 0,
+    "invalidated": 0
+  },
+  "runtime": "rust-libtorch",
+  "id": "rust-1790081675966867950-192",
+  "logit_trace": [],
+  "attention_trace": [],
+  "generation_prompt": "<|im_start|>system\nAnswer using the available memory. Return only the requested value or values. If unknown, return unknown.<|im_end|>\n<|im_start|>user\nAccording to the GeoNames record for place Ejido la Purísima MX 8860274, what is its time zone? Return only the recorded value.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "prompt_token_ids": [
+    248045,
+    8678,
+    198,
+    15666,
+    1608,
+    279,
+    2420,
+    4779,
+    13,
+    3301,
+    1132,
+    279,
+    10897,
+    869,
+    466,
+    2663,
+    13,
+    1368,
+    9496,
+    11,
+    460,
+    9496,
+    13,
+    248046,
+    198,
+    248045,
+    846,
+    198,
+    10865,
+    310,
+    279,
+    30862,
+    7729,
+    3150,
+    364,
+    1925,
+    50983,
+    5082,
+    1147,
+    14114,
+    216211,
+    26690,
+    220,
+    23,
+    23,
+    21,
+    15,
+    17,
+    22,
+    19,
+    11,
+    1092,
+    369,
+    1141,
+    854,
+    9842,
+    30,
+    3301,
+    1132,
+    279,
+    12076,
+    869,
+    13,
+    248046,
+    198,
+    248045,
+    74455,
+    198,
+    248068,
+    271,
+    248069,
+    271
+  ],
+  "generated_token_ids": [
+    30014,
+    9964,
+    325,
+    3822,
+    892,
+    477
+  ],
+  "memory_prompt_tokens": 0,
+  "publication": "c109836f3d1c97d001943dcf20d62ae82f96918146e3e5bb19c9bdd469afe366",
+  "memory_encoding": "content",
+  "memory_encoding_granularity": "record",
+  "memory_before_prompt": true,
+  "memory_position_offset": -94,
+  "answer": "America/Mexico_City",
+  "finish_reason": "stop",
+  "elapsed_ms": 4110.192451,
+  "memory_encoding_passes": 1,
+  "native_reads": 112,
+  "bank_residence": "ram",
+  "recall_events": [
+    {
+      "origin": "prompt_preload",
+      "query": "According to the GeoNames record for place Ejido la Purísima MX 8860274, what is its time zone? Return only the recorded value.",
+      "limit": 4,
+      "aimee_response": {
+        "active_context_missing": false,
+        "facts": [
+          {
+            "confidence": 1,
+            "content": "GeoNames lists place Ejido la Purísima (ID 8860274): country code MX; latitude 19.55444; longitude -99.72222; administrative codes 15/042; population 900; time zone America/Mexico_City. The source record was modified on 2014-04-11.",
+            "id": "geonames.8860274",
+            "key": "place Ejido la Purísima MX 8860274",
+            "kind": "fact",
+            "memory_hash": "81a4904390076e88be017af124077b27f6e48781a72d2455d197a351abd350b5",
+            "memory_ref": {
+              "namespace": "aimee-general-v1",
+              "id": "geonames.8860274",
+              "revision": "4c6cff2d71a869cfb421ba9f2d2eba94a709020dcd2c6811e9388242be38a24d"
+            },
+            "scope": {
+              "type": "global",
+              "value": "_global"
+            },
+            "tier": "L3"
+          }
+        ],
+        "status": "ok",
+        "windows": []
+      },
+      "addressed_spans": [],
+      "step": 0,
+      "phase": "preload",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 94,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.8860274",
+          "revision": "4c6cff2d71a869cfb421ba9f2d2eba94a709020dcd2c6811e9388242be38a24d"
+        }
+      ],
+      "encoding_elapsed_ms": 606.849732,
+      "record_working_set_hits": 0,
+      "record_cache_hits": 0,
+      "records_encoded": 1,
+      "tokens_encoded": 94,
+      "status": "bank_updated"
+    },
+    {
+      "origin": "qwen_attention_query",
+      "query": "Authoritative 99.72222 Answer user 8860274 what is its Return assistant think think",
+      "limit": 4,
+      "aimee_response": {
+        "facts": [],
+        "windows": [],
+        "active_context_missing": false
+      },
+      "addressed_spans": [
+        {
+          "text": "Authoritative",
+          "source": "aimee",
+          "positions": [
+            0,
+            1
+          ],
+          "score": 0.02482318039983511
+        },
+        {
+          "text": "99.72222",
+          "source": "aimee",
+          "positions": [
+            42,
+            43,
+            44,
+            45,
+            46,
+            47,
+            48,
+            49
+          ],
+          "score": 0.01578373319352977
+        },
+        {
+          "text": "Answer",
+          "source": "sequence",
+          "positions": [
+            97
+          ],
+          "score": 0.025116002187132835
+        },
+        {
+          "text": "user",
+          "source": "sequence",
+          "positions": [
+            120
+          ],
+          "score": 0.0135072972625494
+        },
+        {
+          "text": "8860274",
+          "source": "sequence",
+          "positions": [
+            137,
+            138,
+            139,
+            140,
+            141,
+            142,
+            143
+          ],
+          "score": 0.015472127823159099
+        },
+        {
+          "text": "what",
+          "source": "sequence",
+          "positions": [
+            145
+          ],
+          "score": 0.035551704466342926
+        },
+        {
+          "text": "is",
+          "source": "sequence",
+          "positions": [
+            146
+          ],
+          "score": 0.013484157621860504
+        },
+        {
+          "text": "its",
+          "source": "sequence",
+          "positions": [
+            147
+          ],
+          "score": 0.029943406581878662
+        },
+        {
+          "text": "Return",
+          "source": "sequence",
+          "positions": [
+            151
+          ],
+          "score": 0.01113427709788084
+        },
+        {
+          "text": "assistant",
+          "source": "sequence",
+          "positions": [
+            160
+          ],
+          "score": 0.021952306851744652
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            162
+          ],
+          "score": 0.028518659994006157
+        },
+        {
+          "text": "think",
+          "source": "sequence",
+          "positions": [
+            164
+          ],
+          "score": 0.06583809852600098
+        }
+      ],
+      "step": 0,
+      "phase": "prefill",
+      "encoding_format": "content",
+      "encoding_granularity": "record",
+      "memory_encoding_tokens": 94,
+      "bank_memory_ids": [
+        {
+          "namespace": "aimee-general-v1",
+          "id": "geonames.8860274",
+          "revision": "4c6cff2d71a869cfb421ba9f2d2eba94a709020dcd2c6811e9388242be38a24d"
+        }
+      ],
+      "encoding_elapsed_ms": 0.01235,
+      "record_working_set_hits": 1,
+      "record_cache_hits": 0,
+      "records_encoded": 0,
+      "tokens_encoded": 0,
+      "status": "bank_unchanged"
+    }
+  ],
+  "main_cache_length": 78
+}
