@@ -48,7 +48,7 @@ with tempfile.TemporaryDirectory(prefix='aimee-client-build-') as tmp:
 from Cython.Build import cythonize
 setup(name='aimee-vllm',version='''+repr(a.version)+''',packages=['aimee_vllm'],
  ext_modules=cythonize([Extension('aimee_vllm.'+m,['aimee_vllm/'+m+'.py'],extra_compile_args=['-O3','-g0','-fvisibility=hidden','-fno-ident','-fno-record-gcc-switches','-ffunction-sections','-fdata-sections','-flto'],extra_link_args=['-s','-flto','-Wl,--gc-sections','-Wl,--build-id=none','-Wl,--exclude-libs,ALL']) for m in '''+repr(modules)+'''],compiler_directives={'language_level':3,'binding':False,'annotation_typing':False,'embedsignature':False,'docstrings':False}),
- entry_points={'vllm.general_plugins':['aimee_native=aimee_vllm:register'],'console_scripts':['aimee-vllm=aimee_vllm.cli:main']},
+ entry_points={'vllm.general_plugins':['aimee_native=aimee_vllm:register'],'console_scripts':['aimee-vllm=aimee_vllm._p9:main']},
  install_requires=['vllm>=0.30.0,<0.31'],python_requires='>=3.12')
 ''')
  env=dict(os.environ);env['CFLAGS']=env.get('CFLAGS','')+' -ffile-prefix-map='+str(root)+'=/aimee-client'
@@ -61,7 +61,7 @@ setup(name='aimee-vllm',version='''+repr(a.version)+''',packages=['aimee_vllm'],
 class BinaryDistribution(Distribution):
  def has_ext_modules(self):return True
 setup(name='aimee-vllm',version='''+repr(a.version)+''',packages=['aimee_vllm'],package_data={'aimee_vllm':['*.so']},
- entry_points={'vllm.general_plugins':['aimee_native=aimee_vllm:register'],'console_scripts':['aimee-vllm=aimee_vllm.cli:main']},
+ entry_points={'vllm.general_plugins':['aimee_native=aimee_vllm:register'],'console_scripts':['aimee-vllm=aimee_vllm._p9:main']},
  install_requires=['vllm>=0.30.0,<0.31'],python_requires='>=3.12',
  distclass=BinaryDistribution)
 ''')
