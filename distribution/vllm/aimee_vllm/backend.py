@@ -75,10 +75,9 @@ class AimeeAttentionImpl(TritonAttentionImpl):
             attn_metadata.block_table,kp,vp,lengths,
             query.stride(0),query.stride(1),kv_cache.stride(0),kv_cache.stride(1),kv_cache.stride(2),
             view.stride(0),view.stride(1),attn_metadata.block_table.stride(0),
-            plan['head_ratio'],plan['head_size'],plan['block_size'],plan['scale'],
-            plan['window'],plan['soft_cap'],plan['tile'],plan['width'],
+            plan[6],plan[7],plan[8],plan[9],plan[10],plan[11],plan[4],plan[5],
             )
-        kernel = native_attention[tuple(plan['grid'])](*args,num_warps=plan['num_warps'])
+        kernel = native_attention[(plan[0],plan[1],plan[2])](*args,num_warps=plan[3])
         if os.environ.get("AIMEE_EXPORT_KERNELS"):
             from .export_kernel import export
             export(os.environ["AIMEE_EXPORT_KERNELS"] + "/" + str(state.CURRENT.rank),kernel,args)
