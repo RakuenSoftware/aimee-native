@@ -1,6 +1,5 @@
 import re
 import torch
-import triton
 from vllm.v1.attention.backends.triton_attn import TritonAttentionBackend, TritonAttentionImpl, TritonAttentionMetadataBuilder
 from vllm.v1.attention.backend import AttentionCGSupport, AttentionType
 from . import state
@@ -60,15 +59,26 @@ class AimeeAttentionImpl(TritonAttentionImpl):
             raise RuntimeError('native release currently requires BF16 attention/cache')
         kp,vp,lengths,_owners=table
         view=output.view(-1,self.num_heads,self.head_size)
+        plan = state.CURRENT.owner.attention_plan({
+            'requests': len(ids),
+            'heads': self.num_heads,
+            'kv_heads': self.num_kv_heads,
+            'head_size': self.head_size,
+            'block_size': kv_cache.shape[2],
+            'max_query_len': attn_metadata.max_query_len,
+            'scale': self.scale,
+            'window': self.sliding_window[0],
+            'soft_cap': self.logits_soft_cap,
+        })
         args = (
             query,kv_cache,view,attn_metadata.query_start_loc,attn_metadata.seq_lens,
             attn_metadata.block_table,kp,vp,lengths,
             query.stride(0),query.stride(1),kv_cache.stride(0),kv_cache.stride(1),kv_cache.stride(2),
             view.stride(0),view.stride(1),attn_metadata.block_table.stride(0),
-            self.num_heads,self.num_kv_heads,self.head_size,kv_cache.shape[2],self.scale,
-            self.sliding_window[0],self.logits_soft_cap,32,triton.next_power_of_2(self.head_size),
+            plan['heads'],plan['kv_heads'],plan['head_size'],plan['block_size'],plan['scale'],
+            plan['window'],plan['soft_cap'],plan['tile'],plan['width'],
             )
-        kernel = native_attention[(len(ids),self.num_heads,attn_metadata.max_query_len)](*args,num_warps=4)
+        kernel = native_attention[tuple(plan['grid'])](*args,num_warps=plan['num_warps'])
         if os.environ.get("AIMEE_EXPORT_KERNELS"):
             from .export_kernel import export
             export(os.environ["AIMEE_EXPORT_KERNELS"] + "/" + str(state.CURRENT.rank),kernel,args)
