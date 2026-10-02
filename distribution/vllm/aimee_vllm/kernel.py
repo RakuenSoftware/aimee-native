@@ -11,7 +11,7 @@ def native_attention(Q, CACHE, OUT, START, SEQLEN, BLOCKS, KP, VP, MLEN,
                      q_stride:tl.constexpr, q_head_stride:tl.constexpr,
                      c_block:tl.constexpr,c_head:tl.constexpr,c_token:tl.constexpr,
                      out_stride:tl.constexpr,out_head:tl.constexpr,block_stride:tl.constexpr,
-                     HEADS:tl.constexpr,KVHEADS:tl.constexpr,D:tl.constexpr,
+                     HEAD_RATIO:tl.constexpr,D:tl.constexpr,
                      BLOCK_SIZE:tl.constexpr,SCALE:tl.constexpr,WINDOW:tl.constexpr,
                      CAP:tl.constexpr,TILE:tl.constexpr,WIDTH:tl.constexpr):
     req=tl.program_id(0);head=tl.program_id(1);local_q=tl.program_id(2)
@@ -21,7 +21,7 @@ def native_attention(Q, CACHE, OUT, START, SEQLEN, BLOCKS, KP, VP, MLEN,
     row=begin+local_q
     seq_len=tl.load(SEQLEN+req)
     q_pos=seq_len-(end-begin)+local_q
-    kvhead=head//(HEADS//KVHEADS)
+    kvhead=head//HEAD_RATIO
     d=tl.arange(0,WIDTH)
     q=tl.load(Q+row*q_stride+head*q_head_stride+d,d<D,0).to(tl.float32)
     mem_len=tl.load(MLEN+req)

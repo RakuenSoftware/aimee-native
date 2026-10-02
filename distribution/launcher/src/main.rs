@@ -507,7 +507,7 @@ fn run() -> Result<()> {
                     // Keep the venv interpreter path: canonicalizing its symlink
                     // switches to the base Python and loses installed extensions.
                     let mut command = vec![PathBuf::from(&python).to_string_lossy().into_owned(),
-                    "-c".into(), "from aimee_vllm.native_compiler.local_compile import main; main()".into(),
+                    "-c".into(), "from aimee_vllm.native_compiler._c5 import main; main()".into(),
                     "--model".into(), model.to_string_lossy().into_owned(),
                     "--max-memory-tokens".into(), limit_tokens.to_string()];
                     if let Some(gguf) = settings["gguf_weights"].as_str() {

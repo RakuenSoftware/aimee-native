@@ -47,14 +47,16 @@ def assemble(wheel, launcher, library, notices, output, gguf_wheel_url, gguf_whe
              for name, data in files.items()}
     files[info + '/METADATA'] = re.sub(rb'(?m)^Version: [^\r\n]+', f'Version: {version}'.encode(), files[info + '/METADATA'])
     for name in files:
-        if name.startswith('aimee_vllm/') and name.endswith(('.py', '.pyc', '.pyx', '.c')) and name not in ('aimee_vllm/__init__.py', 'aimee_vllm/kernel.py', 'aimee_vllm/decoder_kernel.py'):
+        if name.startswith('aimee_vllm/') and name.endswith(('.py', '.pyc', '.pyx', '.c')) and name not in ('aimee_vllm/__init__.py', 'aimee_vllm/_k.py', 'aimee_vllm/_d.py'):
             raise ValueError('Private implementation source in wheel: ' + name)
-    files['aimee_vllm/client.py'] = (Path(__file__).resolve().parents[1] / 'vllm/aimee_vllm/client.py').read_bytes()
+    client = (Path(__file__).resolve().parents[1] / 'vllm/aimee_vllm/client.py').read_text()
+    client = client.replace('from .compatibility import check_runtime',
+                            'from ._p15 import check_runtime')
+    files['aimee_vllm/client.py'] = client.encode()
     files['aimee_vllm/native/aimee-native'] = launcher.read_bytes()
     files['aimee_vllm/native/libaimee_native.so'] = library.read_bytes()
     if compiler_dir is not None:
-        modules = ('publisher', 'checkpoint_weights', 'gguf_weights', 'gemma_compile',
-                   'bounded_compile', 'local_compile')
+        modules = ('_c0', '_c1', '_c2', '_c3', '_c4', '_c5')
         files['aimee_vllm/native_compiler/__init__.py'] = b''
         for module in modules:
             matches = list(compiler_dir.glob(module + '.*.so'))

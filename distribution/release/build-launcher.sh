@@ -6,5 +6,5 @@ set -eu
 # private key. Cargo embeds it for verified private-PKI downloads and OCI pulls.
 case "$AIMEE_RELEASE_URL" in https://*) ;; *) exit 1;; esac
 repo=$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd)
-export RUSTFLAGS="${RUSTFLAGS:-} --remap-path-prefix=$repo=/aimee-native"
+export RUSTFLAGS="${RUSTFLAGS:-} --remap-path-prefix=$repo=/aimee-native -C link-arg=-Wl,--build-id=none -C link-arg=-Wl,--exclude-libs,ALL -C link-arg=-Wl,--gc-sections"
 exec cargo build --locked --release --manifest-path "$repo/distribution/launcher/Cargo.toml"
