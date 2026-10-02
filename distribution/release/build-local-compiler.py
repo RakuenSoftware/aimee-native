@@ -9,6 +9,7 @@ import sys
 import tempfile
 from setuptools import Extension, setup
 from Cython.Build import cythonize
+from Cython.Compiler import Options
 
 MODULES = (('publisher', '_c0'), ('checkpoint_weights', '_c1'), ('gguf_weights', '_c2'),
            ('gemma_compile', '_c3'), ('bounded_compile', '_c4'), ('local_compile', '_c5'))
@@ -54,11 +55,12 @@ def build(source, output):
         old_cflags = os.environ.get('CFLAGS', '')
         os.environ['CFLAGS'] = old_cflags + ' -ffile-prefix-map=' + str(root) + '=/aimee-compiler'
         try:
+            Options.docstrings = False
             setup(name='aimee-native-compiler',
                   ext_modules=cythonize(
                       extensions,
                       compiler_directives={'language_level': '3', 'binding': False,
-                                           'embedsignature': False, 'docstrings': False},
+                                           'embedsignature': False},
                       quiet=True, build_dir=str(root / 'cython')),
                   script_args=['build_ext', '--build-lib', str(root / 'build'),
                                '--build-temp', str(root / 'objects')],
