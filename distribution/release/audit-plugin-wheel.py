@@ -63,7 +63,7 @@ with zipfile.ZipFile(a.wheel) as z:
     allowed_python = ['aimee_vllm/__init__.py', 'aimee_vllm/client.py',
                       'aimee_vllm/native_compiler/__init__.py']
     if portable:
-        allowed_python += ['aimee_vllm/kernel.py', 'aimee_vllm/decoder_kernel.py']
+        allowed_python += ['aimee_vllm/_k.py', 'aimee_vllm/_d.py']
     for n in names:
         assert n.startswith(('aimee_vllm/', info + '/'))
         assert not Path(n).is_absolute() and '..' not in Path(n).parts
@@ -74,8 +74,13 @@ with zipfile.ZipFile(a.wheel) as z:
         requirements = metadata.get_all('Requires-Dist', [])
         assert any(v.startswith('accelerate>=1.15,<2') for v in requirements)
         assert any(v.startswith('gguf>=0.19,<0.20') for v in requirements)
-        for module in ('publisher', 'checkpoint_weights', 'gguf_weights', 'gemma_compile', 'bounded_compile', 'local_compile'):
+        for module in ('_c0', '_c1', '_c2', '_c3', '_c4', '_c5'):
             assert len([n for n in names if n.startswith('aimee_vllm/native_compiler/' + module + '.') and n.endswith('.so')]) == 1
+        for descriptive in (b'publisher', b'checkpoint_weights', b'gguf_weights', b'gemma_compile',
+                            b'bounded_compile', b'local_compile', b'native_attention',
+                            b'decode_words', b'decode_escapes'):
+            if any(descriptive in z.read(n) for n in names if n.endswith(('.so', '.py'))):
+                raise ValueError('descriptive private identifier in release artifact')
     records = list(csv.reader(io.StringIO(z.read(info + '/RECORD').decode())))
     assert {r[0] for r in records} == set(names)
     for n, digest, size in records:
