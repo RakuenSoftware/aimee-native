@@ -41,7 +41,9 @@ with tempfile.TemporaryDirectory(prefix='aimee-client-build-') as tmp:
   'from .kernel import native_attention','from ._k import k0').replace('native_attention[','k0['))
  runtime=(pkg/(module_map['runtime_ops']+'.py'));runtime.write_text(runtime.read_text().replace(
   'from .decoder_kernel import decode_words, decode_escapes',
-  'from ._d import d0 as decode_words, d1 as decode_escapes'))
+  'from ._d import d0 as decode_words, d1 as decode_escapes').replace(
+  'table0, table1, BLOCK=256)', 'table0, table1, a5=256)').replace(
+  'words, exceptions, BLOCK=256)', 'words, exceptions, a5=256)'))
  subprocess.run([sys.executable,str(repo/'distribution/release/obfuscate-triton.py'),
                  str(source/'kernel.py'),str(pkg/'_k.py'),
                  '--functions','native_attention=k0'],check=True)

@@ -45,6 +45,11 @@ class Renamer(ast.NodeTransformer):
             node.id = self.current[node.id]
         return node
 
+    def visit_arg(self, node):
+        if self.current and node.arg in self.current:
+            node.arg = self.current[node.arg]
+        return self.generic_visit(node)
+
     def visit_Constant(self, node):
         # Triton's do_not_specialize names are strings and must track renamed args.
         if self.current and isinstance(node.value, str) and node.value in self.current:

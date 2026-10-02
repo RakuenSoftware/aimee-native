@@ -81,6 +81,10 @@ with zipfile.ZipFile(a.wheel) as z:
         if n.startswith('aimee_vllm/') and n.endswith('.so'):
             if any('/' + module + '.' in n for module in public_module_names):
                 raise ValueError('descriptive compiled plugin module name in release')
+        if n.endswith('.so') or n.endswith('/aimee-native'):
+            data = z.read(n)
+            if any(b'aimee_vllm.' + module.encode() in data for module in public_module_names):
+                raise ValueError(f'{n}: source-only module import in release artifact')
         assert not Path(n).is_absolute() and '..' not in Path(n).parts
         assert not n.endswith(('.gguf', '.safetensors', '.pt', '.pth', '.pyc', '.c', '.cpp', '.pyx'))
         if n.endswith('.py'):
