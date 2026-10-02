@@ -73,8 +73,14 @@ with zipfile.ZipFile(a.wheel) as z:
                       'aimee_vllm/native_compiler/__init__.py']
     if portable:
         allowed_python += ['aimee_vllm/_k.py', 'aimee_vllm/_d.py']
+    public_module_names = ('stream_completion','selection','gguf_loader','control','admission',
+                           'backend','binary_kernel','cache','cache_identity','cli','state','store',
+                           'worker','runtime_ops','runtime_owner','compatibility')
     for n in names:
         assert n.startswith(('aimee_vllm/', info + '/'))
+        if n.startswith('aimee_vllm/') and n.endswith('.so'):
+            if any('/' + module + '.' in n for module in public_module_names):
+                raise ValueError('descriptive compiled plugin module name in release')
         assert not Path(n).is_absolute() and '..' not in Path(n).parts
         assert not n.endswith(('.gguf', '.safetensors', '.pt', '.pth', '.pyc', '.c', '.cpp', '.pyx'))
         if n.endswith('.py'):
@@ -88,7 +94,8 @@ with zipfile.ZipFile(a.wheel) as z:
         for descriptive in (b'publisher', b'checkpoint_weights', b'gguf_weights', b'gemma_compile',
                             b'bounded_compile', b'local_compile', b'native_attention',
                             b'decode_words', b'decode_escapes', b'GemmaCompiler',
-                            b'BoundedTextCompiler', b'CheckpointWeights', b'GgufWeights'):
+                            b'BoundedTextCompiler', b'CheckpointWeights', b'GgufWeights', b'AimeeWorker',
+                            b'AimeeAttentionBackend', b'AimeeAttentionImpl', b'NativeAdmission'):
             if any(descriptive in z.read(n) for n in names if n.endswith(('.so', '.py'))):
                 raise ValueError('descriptive private identifier in release artifact')
     records = list(csv.reader(io.StringIO(z.read(info + '/RECORD').decode())))
