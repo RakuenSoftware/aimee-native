@@ -11,12 +11,11 @@ certificate, creates a client key locally, sends a CSR, and receives a
 certificate tied to that user's account. Aimee owns invitation issuance,
 expiry, one-use redemption, grants and revocation. The plugin uses this
 identity; it does not create a second account system or ask for an unrelated
-long-lived scoped token. The new `aimee-native enroll-aimee URL` source command
-reads the invitation from standard input and delegates the established TLS/CSR
-pairing to the installed Aimee CLI. The CLI's new `--token-stdin` mode keeps
-the invitation out of process arguments. `aimee-native connect-aimee` imports
-an existing enrollment. Both paths check `/v1/native/bootstrap` and reject
-absent or exposed credential files. They are **not in the previously signed
+long-lived scoped token. The standard Aimee thin client alone performs
+enrollment with `aimee remote set URL INVITATION`. Once enrolled,
+`aimee-native connect-aimee` uses that thin-client identity to check
+`/v1/native/bootstrap`; it rejects absent or exposed credential files. This
+plugin connection command is **not in the previously signed
 0.2.2 wheel**.
 
 The server half is not done. The previous authenticated native bridge has been
@@ -34,9 +33,9 @@ to preparation as well. Enrollment alone cannot supply missing source records.
 Release acceptance requires the following end-to-end behavior on an ordinary
 fresh Aimee install **without a KB**, with no preview infrastructure:
 
-1. Aimee issues the normal short-lived client invitation. `enroll-aimee`
-   redeems it through the installed Aimee client, creating a certificate-bound
-   identity; `connect-aimee` can reuse an existing enrollment. A copied bearer
+1. Aimee issues the normal short-lived client invitation. The installed Aimee
+   thin client redeems it with `aimee remote set`, creating a certificate-bound
+   identity; `connect-aimee` uses that existing enrollment. A copied bearer
    without the certificate fails.
 2. The installed Aimee server exposes the native API through its normal
    authorization path and starts the delivery/preparation service. The service
@@ -53,12 +52,10 @@ fresh Aimee install **without a KB**, with no preview infrastructure:
    pinned dependency from the public Aimee GitHub Release.
 
 Current verification: the Rust launcher suite passes in a Linux build container
-(24 tests total), including complete and incomplete local enrollment fixtures
-and a subprocess check that the invitation reaches Aimee through stdin only.
-The ported C bridge compiles against current Aimee main. The new Aimee CLI
-builds and its stdin invitation path persists a private enrollment credential
-in a local fixture; a full server build needed an unrelated const-qualifier
-warning relaxed locally under `-Werror`.
+(23 tests total), including complete and incomplete local enrollment fixtures.
+The ported C bridge compiles against current Aimee main. The unchanged Aimee
+CLI uses its established enrollment path; a full server build needed an
+unrelated const-qualifier warning relaxed locally under `-Werror`.
 Neither result establishes the fresh-install service behavior in items 2–4.
 The old signed wheel remains useful as controlled-preview evidence but cannot
 be relabeled a general public release.
