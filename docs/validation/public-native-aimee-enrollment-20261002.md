@@ -53,6 +53,10 @@ fresh Aimee install **without a KB**, with no preview infrastructure:
 
 Current verification: the Rust launcher suite passes in a Linux build container
 (23 tests total), including complete and incomplete local enrollment fixtures.
+The release-mode launcher also passed a local HTTPS bootstrap with a mock Aimee
+server that required the thin client's mTLS certificate and enrolled bearer;
+an exposed private-key file was refused before connection. This checks the
+credential handoff, not an ordinary Aimee deployment.
 The ported C bridge compiles against current Aimee main. The current-main
 compatibility branch now restores Aimee-owned explicit release policy, scoped
 source export and restricted search contracts. The private publisher, read
@@ -65,6 +69,12 @@ needed an unrelated const-qualifier warning relaxed locally under `-Werror`.
 These results do not establish the fresh-install service behavior in items 2–4:
 an ordinary install still has no service that derives the enrolled owner's
 publication and model profiles, and the signed wheel predates `connect-aimee`.
+Four Go server components have been built reproducibly from the current Aimee
+and aimee-qwen branches, with source commits and SHA-256 hashes recorded in a
+private staging directory. A stripped `native-prepare` Linux binary also builds
+and starts. Neither build includes a self-hosted encoder/model installation or
+an automatic publication service; these are build artifacts, not a public
+release candidate.
 The old signed wheel remains useful as controlled-preview evidence but cannot
 be relabeled a general public release.
 
