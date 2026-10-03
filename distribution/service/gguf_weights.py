@@ -94,6 +94,16 @@ class GgufWeights(Mapping):
         return values.reshape(shape).swapaxes(dimension, dimension + 1).reshape(values.shape)
 
     def _qwen_restore(self, name, values):
+        # GGUF stores the effective scale for Qwen's zero-centered RMSNorm,
+        # while the Transformers implementation applies (1 + weight). Undo
+        # the GGUF conversion before the independent preparation pass. The
+        # gated-delta SSM norm is not zero-centered and must stay unchanged.
+        if (name.endswith(('.input_layernorm.weight',
+                           '.post_attention_layernorm.weight',
+                           '.self_attn.q_norm.weight',
+                           '.self_attn.k_norm.weight'))
+                or name == 'model.language_model.norm.weight'):
+            return values - 1.0
         if self.config.linear_num_key_heads == self.config.linear_num_value_heads:
             if name.endswith('.linear_attn.A_log'):
                 return np.log(-values)

@@ -48,7 +48,8 @@ class Primitive(BaseHTTPRequestHandler):
             return
         request = json.loads(self.rfile.read(int(self.headers['Content-Length'])))
         assert request['store'] == 'user'
-        if request['task_hint'] == 'native memory connection':
+        if (request['task_hint'] == 'native memory connection'
+                or os.environ.get('AIMEE_LIVE_EMPTY_CONTROL') == '1'):
             facts = []
         elif os.environ.get('AIMEE_LIVE_NEUTRAL') == '1':
             facts = [
@@ -75,11 +76,11 @@ class Primitive(BaseHTTPRequestHandler):
         pass
 
 
-def request(port, prompt=None):
+def request(port, prompt=None, messages=None):
     default_prompt = ('What are the release verification project codename and notebook color? Reply in one sentence.'
         if os.environ.get('AIMEE_LIVE_NEUTRAL') == '1' else
         'What is the project codename, and what color notebooks does the owner prefer? Reply in one sentence.')
-    body = {'model': str(model), 'messages': [{'role': 'user', 'content':
+    body = {'model': str(model), 'messages': messages or [{'role': 'user', 'content':
         prompt or default_prompt}],
         'temperature': 0, 'max_tokens': 80,
         'chat_template_kwargs': {'enable_thinking': False}}
@@ -149,6 +150,20 @@ with tempfile.TemporaryDirectory(prefix='aimee-enrolled-live-') as temporary:
                 time.sleep(2)
         else:
             raise AssertionError(f'serve did not become healthy; log: {base / "serve.log"}')
+        if os.environ.get('AIMEE_LIVE_EMPTY_CONTROL') == '1':
+            with request(port, messages=[
+                    {'role': 'system', 'content':
+                     'The release verification project codename is Halcyon. '
+                     'The release verification notebook color is blue.'},
+                    {'role': 'user', 'content':
+                     'What are the release verification project codename and notebook color?'}]) as response:
+                result = json.load(response)
+            answer = result['choices'][0]['message']['content']
+            count = len(list(root.rglob('compact.pack')))
+            print(json.dumps({'answer': answer, 'usage': result['usage'],
+                              'bank_count': count, 'condition': 'text-no-native'}), flush=True)
+            assert count == 0 and 'Halcyon' in answer and 'blue' in answer.lower(), answer
+            sys.exit(0)
         prompts = [None]
         if os.environ.get('AIMEE_LIVE_PROBE') == '1':
             if os.environ.get('AIMEE_LIVE_NEUTRAL') == '1':
