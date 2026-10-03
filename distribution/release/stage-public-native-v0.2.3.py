@@ -24,6 +24,7 @@ def main():
     for name in ('wheel', 'gguf', 'audit', 'live-output', 'stage', 'signing-key', 'public-key-hex'):
         parser.add_argument('--' + name, required=True, type=Path)
     parser.add_argument('--qwen-live-output', type=Path)
+    parser.add_argument('--gemma26-live-output', type=Path)
     args = parser.parse_args()
     if args.wheel.name != WHEEL or args.gguf.name != GGUF:
         raise ValueError('unexpected public asset names')
@@ -57,6 +58,22 @@ def main():
                            'selected_records': 2,
                            'prompt_tokens': matches[0]['usage']['prompt_tokens'],
                            'revoked_request_http_status': 503}
+    gemma26_validation = None
+    if args.gemma26_live_output:
+        gemma26_lines = args.gemma26_live_output.read_text().splitlines()
+        gemma26_answers = [json.loads(line) for line in gemma26_lines if line.startswith('{')]
+        matches = [result for result in gemma26_answers
+                   if 'Halcyon' in result.get('answer', '')
+                   and 'blue' in result.get('answer', '').lower()
+                   and 0 < result.get('usage', {}).get('prompt_tokens', 0) < 80
+                   and result.get('bank_count', 0) >= 1]
+        if not matches or 'revoked thin-client authorization withdrew native serving' not in gemma26_lines:
+            raise ValueError('installed-wheel Gemma 26B live/revocation check missing')
+        gemma26_validation = {'model': 'Gemma4 26B Q8 GGUF',
+                              'gpu': '2 x RX 7900 XTX', 'enrolled_thinclient': True,
+                              'selected_records': 2,
+                              'prompt_tokens': matches[0]['usage']['prompt_tokens'],
+                              'revoked_request_http_status': 503}
     with ZipFile(args.wheel) as archive:
         names = archive.namelist()
         metadata = archive.read(next(name for name in names if name.endswith('.dist-info/METADATA')))
@@ -90,8 +107,9 @@ def main():
                       'binary_disclosure_audit': True},
         'source_included': False, 'model_weights_included': False,
         'vllm_runtime_included': False}
-    if qwen_validation:
-        manifest['validated']['additional_models'] = [qwen_validation]
+    additional_models = [item for item in (qwen_validation, gemma26_validation) if item]
+    if additional_models:
+        manifest['validated']['additional_models'] = additional_models
     manifest_path = args.stage / 'manifest.json'
     manifest_path.write_text(json.dumps(manifest, indent=2) + '\n')
     sums = args.stage / 'SHA256SUMS'

@@ -51,6 +51,12 @@ class Primitive(BaseHTTPRequestHandler):
         if (request['task_hint'] == 'native memory connection'
                 or os.environ.get('AIMEE_LIVE_EMPTY_CONTROL') == '1'):
             facts = []
+        elif os.environ.get('AIMEE_LIVE_REFERENCE') == '1':
+            facts = [
+                (7, 'The release verification vault code is 28461.'),
+                (8, 'The release verification project is Juniper.'),
+                (9, 'The release verification drink is hibiscus tea.'),
+            ]
         elif os.environ.get('AIMEE_LIVE_NEUTRAL') == '1':
             facts = [
                 (7, 'The release verification project codename is Halcyon.'),
@@ -77,7 +83,10 @@ class Primitive(BaseHTTPRequestHandler):
 
 
 def request(port, prompt=None, messages=None):
-    default_prompt = ('What are the release verification project codename and notebook color? Reply in one sentence.'
+    default_prompt = (
+        'Give the release verification vault code, project, and drink. Be concise.'
+        if os.environ.get('AIMEE_LIVE_REFERENCE') == '1' else
+        'What are the release verification project codename and notebook color? Reply in one sentence.'
         if os.environ.get('AIMEE_LIVE_NEUTRAL') == '1' else
         'What is the project codename, and what color notebooks does the owner prefer? Reply in one sentence.')
     body = {'model': str(model), 'messages': messages or [{'role': 'user', 'content':
@@ -163,6 +172,32 @@ with tempfile.TemporaryDirectory(prefix='aimee-enrolled-live-') as temporary:
             print(json.dumps({'answer': answer, 'usage': result['usage'],
                               'bank_count': count, 'condition': 'text-no-native'}), flush=True)
             assert count == 0 and 'Halcyon' in answer and 'blue' in answer.lower(), answer
+            sys.exit(0)
+        if os.environ.get('AIMEE_LIVE_REFERENCE') == '1':
+            reference_cases = [
+                (None, ('28461', 'Juniper', 'hibiscus')),
+                ('What is the release verification vault code? Return only the code.', ('28461',)),
+                ('What is the release verification project? Return only the name.', ('Juniper',)),
+                ('What is the release verification drink? Return only the drink.', ('hibiscus',)),
+            ]
+            for prompt, expected in reference_cases:
+                with request(port, prompt) as response:
+                    result = json.load(response)
+                answer = result['choices'][0]['message']['content']
+                count = len(list(root.rglob('compact.pack')))
+                print(json.dumps({'answer': answer, 'usage': result['usage'],
+                    'bank_count': count, 'prompt': prompt,
+                    'condition': 'native-three-record'}), flush=True)
+                assert result['usage']['prompt_tokens'] < 80, result['usage']
+                assert count == 1 and all(value.lower() in answer.lower()
+                                          for value in expected), answer
+            Primitive.revoked = True
+            try:
+                with request(port):
+                    raise AssertionError('revoked memory request was served')
+            except HTTPError as error:
+                assert error.code == 503, (error.code, error.read())
+            print('revoked thin-client authorization withdrew native serving')
             sys.exit(0)
         prompts = [None]
         if os.environ.get('AIMEE_LIVE_PROBE') == '1':
