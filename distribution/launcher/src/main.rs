@@ -187,9 +187,22 @@ fn local_model_fingerprint(model: &std::path::Path, gguf: Option<&str>) -> Resul
 }
 fn connect_from_aimee(root: &std::path::Path, home: &std::path::Path) -> Result<()> {
     let credentials = read_aimee_credentials(home)?;
+    let http = if let Some(pin) = credentials.ca.as_deref() {
+        reqwest::blocking::Client::builder()
+            .https_only(true)
+            .redirect(reqwest::redirect::Policy::none())
+            .connect_timeout(Duration::from_secs(15))
+            .timeout(Duration::from_secs(3600))
+            .tls_built_in_root_certs(false)
+            .danger_accept_invalid_hostnames(true)
+            .add_root_certificate(reqwest::Certificate::from_pem(pin)?)
+            .identity(reqwest::Identity::from_pem(&credentials.identity)?)
+            .build()?
+    } else {
+        tls_client(None, Some(&credentials.identity), Some(&credentials.endpoint), None)?
+    };
     native::primitive::fetch_with_token(
-        &tls_client(credentials.ca.as_deref(), Some(&credentials.identity),
-            Some(&credentials.endpoint), None)?,
+        &http,
         &credentials.endpoint, &credentials.token, "native memory connection", 64,
     )?;
     native::connect_with_thinclient(root, &credentials.endpoint, home)?;
