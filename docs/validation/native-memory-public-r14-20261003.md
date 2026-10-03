@@ -1,5 +1,9 @@
 # Native-memory public candidate r14 — 2026-10-03
 
+**Superseded:** the launcher requires GLIBC 2.39 despite the documented 2.34
+floor. The r15 rebuild and audit close this portability defect. Do not publish
+the r14 wheel.
+
 The exact candidate wheel is `aimee_vllm-0.2.3-1-cp312-cp312-linux_x86_64.whl`,
 SHA-256 `d023b8f420efd21c93fc3b7e0431023a254b2ade2d52490520ef91c0eff004ea`
 (3,526,231 bytes). Compared with r13, only the hardened Rust launcher and the
