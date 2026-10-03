@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 """Check complete plugin packaging, RECORD integrity and binary disclosure hardening."""
 import argparse
+import ast
 import base64
 import csv
 from email.parser import BytesParser
 import hashlib
 import io
 import json
+import re
 from pathlib import Path
 import subprocess
 import tempfile
@@ -73,6 +75,17 @@ with zipfile.ZipFile(a.wheel) as z:
                       'aimee_vllm/native_compiler/__init__.py']
     if portable:
         allowed_python += ['aimee_vllm/_k.py', 'aimee_vllm/_d.py']
+        for module in ('aimee_vllm/_k.py', 'aimee_vllm/_d.py'):
+            tree = ast.parse(z.read(module).decode())
+            functions = [node for node in tree.body if isinstance(node, ast.FunctionDef)]
+            if not functions:
+                raise ValueError(f'{module}: missing runtime Triton kernels')
+            for function in functions:
+                arguments = {arg.arg for arg in function.args.posonlyargs + function.args.args + function.args.kwonlyargs}
+                references = {node.id for node in ast.walk(function)
+                              if isinstance(node, ast.Name) and re.fullmatch(r'a\d+', node.id)}
+                if any(not re.fullmatch(r'a\d+', name) for name in arguments) or references - arguments:
+                    raise ValueError(f'{module}: renamed Triton arguments do not match kernel body')
     public_module_names = ('stream_completion','selection','gguf_loader','control','admission',
                            'backend','binary_kernel','cache','cache_identity','cli','state','store',
                            'worker','runtime_ops','runtime_owner','compatibility')

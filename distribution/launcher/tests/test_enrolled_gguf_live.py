@@ -110,10 +110,16 @@ with tempfile.TemporaryDirectory(prefix='aimee-enrolled-live-') as temporary:
     assert connected.returncode == 0, (connected.stdout, connected.stderr)
     assert not (root / 'credentials').exists()
     config = base / 'serve.json'
-    config.write_text(json.dumps({'model': str(model), 'gguf_matrix_backend': 'triton',
-        'max_memory_tokens': 1024, 'serve': {'port': port, 'tensor_parallel_size': 1,
+    settings = {'model': str(model),
+        'gguf_matrix_backend': os.environ.get('AIMEE_LIVE_MATRIX_BACKEND', 'triton'),
+        'max_memory_tokens': 1024, 'serve': {'port': port,
+        'tensor_parallel_size': int(os.environ.get('AIMEE_LIVE_TP', '1')),
         'max_model_len': 2048, 'max_num_seqs': 1, 'max_num_batched_tokens': 128,
-        'gpu_memory_utilization': 0.92}}))
+        'gpu_memory_utilization': float(os.environ.get('AIMEE_LIVE_GPU_MEMORY_UTILIZATION', '0.92'))}}
+    if (model / 'mmproj.gguf').is_file():
+        settings['gguf_weights'] = str(model / 'model.gguf')
+        settings['mm_proj'] = str(model / 'mmproj.gguf')
+    config.write_text(json.dumps(settings))
     log = (base / 'serve.log').open('w+')
     process = subprocess.Popen(launcher + ['serve', '--config', str(config)],
         stdout=log, stderr=subprocess.STDOUT, env=env)
