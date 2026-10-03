@@ -3,9 +3,9 @@
 The exact staged wheel SHA-256 is
 `b4b9d7fe7249bf304cadabbfea0bde53bcdd84d8f7186e3a9aa74180f9380736`
 (3,526,478 bytes). The manifest SHA-256 is
-`7ef5cf010d96df6eaccef91609fecd188143a43733520166552e9fc1a2fa6376`.
+`7fc6eed5eb09e9de856e92ca927b439f90a7b53be911b2f84531a82c0b4e2977`.
 The signed stage is
-`/opt/aimee-native-release/public-staging/native-memory-v0.2.3-r15` on CT101.
+`/opt/aimee-native-release/public-staging/native-memory-v0.2.3-r15-final` on CT101.
 Four asset signatures, all hashes, and wheel integrity verified. It has not
 been published.
 
@@ -23,12 +23,12 @@ found no broken dependencies. The account had no write-tier grant, so the
 response contained zero records. A deliberately invalid bearer returned HTTP
 401 with the exact r15 launcher.
 
-The exact r15 wheel passed the RTX 5080 / Gemma4 12B Q8 GGUF release-path
-test: two selected records, both facts answered from one native bank, 34 prompt
-tokens, and HTTP 503 after revocation. The r14 wheel passed the equivalent
-two-record tests with Qwen3.8 27B Q8 and Gemma4 26B Q8 on two RX 7900 XTXs.
-An exact r15 Qwen rerun could not start because an unrelated GPU experiment
-left less than the requested free VRAM; it did not reach inference. Those two
-exact-artifact reruns remain open. Public Aimee v0.4.6 also predates the native
-primitive, so an application release containing merged PR #3001 is required
-before public plugin delivery.
+The exact r15 wheel passed release-path tests with Gemma4 12B Q8 on RTX 5080,
+and Qwen3.8 27B Q8 and Gemma4 26B Q8 on two RX 7900 XTXs. In each, two
+selected records were consumed from one native bank, both facts were answered,
+and the next request after revocation returned HTTP 503. Prompt-token counts
+were 34, 29, and 34 respectively. Initial Qwen and Gemma 26B reruns could not
+start because unrelated GPU experiments had taken VRAM; after those processes
+stopped, the exact-artifact inference checks passed. Public Aimee v0.4.6
+predates the native primitive, so an application release containing merged PR
+#3001 is required before public plugin delivery.
