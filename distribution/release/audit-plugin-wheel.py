@@ -29,6 +29,12 @@ FORBIDDEN_SECTIONS = ('.debug_', '.symtab', '.comment', '.note.gnu.build-id', '.
 def audit_elf(data, name, temporary):
     path = Path(temporary) / ('artifact-' + hashlib.sha256(name.encode()).hexdigest()[:16])
     path.write_bytes(data)
+    symbols = subprocess.check_output(['objdump', '-T', str(path)], text=True)
+    glibc_versions = [tuple(map(int, match.groups())) for match in
+                      re.finditer(r'GLIBC_(\d+)\.(\d+)(?!\.)', symbols)]
+    highest_glibc = max(glibc_versions, default=(0, 0))
+    if highest_glibc > (2, 34):
+        raise ValueError(f'{name}: requires GLIBC {highest_glibc}, above 2.34')
     sections = subprocess.check_output(['readelf', '-S', str(path)], text=True)
     leaked_sections = [section for section in FORBIDDEN_SECTIONS if section in sections]
     if leaked_sections:
@@ -45,6 +51,7 @@ def audit_elf(data, name, temporary):
             if unexpected:
                 raise ValueError(f'{name}: unexpected extension exports: {unexpected}')
     return {'name': name, 'sha256': hashlib.sha256(data).hexdigest(),
+            'highest_glibc': '.'.join(map(str, highest_glibc)),
             'bytes': len(data), 'dynamic_exports': exports}
 
 
