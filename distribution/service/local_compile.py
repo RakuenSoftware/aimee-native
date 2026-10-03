@@ -23,6 +23,10 @@ def main():
     parser.add_argument('--max-memory-tokens', type=int, default=1024)
     parser.add_argument('--threads', type=int, default=12)
     args = parser.parse_args()
+    request = json.load(sys.stdin)
+    position_policy = request.get('identity', {}).get('position_policy')
+    if position_policy != 'negative':
+        raise ValueError('release native preparation requires negative memory positions')
     model = Path(args.model)
     config = AutoConfig.from_pretrained(model, local_files_only=True)
     gguf = Path(args.gguf) if args.gguf else None
@@ -33,16 +37,18 @@ def main():
         index = model / 'model.safetensors.index.json'
         total = json.loads(index.read_text()).get('metadata', {}).get('total_size', 0) if index.exists() else 0
         compiler = (BoundedTextCompiler(args.model, args.max_memory_tokens, args.threads,
-            compute_dtype='float32', gguf_weights=str(gguf) if not has_safetensors else None)
+            compute_dtype='float32', memory_positions=position_policy,
+            gguf_weights=str(gguf) if not has_safetensors else None)
             if not has_safetensors or total > 30 * 1024**3 else
             GemmaCompiler(args.model, args.max_memory_tokens, args.threads))
     elif config.model_type == 'qwen3_5':
         compiler = BoundedTextCompiler(args.model, args.max_memory_tokens, args.threads,
-            compute_dtype='float32', gguf_weights=str(gguf) if not has_safetensors else None)
+            compute_dtype='float32', memory_positions=position_policy,
+            gguf_weights=str(gguf) if not has_safetensors else None)
     else:
         raise ValueError('local native encoder has no certified implementation for this model')
     try:
-        compiler.compile(json.load(sys.stdin), args.output, args.identity, args.key)
+        compiler.compile(request, args.output, args.identity, args.key)
     finally:
         if hasattr(compiler, 'close'):
             compiler.close()

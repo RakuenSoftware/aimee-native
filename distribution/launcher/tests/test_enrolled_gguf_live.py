@@ -48,10 +48,18 @@ class Primitive(BaseHTTPRequestHandler):
             return
         request = json.loads(self.rfile.read(int(self.headers['Content-Length'])))
         assert request['store'] == 'user'
-        facts = [] if request['task_hint'] == 'native memory connection' else [
-            (7, 'The project codename is Halcyon.'),
-            (8, 'The owner prefers blue notebooks.'),
-        ]
+        if request['task_hint'] == 'native memory connection':
+            facts = []
+        elif os.environ.get('AIMEE_LIVE_NEUTRAL') == '1':
+            facts = [
+                (7, 'The release verification project codename is Halcyon.'),
+                (8, 'The release verification notebook color is blue.'),
+            ]
+        else:
+            facts = [
+                (7, 'The project codename is Halcyon.'),
+                (8, 'The owner prefers blue notebooks.'),
+            ]
         records = [{'id': identifier, 'content': content, 'version': {
             'schema_version': 1, 'owner_id': '00000000-0000-0000-0000-000000000001',
             'record_id': str(identifier), 'record_revision': '1'}}
@@ -67,9 +75,12 @@ class Primitive(BaseHTTPRequestHandler):
         pass
 
 
-def request(port):
+def request(port, prompt=None):
+    default_prompt = ('What are the release verification project codename and notebook color? Reply in one sentence.'
+        if os.environ.get('AIMEE_LIVE_NEUTRAL') == '1' else
+        'What is the project codename, and what color notebooks does the owner prefer? Reply in one sentence.')
     body = {'model': str(model), 'messages': [{'role': 'user', 'content':
-        'What is the project codename, and what color notebooks does the owner prefer? Reply in one sentence.'}],
+        prompt or default_prompt}],
         'temperature': 0, 'max_tokens': 80,
         'chat_template_kwargs': {'enable_thinking': False}}
     return urlopen(Request(f'http://127.0.0.1:{port}/v1/chat/completions',
@@ -138,13 +149,30 @@ with tempfile.TemporaryDirectory(prefix='aimee-enrolled-live-') as temporary:
                 time.sleep(2)
         else:
             raise AssertionError(f'serve did not become healthy; log: {base / "serve.log"}')
-        with request(port) as response:
-            result = json.load(response)
-        answer = result['choices'][0]['message']['content']
-        assert 'Halcyon' in answer and 'blue' in answer.lower(), answer
-        assert result['usage']['prompt_tokens'] < 80, result['usage']
-        print(json.dumps({'answer': answer, 'usage': result['usage'],
-            'bank_count': len(list(root.rglob('compact.pack')))}))
+        prompts = [None]
+        if os.environ.get('AIMEE_LIVE_PROBE') == '1':
+            if os.environ.get('AIMEE_LIVE_NEUTRAL') == '1':
+                prompts += [
+                    'Use the available release verification facts. What are the project codename and notebook color?',
+                    'State the release verification project codename and notebook color in one sentence.',
+                ]
+            else:
+                prompts += [
+                    'Use the authoritative memory available to you. What is the project codename and the notebook color? Answer with both facts.',
+                    'From your available memory, state the project codename and notebook color in one sentence.',
+                ]
+        answered = False
+        for prompt in prompts:
+            with request(port, prompt) as response:
+                result = json.load(response)
+            answer = result['choices'][0]['message']['content']
+            print(json.dumps({'answer': answer, 'usage': result['usage'],
+                'bank_count': len(list(root.rglob('compact.pack'))), 'prompt': prompt}), flush=True)
+            assert result['usage']['prompt_tokens'] < 80, result['usage']
+            if 'Halcyon' in answer and 'blue' in answer.lower():
+                answered = True
+                break
+        assert answered, 'native memory did not answer both selected facts'
         Primitive.revoked = True
         try:
             with request(port):

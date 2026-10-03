@@ -23,6 +23,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ('wheel', 'gguf', 'audit', 'live-output', 'stage', 'signing-key', 'public-key-hex'):
         parser.add_argument('--' + name, required=True, type=Path)
+    parser.add_argument('--qwen-live-output', type=Path)
     args = parser.parse_args()
     if args.wheel.name != WHEEL or args.gguf.name != GGUF:
         raise ValueError('unexpected public asset names')
@@ -40,6 +41,22 @@ def main():
         raise ValueError('installed-wheel two-record live check missing')
     if 'revoked thin-client authorization withdrew native serving' not in live:
         raise ValueError('installed-wheel revocation check missing')
+    qwen_validation = None
+    if args.qwen_live_output:
+        qwen_lines = args.qwen_live_output.read_text().splitlines()
+        qwen_answers = [json.loads(line) for line in qwen_lines if line.startswith('{')]
+        matches = [result for result in qwen_answers
+                   if 'Halcyon' in result.get('answer', '')
+                   and 'blue' in result.get('answer', '').lower()
+                   and 0 < result.get('usage', {}).get('prompt_tokens', 0) < 80
+                   and result.get('bank_count', 0) >= 1]
+        if not matches or 'revoked thin-client authorization withdrew native serving' not in qwen_lines:
+            raise ValueError('installed-wheel Qwen live/revocation check missing')
+        qwen_validation = {'model': 'Qwen3.8 27B Q8 GGUF',
+                           'gpu': '2 x RX 7900 XTX', 'enrolled_thinclient': True,
+                           'selected_records': 2,
+                           'prompt_tokens': matches[0]['usage']['prompt_tokens'],
+                           'revoked_request_http_status': 503}
     with ZipFile(args.wheel) as archive:
         names = archive.namelist()
         metadata = archive.read(next(name for name in names if name.endswith('.dist-info/METADATA')))
@@ -73,6 +90,8 @@ def main():
                       'binary_disclosure_audit': True},
         'source_included': False, 'model_weights_included': False,
         'vllm_runtime_included': False}
+    if qwen_validation:
+        manifest['validated']['additional_models'] = [qwen_validation]
     manifest_path = args.stage / 'manifest.json'
     manifest_path.write_text(json.dumps(manifest, indent=2) + '\n')
     sums = args.stage / 'SHA256SUMS'

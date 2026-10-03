@@ -517,12 +517,20 @@ fn run() -> Result<()> {
                 },
             };
             let model_config: serde_json::Value = serde_json::from_slice(&fs::read(model.join("config.json"))?)?;
-            let position_policy = if model_config["model_type"] == "qwen3_5" { "nonnegative" } else { "negative" };
+            // Bind the release to the negative-position preparation profile
+            // validated for both supported model families. The revision also
+            // prevents reuse of any prior nonnegative Qwen bank.
+            let position_policy = "negative";
+            let encoding_revision = if model_config["model_type"] == "qwen3_5" {
+                "local-primitive-negative-v2"
+            } else {
+                "local-primitive-v1"
+            };
             let local = native::local_delivery::Settings {
                 compiler,
                 model_config_sha256:profile.model_config_sha256.clone(),
                 runtime_profile:format!("{}-vllm", native_model),
-                encoding_revision:"local-primitive-v1".into(),
+                encoding_revision:encoding_revision.into(),
                 position_policy:position_policy.into(),
                 limit_tokens,
             };
