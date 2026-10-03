@@ -73,7 +73,8 @@ def request(port):
         'temperature': 0, 'max_tokens': 80,
         'chat_template_kwargs': {'enable_thinking': False}}
     return urlopen(Request(f'http://127.0.0.1:{port}/v1/chat/completions',
-        data=json.dumps(body).encode(), headers={'Content-Type': 'application/json'}), timeout=240)
+        data=json.dumps(body).encode(), headers={'Content-Type': 'application/json'}),
+        timeout=float(os.environ.get('AIMEE_LIVE_REQUEST_TIMEOUT', '1200')))
 
 
 model = Path(sys.argv[1]).resolve()
