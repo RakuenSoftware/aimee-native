@@ -1,0 +1,504 @@
+[
+  {
+    "label": "implicit",
+    "view": "8609721be11574703b4b9cbef65bdc4f166c576a1889de8d841489436799e8d0",
+    "physical_records": 100006,
+    "data_sha256": "20de4672e1debd6e274350cdf63b545a366211057c4146517bb2a47fd197a1da",
+    "index_sha256": "551352486a48211068aaf59a364487575cf718231e22c8ada8d6f5972a31a6ae",
+    "canonical_relevant_records": [
+      {
+        "namespace": "public-research-fixture",
+        "id": "aldren",
+        "revision": "1",
+        "scope": {
+          "type": "global",
+          "value": "_global"
+        },
+        "key": "aldren station",
+        "content": "Aldren station access code is 2648.",
+        "kind": "fact",
+        "tier": "L3",
+        "confidence": 1,
+        "lifecycle": "active"
+      },
+      {
+        "namespace": "public-research-fixture",
+        "id": "voskar",
+        "revision": "1",
+        "scope": {
+          "type": "global",
+          "value": "_global"
+        },
+        "key": "voskar station",
+        "content": "Voskar station access code is 5802.",
+        "kind": "fact",
+        "tier": "L3",
+        "confidence": 1,
+        "lifecycle": "active"
+      },
+      {
+        "namespace": "public-research-fixture",
+        "id": "tinrel",
+        "revision": "1",
+        "scope": {
+          "type": "global",
+          "value": "_global"
+        },
+        "key": "tinrel station",
+        "content": "Tinrel station access code is 6739.",
+        "kind": "fact",
+        "tier": "L3",
+        "confidence": 1,
+        "lifecycle": "active"
+      },
+      {
+        "namespace": "public-research-fixture",
+        "id": "dalven",
+        "revision": "1",
+        "scope": {
+          "type": "global",
+          "value": "_global"
+        },
+        "key": "dalven relay",
+        "content": "Dalven relay connects to Aldren station.",
+        "kind": "fact",
+        "tier": "L3",
+        "confidence": 1,
+        "lifecycle": "active"
+      },
+      {
+        "namespace": "public-research-fixture",
+        "id": "osreth",
+        "revision": "1",
+        "scope": {
+          "type": "global",
+          "value": "_global"
+        },
+        "key": "osreth relay",
+        "content": "Osreth relay connects to Voskar station.",
+        "kind": "fact",
+        "tier": "L3",
+        "confidence": 1,
+        "lifecycle": "active"
+      },
+      {
+        "namespace": "public-research-fixture",
+        "id": "karvin",
+        "revision": "1",
+        "scope": {
+          "type": "global",
+          "value": "_global"
+        },
+        "key": "karvin relay",
+        "content": "Karvin relay connects to Tinrel station.",
+        "kind": "fact",
+        "tier": "L3",
+        "confidence": 1,
+        "lifecycle": "active"
+      }
+    ],
+    "approved_routes": [
+      {
+        "partition": "aldren",
+        "authority": "public-research",
+        "cues": [
+          "aldren",
+          "aldren outpost"
+        ],
+        "records": [
+          {
+            "namespace": "public-research-fixture",
+            "id": "aldren",
+            "revision": "1"
+          }
+        ]
+      },
+      {
+        "partition": "voskar",
+        "authority": "public-research",
+        "cues": [
+          "voskar",
+          "voskar outpost"
+        ],
+        "records": [
+          {
+            "namespace": "public-research-fixture",
+            "id": "voskar",
+            "revision": "1"
+          }
+        ]
+      },
+      {
+        "partition": "tinrel",
+        "authority": "public-research",
+        "cues": [
+          "tinrel",
+          "tinrel outpost"
+        ],
+        "records": [
+          {
+            "namespace": "public-research-fixture",
+            "id": "tinrel",
+            "revision": "1"
+          }
+        ]
+      },
+      {
+        "partition": "dalven",
+        "authority": "public-research",
+        "cues": [
+          "dalven",
+          "dalven outpost"
+        ],
+        "records": [
+          {
+            "namespace": "public-research-fixture",
+            "id": "dalven",
+            "revision": "1"
+          },
+          {
+            "namespace": "public-research-fixture",
+            "id": "aldren",
+            "revision": "1"
+          }
+        ]
+      },
+      {
+        "partition": "osreth",
+        "authority": "public-research",
+        "cues": [
+          "osreth",
+          "osreth outpost"
+        ],
+        "records": [
+          {
+            "namespace": "public-research-fixture",
+            "id": "osreth",
+            "revision": "1"
+          },
+          {
+            "namespace": "public-research-fixture",
+            "id": "voskar",
+            "revision": "1"
+          }
+        ]
+      },
+      {
+        "partition": "karvin",
+        "authority": "public-research",
+        "cues": [
+          "karvin",
+          "karvin outpost"
+        ],
+        "records": [
+          {
+            "namespace": "public-research-fixture",
+            "id": "karvin",
+            "revision": "1"
+          },
+          {
+            "namespace": "public-research-fixture",
+            "id": "tinrel",
+            "revision": "1"
+          }
+        ]
+      }
+    ],
+    "scaling": {
+      "archive_records": 100006,
+      "build_ms": 11047.337,
+      "candidate_partitions": 1,
+      "candidate_records": 2,
+      "cold_outcome": "hit",
+      "cold_route_us": 147,
+      "open_ms": 3889.312,
+      "route_partitions": 6,
+      "scope": "owner-approved exact cues; physically published archive; warm host-wall includes canonical source resolution; startup and fallback are not constant",
+      "view": "8609721be11574703b4b9cbef65bdc4f166c576a1889de8d841489436799e8d0",
+      "warm_route_median_ns": 26530,
+      "warm_route_p95_ns": 35731,
+      "warm_samples": 1000
+    }
+  },
+  {
+    "label": "grounded",
+    "view": "32fc223aaded23dd3303d2c8f4012975c73485d7768e00364a70b7790cf72f5f",
+    "physical_records": 100009,
+    "data_sha256": "0269fd090e4fab35839ea08f7692c530dbc0e2a7ffdc2b311c8bb0b515101120",
+    "index_sha256": "6b704ee7a49097c05a3ab9dcc6d9bc7e4b2827d41a54d7d7e189e7a490b3498a",
+    "canonical_relevant_records": [
+      {
+        "namespace": "public-research-fixture",
+        "id": "larneth",
+        "revision": "1",
+        "scope": {
+          "type": "global",
+          "value": "_global"
+        },
+        "key": "larneth station",
+        "content": "Larneth station access code is 3179.",
+        "kind": "fact",
+        "tier": "L3",
+        "confidence": 1,
+        "lifecycle": "active"
+      },
+      {
+        "namespace": "public-research-fixture",
+        "id": "quorin",
+        "revision": "1",
+        "scope": {
+          "type": "global",
+          "value": "_global"
+        },
+        "key": "quorin station",
+        "content": "Quorin station access code is 8046.",
+        "kind": "fact",
+        "tier": "L3",
+        "confidence": 1,
+        "lifecycle": "active"
+      },
+      {
+        "namespace": "public-research-fixture",
+        "id": "espira",
+        "revision": "1",
+        "scope": {
+          "type": "global",
+          "value": "_global"
+        },
+        "key": "espira station",
+        "content": "Espira station access code is 6528.",
+        "kind": "fact",
+        "tier": "L3",
+        "confidence": 1,
+        "lifecycle": "active"
+      },
+      {
+        "namespace": "public-research-fixture",
+        "id": "renvik",
+        "revision": "1",
+        "scope": {
+          "type": "global",
+          "value": "_global"
+        },
+        "key": "renvik relay",
+        "content": "Renvik relay connects to Larneth station.",
+        "kind": "fact",
+        "tier": "L3",
+        "confidence": 1,
+        "lifecycle": "active"
+      },
+      {
+        "namespace": "public-research-fixture",
+        "id": "parsol",
+        "revision": "1",
+        "scope": {
+          "type": "global",
+          "value": "_global"
+        },
+        "key": "parsol relay",
+        "content": "Parsol relay connects to Quorin station.",
+        "kind": "fact",
+        "tier": "L3",
+        "confidence": 1,
+        "lifecycle": "active"
+      },
+      {
+        "namespace": "public-research-fixture",
+        "id": "vireth",
+        "revision": "1",
+        "scope": {
+          "type": "global",
+          "value": "_global"
+        },
+        "key": "vireth relay",
+        "content": "Vireth relay connects to Espira station.",
+        "kind": "fact",
+        "tier": "L3",
+        "confidence": 1,
+        "lifecycle": "active"
+      },
+      {
+        "namespace": "public-research-fixture",
+        "id": "identity-renvik",
+        "revision": "1",
+        "scope": {
+          "type": "global",
+          "value": "_global"
+        },
+        "key": "identity-renvik relay",
+        "content": "Renvik outpost is another name for Renvik relay.",
+        "kind": "fact",
+        "tier": "L3",
+        "confidence": 1,
+        "lifecycle": "active"
+      },
+      {
+        "namespace": "public-research-fixture",
+        "id": "identity-parsol",
+        "revision": "1",
+        "scope": {
+          "type": "global",
+          "value": "_global"
+        },
+        "key": "identity-parsol relay",
+        "content": "Parsol outpost is another name for Parsol relay.",
+        "kind": "fact",
+        "tier": "L3",
+        "confidence": 1,
+        "lifecycle": "active"
+      },
+      {
+        "namespace": "public-research-fixture",
+        "id": "identity-vireth",
+        "revision": "1",
+        "scope": {
+          "type": "global",
+          "value": "_global"
+        },
+        "key": "identity-vireth relay",
+        "content": "Vireth outpost is another name for Vireth relay.",
+        "kind": "fact",
+        "tier": "L3",
+        "confidence": 1,
+        "lifecycle": "active"
+      }
+    ],
+    "approved_routes": [
+      {
+        "partition": "larneth",
+        "authority": "public-research",
+        "cues": [
+          "larneth",
+          "larneth outpost"
+        ],
+        "records": [
+          {
+            "namespace": "public-research-fixture",
+            "id": "larneth",
+            "revision": "1"
+          }
+        ]
+      },
+      {
+        "partition": "quorin",
+        "authority": "public-research",
+        "cues": [
+          "quorin",
+          "quorin outpost"
+        ],
+        "records": [
+          {
+            "namespace": "public-research-fixture",
+            "id": "quorin",
+            "revision": "1"
+          }
+        ]
+      },
+      {
+        "partition": "espira",
+        "authority": "public-research",
+        "cues": [
+          "espira",
+          "espira outpost"
+        ],
+        "records": [
+          {
+            "namespace": "public-research-fixture",
+            "id": "espira",
+            "revision": "1"
+          }
+        ]
+      },
+      {
+        "partition": "renvik",
+        "authority": "public-research",
+        "cues": [
+          "renvik",
+          "renvik outpost"
+        ],
+        "records": [
+          {
+            "namespace": "public-research-fixture",
+            "id": "renvik",
+            "revision": "1"
+          },
+          {
+            "namespace": "public-research-fixture",
+            "id": "larneth",
+            "revision": "1"
+          },
+          {
+            "namespace": "public-research-fixture",
+            "id": "identity-renvik",
+            "revision": "1"
+          }
+        ]
+      },
+      {
+        "partition": "parsol",
+        "authority": "public-research",
+        "cues": [
+          "parsol",
+          "parsol outpost"
+        ],
+        "records": [
+          {
+            "namespace": "public-research-fixture",
+            "id": "parsol",
+            "revision": "1"
+          },
+          {
+            "namespace": "public-research-fixture",
+            "id": "quorin",
+            "revision": "1"
+          },
+          {
+            "namespace": "public-research-fixture",
+            "id": "identity-parsol",
+            "revision": "1"
+          }
+        ]
+      },
+      {
+        "partition": "vireth",
+        "authority": "public-research",
+        "cues": [
+          "vireth",
+          "vireth outpost"
+        ],
+        "records": [
+          {
+            "namespace": "public-research-fixture",
+            "id": "vireth",
+            "revision": "1"
+          },
+          {
+            "namespace": "public-research-fixture",
+            "id": "espira",
+            "revision": "1"
+          },
+          {
+            "namespace": "public-research-fixture",
+            "id": "identity-vireth",
+            "revision": "1"
+          }
+        ]
+      }
+    ],
+    "scaling": {
+      "archive_records": 100009,
+      "build_ms": 11158.14,
+      "candidate_partitions": 1,
+      "candidate_records": 3,
+      "cold_outcome": "hit",
+      "cold_route_us": 275,
+      "open_ms": 4278.856,
+      "route_partitions": 6,
+      "scope": "owner-approved exact cues; physically published archive; warm host-wall includes canonical source resolution; startup and fallback are not constant",
+      "view": "32fc223aaded23dd3303d2c8f4012975c73485d7768e00364a70b7790cf72f5f",
+      "warm_route_median_ns": 42191,
+      "warm_route_p95_ns": 55141,
+      "warm_samples": 1000
+    }
+  }
+]
