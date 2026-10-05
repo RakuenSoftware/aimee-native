@@ -93,7 +93,9 @@ fn compile(settings: &Settings, primitive: &primitive::Primitive, recipient: &st
         let _ = fs::remove_file(&diagnostic_path);
         return Err(error.into());
     }
-    let deadline = Instant::now() + Duration::from_secs(600);
+    // First preparation of a large GGUF can require more than ten minutes on
+    // CPU-only hosts, even though subsequent bank use is cached.
+    let deadline = Instant::now() + Duration::from_secs(1800);
     loop {
         if let Some(status) = child.try_wait()? {
             if !status.success() {

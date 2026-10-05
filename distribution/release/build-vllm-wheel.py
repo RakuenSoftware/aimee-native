@@ -17,11 +17,15 @@ class_map={
  'AimeeWorker':'W0','NativeAdmission':'M0',
 }
 def rewrite(content):
- for old,new in module_pairs:
+ for old,new in sorted(module_pairs,key=lambda pair:len(pair[0]),reverse=True):
   content=content.replace('from . import '+old,'from . import '+new+' as '+old)
   content=content.replace('from .'+old,'from .'+new)
   content=content.replace('aimee_vllm.'+old+'.','aimee_vllm.'+new+'.')
  for old,new in class_map.items():content=content.replace(old,new)
+ # Keep the GGUF configuration key at runtime without embedding its complete
+ # internal identifier in a distributed extension.
+ content=content.replace("'gguf_weights'", "('gguf' + chr(95) + 'weights')")
+ content=content.replace("'publisher UID mismatch'", "'writer UID mismatch'")
  return content
 with tempfile.TemporaryDirectory(prefix='aimee-client-build-') as tmp:
  root=pathlib.Path(tmp);pkg=root/'aimee_vllm';pkg.mkdir()
@@ -34,10 +38,12 @@ with tempfile.TemporaryDirectory(prefix='aimee-client-build-') as tmp:
  # Release-only import retargeting keeps readable private source while exposing
  # only opaque Triton module/function names in the customer wheel.
  backend=(pkg/(module_map['backend']+'.py'));backend.write_text(backend.read_text().replace(
-  'from .kernel import native_attention','from ._k import k0 as native_attention'))
+  'from .kernel import native_attention','from ._k import k0').replace('native_attention[','k0['))
  runtime=(pkg/(module_map['runtime_ops']+'.py'));runtime.write_text(runtime.read_text().replace(
   'from .decoder_kernel import decode_words, decode_escapes',
-  'from ._d import d0 as decode_words, d1 as decode_escapes'))
+  'from ._d import d0 as decode_words, d1 as decode_escapes').replace(
+  'table0, table1, BLOCK=256)', 'table0, table1, a5=256)').replace(
+  'words, exceptions, BLOCK=256)', 'words, exceptions, a5=256)'))
  subprocess.run([sys.executable,str(repo/'distribution/release/obfuscate-triton.py'),
                  str(source/'kernel.py'),str(pkg/'_k.py'),
                  '--functions','native_attention=k0'],check=True)
@@ -46,8 +52,10 @@ with tempfile.TemporaryDirectory(prefix='aimee-client-build-') as tmp:
                  '--functions','decode_words=d0,decode_escapes=d1'],check=True)
  (root/'setup.py').write_text('''from setuptools import setup,Extension
 from Cython.Build import cythonize
+from Cython.Compiler import Options
+Options.docstrings = False
 setup(name='aimee-vllm',version='''+repr(a.version)+''',packages=['aimee_vllm'],
- ext_modules=cythonize([Extension('aimee_vllm.'+m,['aimee_vllm/'+m+'.py'],extra_compile_args=['-O3','-g0','-fvisibility=hidden','-fno-ident','-fno-record-gcc-switches','-ffunction-sections','-fdata-sections','-flto'],extra_link_args=['-s','-flto','-Wl,--gc-sections','-Wl,--build-id=none','-Wl,--exclude-libs,ALL']) for m in '''+repr(modules)+'''],compiler_directives={'language_level':3,'binding':False,'annotation_typing':False,'embedsignature':False,'docstrings':False}),
+ ext_modules=cythonize([Extension('aimee_vllm.'+m,['aimee_vllm/'+m+'.py'],extra_compile_args=['-O3','-g0','-fvisibility=hidden','-fno-ident','-fno-record-gcc-switches','-ffunction-sections','-fdata-sections','-flto'],extra_link_args=['-s','-flto','-Wl,--gc-sections','-Wl,--build-id=none','-Wl,--exclude-libs,ALL']) for m in '''+repr(modules)+'''],compiler_directives={'language_level':3,'binding':False,'annotation_typing':False,'embedsignature':False}),
  entry_points={'vllm.general_plugins':['aimee_native=aimee_vllm:register'],'console_scripts':['aimee-vllm=aimee_vllm._p9:main']},
  install_requires=['vllm>=0.30.0,<0.31'],python_requires='>=3.12')
 ''')

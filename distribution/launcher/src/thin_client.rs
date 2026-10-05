@@ -43,7 +43,14 @@ pub fn open(connection: &Config) -> Result<Authorization> {
         .timeout(Duration::from_secs(3600))
         .identity(reqwest::Identity::from_pem(&identity)?);
     match fs::read(home.join("remote-ca.pem")) {
-        Ok(ca) => builder = builder.add_root_certificate(reqwest::Certificate::from_pem(&ca)?),
+        Ok(ca) => {
+            // Aimee's self-signed server enrollment pins the server leaf. Its
+            // URL may be an IP while the leaf names only localhost. Trust only
+            // this explicit pin, then allow that name mismatch.
+            builder = builder.tls_built_in_root_certs(false)
+                .danger_accept_invalid_hostnames(true)
+                .add_root_certificate(reqwest::Certificate::from_pem(&ca)?);
+        }
         Err(error) if error.kind() == std::io::ErrorKind::NotFound => {},
         Err(error) => return Err(error.into()),
     }
