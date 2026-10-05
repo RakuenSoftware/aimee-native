@@ -1,0 +1,57 @@
+(null): No such file or directory
+(null): No such file or directory
+test_authorized_empty_overrides_caller_without_reserving_bank (test_admission.AdmissionTests.test_authorized_empty_overrides_caller_without_reserving_bank) ... (null): No such file or directory
+/opt/aimee-memory-lab/vllm-env/lib/python3.12/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+Executing <Task finished name='Task-2' coro=<AdmissionTests.test_authorized_empty_overrides_caller_without_reserving_bank() done, defined at /tmp/native-memory-runtime-validation-20261003/distribution/vllm/tests/test_admission.py:58> result=None created at /root/.local/share/uv/python/cpython-3.12.14-linux-x86_64-gnu/lib/python3.12/asyncio/runners.py:100> took 6.057 seconds
+ok
+test_automatic_selection_overrides_caller_publication (test_admission.AdmissionTests.test_automatic_selection_overrides_caller_publication) ... ok
+test_done_disconnect_releases_but_interrupted_stream_stays_pinned (test_admission.AdmissionTests.test_done_disconnect_releases_but_interrupted_stream_stays_pinned) ... ok
+test_paused_selection_can_activate_but_cannot_bypass_pause (test_admission.AdmissionTests.test_paused_selection_can_activate_but_cannot_bypass_pause) ... ok
+test_pressure_rejected_before_app_and_capacity_released (test_admission.AdmissionTests.test_pressure_rejected_before_app_and_capacity_released) ... ok
+test_same_bank_shared_until_all_requests_finish (test_admission.AdmissionTests.test_same_bank_shared_until_all_requests_finish) ... ok
+test_selection_error_is_not_empty_success (test_admission.AdmissionTests.test_selection_error_is_not_empty_success) ... native selection failed (RuntimeError): unavailable
+ok
+test_selection_revision_race_rejects_before_generation (test_admission.AdmissionTests.test_selection_revision_race_rejects_before_generation) ... native selection failed (RuntimeError): selection/catalogue mismatch
+ok
+test_unknown_rejected_and_interrupted_request_retains_reservation (test_admission.AdmissionTests.test_unknown_rejected_and_interrupted_request_retains_reservation) ... ok
+test_eviction_clears_pointer_owners_before_bank_release_and_reload (test_cache.CacheTests.test_eviction_clears_pointer_owners_before_bank_release_and_reload) ... ok
+test_pinned_overflow_never_evicts_active_banks (test_cache.CacheTests.test_pinned_overflow_never_evicts_active_banks) ... ok
+test_staging_pressure_uses_raw_without_inflating_residency (test_cache.CacheTests.test_staging_pressure_uses_raw_without_inflating_residency) ... ok
+test_upload_failure_poisoned_instead_of_reusing_partial_plan (test_cache.CacheTests.test_upload_failure_poisoned_instead_of_reusing_partial_plan) ... ok
+test_missing_request_fails_instead_of_borrowing_another_bank (test_state.StateTests.test_missing_request_fails_instead_of_borrowing_another_bank) ... ok
+test_missing_v2_slots_bypass_only_publication_free_warmup (test_state.StateTests.test_missing_v2_slots_bypass_only_publication_free_warmup) ... ok
+test_reorder_and_retirement_preserve_identity (test_state.StateTests.test_reorder_and_retirement_preserve_identity) ... ok
+test_resumed_request_keeps_revision_after_replacement_and_withdrawal (test_state.StateTests.test_resumed_request_keeps_revision_after_replacement_and_withdrawal) ... ok
+test_unapproved_selection_and_mid_request_rebinding_fail (test_state.StateTests.test_unapproved_selection_and_mid_request_rebinding_fail) ... ok
+test_v2_physical_slots_resolve_during_forward (test_state.StateTests.test_v2_physical_slots_resolve_during_forward) ... ok
+test_activation_and_failed_plan_have_separate_bounded_counters (test_telemetry.CacheTelemetryTests.test_activation_and_failed_plan_have_separate_bounded_counters) ... ok
+test_failed_upload_remains_poisoned_with_telemetry_enabled (test_telemetry.CacheTelemetryTests.test_failed_upload_remains_poisoned_with_telemetry_enabled) ... ok
+test_configuration_is_not_truthiness (test_telemetry.TelemetryTests.test_configuration_is_not_truthiness) ... ok
+test_disabled_is_empty_and_preserves_exception (test_telemetry.TelemetryTests.test_disabled_is_empty_and_preserves_exception) ... ok
+test_failures_are_separate_and_snapshots_do_not_alias (test_telemetry.TelemetryTests.test_failures_are_separate_and_snapshots_do_not_alias) ... ok
+test_cancelled_drain_does_not_poison_untouched_workers (test_control.ControlTests.test_cancelled_drain_does_not_poison_untouched_workers) ... ok
+test_drain_timeout_is_retryable_without_worker_poisoning (test_control.ControlTests.test_drain_timeout_is_retryable_without_worker_poisoning) ... ok
+test_invalid_local_catalog_is_retryable_without_worker_mutation (test_control.ControlTests.test_invalid_local_catalog_is_retryable_without_worker_mutation) ... ok
+test_metrics_require_every_rank_and_do_not_change_admission (test_control.ControlTests.test_metrics_require_every_rank_and_do_not_change_admission) ... ok
+test_mixed_revision_never_reopens_admission (test_control.ControlTests.test_mixed_revision_never_reopens_admission) ... ok
+test_poisoned_status_requests_supervised_restart (test_control.ControlTests.test_poisoned_status_requests_supervised_restart) ... ok
+test_refresh_stays_closed_until_every_worker_acknowledges_same_revision (test_control.ControlTests.test_refresh_stays_closed_until_every_worker_acknowledges_same_revision) ... ok
+test_socket_health_and_withdrawal_remain_responsive_during_drain (test_control.ControlTests.test_socket_health_and_withdrawal_remain_responsive_during_drain) ... Native control operation failed
+Traceback (most recent call last):
+  File "/tmp/native-routing-current-plugin-20261003/aimee_vllm/control.py", line 21, in handle
+    async with lock:result=await operate(owner,engine,request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/native-routing-current-plugin-20261003/aimee_vllm/control.py", line 57, in operate
+    if generation!=getattr(owner,'generation',0):raise RuntimeError('superseded publication activation')
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: superseded publication activation
+ok
+test_superseded_activation_cannot_reopen_after_withdrawal (test_control.ControlTests.test_superseded_activation_cannot_reopen_after_withdrawal) ... ok
+test_withdraw_stops_new_admissions (test_control.ControlTests.test_withdraw_stops_new_admissions) ... ok
+test_withdrawal_during_worker_refresh_cannot_reopen_admission (test_control.ControlTests.test_withdrawal_during_worker_refresh_cannot_reopen_admission) ... ok
+
+----------------------------------------------------------------------
+Ran 35 tests in 6.114s
+
+OK

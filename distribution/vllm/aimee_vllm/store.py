@@ -21,6 +21,9 @@ class PreparedStore:
         if self.lib.aimee_store_abi_version() != 1:
             raise RuntimeError("native storage ABI mismatch")
         admission = dict(spec)
+        hybrid_digest=admission.pop('hybrid_state',None)
+        hybrid_limit=admission.pop('max_recurrent_bytes',256*1024**2)
+        self.hybrid=None
         self.lossless_transport = admission.pop('lossless_transport', True)
         self.pipeline_transport = admission.pop('pipeline_transport', True)
         self.device_budget = admission.pop('device_budget', 256 * 1024**2)
@@ -28,6 +31,15 @@ class PreparedStore:
         if not self.handle:
             raise RuntimeError("native publication admission failed")
         self.metadata = json.loads(self.lib.aimee_store_metadata(self.handle))
+        if hybrid_digest is not None:
+            from .hybrid import HybridPrefix
+            try:self.hybrid=HybridPrefix(spec['root'],hybrid_digest,spec['model'],spec['key'],hybrid_limit)
+            except BaseException:
+                self.lib.aimee_store_close(self.handle);self.handle=None
+                raise
+            if self.host_reservation_bytes()>spec['byte_budget']:
+                self.lib.aimee_store_close(self.handle);self.handle=None
+                raise RuntimeError('hybrid host memory budget exceeded')
         self.device_banks = {}
         self.transfer_plans = {}
         for name, args, result in (
@@ -89,29 +101,39 @@ class PreparedStore:
             if profile:
                 self.last_profile = json.loads(self.lib.aimee_store_activation_profile(result))
             self.device_banks[key] = banks
+            if self.hybrid is not None:self.hybrid.activate(device,rank,world)
             return banks
         finally:
             self.lib.aimee_store_activation_free(result)
 
     def device_bytes(self, world, rank=0):
-        return self.prepare_plan(rank, world)[1]['bytes']
+        return self.prepare_plan(rank, world)[1]['bytes']+(self.hybrid.device_bytes(rank,world) if self.hybrid is not None else 0)
+
+    def host_reservation_bytes(self):
+        # Mapped attention can release pages; admitted recurrent tensors remain
+        # resident, including rank-partitioned copies. Never hide them in disk mode.
+        return (0 if self.spec.get('disk_backed',False) else self.metadata['bytes'])+(2*len(self.hybrid.data) if self.hybrid is not None else 0)
 
     def staging_bytes(self, world, rank=0):
         plan = self.prepare_plan(rank, world)[1]
+        # Recurrent copies are allocated directly in their final device storage;
+        # their bytes already contribute to residency, not temporary GPU staging.
         return plan["transfer_bytes"] if plan.get("lossless_transport") else 0
 
     def reservation_bytes(self, world, rank=0):
         plan = self.prepare_plan(rank, world)[1]
-        return plan.get('reservation_bytes', plan['bytes'])
+        return plan.get('reservation_bytes', plan['bytes'])+(self.hybrid.device_bytes(rank,world) if self.hybrid is not None else 0)
 
     def resident(self, device, rank, world):
         return self.device_banks[(str(device), rank, world)]
 
     def evict(self, device, rank, world):
         self.device_banks.pop((str(device), rank, world), None)
+        if self.hybrid is not None:self.hybrid.evict(device,rank,world)
 
     def close(self):
         self.device_banks.clear()
+        if getattr(self,'hybrid',None) is not None:self.hybrid.devices.clear()
         for handle, _ in getattr(self, 'transfer_plans', {}).values():
             self.lib.aimee_store_pack_close(handle)
         self.transfer_plans = {}

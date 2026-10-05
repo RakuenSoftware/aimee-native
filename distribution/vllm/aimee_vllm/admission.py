@@ -11,6 +11,7 @@ from pathlib import Path
 from .store import PreparedStore
 from .stream_completion import StreamCompletion
 from .cache_identity import cache_salt
+from .telemetry import Stages
 
 logger = logging.getLogger(__name__)
 
@@ -33,10 +34,17 @@ class NativeAdmission:
     def __init__(self, app, config=None):
         self.app=app;self.poisoned=False
         config=config or json.loads(Path(os.environ['AIMEE_VLLM_CONFIG']).read_text())
+        self.stages=Stages(config.get("native_stage_telemetry",False))
         self.config=config;self.paused=config.get("start_paused",False);self.active=0;self.idle=asyncio.Event();self.idle.set()
         self.ledger=Ledger(ctypes.CDLL(config["library"]),config.get("device_memory_budget",256*1024**2))
         self.banks=self.load_banks()
         self.catalog_digest=self.pending_digest
+        self.authentication=None
+        if config.get('selection_socket'):
+            from vllm.entrypoints.serve.middleware.authenticate import AuthenticationMiddleware
+            key=os.environ.get('VLLM_API_KEY','')
+            if not key.strip():raise ValueError('enrolled model serving requires VLLM_API_KEY')
+            self.authentication=AuthenticationMiddleware(self._admit,tokens=[key])
 
     def load_banks(self):
         config=self.config
@@ -44,11 +52,24 @@ class NativeAdmission:
         catalog=json.loads(raw_catalog)
         self.pending_digest=hashlib.sha256(raw_catalog).hexdigest()
         lib=ctypes.CDLL(config["library"])
+        from .model_adapter import ModelAdapter
+        adapter=ModelAdapter(config,lib)
+        self.model_adapter=adapter
         world=config.get("serve",{}).get("tensor_parallel_size",1)
         banks={}
+        self.hybrid_contexts={}
         for uid,(name,spec) in enumerate(catalog['publications'].items()):
             store=PreparedStore(lib,{**spec,'byte_budget':config['host_memory_budget'],'disk_backed':config.get('disk_backed',False),'lossless_transport':False,'device_budget':config.get('device_memory_budget',256*1024**2)})
-            try:banks[name]=(uid,max(store.prepare_plan(rank, world)[1]["bytes"] for rank in range(world)))
+            try:
+                adapter.admit_store(store)
+                hybrid=getattr(store,'hybrid',None)
+                if hybrid is not None:
+                    if config.get('enable_hybrid_native') is not True:raise RuntimeError('complete hybrid native serving disabled')
+                    from .hybrid import validate_model_identity
+                    validate_model_identity(hybrid.spec,config['model'],config.get('model_revision'),config)
+                    if hybrid.spec['model_config_sha256']!=hashlib.sha256((Path(config['model'])/'config.json').read_bytes()).hexdigest():raise RuntimeError('hybrid publication model mismatch')
+                    if hybrid.spec['encoding']=='system-message':self.hybrid_contexts[name]=hybrid.spec['system_context_sha256']
+                banks[name]=(uid,max(store.device_bytes(world,rank) for rank in range(world)))
             finally:store.close()
         return banks
 
@@ -60,6 +81,12 @@ class NativeAdmission:
         await send({'type':'http.response.body','body':body})
 
     async def __call__(self, scope, receive, send):
+        authentication=getattr(self,'authentication',None)
+        if authentication is not None:
+            return await authentication(scope,receive,send)
+        return await self._admit(scope,receive,send)
+
+    async def _admit(self, scope, receive, send):
         if scope['type']=='lifespan':
             from .control import start
             server=None
@@ -99,7 +126,12 @@ class NativeAdmission:
         if selector:
             try:
                 from .selection import select
-                selected=await select(selector,body)
+                stages=getattr(self,'stages',None)
+                if stages is None:
+                    selected=await select(selector,body)
+                else:
+                    with stages.measure('selection_rpc'):
+                        selected=await select(selector,body)
                 if selected['catalog_digest']!=self.catalog_digest:
                     raise RuntimeError('selection/catalogue mismatch')
                 publication=selected['publication']
@@ -112,6 +144,18 @@ class NativeAdmission:
             if self.poisoned or self.paused:
                 return await self.error(send,503,'native publication update in progress')
         bank=None
+        context=getattr(self,'hybrid_contexts',{}).get(publication)
+        if context is not None:
+            messages=body.get('messages')
+            if not isinstance(messages,list) or not messages:return await self.error(send,400,'complete native system context requires chat messages')
+            first=messages[0]
+            if not isinstance(first,dict):return await self.error(send,400,'invalid native chat message')
+            system=first.get('content','') if first.get('role')=='system' else ''
+            if not isinstance(system,str) or hashlib.sha256(system.strip().encode()).hexdigest()!=context:
+                return await self.error(send,400,'native system instruction context was not prepared')
+            if first.get('role')=='system':
+                body['messages']=messages[1:]
+                if not body['messages']:return await self.error(send,400,'conversation required')
         if publication is not None:
             bank=self.banks.get(publication)
             if bank is None:return await self.error(send,400,'native publication unavailable')

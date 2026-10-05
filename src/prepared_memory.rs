@@ -47,6 +47,13 @@ pub struct Entry {
     bytes: usize,
     sha256: String,
     layouts: Vec<Layout>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    recurrent: Option<crate::prepared_recurrent::Metadata>,
+}
+impl Entry {
+    pub fn recurrent_bytes(&self) -> usize {
+        self.recurrent.as_ref().map_or(0, |m| m.bytes())
+    }
 }
 #[derive(Clone, Serialize, Deserialize)]
 struct Index {
@@ -143,6 +150,9 @@ pub struct Store {
 pub struct Loaded {
     pub tokens: Vec<u32>,
     pub banks: HashMap<usize, Bank>,
+    pub recurrent: HashMap<usize, (Tensor, Tensor)>,
+    pub recurrent_load_wall_ns: u128,
+    pub recurrent_read_bytes: usize,
     pub read_ns: u128,
     pub file_setup_ns: u128,
     pub file_opened: bool,
@@ -267,6 +277,9 @@ impl Store {
             )?;
         }
         for (key, e) in &self.index.entries {
+            if let Some(meta) = &e.recurrent {
+                let _ = crate::prepared_recurrent::load(&self.root, key, meta, None)?;
+            }
             let file = File::open(self.payload_path(key))?;
             let offset = e.offset.unwrap_or(0);
             ensure!(
@@ -472,9 +485,17 @@ impl Store {
         }
         result?;
         let transfer_ns = transfer_started.elapsed().as_nanos();
+        let recurrent_started = Instant::now();
+        let recurrent = match &e.recurrent {
+            Some(meta) => crate::prepared_recurrent::load(&self.root, key, meta, devices)?,
+            None => HashMap::new(),
+        };
         Ok(Some(Loaded {
             tokens: e.tokens.clone(),
             banks,
+            recurrent,
+            recurrent_load_wall_ns: recurrent_started.elapsed().as_nanos(),
+            recurrent_read_bytes: e.recurrent_bytes(),
             read_ns,
             file_setup_ns,
             file_opened,
@@ -482,11 +503,20 @@ impl Store {
             transfer_ns,
             transfer_operations: operations,
             host_hit,
-            bytes: e.bytes,
-            expanded_bytes,
+            bytes: e.bytes + e.recurrent.as_ref().map_or(0, |m| m.bytes()),
+            expanded_bytes: expanded_bytes + e.recurrent.as_ref().map_or(0, |m| m.bytes()),
         }))
     }
     pub fn put(&mut self, key: &str, tokens: &[u32], banks: &HashMap<usize, Bank>) -> Result<()> {
+        self.put_complete(key, tokens, banks, &HashMap::new())
+    }
+    pub fn put_complete(
+        &mut self,
+        key: &str,
+        tokens: &[u32],
+        banks: &HashMap<usize, Bank>,
+        recurrent: &HashMap<usize, (Tensor, Tensor)>,
+    ) -> Result<()> {
         ensure!(
             self.writable && key_ok(key),
             "prepared store not writable or invalid key"
@@ -567,6 +597,7 @@ impl Store {
             bytes,
             sha256: format!("{:x}", Sha256::digest(data)),
             layouts,
+            recurrent: crate::prepared_recurrent::write(&self.root, key, recurrent)?,
         };
         validate(&e)?;
         // Append-only ranges keep old readers valid while a new index is published.
@@ -640,6 +671,9 @@ fn expanded_bytes(e: &Entry) -> Result<usize> {
         .context("prepared overflow")
 }
 fn validate(e: &Entry) -> Result<()> {
+    if let Some(meta) = &e.recurrent {
+        crate::prepared_recurrent::validate(meta)?;
+    }
     if let Some(offset) = e.offset {
         ensure!(
             offset >= PACK_HEADER_BYTES

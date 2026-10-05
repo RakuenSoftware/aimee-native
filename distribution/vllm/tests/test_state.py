@@ -1,10 +1,44 @@
 import unittest
+from unittest.mock import patch
+import tempfile,json,hashlib
+from pathlib import Path
 from types import SimpleNamespace as NS
 from aimee_vllm.state import State,Pin
 
 class FakeStore:
     def activate(self,*args): return {}
 class StateTests(unittest.TestCase):
+    def test_enabled_hybrid_hooks_are_installed_with_empty_catalogue(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);(root/'config.json').write_bytes(b'{}')
+            catalog=root/'catalog.json'
+            catalog.write_text(json.dumps({'model_config_sha256':hashlib.sha256(b'{}').hexdigest(),
+                                           'recipient':'approved','publications':{}}))
+            config={'model':str(root),'catalog':str(catalog),'recipient':'approved',
+                    'library':'unused','host_memory_budget':1024,'enable_hybrid_native':True}
+            with patch('aimee_vllm.state.ctypes.CDLL') as library,patch('aimee_vllm.state.DeviceCache'),patch.object(State,'install_hybrid_hooks') as hooks, patch.object(State,'install_model_position_hook'), patch('aimee_vllm.model_adapter.ModelAdapter'):
+                library.return_value.aimee_store_runtime_warmup.return_value=True
+                state=State(config,NS(),NS(index=0),0,1)
+                hooks.assert_called_once()
+                self.assertEqual(state.stores,{})
+                state.close()
+    def test_refresh_preserves_requested_stage_measurements(self):
+        from aimee_vllm.telemetry import Stages
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);(root/'config.json').write_bytes(b'{}')
+            catalog=root/'catalog.json';catalog.write_text(json.dumps({'recipient':'approved','model_config_sha256':hashlib.sha256(b'{}').hexdigest(),'publications':{}}))
+            state=State.__new__(State)
+            state.config={'model':str(root),'catalog':str(catalog),'recipient':'approved','host_memory_budget':1024,'native_stage_telemetry':True}
+            state.requests={};state.stores={};state.tables={};state.lib=object();state.device='cpu';state.rank=0;state.world=1
+            state.cache=NS(resident={},close=lambda:None,stages=Stages(True))
+            with state.cache.stages.measure('before_refresh'):pass
+            def cache(lib,budget,device,rank,world,telemetry=False):return NS(stages=Stages(telemetry))
+            with patch('aimee_vllm.state.DeviceCache',side_effect=cache):state.refresh()
+            with state.cache.stages.measure('after_refresh'):pass
+            stages=state.cache.stages.snapshot()['stages']
+            self.assertEqual(stages['after_refresh_success']['count'],1)
+            self.assertEqual(stages['before_refresh_success']['count'],1)
+
     def state(self):
         s=State.__new__(State);s.requests={};s.tables={};s.stores={'approved':FakeStore()}
         s.device='cpu';s.rank=0;s.world=1

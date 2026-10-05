@@ -1,16 +1,21 @@
-# Aimee–Qwen native memory integration
+# Aimee native memory model integrations
 
-This repository owns Qwen's native integration with Aimee memory, its experiments,
-tests, design documentation, and validation evidence. It was moved from the
-sibling `aimee` repository on 2026-09-20.
+The next plugin release uses [one dedicated plugin and Rust adapter per supported model](distribution/vllm/MODEL_PLUGINS.md).
 
-The current adapter delivers Aimee-selected records through Qwen's attention
-states without inserting memory text into the main conversation. The adapter
-does not learn or authorize knowledge. Aimee remains authoritative for memory,
+
+This repository owns the supported models' native integrations with Aimee memory,
+their experiments, tests, design documentation and validation evidence. The original
+Qwen integration moved from the sibling `aimee` repository on 2026-09-20.
+
+Dedicated adapters deliver Aimee-selected records through Gemma attention states
+and Qwen's complete attention/recurrent prefix, without inserting memory text
+into the main conversation. The adapters do not learn or authorize knowledge. Aimee remains authoritative for memory,
 governance, authorization, and updates. Persistent local images and reusable
 native states reside in RAM/disk, with temporary device copies for attention.
 
 ## Start here
+
+- [Native addressing, bounded working sets, and completed evaluation decisions](benchmarks/native_addressing/RESULTS.md)
 
 - [Native distribution implementation and remaining release gates](distribution/README.md)
 
@@ -132,3 +137,14 @@ repository layout. [The move manifest](docs/repository-move-2026-09-20.json)
 records every moved file's hash before cross-repository path updates.
 The [relocation report](docs/validation/repository-move.md) records the passing
 42-test adapter suite and 11 historical tests from the new layout.
+
+Native memory addressing and complete hybrid state are implemented and validated
+under the matching BF16 consumption profile. The [completion report](docs/validation/native-memory-completion-20261004.md)
+records RTX 5080 results, source identities and the retained limitations.
+
+The matching-contract [INT8 native consumption retest](docs/validation/native-memory-int8-20261004.md)
+also passes 432/432 answers, including strict prepared reuse and matched text controls.
+
+The [shared-runtime model-plugin validation](docs/validation/native-memory-shared-runtime-20261004.md)
+records one shared runtime with separate Gemma4 12B, Gemma4 26B A4B and
+Qwen 3.8 27B adapter plugins, quantized execution profiles and deployment checks.

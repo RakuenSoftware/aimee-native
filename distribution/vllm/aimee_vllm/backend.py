@@ -1,5 +1,6 @@
 import re
 import torch
+import triton
 from vllm.v1.attention.backends.triton_attn import TritonAttentionBackend, TritonAttentionImpl, TritonAttentionMetadataBuilder
 from vllm.v1.attention.backend import AttentionCGSupport, AttentionType
 from . import state
@@ -37,6 +38,11 @@ class AimeeAttentionImpl(TritonAttentionImpl):
     def fused_rope_kvcache_supported(self): return False
     def forward(self, layer, query, key, value, kv_cache, attn_metadata, output,
                 output_scale=None, output_block_scale=None):
+        from . import capture_session as capture
+        if capture.CURRENT is not None and attn_metadata is not None:
+            match=re.search(r'(?:^|\.)layers\.(\d+)\.',layer.layer_name)
+            if match is None:raise RuntimeError('capture layer identity unavailable')
+            capture.CURRENT.attention_chunk(int(match.group(1)),key,value,attn_metadata)
         ids = getattr(attn_metadata, 'aimee_ids', None)
         table = None
         if ids is not None:
@@ -59,25 +65,15 @@ class AimeeAttentionImpl(TritonAttentionImpl):
             raise RuntimeError('native release currently requires BF16 attention/cache')
         kp,vp,lengths,_owners=table
         view=output.view(-1,self.num_heads,self.head_size)
-        plan = state.CURRENT.owner.attention_plan({
-            'requests': len(ids),
-            'heads': self.num_heads,
-            'kv_heads': self.num_kv_heads,
-            'head_size': self.head_size,
-            'block_size': kv_cache.shape[2],
-            'max_query_len': attn_metadata.max_query_len,
-            'scale': self.scale,
-            'window': self.sliding_window[0],
-            'soft_cap': self.logits_soft_cap,
-        })
         args = (
             query,kv_cache,view,attn_metadata.query_start_loc,attn_metadata.seq_lens,
             attn_metadata.block_table,kp,vp,lengths,
             query.stride(0),query.stride(1),kv_cache.stride(0),kv_cache.stride(1),kv_cache.stride(2),
             view.stride(0),view.stride(1),attn_metadata.block_table.stride(0),
-            plan[6],plan[7],plan[8],plan[9],plan[10],plan[11],plan[4],plan[5],
+            self.num_heads,self.num_kv_heads,self.head_size,kv_cache.shape[2],self.scale,
+            self.sliding_window[0],self.logits_soft_cap,32,triton.next_power_of_2(self.head_size),
             )
-        kernel = native_attention[(plan[0],plan[1],plan[2])](*args,num_warps=plan[3])
+        kernel = native_attention[(len(ids),self.num_heads,attn_metadata.max_query_len)](*args,num_warps=4)
         if os.environ.get("AIMEE_EXPORT_KERNELS"):
             from .export_kernel import export
             export(os.environ["AIMEE_EXPORT_KERNELS"] + "/" + str(state.CURRENT.rank),kernel,args)

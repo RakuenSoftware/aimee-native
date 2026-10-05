@@ -7,7 +7,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-import local_compile
+from benchmarks.native_addressing.legacy_cpu_preparation import local_compile
 
 
 class LocalCompilerPositionPolicy(unittest.TestCase):

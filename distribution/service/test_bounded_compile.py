@@ -9,7 +9,7 @@ import torch
 from safetensors.torch import save_file
 from tokenizers import Tokenizer, models, pre_tokenizers
 from transformers import Gemma4TextConfig, Gemma4TextModel, Qwen3_5TextConfig, Qwen3_5TextModel, PreTrainedTokenizerFast
-from bounded_compile import BoundedTextCompiler, ensure_qwen_cpu_solver
+from benchmarks.native_addressing.legacy_cpu_preparation.bounded_compile import BoundedTextCompiler, ensure_qwen_cpu_solver
 
 
 class ExportParity(unittest.TestCase):

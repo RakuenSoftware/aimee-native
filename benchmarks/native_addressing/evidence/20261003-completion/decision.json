@@ -1,0 +1,54 @@
+{
+  "status": "implementation-and-evaluation-complete",
+  "production_deployment": false,
+  "original_tasks": {
+    "n": 60,
+    "correct": 60,
+    "multi_hop_n": 18,
+    "multi_hop_correct": 18
+  },
+  "expanded_native_quality": {
+    "n": 96,
+    "correct": 75,
+    "required_record_selection_correct": 96,
+    "broad_answer_gate": "failed",
+    "schedule_non_regression": "passed"
+  },
+  "published_archive_max_records": 1000006,
+  "routing_catalog_max_partitions": 100006,
+  "serving": {
+    "bf16": {
+      "n": 72,
+      "correct": 72
+    },
+    "q8": {
+      "n": 72,
+      "correct": 72
+    },
+    "native_n": 72,
+    "native_correct": 72,
+    "fresh_authorization": false,
+    "new_router_for_this_family": false
+  },
+  "feature_decisions": {
+    "measurement": "retain",
+    "bounded_schedule_controls": "retain-opt-in",
+    "owner_approved_bundles": "experimental-opt-in; no broad quality promotion",
+    "learned_router": "reject; earlier primary holdout failed",
+    "lossy_representation": "decline; prerequisite unmet",
+    "native_mutations": "decline; prerequisite unmet"
+  },
+  "tests": {
+    "rust_library": 55,
+    "offline": 22,
+    "plugin": 35,
+    "go_race_packages": "memory/... and cmd/... pass"
+  },
+  "limits": [
+    "Exact-cue routing is not general semantic search.",
+    "Startup and unknown-query fallback are not archive-independent.",
+    "One million records tested; ten million not claimed.",
+    "Native alias/paraphrase consumption gate failed.",
+    "Serving validation reuses synthetic prepared states and does not test the new router for that family."
+  ]
+}

@@ -5,6 +5,19 @@ use anyhow::{Result, ensure};
 use serde_json::{Value, json};
 
 pub fn encode(t: &Tokens, facts: &[Value], format: &str) -> Result<(Vec<u32>, Value)> {
+    encode_with_context(t, facts, format, "")
+}
+pub fn encode_with_context(t: &Tokens, facts: &[Value], format: &str, context: &str) -> Result<(Vec<u32>, Value)> {
+    let system_message = matches!(format, "system-message" | "system-message-keyed");
+    let system_keyed = format == "system-message-keyed";
+    let chat_framed = matches!(format, "chat-content" | "chat-keyed");
+    let format = match format {
+        "chat-content" => "content",
+        "chat-keyed" => "keyed",
+        "system-message" => "content",
+        "system-message-keyed" => "keyed",
+        other => other,
+    };
     let mut text = String::new();
     let mut regions = vec![];
     if format == "json" {
@@ -24,7 +37,7 @@ pub fn encode(t: &Tokens, facts: &[Value], format: &str) -> Result<(Vec<u32>, Va
             let key = f["key"].as_str().unwrap_or("");
             let content = f["content"].as_str().unwrap();
             let mut key_range = None;
-            if matches!(format, "keyed" | "keyed-neutral") {
+            if matches!(format, "keyed" | "keyed-neutral") && (!system_keyed || !key.is_empty()) {
                 let start = text.len();
                 text.push_str(key);
                 key_range = Some((start, text.len()));
@@ -53,6 +66,20 @@ pub fn encode(t: &Tokens, facts: &[Value], format: &str) -> Result<(Vec<u32>, Va
                 content_range,
                 key_range,
             ));
+        }
+    }
+    if chat_framed || system_message {
+        let prefix = if system_message && !context.trim().is_empty() { format!("<|im_start|>system\n{}\n\n", context.trim()) } else { "<|im_start|>system\n".into() };
+        text = format!("{}{}<|im_end|>\n", prefix, text);
+        for (_, record, content, key) in &mut regions {
+            record.0 += prefix.len();
+            record.1 += prefix.len();
+            content.0 += prefix.len();
+            content.1 += prefix.len();
+            if let Some((a, b)) = key {
+                *a += prefix.len();
+                *b += prefix.len();
+            }
         }
     }
     let encoded = t
@@ -102,6 +129,16 @@ mod tests {
             json!({"key":"object secondary","content":"Its value is oolong.","memory_ref":{"namespace":"test","id":"2","revision":"1"}}),
         ];
         let (content, _) = encode(&t, &facts, "content").unwrap();
+        let (prefix, info) = encode_with_context(&t, &facts, "system-message", "Caller instructions").unwrap();
+        let prefix_text = "<|im_start|>system\nCaller instructions\n\nAuthoritative memory:\nIts value is 2.03446710000.\nIts value is oolong.<|im_end|>\n";
+        assert_eq!(prefix, t.encode(prefix_text).unwrap());
+        assert!(info["text"].as_str().unwrap().starts_with("<|im_start|>system\n"));
+        assert!(info["text"].as_str().unwrap().ends_with("<|im_end|>\n"));
+        let (keyed_prefix, _)=encode_with_context(&t,&facts,"system-message-keyed","Caller instructions").unwrap();
+        assert_eq!(keyed_prefix,t.encode("<|im_start|>system\nCaller instructions\n\nAuthoritative memory:\nobject primary: Its value is 2.03446710000.\nobject secondary: Its value is oolong.<|im_end|>\n").unwrap());
+        let mut missing_key=facts.clone();missing_key[0]["key"]=Value::Null;
+        let (_,info)=encode_with_context(&t,&missing_key,"system-message-keyed","").unwrap();
+        assert!(info["text"].as_str().unwrap().contains("Authoritative memory:\nIts value"));
         assert_eq!(
             content,
             t.encode("Authoritative memory:\nIts value is 2.03446710000.\nIts value is oolong.")

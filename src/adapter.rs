@@ -1,5 +1,5 @@
 //! The proven connection: native attention request -> Aimee -> separately
-//! encoded frozen-Qwen K/V -> requesting attention. No trained adapter values.
+//! encoded frozen-model native state -> requesting model. No trained adapter values.
 use crate::{
     model::{Bank, Cache, Model, scores},
     tokens::Tokens,
@@ -22,17 +22,35 @@ struct PreparedLayer {
 }
 
 pub struct State {
+    pub hybrid_native: bool,
+    recurrent: HashMap<usize, (Tensor, Tensor)>,
+    bank_epoch: u64,
+    pub native_replays: usize,
+    pub schedule: crate::native_schedule::Policy,
+    pub source_reads: usize,
+    pub scheduled_skips: usize,
+    pub exhausted_steps: usize,
     prepared: RefCell<HashMap<usize, PreparedLayer>>,
     prepositioned: bool,
     pub bank_preparations: Cell<usize>,
     pub bank_reuses: Cell<usize>,
     pub bank_application_cpu_ns: Cell<u128>,
+    pub addressing_wall_ns: u128,
+    pub addressing_attempts: usize,
+    pub addressing_failures: usize,
+    pub peak_active_positions: usize,
+    pub peak_active_records: usize,
+    pub peak_active_encoded_bytes: usize,
+    pub peak_active_recurrent_bytes: usize,
+    pub replay_wall_ns: u128,
     pub cache_transition: Value,
     pub diagnostic_steps: usize,
     pub position_shift: i64,
     pub before_prompt: bool,
     pub attention_trace: Vec<Value>,
+    pub routing_trace: Vec<Value>,
     pub encoding_format: String,
+    pub encoding_context: String,
     pub record_encoding: bool,
     records: Vec<RecordBank>,
     pub binding: String,
@@ -48,15 +66,71 @@ pub struct State {
     pub reuse: bool,
 }
 impl State {
+    fn encoding_identity(&self) -> String {
+        if matches!(self.encoding_format.as_str(), "system-message" | "system-message-keyed") { format!("{}-v1:{:x}", self.encoding_format, Sha256::digest(self.encoding_context.trim().as_bytes())) } else { self.encoding_format.clone() }
+    }
+
+    fn active_encoded_bytes(&self) -> usize {
+        let bytes = |bank: &Bank| {
+            bank.keys.numel() * bank.keys.kind().elt_size_in_bytes()
+                + bank.values.numel() * bank.values.kind().elt_size_in_bytes()
+        };
+        if self.record_encoding {
+            self.records
+                .iter()
+                .flat_map(|r| r.banks.values())
+                .map(bytes)
+                .sum()
+        } else {
+            self.banks.values().map(bytes).sum()
+        }
+    }
+
+    fn observe_working_set(&mut self) {
+        self.peak_active_recurrent_bytes = self
+            .peak_active_recurrent_bytes
+            .max(recurrent_bytes(&self.recurrent));
+        self.peak_active_positions = self.peak_active_positions.max(self.memory_ids.len());
+        self.peak_active_records = self.peak_active_records.max(self.facts.len());
+        self.peak_active_encoded_bytes = self
+            .peak_active_encoded_bytes
+            .max(self.active_encoded_bytes());
+    }
+
+    /// Logical encoded K/V across native layers, not physical allocator residency.
+    /// Prepared device copies, caches, staging and the conversation are excluded.
+    pub fn native_metrics(&self) -> Value {
+        json!({"schema":"native-memory-metrics-v1",
+            "positioning":if self.hybrid_native {"native-prefix-absolute-v1"} else {"legacy-relative-v1"},
+            "schedule":self.schedule.describe(),
+            "source_reads":self.source_reads,"scheduled_skips":self.scheduled_skips,
+            "exhausted_steps":self.exhausted_steps,
+            "addressing_attempts":self.addressing_attempts,
+            "addressing_failures":self.addressing_failures,
+            "active_recurrent_bytes":recurrent_bytes(&self.recurrent),
+            "peak_active_recurrent_bytes":self.peak_active_recurrent_bytes,
+            "replay_wall_ns":self.replay_wall_ns,
+            "native_replays":self.native_replays,
+            "active_positions":self.memory_ids.len(),
+            "peak_active_positions":self.peak_active_positions,
+            "active_records":self.facts.len(),
+            "peak_active_records":self.peak_active_records,
+            "active_encoded_bytes":self.active_encoded_bytes(),
+            "peak_active_encoded_bytes":self.peak_active_encoded_bytes,
+            "addressing_timing":"wall-including-bank-preparation-and-host-readback",
+            "encoded_bytes_scope":"logical-kv-across-native-layers"})
+    }
     pub fn bank_position_offset(&self) -> i64 {
-        if self.before_prompt {
+        if self.hybrid_native {
+            0
+        } else if self.before_prompt {
             -(self.memory_ids.len() as i64)
         } else {
             self.position_shift
         }
     }
-    /// Memory is encoded independently at positions 0..M. At both attention
-    /// addressing and consumption it must occupy -M..-1, before the conversation.
+    /// Complete prefixes keep their encoded positions 0..M; conversation
+    /// positions start at M. Legacy attention-only banks occupy -M..-1.
     /// Keep the cached bank unshifted: repeated reads and reuse must not rotate it
     /// again, and a replacement bank must use its own length.
     /// Materialize every selected layer before generation, for a synchronized
@@ -211,7 +285,14 @@ fn encoding_key(
 fn prepared_key(binding: &str, format: &str, records: bool, facts: &[Value]) -> Result<String> {
     let identity: Vec<_> = facts
         .iter()
-        .map(|f| json!([f["memory_ref"], f["content"], f["memory_hash"]]))
+        .map(|f| {
+            let mut fields=vec![f["memory_ref"].clone(),f["content"].clone(),f["memory_hash"].clone()];
+            if matches!(format,"keyed"|"keyed-neutral"|"keyed-suffix"|"json"|"chat-keyed")
+                || format.starts_with("system-message-keyed-v1:") {
+                fields.push(f["key"].clone());
+            }
+            json!(fields)
+        })
         .collect();
     Ok(format!(
         "{:x}",
@@ -226,6 +307,7 @@ fn prepared_key(binding: &str, format: &str, records: bool, facts: &[Value]) -> 
 }
 
 struct Cached {
+    recurrent: HashMap<usize, (Tensor, Tensor)>,
     proof: Option<Value>,
     key: String,
     banks: HashMap<usize, Bank>,
@@ -235,6 +317,19 @@ struct Cached {
 #[cfg(test)]
 mod publication_tests {
     use super::*;
+
+    #[test]
+    fn prepared_key_binds_canonical_keys_when_the_encoder_consumes_them() {
+        let first=vec![json!({"key":"first address","content":"same value",
+            "memory_ref":{"namespace":"public","id":"record","revision":"1"}})];
+        let mut second=first.clone();second[0]["key"]=json!("second address");
+        for format in ["keyed","json","chat-keyed","system-message-keyed-v1:context"] {
+            assert_ne!(prepared_key("view",format,false,&first).unwrap(),
+                       prepared_key("view",format,false,&second).unwrap());
+        }
+        assert_eq!(prepared_key("view","content",false,&first).unwrap(),
+                   prepared_key("view","content",false,&second).unwrap());
+    }
 
     struct Source(VecDeque<Option<String>>);
     impl MemorySource for Source {
@@ -519,6 +614,7 @@ mod publication_tests {
         let mut a = Adapter::new(Box::new(Gone), 4, 2048, 1024);
         a.begin(false, true).unwrap();
         a.cache.push_back(Cached {
+            recurrent: HashMap::new(),
             key: "old:record".into(),
             proof: None,
             banks: HashMap::new(),
@@ -561,6 +657,7 @@ mod publication_tests {
         a.begin(false, true).unwrap();
         for id in ["unchanged", "changed", "removed"] {
             a.cache.push_back(Cached {
+                recurrent: HashMap::new(),
                 key: format!("old:{id}"),
                 proof: Some(json!({"memory_ref":{"id":id}})),
                 banks: HashMap::new(),
@@ -568,6 +665,7 @@ mod publication_tests {
             });
         }
         a.cache.push_back(Cached {
+            recurrent: HashMap::new(),
             key: "old:joint-bank".into(),
             proof: None,
             banks: HashMap::new(),
@@ -592,6 +690,7 @@ mod publication_tests {
         let mut adapter = Adapter::new(Box::new(source), 4, 1024, 4096);
         adapter.begin(false, true).unwrap();
         adapter.cache.push_back(Cached {
+            recurrent: HashMap::new(),
             proof: None,
             key: "old-bank".into(),
             banks: HashMap::new(),
@@ -602,6 +701,7 @@ mod publication_tests {
         adapter.begin(false, true).unwrap();
         assert!(adapter.cache.is_empty());
         adapter.cache.push_back(Cached {
+            recurrent: HashMap::new(),
             proof: None,
             key: "new-bank".into(),
             banks: HashMap::new(),
@@ -686,6 +786,10 @@ struct CompactSnapshot {
     _directory: tempfile::TempDir,
 }
 pub struct Adapter {
+    pub candidate_routing: bool,
+    pub schedule: crate::native_schedule::Policy,
+    pub max_active_records: Option<usize>,
+    pub max_recurrent_bytes: usize,
     pub source: Box<dyn MemorySource>,
     pub limit: usize,
     pub max_tokens: usize,
@@ -706,6 +810,10 @@ impl Adapter {
         cache_budget: usize,
     ) -> Self {
         Self {
+            schedule: crate::native_schedule::Policy::default(),
+            candidate_routing: false,
+            max_active_records: None,
+            max_recurrent_bytes: 256 << 20,
             source,
             limit,
             max_tokens,
@@ -878,17 +986,35 @@ impl Adapter {
             self.generation = Some(binding.clone());
         }
         Ok(State {
+            hybrid_native: false,
+            recurrent: HashMap::new(),
+            bank_epoch: 0,
+            native_replays: 0,
+            schedule: self.schedule.validate()?,
+            source_reads: 0,
+            scheduled_skips: 0,
+            exhausted_steps: 0,
             prepared: RefCell::new(HashMap::new()),
             prepositioned: false,
             bank_preparations: Cell::new(0),
             bank_reuses: Cell::new(0),
             bank_application_cpu_ns: Cell::new(0),
+            addressing_wall_ns: 0,
+            addressing_attempts: 0,
+            addressing_failures: 0,
+            peak_active_positions: 0,
+            peak_active_records: 0,
+            peak_active_encoded_bytes: 0,
+            peak_active_recurrent_bytes: 0,
+            replay_wall_ns: 0,
             cache_transition: transition,
             diagnostic_steps: 0,
             position_shift: 0,
             before_prompt: true,
             attention_trace: vec![],
+            routing_trace: vec![],
             encoding_format: "content".into(),
+            encoding_context: String::new(),
             record_encoding: false,
             records: vec![],
             binding,
@@ -913,51 +1039,139 @@ impl Adapter {
         origin: &str,
         spans: Vec<Value>,
     ) -> Result<()> {
+        let started = Instant::now();
+        let before = s.events.len();
+        let result = if s.source_reads >= s.schedule.max_reads {
+            Err(anyhow::anyhow!("native source-read budget exhausted"))
+        } else {
+            // Reserve before calling: failures consume the same bounded work.
+            s.source_reads += 1;
+            self.recall_impl(m, t, s, query, origin, spans)
+        };
+        s.observe_working_set();
+        if s.events.len() == before {
+            // Encoding/admission failures must remain visible. Unknown substage
+            // costs are deliberately absent rather than guessed from total time.
+            s.events
+                .push(json!({"origin":origin,"query":query,"limit":self.limit,
+                "step":s.step,"status":"recall_failed"}));
+        }
+        let event = s.events.last_mut().unwrap();
+        event["recall_elapsed_ns"] = json!(started.elapsed().as_nanos());
+        event["active_positions"] = json!(s.memory_ids.len());
+        event["active_records"] = json!(s.facts.len());
+        result
+    }
+
+    fn recall_impl(
+        &mut self,
+        m: &Model,
+        t: &Tokens,
+        s: &mut State,
+        query: &str,
+        origin: &str,
+        spans: Vec<Value>,
+    ) -> Result<()> {
+        ensure!(
+            !s.hybrid_native
+                || (!s.record_encoding
+                    && self.compact_root.is_none()
+                    && s.before_prompt
+                    && s.position_shift == 0),
+            "complete hybrid state requires an unshifted joint native prefix"
+        );
+        ensure!(
+            !s.hybrid_native || m.native_recurrent_bytes() <= self.max_recurrent_bytes,
+            "native recurrent byte budget exceeded before encoding"
+        );
+        ensure!(!matches!(s.encoding_format.as_str(), "system-message" | "system-message-keyed") || s.hybrid_native, "native system message requires complete hybrid state");
         let source_started = Instant::now();
-        let reply = match self.source.native_search(query, self.limit) {
-            Ok(reply) => reply,
+        let selected = (|| -> Result<(Value, Vec<Value>)> {
+            let reply = if self.candidate_routing {
+                self.source.native_address(
+                    query,
+                    self.limit,
+                    &s.binding,
+                    s.step,
+                    if origin == "prompt_preload" {
+                        "text-query-v1"
+                    } else {
+                        "attention-token-spans-v1"
+                    },
+                )?
+            } else {
+                self.source.native_search(query, self.limit)?
+            };
+            ensure!(
+                reply
+                    .get("windows")
+                    .and_then(Value::as_array)
+                    .is_none_or(Vec::is_empty),
+                "episode codec unsupported"
+            );
+            ensure!(
+                reply.get("active_context_missing") != Some(&Value::Bool(true)),
+                "authority context incomplete"
+            );
+            let facts = reply["facts"].as_array().context("invalid fact response")?;
+            let next = crate::knowledge::merge(&s.facts, facts)?;
+            if let Some(limit) = self.max_active_records {
+                ensure!(
+                    next.len() <= limit,
+                    "active record capacity exceeded; refusing eviction"
+                );
+            }
+            if let Some(expected) = &self.expected_preparation_refs {
+                let actual: Vec<_> = next.iter().map(|f| f["memory_ref"].clone()).collect();
+                ensure!(
+                    &actual == expected,
+                    "preparation record coverage mismatch before encoding"
+                );
+            }
+            Ok((reply, next))
+        })();
+        let selection_ns = source_started.elapsed().as_nanos();
+        let (reply, next) = match selected {
+            Ok(selected) => selected,
             Err(error) => {
-                s.events.push(json!({"origin":origin,"query":query,"limit":self.limit,"step":s.step,"status":"read_failed","addressed_spans":spans}));
+                s.events
+                    .push(json!({"origin":origin,"query":query,"limit":self.limit,
+                    "step":s.step,"status":"read_failed","addressed_spans":spans,
+                    "source_selection_ns":selection_ns,"encoding_elapsed_ms":0.,
+                    "encoding_outcome":"not_started"}));
                 return Err(error);
             }
         };
-        ensure!(
-            reply
-                .get("windows")
-                .and_then(Value::as_array)
-                .is_none_or(Vec::is_empty),
-            "episode codec unsupported"
-        );
-        ensure!(
-            reply.get("active_context_missing") != Some(&Value::Bool(true)),
-            "authority context incomplete"
-        );
-        let facts = reply["facts"].as_array().context("invalid fact response")?;
-        let next = crate::knowledge::merge(&s.facts, facts)?;
-        if let Some(expected) = &self.expected_preparation_refs {
-            let actual: Vec<_> = next.iter().map(|f| f["memory_ref"].clone()).collect();
-            ensure!(
-                &actual == expected,
-                "preparation record coverage mismatch before encoding"
-            );
-        }
-        let mut event = json!({"origin":origin,"query":query,"limit":self.limit,"aimee_response":reply,"addressed_spans":spans,"step":s.step,"phase":if origin=="prompt_preload"{"preload"}else if s.step==0{"prefill"}else{"decode"}});
+        let mut event = json!({"origin":origin,"query":query,"limit":self.limit,
+            "aimee_response":reply,"addressed_spans":spans,"step":s.step,
+            "source_selection_ns":selection_ns,
+            "phase":if origin=="prompt_preload"{"preload"}else if s.step==0{"prefill"}else{"decode"}});
         if next.is_empty() {
             event["status"] = json!("empty");
+            event["encoding_elapsed_ms"] = json!(0.);
+            event["encoding_outcome"] = json!("not_started");
             s.events.push(event);
             return Ok(());
         }
-        event["source_selection_ns"] = json!(source_started.elapsed().as_nanos());
+        ensure!(!matches!(s.encoding_format.as_str(), "system-message" | "system-message-keyed") || s.sequence.is_empty() || !s.memory_ids.is_empty(), "cannot open a native system prefix after conversation execution");
         if self.compact_root.is_some() && !self.preparation_mode {
             return self.recall_compact(s, next, event);
         }
         if self.prepared_store.is_some() {
             return self.recall_prepared(m, t, s, next, event);
         }
+        ensure!(
+            !s.hybrid_native
+                || (!s.record_encoding
+                    && self.compact_root.is_none()
+                    && s.before_prompt
+                    && s.position_shift == 0),
+            "complete hybrid state requires an unshifted joint native prefix"
+        );
         if s.record_encoding {
             return self.recall_records(m, t, s, next, event);
         }
-        let (ids, encoding) = crate::memory_encoding::encode(t, &next, &s.encoding_format)?;
+        let (ids, encoding) = crate::memory_encoding::encode_with_context(t, &next, &s.encoding_format, &s.encoding_context)?;
         event["encoding_format"] = json!(s.encoding_format);
         if s.diagnostic_steps > 0 {
             event["encoding"] = encoding;
@@ -968,8 +1182,11 @@ impl Adapter {
         );
         event["memory_encoding_tokens"] = json!(ids.len());
         event["bank_memory_ids"] = json!(next.iter().map(|f| &f["memory_ref"]).collect::<Vec<_>>());
+        let encoding_started = Instant::now();
         if ids == s.memory_ids {
             event["status"] = json!("bank_unchanged");
+            event["encoding_elapsed_ms"] = json!(encoding_started.elapsed().as_secs_f64() * 1000.);
+            event["encoding_outcome"] = json!("unchanged");
             s.facts = next;
             s.events.push(event);
             return Ok(());
@@ -978,30 +1195,43 @@ impl Adapter {
             &s.binding,
             &ids,
             &next.iter().map(|f| &f["memory_ref"]).collect::<Vec<_>>(),
-            "bank",
+            if s.hybrid_native {
+                "hybrid-bank-v1"
+            } else {
+                "bank"
+            },
             &s.encoding_format,
         )?;
-        let encoding_started = Instant::now();
         let banks = if let Some(i) = self.cache.iter().position(|c| s.reuse && c.key == key) {
             let c = self.cache.remove(i).unwrap();
             let banks = copy_banks(&c.banks);
+            s.recurrent = copy_recurrent(&c.recurrent, false);
             self.cache.push_back(c);
             event["status"] = json!("bank_reused");
             banks
         } else {
-            let banks = m.encode_native(&ids)?;
+            let banks = if s.hybrid_native {
+                let (banks, recurrent) = m.encode_native_complete(&ids)?;
+                m.validate_native_recurrent(&recurrent)?;
+                s.recurrent = recurrent;
+                banks
+            } else {
+                m.encode_native(&ids)?
+            };
             s.encodings += 1;
             event["status"] = json!("bank_updated");
             let bytes = banks
                 .values()
                 .map(|b| (b.keys.numel() + b.values.numel()) * b.keys.kind().elt_size_in_bytes())
-                .sum();
+                .sum::<usize>()
+                + recurrent_bytes(&s.recurrent);
             if s.reuse && bytes <= self.cache_budget {
                 while self.cache.iter().map(|c| c.bytes).sum::<usize>() + bytes > self.cache_budget
                 {
                     self.cache.pop_front();
                 }
                 self.cache.push_back(Cached {
+                    recurrent: copy_recurrent(&s.recurrent, false),
                     proof: None,
                     key,
                     banks: copy_banks(&banks),
@@ -1010,9 +1240,15 @@ impl Adapter {
             }
             banks
         };
+        ensure!(
+            recurrent_bytes(&s.recurrent) <= self.max_recurrent_bytes,
+            "native recurrent byte budget exceeded"
+        );
         event["encoding_elapsed_ms"] = json!(encoding_started.elapsed().as_secs_f64() * 1000.);
         s.prepared.borrow_mut().clear();
         s.banks = banks;
+        s.bank_epoch += 1;
+        event["native_recurrent_bytes"] = json!(recurrent_bytes(&s.recurrent));
         s.prepositioned = false;
         s.facts = next;
         s.memory_ids = ids;
@@ -1032,6 +1268,7 @@ impl Adapter {
         let started = Instant::now();
         if next == s.facts && !s.memory_ids.is_empty() {
             event["status"] = json!("prepared_unchanged");
+            event["prepared_load_total_ns"] = json!(started.elapsed().as_nanos());
             event["bank_memory_ids"] =
                 json!(next.iter().map(|f| &f["memory_ref"]).collect::<Vec<_>>());
             event["memory_encoding_tokens"] = json!(s.memory_ids.len());
@@ -1044,14 +1281,22 @@ impl Adapter {
         } else {
             vec![next.as_slice()]
         };
-        let eligible_positioned = !self.preparation_mode && s.before_prompt && groups.len() == 1;
+        let eligible_positioned = !s.hybrid_native && !self.preparation_mode && s.before_prompt && groups.len() == 1;
         let mut prepositioned = false;
         let mut plan = Vec::with_capacity(groups.len());
         let mut total_tokens = 0;
         // Preflight every entry and the entire token budget before loading any
         // banks. This cannot degrade a three-record selection into one record.
         for group in groups {
-            let base_key = prepared_key(&s.binding, &s.encoding_format, s.record_encoding, group)?;
+            let base_key = prepared_key(&s.binding, &s.encoding_identity(), s.record_encoding, group)?;
+            let base_key = if s.hybrid_native {
+                format!(
+                    "{:x}",
+                    Sha256::digest(format!("complete-hybrid-v1:{base_key}"))
+                )
+            } else {
+                base_key
+            };
             let positioned_key = positioned_key(&base_key);
             if eligible_positioned
                 && self
@@ -1081,13 +1326,21 @@ impl Adapter {
                 self.prepared_store.as_mut().unwrap().poll_updates();
             }
             let ids = if let Some(entry) = self.prepared_store.as_ref().unwrap().entry(&key) {
+                ensure!(
+                    entry.recurrent_bytes() <= self.max_recurrent_bytes,
+                    "prepared recurrent byte budget exceeded before loading"
+                );
+                ensure!(
+                    !s.hybrid_native || entry.recurrent_bytes() > 0,
+                    "prepared complete hybrid state missing"
+                );
                 entry.tokens.clone()
             } else {
                 ensure!(
                     self.preparation_mode,
                     "prepared memory miss; offline preparation required"
                 );
-                crate::memory_encoding::encode(t, group, &s.encoding_format)?.0
+                crate::memory_encoding::encode_with_context(t, group, &s.encoding_format, &s.encoding_context)?.0
             };
             total_tokens += ids.len();
             ensure!(
@@ -1100,6 +1353,8 @@ impl Adapter {
         let mut records = vec![];
         let mut all_ids = vec![];
         let mut disk_reads = 0;
+        let mut recurrent_load_wall_ns = 0;
+        let mut recurrent_read_bytes = 0;
         let mut read_ns = 0;
         let mut conversion_ns = 0;
         let mut file_setup_ns = 0;
@@ -1115,6 +1370,9 @@ impl Adapter {
         let mut cache_hits = 0;
         for (key, ids) in plan {
             let banks = if let Some(banks) = self.cached(&key, s.reuse) {
+                if s.hybrid_native {
+                    s.recurrent = copy_recurrent(&self.cache.back().unwrap().recurrent, false);
+                }
                 cache_hits += 1;
                 banks
             } else if let Some(loaded) = self
@@ -1124,19 +1382,32 @@ impl Adapter {
                 .load_to_devices(&key, &m.layers)?
             {
                 ensure!(loaded.tokens == ids, "prepared token identity changed");
+                if s.hybrid_native {
+                    s.recurrent = loaded.recurrent;
+                } else {
+                    ensure!(
+                        loaded.recurrent.is_empty(),
+                        "hybrid state in attention-only profile"
+                    );
+                }
+                recurrent_load_wall_ns += loaded.recurrent_load_wall_ns;
+                recurrent_read_bytes += loaded.recurrent_read_bytes;
                 disk_reads += usize::from(!loaded.host_hit);
                 read_ns += loaded.read_ns;
                 file_setup_ns += loaded.file_setup_ns;
                 file_opens += usize::from(loaded.file_opened);
                 conversion_ns += loaded.conversion_ns;
                 if !loaded.host_hit {
-                    read_bytes += loaded.bytes;
+                    read_bytes += loaded.bytes - loaded.recurrent_read_bytes;
                 }
                 transfer_ns += loaded.transfer_ns;
                 host_hits += usize::from(loaded.host_hit);
                 transfer_operations += loaded.transfer_operations;
                 if loaded.transfer_operations == 0 {
                     self.remember(key.clone(), &loaded.banks, s.reuse);
+                    if s.hybrid_native {
+                        self.remember_recurrent(&key, &s.recurrent);
+                    }
                 }
                 loaded.banks
             } else {
@@ -1144,11 +1415,19 @@ impl Adapter {
                     self.preparation_mode,
                     "prepared memory missing; encoding forbidden in serving"
                 );
-                let banks = m.encode_native(&ids)?;
-                self.prepared_store
-                    .as_mut()
-                    .unwrap()
-                    .put(&key, &ids, &banks)?;
+                let banks = if s.hybrid_native {
+                    let (b, r) = m.encode_native_complete(&ids)?;
+                    s.recurrent = r;
+                    b
+                } else {
+                    m.encode_native(&ids)?
+                };
+                self.prepared_store.as_mut().unwrap().put_complete(
+                    &key,
+                    &ids,
+                    &banks,
+                    &s.recurrent,
+                )?;
                 s.encodings += 1;
                 banks
             };
@@ -1173,10 +1452,12 @@ impl Adapter {
                             )
                         })
                         .collect();
-                    self.prepared_store
-                        .as_mut()
-                        .unwrap()
-                        .put(&ready_key, &ids, &positioned)?;
+                    self.prepared_store.as_mut().unwrap().put_complete(
+                        &ready_key,
+                        &ids,
+                        &positioned,
+                        &s.recurrent,
+                    )?;
                 }
             }
             let expected: Vec<_> = m
@@ -1194,6 +1475,13 @@ impl Adapter {
                         .is_some_and(|b| b.keys.size()[2] == ids.len() as i64
                             && b.values.size()[2] == ids.len() as i64)),
                 "incomplete prepared native layers"
+            );
+            if s.hybrid_native {
+                m.validate_native_recurrent(&s.recurrent)?;
+            }
+            ensure!(
+                recurrent_bytes(&s.recurrent) <= self.max_recurrent_bytes,
+                "native recurrent byte budget exceeded"
             );
             all_ids.extend_from_slice(&ids);
             records.push(RecordBank {
@@ -1215,6 +1503,8 @@ impl Adapter {
             s.records.clear();
         }
         s.memory_ids = all_ids;
+        s.bank_epoch += 1;
+        event["native_recurrent_bytes"] = json!(recurrent_bytes(&s.recurrent));
         s.prepositioned = prepositioned;
         event["prepared_positioned_offline"] = json!(prepositioned);
         event["bank_memory_ids"] = json!(next.iter().map(|f| &f["memory_ref"]).collect::<Vec<_>>());
@@ -1228,6 +1518,8 @@ impl Adapter {
         event["prepared_index_ns"] = json!(index_ns);
         event["prepared_disk_reads"] = json!(disk_reads);
         event["prepared_read_bytes"] = json!(read_bytes);
+        event["prepared_recurrent_read_bytes"] = json!(recurrent_read_bytes);
+        event["prepared_recurrent_load_wall_ns"] = json!(recurrent_load_wall_ns);
         event["prepared_read_ns"] = json!(read_ns);
         event["prepared_file_setup_ns"] = json!(file_setup_ns);
         event["prepared_file_opens"] = json!(file_opens);
@@ -1343,6 +1635,21 @@ impl Adapter {
         Some(banks)
     }
 
+    fn remember_recurrent(&mut self, key: &str, states: &HashMap<usize, (Tensor, Tensor)>) {
+        if let Some(i) = self.cache.iter().position(|c| c.key == key) {
+            let mut c = self.cache.remove(i).unwrap();
+            c.bytes += recurrent_bytes(states);
+            c.recurrent = copy_recurrent(states, false);
+            if c.bytes <= self.cache_budget {
+                while self.cache.iter().map(|c| c.bytes).sum::<usize>() + c.bytes
+                    > self.cache_budget
+                {
+                    self.cache.pop_front();
+                }
+                self.cache.push_back(c);
+            }
+        }
+    }
     fn remember(&mut self, key: String, banks: &HashMap<usize, Bank>, reuse: bool) {
         let bytes: usize = banks
             .values()
@@ -1359,6 +1666,7 @@ impl Adapter {
             self.cache.pop_front();
         }
         self.cache.push_back(Cached {
+            recurrent: HashMap::new(),
             proof: None,
             key,
             banks: copy_banks(banks),
@@ -1377,11 +1685,26 @@ impl Adapter {
         if let Err(e) = self.check_generation(&s.binding) {
             s.prepared.borrow_mut().clear();
             s.banks.clear();
+            s.recurrent.clear();
             s.records.clear();
             s.memory_ids.clear();
             s.facts.clear();
+            *cache = Cache::new(m.config.num_hidden_layers);
             return Err(e);
         }
+        // This decision follows the unconditional generation check above.
+        let retrieve = s.schedule.due(s.step, s.decode_recall, s.source_reads);
+        if !retrieve {
+            s.scheduled_skips += 1;
+            if s.source_reads >= s.schedule.max_reads {
+                s.exhausted_steps += 1;
+            }
+        }
+        if s.hybrid_native && cache.length == 0 {
+            cache.position_offset = s.memory_ids.len() as i64;
+            seed_recurrent(cache, &s.recurrent);
+        }
+        let epoch = s.bank_epoch;
         s.sequence.extend_from_slice(ids);
         let request_layer = m
             .config
@@ -1389,11 +1712,35 @@ impl Adapter {
             .iter()
             .position(|x| x == "full_attention")
             .context("no full attention layer")?;
+        let position_offset = cache.position_offset;
         let result = m.forward(
             ids,
             cache,
             Some(&mut |model, index, q, k, _v, mask| {
-                if index == request_layer && (s.step == 0 || s.decode_recall) {
+                if s.step < s.diagnostic_steps {
+                    let last = q.narrow(2, q.size()[2]-1, 1).to_kind(tch::Kind::Float);
+                    let position = (s.sequence.len()-1) as i64 + position_offset;
+                    // Inverting the already-rounded query is a distinct representation,
+                    // not a claim to recover the exact pre-RoPE projection.
+                    for (representation, positional, features) in [
+                        ("query-post-rotary", "conversation-absolute", last.shallow_clone()),
+                        ("query-inverse-rotary-f32", "rotary-removed-after-rounding",
+                            model.shift_memory_keys(&last, -position)),
+                    ] {
+                        for (pooling, pooled) in [
+                            ("mean-heads-last-token",features.mean_dim(&[1i64][..], false, tch::Kind::Float)),
+                            ("first-head-last-token",features.select(1,0)),
+                        ] {
+                            s.routing_trace.push(json!({"step":s.step,"layer":index,
+                                "representation":representation,"pooling":pooling,
+                                "position":positional,"query_position":position,
+                                "width":model.config.head_dim,"features":tensor_values(&pooled)?}));
+                        }
+                    }
+                }
+                if index == request_layer && retrieve {
+                    let addressing_started = Instant::now();
+                    let addressed = (|| -> Result<(String, Vec<Value>)> {
                     let groups =
                         model.config.num_attention_heads / model.config.num_key_value_heads;
                     let scale = (model.config.head_dim as f64).powf(-0.5);
@@ -1415,7 +1762,12 @@ impl Adapter {
                     } else {
                         scores(q, k, mask, groups, scale)?
                     };
-                    let (query, spans) = t.addressed(&sources, &score, 12)?;
+                    t.addressed(&sources, &score, 12)
+                    })();
+                    s.addressing_wall_ns += addressing_started.elapsed().as_nanos();
+                    s.addressing_attempts += 1;
+                    s.addressing_failures += usize::from(addressed.is_err());
+                    let (query, spans) = addressed?;
                     if !query.is_empty() {
                         self.recall(model, t, s, &query, "qwen_attention_query", spans)?;
                     }
@@ -1437,15 +1789,81 @@ impl Adapter {
                 Ok(bank)
             }),
         );
+        let result = if result.is_ok() && s.hybrid_native && epoch != s.bank_epoch {
+            // A newly selected bank cannot be spliced into recurrent history.
+            // Replay the already observed conversation against one complete bank;
+            // do not perform more reads or rewrite emitted conversation tokens.
+            (|| -> Result<Tensor> {
+                let replay_started = Instant::now();
+                self.check_generation(&s.binding)?;
+                *cache = Cache::new(m.config.num_hidden_layers);
+                cache.position_offset = s.memory_ids.len() as i64;
+                seed_recurrent(cache, &s.recurrent);
+                s.native_replays += 1;
+                let replay_ids = s.sequence.clone();
+                let logits = m.forward(
+                    &replay_ids,
+                    cache,
+                    Some(&mut |model, index, _q, k, _v, _mask| {
+                        let bank = s.bank_for_read(model, index, k.device())?;
+                        if bank.is_some() {
+                            s.native_reads += 1;
+                        }
+                        Ok(bank)
+                    }),
+                )?;
+                self.check_generation(&s.binding)?;
+                s.replay_wall_ns += replay_started.elapsed().as_nanos();
+                Ok(logits)
+            })()
+        } else {
+            result
+        };
         if result.is_err() {
             s.prepared.borrow_mut().clear();
             s.banks.clear();
+            s.recurrent.clear();
             s.records.clear();
             s.memory_ids.clear();
             s.facts.clear();
+            *cache = Cache::new(m.config.num_hidden_layers);
         }
         s.step += 1;
         result
+    }
+}
+fn recurrent_bytes(states: &HashMap<usize, (Tensor, Tensor)>) -> usize {
+    states
+        .values()
+        .map(|(conv, state)| {
+            conv.numel() * conv.kind().elt_size_in_bytes()
+                + state.numel() * state.kind().elt_size_in_bytes()
+        })
+        .sum()
+}
+fn copy_recurrent(
+    states: &HashMap<usize, (Tensor, Tensor)>,
+    deep: bool,
+) -> HashMap<usize, (Tensor, Tensor)> {
+    states
+        .iter()
+        .map(|(i, (conv, state))| {
+            (
+                *i,
+                if deep {
+                    (conv.copy(), state.copy())
+                } else {
+                    (conv.shallow_clone(), state.shallow_clone())
+                },
+            )
+        })
+        .collect()
+}
+fn seed_recurrent(cache: &mut Cache, states: &HashMap<usize, (Tensor, Tensor)>) {
+    // Single-token delta updates are in-place: request caches must own copies.
+    for (i, (conv, state)) in copy_recurrent(states, true) {
+        cache.layers[i].conv = Some(conv);
+        cache.layers[i].recurrent = Some(state);
     }
 }
 fn copy_banks(b: &HashMap<usize, Bank>) -> HashMap<usize, Bank> {
@@ -1466,4 +1884,435 @@ fn positioned_key(base: &str) -> String {
     h.update(b"native-before-prompt-v1:");
     h.update(base.as_bytes());
     format!("{:x}", h.finalize())
+}
+
+#[cfg(test)]
+mod measurement_tests {
+    use super::*;
+
+    struct Source(Option<Value>);
+    impl MemorySource for Source {
+        fn begin(&mut self) -> Result<String> {
+            Ok("measurement-view".into())
+        }
+        fn search(&mut self, _: &str, _: usize) -> Result<Value> {
+            anyhow::bail!("unexpected search")
+        }
+        fn native_search(&mut self, _: &str, _: usize) -> Result<Value> {
+            self.0.clone().context("synthetic unavailable source")
+        }
+    }
+
+    fn tokenizer(root: &std::path::Path) -> Tokens {
+        let path = root.join("tokenizer.json");
+        let wordlevel = tokenizers::models::wordlevel::WordLevel::builder()
+            .vocab([("[UNK]".to_owned(), 0)].into_iter().collect())
+            .unk_token("[UNK]".to_owned())
+            .build()
+            .unwrap();
+        tokenizers::Tokenizer::new(wordlevel)
+            .save(&path, false)
+            .unwrap();
+        Tokens::load(&path).unwrap()
+    }
+
+    #[test]
+    fn unchanged_read_preserves_tensor_identity_and_reports_bookkeeping() {
+        let root = tempfile::tempdir().unwrap();
+        let tokens = tokenizer(root.path());
+        let model = crate::model::position_tests::rotary_model();
+        let fact = json!({"content":"value","memory_ref":{
+            "namespace":"test","id":"1","revision":"1"}});
+        let mut adapter = Adapter::new(
+            Box::new(Source(Some(json!({"facts":[fact.clone()]})))),
+            4,
+            100,
+            4096,
+        );
+        let mut state = adapter.begin(true, true).unwrap();
+        state.facts = vec![fact];
+        state.memory_ids = crate::memory_encoding::encode(&tokens, &state.facts, "content")
+            .unwrap()
+            .0;
+        let keys = Tensor::zeros(
+            [1, 1, state.memory_ids.len() as i64, 3],
+            (tch::Kind::Float, Device::Cpu),
+        );
+        let pointer = keys.data_ptr();
+        state.banks.insert(
+            0,
+            Bank {
+                values: keys.copy(),
+                keys,
+            },
+        );
+        // rotary_model has no encoder weights: an accidental encode cannot pass.
+        adapter
+            .recall(&model, &tokens, &mut state, "cue", "test", vec![])
+            .unwrap();
+        assert_eq!(state.events[0]["status"], "bank_unchanged");
+        assert!(state.events[0]["encoding_elapsed_ms"].is_number());
+        assert_eq!(state.events[0]["encoding_outcome"], "unchanged");
+        assert_eq!(state.banks[&0].keys.data_ptr(), pointer);
+        assert_eq!(state.encodings, 0);
+        assert_eq!(
+            state.native_metrics()["peak_active_positions"],
+            state.memory_ids.len()
+        );
+    }
+
+    #[test]
+    fn capacity_failure_is_visible_without_admitting_a_partial_bank() {
+        let root = tempfile::tempdir().unwrap();
+        let tokens = tokenizer(root.path());
+        let model = crate::model::position_tests::rotary_model();
+        let fact = json!({"content":"value","memory_ref":{
+            "namespace":"test","id":"1","revision":"1"}});
+        let mut adapter = Adapter::new(Box::new(Source(Some(json!({"facts":[fact]})))), 4, 0, 4096);
+        let mut state = adapter.begin(true, true).unwrap();
+        assert!(
+            adapter
+                .recall(&model, &tokens, &mut state, "cue", "test", vec![])
+                .is_err()
+        );
+        assert_eq!(state.events[0]["status"], "recall_failed");
+        assert!(state.events[0]["recall_elapsed_ns"].is_number());
+        assert!(state.events[0]["encoding_elapsed_ms"].is_null());
+        assert_eq!(state.encodings, 0);
+        assert!(state.banks.is_empty() && state.facts.is_empty() && state.memory_ids.is_empty());
+    }
+
+    #[test]
+    fn empty_and_failed_selection_keep_timings_without_encoding() {
+        let root = tempfile::tempdir().unwrap();
+        let tokens = tokenizer(root.path());
+        let model = crate::model::position_tests::rotary_model();
+        for reply in [
+            Some(json!({"facts":[],"windows":[]})),
+            None,
+            Some(json!({"facts":"invalid"})),
+            Some(json!({"facts":[],"active_context_missing":true})),
+        ] {
+            let expected_ok = reply
+                .as_ref()
+                .is_some_and(|r| r["facts"].is_array() && r["active_context_missing"] != true);
+            let mut adapter = Adapter::new(Box::new(Source(reply)), 4, 100, 4096);
+            let mut state = adapter.begin(true, true).unwrap();
+            assert_eq!(
+                adapter
+                    .recall(&model, &tokens, &mut state, "cue", "test", vec![])
+                    .is_ok(),
+                expected_ok
+            );
+            assert_eq!(state.events.len(), 1);
+            let event = &state.events[0];
+            assert!(event["source_selection_ns"].is_number());
+            assert!(event["recall_elapsed_ns"].is_number());
+            assert_eq!(event["encoding_elapsed_ms"], 0.);
+            assert_eq!(event["encoding_outcome"], "not_started");
+            assert_eq!(state.encodings, 0);
+            assert_eq!(state.native_metrics()["peak_active_positions"], 0);
+        }
+    }
+
+    #[test]
+    fn logical_bank_peaks_survive_replacement_and_cleanup() {
+        let mut adapter = Adapter::new(Box::new(Source(None)), 4, 100, 4096);
+        let mut state = adapter.begin(true, true).unwrap();
+        state.memory_ids = vec![0; 4];
+        state.facts = vec![json!({}); 2];
+        state.banks.insert(
+            0,
+            Bank {
+                keys: Tensor::zeros([1, 2, 4, 3], (tch::Kind::Float, Device::Cpu)),
+                values: Tensor::zeros([1, 2, 4, 3], (tch::Kind::Double, Device::Cpu)),
+            },
+        );
+        state.observe_working_set();
+        assert_eq!(state.native_metrics()["active_encoded_bytes"], 24 * (4 + 8));
+        state.memory_ids.truncate(1);
+        state.facts.truncate(1);
+        state.banks.clear();
+        state.observe_working_set();
+        let metrics = state.native_metrics();
+        assert_eq!(metrics["active_positions"], 1);
+        assert_eq!(metrics["peak_active_positions"], 4);
+        assert_eq!(metrics["peak_active_records"], 2);
+        assert_eq!(metrics["peak_active_encoded_bytes"], 288);
+        assert_eq!(metrics["active_encoded_bytes"], 0);
+    }
+
+    #[test]
+    fn independent_records_count_all_layers_without_cached_device_duplicates() {
+        let mut adapter = Adapter::new(Box::new(Source(None)), 4, 100, 4096);
+        let mut state = adapter.begin(true, true).unwrap();
+        state.record_encoding = true;
+        let mut banks = HashMap::new();
+        for layer in [0, 1] {
+            banks.insert(
+                layer,
+                Bank {
+                    keys: Tensor::zeros([1, 1, 2, 3], (tch::Kind::Float, Device::Cpu)),
+                    values: Tensor::zeros([1, 1, 2, 3], (tch::Kind::Float, Device::Cpu)),
+                },
+            );
+        }
+        state.records.push(RecordBank {
+            key: "record".into(),
+            tokens: 2,
+            banks,
+        });
+        state.memory_ids = vec![0; 2];
+        state.facts = vec![json!({})];
+        state.observe_working_set();
+        assert_eq!(
+            state.native_metrics()["active_encoded_bytes"],
+            2 * 2 * 6 * 4
+        );
+        assert_eq!(state.native_metrics()["active_records"], 1);
+    }
+    #[test]
+    fn read_budget_includes_failed_calls_and_refuses_further_work() {
+        let root = tempfile::tempdir().unwrap();
+        let tokens = tokenizer(root.path());
+        let model = crate::model::position_tests::rotary_model();
+        let mut adapter = Adapter::new(Box::new(Source(None)), 4, 100, 4096);
+        adapter.schedule.max_reads = 1;
+        let mut state = adapter.begin(true, true).unwrap();
+        assert!(
+            adapter
+                .recall(&model, &tokens, &mut state, "cue", "test", vec![])
+                .is_err()
+        );
+        assert_eq!(state.source_reads, 1);
+        let err = adapter
+            .recall(&model, &tokens, &mut state, "cue", "test", vec![])
+            .unwrap_err();
+        assert!(err.to_string().contains("budget exhausted"));
+        assert_eq!(state.source_reads, 1);
+        assert_eq!(state.encodings, 0);
+    }
+    #[test]
+    fn active_record_overflow_is_rejected_before_encoding_or_mutation() {
+        let root = tempfile::tempdir().unwrap();
+        let tokens = tokenizer(root.path());
+        let model = crate::model::position_tests::rotary_model();
+        let fact = |id: &str| {
+            json!({"content":"value","memory_ref":{
+            "namespace":"test","id":id,"revision":"1"}})
+        };
+        let mut adapter = Adapter::new(
+            Box::new(Source(Some(json!({"facts":[fact("new")]})))),
+            4,
+            100,
+            4096,
+        );
+        adapter.max_active_records = Some(1);
+        let mut state = adapter.begin(true, true).unwrap();
+        state.facts = vec![fact("old")];
+        assert!(
+            adapter
+                .recall(&model, &tokens, &mut state, "cue", "test", vec![])
+                .is_err()
+        );
+        assert_eq!(state.facts, vec![fact("old")]);
+        assert_eq!(state.encodings, 0);
+    }
+    #[test]
+    fn skipped_refresh_still_checks_publication_and_discards_stale_bank() {
+        struct Withdrawn;
+        impl MemorySource for Withdrawn {
+            fn begin(&mut self) -> Result<String> {
+                Ok("view".into())
+            }
+            fn check_generation(&mut self, _: &str) -> Result<()> {
+                anyhow::bail!("withdrawn")
+            }
+            fn search(&mut self, _: &str, _: usize) -> Result<Value> {
+                unreachable!()
+            }
+            fn native_search(&mut self, _: &str, _: usize) -> Result<Value> {
+                unreachable!()
+            }
+        }
+        let root = tempfile::tempdir().unwrap();
+        let tokens = tokenizer(root.path());
+        let model = crate::model::position_tests::rotary_model();
+        let mut adapter = Adapter::new(Box::new(Withdrawn), 4, 100, 4096);
+        adapter.schedule = crate::native_schedule::Policy {
+            mode: crate::native_schedule::Mode::BoundedRefresh,
+            interval: 4,
+            max_reads: 1,
+        };
+        let mut state = adapter.begin(true, true).unwrap();
+        state.step = 3;
+        state.source_reads = 1;
+        state.memory_ids = vec![0];
+        state.facts = vec![json!({})];
+        let mut cache = Cache::new(model.config.num_hidden_layers);
+        assert!(
+            adapter
+                .forward(&model, &tokens, &[0], &mut cache, &mut state)
+                .is_err()
+        );
+        assert!(state.memory_ids.is_empty() && state.facts.is_empty());
+        assert_eq!(state.addressing_attempts, 0);
+    }
+}
+#[cfg(test)]
+mod hybrid_integration_tests {
+    use super::*;
+    struct Source;
+    impl MemorySource for Source {
+        fn begin(&mut self) -> Result<String> {
+            Ok("hybrid-view".into())
+        }
+        fn search(&mut self, _: &str, _: usize) -> Result<Value> {
+            anyhow::bail!("unexpected search")
+        }
+        fn native_search(&mut self, _: &str, _: usize) -> Result<Value> {
+            Ok(json!({"facts":[],"windows":[]}))
+        }
+    }
+    fn tokens(root: &std::path::Path) -> Tokens {
+        let path = root.join("tokenizer.json");
+        tokenizers::Tokenizer::new(tokenizers::models::wordlevel::WordLevel::default())
+            .save(&path, false)
+            .unwrap();
+        Tokens::load(&path).unwrap()
+    }
+    #[test]
+    fn prepared_hybrid_is_lossless_request_local_and_misses_never_encode() {
+        let _guard = tch::no_grad_guard();
+        let root = tempfile::tempdir().unwrap();
+        let t = tokens(root.path());
+        let model = crate::model::hybrid_prefix_tests::tiny_model();
+        let ids = [2, 5, 8];
+        let (banks, recurrent) = model.encode_native_complete(&ids).unwrap();
+        let facts = vec![
+            json!({"content":"public fact","memory_ref":{"namespace":"public","id":"one","revision":"1"}}),
+        ];
+        let base = prepared_key("hybrid-view", "content", false, &facts).unwrap();
+        let key = format!("{:x}", Sha256::digest(format!("complete-hybrid-v1:{base}")));
+        let mut store =
+            crate::prepared_memory::Store::open(root.path(), "complete-profile", true).unwrap();
+        store.put_complete(&key, &ids, &banks, &recurrent).unwrap();
+        drop(store);
+        let mut adapter = Adapter::new(Box::new(Source), 6, 128, 1 << 20);
+        adapter.schedule = crate::native_schedule::Policy {
+            mode: crate::native_schedule::Mode::PreloadOnly,
+            ..Default::default()
+        };
+        adapter.prepared_store = Some(
+            crate::prepared_memory::Store::open(root.path(), "complete-profile", false).unwrap(),
+        );
+        for _ in 0..2 {
+            let mut s = adapter.begin(false, true).unwrap();
+            s.hybrid_native = true;
+            adapter
+                .recall_prepared(&model, &t, &mut s, facts.clone(), json!({}))
+                .unwrap();
+            assert_eq!(s.encodings, 0);
+            let before = s.recurrent[&0].1.copy();
+            let mut cache = Cache::new(4);
+            let _ = adapter
+                .forward(&model, &t, &[12, 13], &mut cache, &mut s)
+                .unwrap();
+            let _ = adapter
+                .forward(&model, &t, &[15], &mut cache, &mut s)
+                .unwrap();
+            assert!(before.equal(&s.recurrent[&0].1));
+            assert_eq!(cache.length, 3);
+            assert_eq!(s.native_replays, 0);
+        }
+        let mut s = adapter.begin(false, false).unwrap();
+        s.hybrid_native = true;
+        let mut revision = facts.clone();
+        revision[0]["memory_ref"]["revision"] = json!("2");
+        assert!(
+            adapter
+                .recall_prepared(&model, &t, &mut s, revision, json!({}))
+                .is_err()
+        );
+        assert_eq!(s.encodings, 0);
+        let mut context = adapter.begin(false, false).unwrap();
+        context.hybrid_native = true;
+        context.encoding_format = "system-message".into();
+        context.encoding_context = "Different caller instructions".into();
+        assert!(adapter.recall_prepared(&model, &t, &mut context, facts.clone(), json!({})).is_err());
+        assert_eq!(context.encodings, 0);
+        let mut limited = adapter.begin(false, false).unwrap();
+        limited.hybrid_native = true;
+        adapter.max_recurrent_bytes = 1;
+        assert!(
+            adapter
+                .recall_prepared(&model, &t, &mut limited, facts, json!({}))
+                .is_err()
+        );
+    }
+    #[test]
+    fn changed_hybrid_bank_replays_observed_tokens_without_extra_source_reads() {
+        struct Update;
+        impl MemorySource for Update {
+            fn begin(&mut self) -> Result<String> {
+                Ok("hybrid-view".into())
+            }
+            fn search(&mut self, _: &str, _: usize) -> Result<Value> {
+                unreachable!()
+            }
+            fn native_search(&mut self, _: &str, _: usize) -> Result<Value> {
+                Ok(
+                    json!({"facts":[{"content":"fresh","memory_ref":{"namespace":"public","id":"new","revision":"1"}}],"windows":[]}),
+                )
+            }
+        }
+        let _guard = tch::no_grad_guard();
+        let root = tempfile::tempdir().unwrap();
+        let path = root.path().join("tokenizer.json");
+        let word = tokenizers::models::wordlevel::WordLevel::builder()
+            .vocab(
+                (0..64)
+                    .map(|i| {
+                        (
+                            if i == 0 {
+                                "[UNK]".to_owned()
+                            } else {
+                                format!("word{i}")
+                            },
+                            i,
+                        )
+                    })
+                    .collect(),
+            )
+            .unk_token("[UNK]".into())
+            .build()
+            .unwrap();
+        let mut tokenizer = tokenizers::Tokenizer::new(word);
+        tokenizer.with_decoder(Some(tokenizers::decoders::byte_level::ByteLevel::default()));
+        tokenizer.save(&path, false).unwrap();
+        let t = Tokens::load(&path).unwrap();
+        let model = crate::model::hybrid_prefix_tests::tiny_model();
+        let mut a = Adapter::new(Box::new(Update), 6, 128, 1 << 20);
+        let mut s = a.begin(true, false).unwrap();
+        s.hybrid_native = true;
+        let (b, r) = model.encode_native_complete(&[2, 5, 8]).unwrap();
+        s.banks = b;
+        s.recurrent = r;
+        s.memory_ids = vec![2, 5, 8];
+        let mut cache = Cache::new(4);
+        let actual = a
+            .forward(&model, &t, &[12, 13], &mut cache, &mut s)
+            .unwrap();
+        assert_eq!(s.native_replays, 1);
+        assert_eq!(s.source_reads, 1);
+        assert_eq!(s.sequence, vec![12, 13]);
+        assert_eq!(cache.length, 2);
+        let mut expected_cache = Cache::new(4);
+        let all = [s.memory_ids.as_slice(), &[12, 13]].concat();
+        let expected = model
+            .forward(&all, &mut expected_cache, None)
+            .unwrap()
+            .narrow(1, s.memory_ids.len() as i64, 2);
+        assert!((&actual - &expected).abs().max().double_value(&[]) < 1e-5);
+    }
 }

@@ -33,6 +33,50 @@ class AdmissionTests(unittest.IsolatedAsyncioTestCase):
         l=Ledger(ctypes.CDLL(os.environ['AIMEE_STORE_LIBRARY']),10);self.addCleanup(l.close)
         self.assertTrue(l.acquire(1,10));self.assertTrue(l.acquire(1,10));l.release(1)
         self.assertFalse(l.acquire(2,10));l.release(1);self.assertTrue(l.acquire(2,10))
+
+    async def test_hybrid_context_is_verified_before_reservation_and_stripped_once(self):
+        import hashlib
+        received=[]
+        async def app(scope,receive,send):
+            received.append(json.loads((await receive())['body']))
+            await send({'type':'http.response.start','status':200,'headers':[]})
+            await send({'type':'http.response.body','body':b'ok'})
+        m=self.middleware(app);m.hybrid_contexts={'a':hashlib.sha256(b'Approved instructions').hexdigest()}
+        async def invoke(messages):
+            events=[]
+            async def receive():return {'type':'http.request','body':json.dumps({'messages':messages,'vllm_xargs':{'aimee_publication':'a'}}).encode()}
+            async def send(event):events.append(event)
+            await m({'type':'http','method':'POST','path':'/v1/chat/completions'},receive,send)
+            return events
+        for messages in ([{'role':'system','content':'Wrong instructions'},{'role':'user','content':'question'}],
+                         ['invalid'],[{'role':'system','content':['invalid']}],
+                         [{'role':'system','content':'Approved instructions'}]):
+            self.assertEqual((await invoke(messages))[0]['status'],400)
+            self.assertTrue(m.ledger.acquire(2,10));m.ledger.release(2)
+        messages=[{'role':'system','content':'  Approved instructions\n'},{'role':'user','content':'question'}]
+        self.assertEqual((await invoke(messages))[0]['status'],200)
+        self.assertEqual(received[0]['messages'],messages[1:])
+        self.assertEqual(messages[0]['role'],'system')
+
+    async def test_hybrid_catalogue_does_not_strip_system_context_from_empty_selection(self):
+        import hashlib
+        from unittest.mock import patch
+        received=[]
+        async def app(scope,receive,send):
+            received.append(json.loads((await receive())['body']))
+            await send({'type':'http.response.start','status':200,'headers':[]})
+            await send({'type':'http.response.body','body':b'ok'})
+        m=self.middleware(app);m.config={'selection_socket':'fixture'}
+        m.hybrid_contexts={'a':hashlib.sha256(b'Approved instructions').hexdigest()}
+        messages=[{'role':'system','content':'Other ordinary instructions'},{'role':'user','content':'question'}]
+        async def select(*args):return {'publication':None,'catalog_digest':'fixture'}
+        async def receive():return {'type':'http.request','body':json.dumps({'messages':messages}).encode()}
+        events=[]
+        async def send(event):events.append(event)
+        with patch('aimee_vllm.selection.select',select):
+            await m({'type':'http','method':'POST','path':'/v1/chat/completions'},receive,send)
+        self.assertEqual(events[0]['status'],200)
+        self.assertEqual(received[0]['messages'],messages)
     async def test_unknown_rejected_and_interrupted_request_retains_reservation(self):
         async def fail(scope,receive,send):raise asyncio.CancelledError()
         m=self.middleware(fail)

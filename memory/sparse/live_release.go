@@ -12,6 +12,13 @@ import (
 // on an exact approved public base. The caller must obtain a canonical policy
 // decision before calling. No grant/signing material enters the recipient image.
 func (s Store) CompileReleased(base Store, baseID, binding, namespace, authority string, records []Record, cues []ReferenceCue, now time.Time) (string, error) {
+	return s.CompileReleasedRoutes(base, baseID, binding, namespace, authority, records, cues, nil, now)
+}
+
+// CompileReleasedRoutes accepts routing metadata from the trusted publisher.
+// Every target must be a current released row or a physically approved base row.
+// Routes are explicitly republished; they are not inherited from older overlays.
+func (s Store) CompileReleasedRoutes(base Store, baseID, binding, namespace, authority string, records []Record, cues []ReferenceCue, routes []CandidateRoute, now time.Time) (string, error) {
 	p, e := base.OpenPublished(baseID)
 	if e != nil {
 		return "", e
@@ -33,7 +40,7 @@ func (s Store) CompileReleased(base Store, baseID, binding, namespace, authority
 			}
 		}
 	}
-	serving := ServingConfig{Version: 2, RecallScopes: []string{"user:_user"}, ReferenceCues: append([]ReferenceCue{}, cues...)}
+	serving := ServingConfig{Version: 2, RecallScopes: []string{"user:_user"}, ReferenceCues: append([]ReferenceCue{}, cues...), CandidateRoutes: append([]CandidateRoute{}, routes...)}
 	sort.Slice(records, func(i, j int) bool { return records[i].ID < records[j].ID })
 	active := map[Ref]bool{}
 	for i, r := range records {
@@ -54,6 +61,13 @@ func (s Store) CompileReleased(base Store, baseID, binding, namespace, authority
 		}
 		records[i] = ServingRecord(r)
 		active[r.Ref] = true
+	}
+	approvals := append([]AuthorizedRecord{}, p.context.Records...)
+	for _, r := range records {
+		approvals = append(approvals, AuthorizeRecord(r))
+	}
+	if e = validateCandidateRoutes(nil, routes, approvals, nil, time.Time{}); e != nil {
+		return "", e
 	}
 	for _, c := range cues {
 		if !active[c.Ref] {

@@ -1,8 +1,14 @@
 # Private, fork-free vLLM integration
 
-For the client release, use the [standalone plugin wheel](STANDALONE.md). It
-connects an existing supported vLLM installation to Aimee without a runtime
-container or a fork. The manual configuration below is for development.
+The current release uses [three thin model plugins on one shared runtime](MODEL_PLUGINS.md).
+Each plugin owns its dedicated Rust adapter; enrollment, selection, preparation,
+admission, scheduling and framework integration are shared.
+
+
+Install the corresponding [model-specific candidate](MODEL_PLUGINS.md).
+Each package connects a supported vLLM installation to Aimee without a runtime
+container or a fork. [The earlier shared-wheel instructions](STANDALONE.md)
+describe historical releases. The manual configuration below is for development.
 
 This package registers an external attention backend and a configured worker
 subclass using vLLM's existing extension interfaces. It does not patch, fork,
@@ -131,3 +137,70 @@ for profiling boundaries and exactness/ownership checks.
 
 See [streaming and transient-residency measurements](../../docs/validation/native-streaming-20260926.md)
 for the latest implementation and the still-unmet cold microsecond target.
+
+
+## Complete hybrid native prefix
+
+The opt-in `enable_hybrid_native: true` profile retains attention keys/values,
+convolution history and FP32 recurrent state. The worker initializes the real
+request's private GDN cache slots, shifts conversation positions by the native
+prefix length before RoPE, and reseeds on zero-token recomputation after
+preemption. Later chunks and decode retain their evolving request state. Plain
+requests in the same batch keep their ordinary positions and initialization.
+The immutable prepared tensors remain reusable across requests.
+
+This profile requires matching BF16 weights or serialized dynamic-activation FP8
+weights with prefixes captured from the same serving engine, an immutable
+`model_revision`, eager synchronous V1 execution and FP32 Mamba state caches.
+The catalogue's `hybrid_state` is the SHA-256 of `hybrid.json`; that manifest binds
+the attention index, recurrent payload, checkpoint revision, configuration,
+tokenizer, encoder precision and positional profile. A same-architecture revision
+or tokenizer change requires new preparation. Runtime identity checks trust the
+configured revision pin; operators must ensure the installed weights correspond
+to it. FP8 identity additionally binds vLLM, Torch, Triton, device capability,
+attention/convolution/recurrent dtypes and the checkpoint's weight provenance
+manifest. Static-activation and block-quantized FP8 prefixes are rejected.
+Serving performs no memory encoding.
+
+`system-message` preparation binds the closed instruction prefix to a system
+context digest. Admission requires matching instructions and removes that one
+system message once a nonempty native bank is selected. A miss keeps the ordinary
+system message. `content` preparation leaves conversation instructions in place.
+Prepared state from one framing or context cannot be reused for another.
+
+On devices requiring model offload, `serve.cpu_offload_gb` is the stock weight
+budget. `serve.cpu_offload_pinned_memory: false` selects pageable transfers and
+disables UVA; complete-hybrid offload defaults to matrix projection weights,
+keeping small convolution/gating tensors resident. This trades speed for bounded
+host/device loading. `serve.cpu_offload_disable_uva: true` also permits pinned
+copy transfers without UVA reads; pinning and UVA are independent controls.
+The native host reservation includes recurrent payloads and
+rank plans even with disk-backed attention. The native device budget covers
+attention plus immutable recurrent seeds; private conversation caches and model
+weights require additional headroom. Validation processes should have explicit
+host-memory limits.
+
+Complete preparation deduplicates identical immutable recurrent payloads by their
+SHA-256 name. Offline export hardlinks them on the same filesystem; publication
+across filesystems copies them without changing their content identity. This
+reduces stored bytes, not the private per-request recurrent-state requirement.
+
+Use `benchmarks/native_addressing/collect_native_prepare_requests.py` for exact
+published-reader selections, `export_hybrid.py` for offline catalogue artifacts,
+`checkpoint_storage_validation.py` for payload verification,
+`hybrid_serving_validation.py` for the frozen BF16 serving matrix and live control
+checks, and `audit_hybrid_serving.py` to independently audit its coverage/scores.
+The separate [INT8 research retest](../../docs/validation/native-memory-int8-20261004.md)
+passes its matching consumption contract; historical failures remain recorded.
+That runtime does not establish INT8 kernel support in vLLM on Blackwell.
+
+For same-engine FP8 preparation and isolated deployment, see the
+[deployment instructions](deployment/README.md). The offline capture worker
+cannot be enabled through the HTTP launcher. Process-lifetime host-stage counters
+remain cumulative across catalogue refreshes.
+
+Hybrid hooks install even with an initially empty publication catalogue, so a later
+validated refresh can activate the first banks. Convolution seed and private-cache
+dtypes must match exactly; mismatches reject before cache writes. See the
+[full-checkpoint validation report](../../docs/validation/native-memory-completion-20261004.md)
+for the RTX 5080 quality matrix, actual preemption/reseeding and publication gates.

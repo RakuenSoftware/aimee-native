@@ -1,5 +1,11 @@
 # Aimee Native distribution
 
+The current model-plugin candidates are [three separate packages](vllm/MODEL_PLUGINS.md),
+built on one shared runtime, with [current validation](../docs/validation/native-memory-shared-runtime-20261004.md).
+The [earlier dedicated-plugin results](../docs/validation/native-memory-serving-and-model-plugins-20261004.md)
+and older shared-plugin releases remain historical records.
+
+
 All implementation, preparation, experiments and packaging remain in the private
 `RakuenSoftware/aimee-qwen` repository. Aimee owns authoritative memory,
 permissions, selection and scoped publication.
@@ -43,7 +49,7 @@ attention backend registry and worker subclass configuration. **No forks, source
 patches or monkey-patching.** The llama.cpp patch/provider are abandoned research
 artifacts, not part of the distribution or implementation plan.
 
-The current end-user flow is documented in [Standalone Aimee vLLM plugin](vllm/STANDALONE.md): install the wheel, connect Aimee, then serve your existing model.
+The current end-user flow is documented in [Dedicated model plugins](vllm/MODEL_PLUGINS.md): install the chosen plugin and its shared runtime, connect the enrolled Aimee profile, then serve the supported model.
 
 The historical signed model/container installer flow was:
 

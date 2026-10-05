@@ -32,6 +32,7 @@ func servePublished(s sparse.Store, in io.Reader, out io.Writer) error {
 	}
 	for scanner.Scan() {
 		var req struct {
+			Address   *sparse.NativeAddress `json:"address"`
 			Op        string
 			Query     string
 			Limit     int
@@ -96,6 +97,19 @@ func servePublished(s sparse.Store, in io.Reader, out io.Writer) error {
 						if err == nil {
 							result = map[string]any{"refs": refs, "authorized": current.Publication, "authorization": current.Publication, "view": current.View.ID}
 						}
+					}
+				}
+			case "native_recall":
+				if !ready || req.Address == nil {
+					err = fmt.Errorf("native address and pin required")
+				} else {
+					var id string
+					id, err = s.Current()
+					if err == nil && id != current.View.ID {
+						err = fmt.Errorf("published generation changed")
+					}
+					if err == nil {
+						result, err = current.RouteNative(*req.Address, req.Query, req.Limit, req.Authority, time.Now())
 					}
 				}
 			case "recall":

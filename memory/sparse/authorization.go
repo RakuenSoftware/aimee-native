@@ -19,6 +19,7 @@ type AuthorizedRecord struct {
 	SHA256 string `json:"sha256"`
 }
 type Authorization struct {
+	CandidateRoutes  []CandidateRoute        `json:"candidate_routes,omitempty"`
 	ReferenceCues    []ReferenceCue          `json:"reference_cues,omitempty"`
 	ReferenceLookups []ReferenceLookupPolicy `json:"reference_lookups,omitempty"`
 	Version          int                     `json:"version"`
@@ -147,6 +148,9 @@ func (s Store) CompileAuthorized(dst Store, signed SignedAuthorization, key ed25
 			return "", fmt.Errorf("read decision unavailable")
 		}
 	}
+	if err = validateCandidateRoutes(v, a.CandidateRoutes, a.Records, grantMap(a), now); err != nil {
+		return "", err
+	}
 	if _, err = NewReferenceLookup(v, a); err != nil {
 		return "", err
 	}
@@ -173,7 +177,7 @@ func (s Store) CompileAuthorized(dst Store, signed SignedAuthorization, key ed25
 		c := ChangeSet{Namespace: ns, Kind: m.Kind, Generation: 1, Upstream: id, Records: records[m.Namespace], Source: "authorized knowledge snapshot", Coverage: []string{"authorized_canonical_fields"}, Authorization: signed.Digest()}
 		if i == len(layers)-1 {
 			c.ReadContracts = reads
-			c.Serving = &ServingConfig{Version: 1, RecallScopes: a.Grants, ReferenceLookups: a.ReferenceLookups, ReferenceCues: a.ReferenceCues}
+			c.Serving = &ServingConfig{Version: 1, RecallScopes: a.Grants, ReferenceLookups: a.ReferenceLookups, ReferenceCues: a.ReferenceCues, CandidateRoutes: a.CandidateRoutes}
 		}
 		id, err = dst.Build(c)
 		if err != nil {
@@ -195,7 +199,7 @@ func (v *View) CheckAuthorization(s SignedAuthorization, key ed25519.PublicKey, 
 	if err != nil {
 		return err
 	}
-	expectedServing, _ := json.Marshal(ServingConfig{Version: 1, RecallScopes: a.Grants, ReferenceLookups: a.ReferenceLookups, ReferenceCues: a.ReferenceCues})
+	expectedServing, _ := json.Marshal(ServingConfig{Version: 1, RecallScopes: a.Grants, ReferenceLookups: a.ReferenceLookups, ReferenceCues: a.ReferenceCues, CandidateRoutes: a.CandidateRoutes})
 	for i, m := range v.Layers {
 		if i == len(v.Layers)-1 {
 			got, _ := json.Marshal(m.Serving)

@@ -34,6 +34,10 @@ pub struct Placement {
     pub embedding: String,
     pub head: String,
     pub layers: Vec<String>,
+    /// Keep these layers' matrix weights on the host and transfer them for CUDA
+    /// execution. Activations and recurrent state stay on the layer's device.
+    #[serde(default)]
+    pub offloaded_layers: Vec<usize>,
 }
 pub fn device(s: &str) -> Result<Device> {
     if s == "cpu" {
@@ -73,12 +77,15 @@ pub struct LayerCache {
 pub struct Cache {
     pub layers: Vec<LayerCache>,
     pub length: i64,
+    /// Native prefix positions are separate from conversation cache length.
+    pub position_offset: i64,
 }
 impl Cache {
     pub fn new(n: usize) -> Self {
         Self {
             layers: (0..n).map(|_| LayerCache::default()).collect(),
             length: 0,
+            position_offset: 0,
         }
     }
 }
@@ -94,9 +101,35 @@ pub struct Model {
 pub type MemoryRead<'a> =
     dyn FnMut(&Model, usize, &Tensor, &Tensor, &Tensor, &Tensor) -> Result<Option<Bank>> + 'a;
 
+#[cfg(test)]
+mod output_head_tests {
+    use super::*;
+    #[test]
+    fn declared_tied_head_projects_with_the_token_embeddings() {
+        let mut model = super::hybrid_prefix_tests::tiny_model();
+        model.weights.remove("lm_head.weight");
+        let input = Tensor::ones([1, 16], (Kind::Float, Device::Cpu));
+        let expected = input.matmul(&model.w("model.embed_tokens.weight").transpose(-1, -2));
+        model.bind_output_head(true).unwrap();
+        assert!(model.linear(&input, "lm_head").equal(&expected));
+    }
+    #[test]
+    fn existing_head_is_preserved_and_undeclared_missing_head_is_rejected() {
+        let mut model = super::hybrid_prefix_tests::tiny_model();
+        let original = model.w("lm_head.weight").copy();
+        model.bind_output_head(false).unwrap();
+        assert!(model.w("lm_head.weight").equal(&original));
+        model.weights.remove("lm_head.weight");
+        assert!(model.bind_output_head(false).is_err());
+        model.weights.remove("model.embed_tokens.weight");
+        assert!(model.bind_output_head(true).is_err());
+    }
+}
+
 impl Model {
     pub fn load(root: &Path, placement: Option<&Path>, int8: bool) -> Result<Self> {
         let cfg: Value = serde_json::from_slice(&std::fs::read(root.join("config.json"))?)?;
+        crate::model_adapters::qwen3_8_27b::validate(&cfg)?;
         let raw = cfg.get("text_config").unwrap_or(&cfg);
         ensure!(
             raw["model_type"] == "qwen3_5_text",
@@ -127,11 +160,19 @@ impl Model {
                 embedding: "cpu".into(),
                 head: "cpu".into(),
                 layers: vec!["cpu".into(); config.num_hidden_layers],
+                offloaded_layers: Vec::new(),
             }
         };
         ensure!(
             p.layers.len() == config.num_hidden_layers,
             "placement length differs"
+        );
+        let offloaded: BTreeSet<_> = p.offloaded_layers.iter().copied().collect();
+        ensure!(
+            offloaded.len() == p.offloaded_layers.len()
+                && offloaded.iter().all(|&i| i < config.num_hidden_layers
+                    && p.layers[i].starts_with("cuda:")),
+            "offloaded layers must be distinct CUDA layer indices"
         );
         let mut m = Self {
             config,
@@ -172,6 +213,15 @@ impl Model {
                 } else {
                     m.head
                 };
+                let storage = if original.dim() == 2
+                    && name.strip_prefix("model.layers.").is_some_and(|rest| {
+                        rest.split('.').next().and_then(|s| s.parse::<usize>().ok())
+                            .is_some_and(|i| offloaded.contains(&i))
+                    }) {
+                    Device::Cpu
+                } else {
+                    d
+                };
                 if name == "model.embed_tokens.weight" {
                     m.kind = original.kind();
                 }
@@ -187,18 +237,25 @@ impl Model {
                             .copy_(&(&w / &s).round().clamp(-127., 127.).to_kind(Kind::Int8));
                         scale.narrow(0, start, n).copy_(&s);
                     }
-                    m.weights.insert(name.clone(), q.to_device(d));
+                    m.weights.insert(name.clone(), q.to_device(storage));
                     m.scales.insert(name, scale.to_device(d));
                 } else {
-                    m.weights.insert(name, original.to_device(d));
+                    m.weights.insert(name, original.to_device(storage));
                 }
             }
         }
-        ensure!(
-            m.weights.contains_key("lm_head.weight"),
-            "untied LM head required"
-        );
+        m.bind_output_head(raw["tie_word_embeddings"] == true)?;
         Ok(m)
+    }
+    fn bind_output_head(&mut self, tied: bool) -> Result<()> {
+        if !self.weights.contains_key("lm_head.weight") {
+            ensure!(tied, "missing untied LM head");
+            let embedding = self.weights.get("model.embed_tokens.weight")
+                .context("tied LM head requires token embeddings")?
+                .to_device(self.head);
+            self.weights.insert("lm_head.weight".into(), embedding);
+        }
+        Ok(())
     }
     fn w(&self, n: &str) -> &Tensor {
         self.weights
@@ -207,7 +264,7 @@ impl Model {
     }
     fn linear(&self, x: &Tensor, name: &str) -> Tensor {
         let name = format!("{name}.weight");
-        let w = self.w(&name);
+        let w = self.w(&name).to_device(x.device());
         let weight = if let Some(s) = self.scales.get(&name) {
             w.to_kind(x.kind()) * s.to_kind(x.kind())
         } else {
@@ -299,6 +356,8 @@ impl Model {
         let c = &self.config;
         let n = ids.len() as i64;
         let start = cache.length;
+        ensure!(cache.position_offset >= 0, "negative conversation position offset");
+        let rotary_start = start.checked_add(cache.position_offset).context("position overflow")?;
         let tokens = Tensor::from_slice(&ids.iter().map(|i| *i as i64).collect::<Vec<_>>())
             .to_device(self.embedding);
         let mut hidden = self
@@ -325,7 +384,7 @@ impl Model {
                         &self
                             .norm(&qg.narrow(-1, 0, c.head_dim), &format!("{p}.q_norm"))
                             .transpose(1, 2),
-                        start,
+                        rotary_start,
                     );
                     let k = self.rope(
                         &self
@@ -339,7 +398,7 @@ impl Model {
                                 &format!("{p}.k_norm"),
                             )
                             .transpose(1, 2),
-                        start,
+                        rotary_start,
                     );
                     let v = self
                         .linear(&x, &format!("{p}.v_proj"))
@@ -405,14 +464,83 @@ impl Model {
     /// Encode on the owning layer devices. Serving must not bounce a newly
     /// created active bank through host RAM before immediately consuming it.
     pub fn encode_native(&self, ids: &[u32]) -> Result<HashMap<usize, Bank>> {
+        Ok(self.encode_native_complete(ids)?.0)
+    }
+    /// The frozen hybrid encoder also produces convolution/recurrent states.
+    /// Attention-only projection is not a complete virtual-prefix cache.
+    pub fn native_recurrent_bytes(&self) -> usize {
+        let c = &self.config;
+        let count = c
+            .layer_types
+            .iter()
+            .filter(|t| t.as_str() == "linear_attention")
+            .count();
+        let conv = (2 * c.linear_num_key_heads * c.linear_key_head_dim
+            + c.linear_num_value_heads * c.linear_value_head_dim)
+            * c.linear_conv_kernel_dim;
+        let recurrent = c.linear_num_value_heads * c.linear_key_head_dim * c.linear_value_head_dim;
+        count
+            * (conv as usize
+                * self
+                    .w("model.embed_tokens.weight")
+                    .kind()
+                    .elt_size_in_bytes()
+                + recurrent as usize * 4)
+    }
+    pub fn validate_native_recurrent(
+        &self,
+        states: &HashMap<usize, (Tensor, Tensor)>,
+    ) -> Result<()> {
+        let c = &self.config;
+        let expected: Vec<_> = c
+            .layer_types
+            .iter()
+            .enumerate()
+            .filter(|(_, t)| t.as_str() == "linear_attention")
+            .map(|(i, _)| i)
+            .collect();
+        ensure!(
+            states.len() == expected.len(),
+            "incomplete hybrid native layers"
+        );
+        let channels = 2 * c.linear_num_key_heads * c.linear_key_head_dim
+            + c.linear_num_value_heads * c.linear_value_head_dim;
+        for i in expected {
+            let (conv, state) = states.get(&i).context("missing hybrid native layer")?;
+            ensure!(
+                conv.size() == [1, channels, c.linear_conv_kernel_dim]
+                    && state.size()
+                        == [
+                            1,
+                            c.linear_num_value_heads,
+                            c.linear_key_head_dim,
+                            c.linear_value_head_dim
+                        ]
+                    && state.kind() == Kind::Float
+                    && conv.device() == self.layers[i]
+                    && state.device() == self.layers[i],
+                "invalid hybrid native geometry or placement"
+            );
+        }
+        Ok(())
+    }
+    pub fn encode_native_complete(
+        &self,
+        ids: &[u32],
+    ) -> Result<(HashMap<usize, Bank>, HashMap<usize, (Tensor, Tensor)>)> {
         let mut cache = Cache::new(self.config.num_hidden_layers);
         let _ = self.forward(ids, &mut cache, None)?;
-        Ok(cache
-            .layers
-            .into_iter()
-            .enumerate()
-            .filter_map(|(i, layer)| layer.kv.map(|bank| (i, bank)))
-            .collect())
+        let mut banks = HashMap::new();
+        let mut recurrent = HashMap::new();
+        for (i, layer) in cache.layers.into_iter().enumerate() {
+            if let Some(bank) = layer.kv {
+                banks.insert(i, bank);
+            }
+            if let (Some(conv), Some(state)) = (layer.conv, layer.recurrent) {
+                recurrent.insert(i, (conv, state));
+            }
+        }
+        Ok((banks, recurrent))
     }
     /// Retained host-resident reference path for offline export and controls.
     pub fn encode(&self, ids: &[u32]) -> Result<HashMap<usize, Bank>> {
@@ -724,5 +852,200 @@ pub(crate) mod position_tests {
                 }
             }
         }
+    }
+}
+
+#[cfg(test)]
+pub(crate) mod hybrid_prefix_tests {
+    use super::*;
+    pub(crate) fn tiny_model() -> Model {
+        let mut model = super::position_tests::rotary_model();
+        model.config.num_hidden_layers = 4;
+        model.config.layer_types = vec![
+            "linear_attention".into(),
+            "full_attention".into(),
+            "linear_attention".into(),
+            "full_attention".into(),
+        ];
+        model.layers = vec![Device::Cpu; 4];
+        let tensor = |shape: &[i64], phase: f64| {
+            let count: i64 = shape.iter().product();
+            ((Tensor::arange(count, (Kind::Float, Device::Cpu)) * 0.13 + phase).sin() * 0.12)
+                .reshape(shape)
+        };
+        model
+            .weights
+            .insert("model.embed_tokens.weight".into(), tensor(&[64, 16], 0.1));
+        model
+            .weights
+            .insert("lm_head.weight".into(), tensor(&[64, 16], 0.3));
+        model.weights.insert(
+            "model.norm.weight".into(),
+            Tensor::zeros([16], (Kind::Float, Device::Cpu)),
+        );
+        for i in 0..4 {
+            let p = format!("model.layers.{i}");
+            for name in ["input_layernorm", "post_attention_layernorm"] {
+                model.weights.insert(
+                    format!("{p}.{name}.weight"),
+                    Tensor::zeros([16], (Kind::Float, Device::Cpu)),
+                );
+            }
+            for (name, shape) in [
+                ("gate_proj", [32, 16]),
+                ("up_proj", [32, 16]),
+                ("down_proj", [16, 32]),
+            ] {
+                model.weights.insert(
+                    format!("{p}.mlp.{name}.weight"),
+                    tensor(&shape, 0.2 + i as f64),
+                );
+            }
+            if i % 2 == 1 {
+                for (name, shape) in [
+                    ("q_proj", [32, 16]),
+                    ("k_proj", [16, 16]),
+                    ("v_proj", [16, 16]),
+                    ("o_proj", [16, 16]),
+                ] {
+                    model.weights.insert(
+                        format!("{p}.self_attn.{name}.weight"),
+                        tensor(&shape, i as f64),
+                    );
+                }
+                for name in ["q_norm", "k_norm"] {
+                    model.weights.insert(
+                        format!("{p}.self_attn.{name}.weight"),
+                        Tensor::zeros([8], (Kind::Float, Device::Cpu)),
+                    );
+                }
+            } else {
+                for (name, shape) in [
+                    ("in_proj_qkv", [24, 16]),
+                    ("in_proj_z", [8, 16]),
+                    ("in_proj_b", [1, 16]),
+                    ("in_proj_a", [1, 16]),
+                    ("out_proj", [16, 8]),
+                ] {
+                    model.weights.insert(
+                        format!("{p}.linear_attn.{name}.weight"),
+                        tensor(&shape, 0.4 + i as f64),
+                    );
+                }
+                model.weights.insert(
+                    format!("{p}.linear_attn.conv1d.weight"),
+                    tensor(&[24, 1, 4], 0.7),
+                );
+                model.weights.insert(
+                    format!("{p}.linear_attn.norm.weight"),
+                    Tensor::ones([8], (Kind::Float, Device::Cpu)),
+                );
+                for name in ["A_log", "dt_bias"] {
+                    model.weights.insert(
+                        format!("{p}.linear_attn.{name}"),
+                        Tensor::zeros([1], (Kind::Float, Device::Cpu)),
+                    );
+                }
+            }
+        }
+        model
+    }
+    #[test]
+    #[ignore = "requires the selected CUDA validation accelerator"]
+    fn cuda_host_matrix_offload_preserves_hybrid_prefill_and_decode() {
+        assert!(tch::Cuda::is_available(), "CUDA accelerator required");
+        let mut resident = tiny_model();
+        let mut offloaded = tiny_model();
+        for model in [&mut resident, &mut offloaded] {
+            model.layers = vec![Device::Cuda(0); 4];
+            model.embedding = Device::Cuda(0);
+            model.head = Device::Cuda(0);
+            for (name, value) in &mut model.weights {
+                if name.starts_with("model.layers.") && value.dim() == 2 {
+                    continue;
+                }
+                *value = value.to_device(Device::Cuda(0));
+            }
+        }
+        for value in resident.weights.values_mut() {
+            *value = value.to_device(Device::Cuda(0));
+        }
+        let mut reference = Cache::new(4);
+        let mut actual = Cache::new(4);
+        for tokens in [&[2, 3, 4, 8, 9][..], &[10][..], &[11][..]] {
+            let expected = resident.forward(tokens, &mut reference, None).unwrap();
+            let got = offloaded.forward(tokens, &mut actual, None).unwrap();
+            assert!(got.equal(&expected), "offloaded CUDA logits diverge");
+            for (a, b) in actual.layers.iter().zip(&reference.layers) {
+                if let (Some(x), Some(y)) = (&a.recurrent, &b.recurrent) {
+                    assert!(x.equal(y), "offloaded recurrent state diverges");
+                }
+                if let (Some(x), Some(y)) = (&a.conv, &b.conv) {
+                    assert!(x.equal(y), "offloaded convolution state diverges");
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn complete_native_states_match_a_contiguous_hybrid_prefix_and_remain_immutable() {
+        let model = tiny_model();
+        let memory = [2, 3, 4];
+        let prompt = [8, 9, 10, 11];
+        let (banks, states) = model.encode_native_complete(&memory).unwrap();
+        assert_eq!(states.len(), 2);
+        assert_eq!(banks.len(), 2);
+        let originals: HashMap<_, _> = states
+            .iter()
+            .map(|(i, (c, r))| (*i, (c.copy(), r.copy())))
+            .collect();
+        let mut native = Cache::new(4);
+        native.position_offset = memory.len() as i64;
+        for (i, (conv, recurrent)) in &states {
+            native.layers[*i].conv = Some(conv.copy());
+            native.layers[*i].recurrent = Some(recurrent.copy());
+        }
+        let callback =
+            &mut |_m: &Model, i: usize, _q: &Tensor, _k: &Tensor, _v: &Tensor, _mask: &Tensor| {
+                Ok(banks.get(&i).map(|b| Bank {
+                    keys: b.keys.shallow_clone(),
+                    values: b.values.shallow_clone(),
+                }))
+            };
+        let got = model.forward(&prompt, &mut native, Some(callback)).unwrap();
+        let mut reference = Cache::new(4);
+        let all: Vec<_> = memory.iter().chain(prompt.iter()).copied().collect();
+        let expected = model.forward(&all, &mut reference, None).unwrap().narrow(
+            1,
+            memory.len() as i64,
+            prompt.len() as i64,
+        );
+        assert!(
+            (&got - &expected).abs().max().double_value(&[]) < 1e-5,
+            "complete native prefix diverges"
+        );
+        for token in [12, 13] {
+            let got = model
+                .forward(&[token], &mut native, Some(callback))
+                .unwrap();
+            let expected = model.forward(&[token], &mut reference, None).unwrap();
+            assert!(
+                (&got - expected).abs().max().double_value(&[]) < 1e-5,
+                "decode diverges"
+            );
+        }
+        for (i, (conv, state)) in &states {
+            assert!(conv.equal(&originals[i].0));
+            assert!(state.equal(&originals[i].1));
+        }
+        assert_eq!(native.length, 6);
+        assert_eq!(reference.length, 9);
+        let missing = model
+            .forward(&prompt, &mut Cache::new(4), Some(callback))
+            .unwrap();
+        assert!(
+            (&missing - &expected).abs().max().double_value(&[]) > 1e-4,
+            "test failed to detect discarded recurrent states"
+        );
     }
 }

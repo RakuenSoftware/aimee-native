@@ -11,6 +11,7 @@ import (
 // Authorization must be resolved BEFORE any bytes enter the recipient's store.
 // RecallScopes preserve the keys of existing publisher-produced read contracts.
 type ServingConfig struct {
+	CandidateRoutes  []CandidateRoute        `json:"candidate_routes,omitempty"`
 	ReferenceCues    []ReferenceCue          `json:"reference_cues,omitempty"`
 	Version          int                     `json:"version"`
 	RecallScopes     []string                `json:"recall_scopes,omitempty"`
@@ -28,6 +29,9 @@ type PublishedReader struct {
 	Publication string
 	lookup      *ReferenceLookup
 	context     Authorization
+	routesOnce  sync.Once
+	routesError error
+	routes      *candidateIndex
 	byID        map[string][]AuthorizedRecord
 }
 
@@ -122,6 +126,14 @@ func (p *PublishedReader) Close() { p.View.Close() }
 // Recall preserves compiled retrieval and temporal semantics. All stored rows
 // have already been admitted by the publisher. It never reauthorizes a read.
 func (p *PublishedReader) Recall(query string, limit int, authority string, now time.Time) (RecallResult, error) {
+	if len(p.View.Layers[len(p.View.Layers)-1].Serving.CandidateRoutes) > 0 {
+		r, err := p.RouteNative(NativeAddress{Schema: 1, View: p.View.ID, Representation: "text-query-v1"}, query, limit, authority, now)
+		return r.RecallResult, err
+	}
+	return p.recallLegacy(query, limit, authority, now)
+}
+
+func (p *PublishedReader) recallLegacy(query string, limit int, authority string, now time.Time) (RecallResult, error) {
 	r := p.View.Recall(query, limit, authority, grantMap(p.context), now)
 	if r.Outcome == "uncovered" {
 		if err := p.ensureLookup(); err != nil {

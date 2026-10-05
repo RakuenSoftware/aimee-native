@@ -1,0 +1,894 @@
+{
+  "schema": "native-addressing-decision-v1",
+  "scope": "public synthetic full-model engineering; fixed archive; small closed-domain router",
+  "schedule_conditions": {
+    "every-step": {
+      "n": 20,
+      "correct": 14,
+      "correct_selection": 14,
+      "source_reads": 96,
+      "addressing_attempts": 76,
+      "median_elapsed_ms": 2257.810738,
+      "quality_regressions": []
+    },
+    "preload-only": {
+      "n": 20,
+      "correct": 14,
+      "correct_selection": 14,
+      "source_reads": 20,
+      "addressing_attempts": 0,
+      "median_elapsed_ms": 2248.333262,
+      "quality_regressions": [],
+      "engineering_gate_passed": true
+    },
+    "bounded-refresh": {
+      "n": 20,
+      "correct": 14,
+      "correct_selection": 14,
+      "source_reads": 52,
+      "addressing_attempts": 32,
+      "median_elapsed_ms": 2254.618547,
+      "quality_regressions": [],
+      "engineering_gate_passed": true
+    }
+  },
+  "router_primary": {
+    "contract": {
+      "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+      "layer": 3,
+      "representation": "query-inverse-rotary-f32",
+      "pooling": "mean-heads-last-token",
+      "position": "rotary-removed-after-rounding",
+      "width": 256
+    },
+    "candidate_hits": 3,
+    "heldout_examples": 6,
+    "fallbacks": 0
+  },
+  "deterministic_development_cue_hits": 6,
+  "router_matches_fixture_deterministic": false,
+  "router_exploratory_variants": [
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 3,
+        "representation": "query-inverse-rotary-f32",
+        "pooling": "first-head-last-token",
+        "position": "rotary-removed-after-rounding",
+        "width": 256
+      },
+      "candidate_hits": 3,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 3,
+        "representation": "query-inverse-rotary-f32",
+        "pooling": "mean-heads-last-token",
+        "position": "rotary-removed-after-rounding",
+        "width": 256
+      },
+      "candidate_hits": 3,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 3,
+        "representation": "query-post-rotary",
+        "pooling": "first-head-last-token",
+        "position": "conversation-absolute",
+        "width": 256
+      },
+      "candidate_hits": 2,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 3,
+        "representation": "query-post-rotary",
+        "pooling": "mean-heads-last-token",
+        "position": "conversation-absolute",
+        "width": 256
+      },
+      "candidate_hits": 2,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 7,
+        "representation": "query-inverse-rotary-f32",
+        "pooling": "first-head-last-token",
+        "position": "rotary-removed-after-rounding",
+        "width": 256
+      },
+      "candidate_hits": 5,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 7,
+        "representation": "query-inverse-rotary-f32",
+        "pooling": "mean-heads-last-token",
+        "position": "rotary-removed-after-rounding",
+        "width": 256
+      },
+      "candidate_hits": 6,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 7,
+        "representation": "query-post-rotary",
+        "pooling": "first-head-last-token",
+        "position": "conversation-absolute",
+        "width": 256
+      },
+      "candidate_hits": 2,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 7,
+        "representation": "query-post-rotary",
+        "pooling": "mean-heads-last-token",
+        "position": "conversation-absolute",
+        "width": 256
+      },
+      "candidate_hits": 2,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 11,
+        "representation": "query-inverse-rotary-f32",
+        "pooling": "first-head-last-token",
+        "position": "rotary-removed-after-rounding",
+        "width": 256
+      },
+      "candidate_hits": 4,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 11,
+        "representation": "query-inverse-rotary-f32",
+        "pooling": "mean-heads-last-token",
+        "position": "rotary-removed-after-rounding",
+        "width": 256
+      },
+      "candidate_hits": 4,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 11,
+        "representation": "query-post-rotary",
+        "pooling": "first-head-last-token",
+        "position": "conversation-absolute",
+        "width": 256
+      },
+      "candidate_hits": 3,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 11,
+        "representation": "query-post-rotary",
+        "pooling": "mean-heads-last-token",
+        "position": "conversation-absolute",
+        "width": 256
+      },
+      "candidate_hits": 2,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 15,
+        "representation": "query-inverse-rotary-f32",
+        "pooling": "first-head-last-token",
+        "position": "rotary-removed-after-rounding",
+        "width": 256
+      },
+      "candidate_hits": 3,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 15,
+        "representation": "query-inverse-rotary-f32",
+        "pooling": "mean-heads-last-token",
+        "position": "rotary-removed-after-rounding",
+        "width": 256
+      },
+      "candidate_hits": 5,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 15,
+        "representation": "query-post-rotary",
+        "pooling": "first-head-last-token",
+        "position": "conversation-absolute",
+        "width": 256
+      },
+      "candidate_hits": 2,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 15,
+        "representation": "query-post-rotary",
+        "pooling": "mean-heads-last-token",
+        "position": "conversation-absolute",
+        "width": 256
+      },
+      "candidate_hits": 2,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 19,
+        "representation": "query-inverse-rotary-f32",
+        "pooling": "first-head-last-token",
+        "position": "rotary-removed-after-rounding",
+        "width": 256
+      },
+      "candidate_hits": 2,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 19,
+        "representation": "query-inverse-rotary-f32",
+        "pooling": "mean-heads-last-token",
+        "position": "rotary-removed-after-rounding",
+        "width": 256
+      },
+      "candidate_hits": 2,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 19,
+        "representation": "query-post-rotary",
+        "pooling": "first-head-last-token",
+        "position": "conversation-absolute",
+        "width": 256
+      },
+      "candidate_hits": 2,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 19,
+        "representation": "query-post-rotary",
+        "pooling": "mean-heads-last-token",
+        "position": "conversation-absolute",
+        "width": 256
+      },
+      "candidate_hits": 3,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 23,
+        "representation": "query-inverse-rotary-f32",
+        "pooling": "first-head-last-token",
+        "position": "rotary-removed-after-rounding",
+        "width": 256
+      },
+      "candidate_hits": 2,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 23,
+        "representation": "query-inverse-rotary-f32",
+        "pooling": "mean-heads-last-token",
+        "position": "rotary-removed-after-rounding",
+        "width": 256
+      },
+      "candidate_hits": 2,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 23,
+        "representation": "query-post-rotary",
+        "pooling": "first-head-last-token",
+        "position": "conversation-absolute",
+        "width": 256
+      },
+      "candidate_hits": 2,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 23,
+        "representation": "query-post-rotary",
+        "pooling": "mean-heads-last-token",
+        "position": "conversation-absolute",
+        "width": 256
+      },
+      "candidate_hits": 2,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 27,
+        "representation": "query-inverse-rotary-f32",
+        "pooling": "first-head-last-token",
+        "position": "rotary-removed-after-rounding",
+        "width": 256
+      },
+      "candidate_hits": 3,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 27,
+        "representation": "query-inverse-rotary-f32",
+        "pooling": "mean-heads-last-token",
+        "position": "rotary-removed-after-rounding",
+        "width": 256
+      },
+      "candidate_hits": 2,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 27,
+        "representation": "query-post-rotary",
+        "pooling": "first-head-last-token",
+        "position": "conversation-absolute",
+        "width": 256
+      },
+      "candidate_hits": 2,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 27,
+        "representation": "query-post-rotary",
+        "pooling": "mean-heads-last-token",
+        "position": "conversation-absolute",
+        "width": 256
+      },
+      "candidate_hits": 2,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 31,
+        "representation": "query-inverse-rotary-f32",
+        "pooling": "first-head-last-token",
+        "position": "rotary-removed-after-rounding",
+        "width": 256
+      },
+      "candidate_hits": 2,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 31,
+        "representation": "query-inverse-rotary-f32",
+        "pooling": "mean-heads-last-token",
+        "position": "rotary-removed-after-rounding",
+        "width": 256
+      },
+      "candidate_hits": 3,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 31,
+        "representation": "query-post-rotary",
+        "pooling": "first-head-last-token",
+        "position": "conversation-absolute",
+        "width": 256
+      },
+      "candidate_hits": 2,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 31,
+        "representation": "query-post-rotary",
+        "pooling": "mean-heads-last-token",
+        "position": "conversation-absolute",
+        "width": 256
+      },
+      "candidate_hits": 4,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 35,
+        "representation": "query-inverse-rotary-f32",
+        "pooling": "first-head-last-token",
+        "position": "rotary-removed-after-rounding",
+        "width": 256
+      },
+      "candidate_hits": 2,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 35,
+        "representation": "query-inverse-rotary-f32",
+        "pooling": "mean-heads-last-token",
+        "position": "rotary-removed-after-rounding",
+        "width": 256
+      },
+      "candidate_hits": 2,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 35,
+        "representation": "query-post-rotary",
+        "pooling": "first-head-last-token",
+        "position": "conversation-absolute",
+        "width": 256
+      },
+      "candidate_hits": 3,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 35,
+        "representation": "query-post-rotary",
+        "pooling": "mean-heads-last-token",
+        "position": "conversation-absolute",
+        "width": 256
+      },
+      "candidate_hits": 2,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 39,
+        "representation": "query-inverse-rotary-f32",
+        "pooling": "first-head-last-token",
+        "position": "rotary-removed-after-rounding",
+        "width": 256
+      },
+      "candidate_hits": 2,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 39,
+        "representation": "query-inverse-rotary-f32",
+        "pooling": "mean-heads-last-token",
+        "position": "rotary-removed-after-rounding",
+        "width": 256
+      },
+      "candidate_hits": 3,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 39,
+        "representation": "query-post-rotary",
+        "pooling": "first-head-last-token",
+        "position": "conversation-absolute",
+        "width": 256
+      },
+      "candidate_hits": 4,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 39,
+        "representation": "query-post-rotary",
+        "pooling": "mean-heads-last-token",
+        "position": "conversation-absolute",
+        "width": 256
+      },
+      "candidate_hits": 3,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 43,
+        "representation": "query-inverse-rotary-f32",
+        "pooling": "first-head-last-token",
+        "position": "rotary-removed-after-rounding",
+        "width": 256
+      },
+      "candidate_hits": 3,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 43,
+        "representation": "query-inverse-rotary-f32",
+        "pooling": "mean-heads-last-token",
+        "position": "rotary-removed-after-rounding",
+        "width": 256
+      },
+      "candidate_hits": 3,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 43,
+        "representation": "query-post-rotary",
+        "pooling": "first-head-last-token",
+        "position": "conversation-absolute",
+        "width": 256
+      },
+      "candidate_hits": 2,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 43,
+        "representation": "query-post-rotary",
+        "pooling": "mean-heads-last-token",
+        "position": "conversation-absolute",
+        "width": 256
+      },
+      "candidate_hits": 2,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 47,
+        "representation": "query-inverse-rotary-f32",
+        "pooling": "first-head-last-token",
+        "position": "rotary-removed-after-rounding",
+        "width": 256
+      },
+      "candidate_hits": 3,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 47,
+        "representation": "query-inverse-rotary-f32",
+        "pooling": "mean-heads-last-token",
+        "position": "rotary-removed-after-rounding",
+        "width": 256
+      },
+      "candidate_hits": 3,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 47,
+        "representation": "query-post-rotary",
+        "pooling": "first-head-last-token",
+        "position": "conversation-absolute",
+        "width": 256
+      },
+      "candidate_hits": 3,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 47,
+        "representation": "query-post-rotary",
+        "pooling": "mean-heads-last-token",
+        "position": "conversation-absolute",
+        "width": 256
+      },
+      "candidate_hits": 3,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 51,
+        "representation": "query-inverse-rotary-f32",
+        "pooling": "first-head-last-token",
+        "position": "rotary-removed-after-rounding",
+        "width": 256
+      },
+      "candidate_hits": 3,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 51,
+        "representation": "query-inverse-rotary-f32",
+        "pooling": "mean-heads-last-token",
+        "position": "rotary-removed-after-rounding",
+        "width": 256
+      },
+      "candidate_hits": 2,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 51,
+        "representation": "query-post-rotary",
+        "pooling": "first-head-last-token",
+        "position": "conversation-absolute",
+        "width": 256
+      },
+      "candidate_hits": 3,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 51,
+        "representation": "query-post-rotary",
+        "pooling": "mean-heads-last-token",
+        "position": "conversation-absolute",
+        "width": 256
+      },
+      "candidate_hits": 2,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 55,
+        "representation": "query-inverse-rotary-f32",
+        "pooling": "first-head-last-token",
+        "position": "rotary-removed-after-rounding",
+        "width": 256
+      },
+      "candidate_hits": 3,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 55,
+        "representation": "query-inverse-rotary-f32",
+        "pooling": "mean-heads-last-token",
+        "position": "rotary-removed-after-rounding",
+        "width": 256
+      },
+      "candidate_hits": 2,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 55,
+        "representation": "query-post-rotary",
+        "pooling": "first-head-last-token",
+        "position": "conversation-absolute",
+        "width": 256
+      },
+      "candidate_hits": 3,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 55,
+        "representation": "query-post-rotary",
+        "pooling": "mean-heads-last-token",
+        "position": "conversation-absolute",
+        "width": 256
+      },
+      "candidate_hits": 4,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 59,
+        "representation": "query-inverse-rotary-f32",
+        "pooling": "first-head-last-token",
+        "position": "rotary-removed-after-rounding",
+        "width": 256
+      },
+      "candidate_hits": 5,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 59,
+        "representation": "query-inverse-rotary-f32",
+        "pooling": "mean-heads-last-token",
+        "position": "rotary-removed-after-rounding",
+        "width": 256
+      },
+      "candidate_hits": 5,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 59,
+        "representation": "query-post-rotary",
+        "pooling": "first-head-last-token",
+        "position": "conversation-absolute",
+        "width": 256
+      },
+      "candidate_hits": 2,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 59,
+        "representation": "query-post-rotary",
+        "pooling": "mean-heads-last-token",
+        "position": "conversation-absolute",
+        "width": 256
+      },
+      "candidate_hits": 2,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 63,
+        "representation": "query-inverse-rotary-f32",
+        "pooling": "first-head-last-token",
+        "position": "rotary-removed-after-rounding",
+        "width": 256
+      },
+      "candidate_hits": 5,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 63,
+        "representation": "query-inverse-rotary-f32",
+        "pooling": "mean-heads-last-token",
+        "position": "rotary-removed-after-rounding",
+        "width": 256
+      },
+      "candidate_hits": 5,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 63,
+        "representation": "query-post-rotary",
+        "pooling": "first-head-last-token",
+        "position": "conversation-absolute",
+        "width": 256
+      },
+      "candidate_hits": 5,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    },
+    {
+      "contract": {
+        "model_revision": "77042094076611b69791a610065f28b7013b8c621795fa86ddccc8bac7d1b9df-int8-84eb2a9198a1d3e745723b0811e450b22a638466c31b670fe4272357dfbdcb03",
+        "layer": 63,
+        "representation": "query-post-rotary",
+        "pooling": "mean-heads-last-token",
+        "position": "conversation-absolute",
+        "width": 256
+      },
+      "candidate_hits": 2,
+      "heldout_examples": 6,
+      "fallbacks": 0
+    }
+  ],
+  "deployment_promoted": false,
+  "compression_decision": "No new lossy codec: exact record reuse is already implemented; no demonstrated semantic benefit justifies another representation.",
+  "write_decision": "No native mutation path: hidden address observations are not validated proposed factual content. Preserve authority-owned textual proposal validation.",
+  "limitations": [
+    "No production authorization fixture",
+    "No general semantic archive-scaling claim",
+    "No cross-model/quantization stability campaign",
+    "Routing is a candidate-only offline prototype, not an integrated authority lookup",
+    "Schedule latency is descriptive; variable answer length and fixed schedule order prevent a controlled compute speedup claim"
+  ]
+}

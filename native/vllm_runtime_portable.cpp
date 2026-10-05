@@ -16,7 +16,7 @@ struct Ref {
 PyObject* ops() {
   // Each worker imports once. The interpreter owns the module for its lifetime.
   static PyObject* module=nullptr;
-  if (!module) module=PyImport_ImportModule("aimee_vllm._p13");
+  if (!module) module=PyImport_ImportModule("aimee_native_runtime.runtime_ops");
   return module;
 }
 PyObject* invoke(const char* name, PyObject* args) {

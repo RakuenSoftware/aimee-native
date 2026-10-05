@@ -1,0 +1,43 @@
+[Unit]
+Description=Isolated native memory model service (RTX 5080)
+After=network-online.target remote-fs.target
+Wants=network-online.target
+RequiresMountsFor=/mnt/pve/backup /opt/aimee-native-serving/jit-runtime
+StartLimitIntervalSec=3600
+StartLimitBurst=3
+
+[Service]
+Type=exec
+WorkingDirectory=/opt/aimee-native-serving
+Environment=CUDA_VISIBLE_DEVICES=0
+Environment=PYTHONPATH=/opt/aimee-native-serving/current/plugins:/opt/aimee-native-serving/current/distribution/vllm
+Environment=OMP_NUM_THREADS=8
+Environment=VLLM_NO_USAGE_STATS=1
+Environment=VLLM_CONFIG_ROOT=/opt/aimee-native-serving/jit-runtime/config
+Environment=HF_HOME=/opt/aimee-native-serving/jit-runtime/huggingface
+Environment=TMPDIR=/opt/aimee-native-serving/jit-runtime/tmp
+Environment=XDG_CACHE_HOME=/opt/aimee-native-serving/jit-runtime/cache
+Environment=TRITON_CACHE_DIR=/opt/aimee-native-serving/jit-runtime/triton
+EnvironmentFile=/opt/aimee-native-serving/credentials.env
+RuntimeDirectory=aimee-native-serving
+RuntimeDirectoryMode=0700
+ExecStartPre=/opt/aimee-native-serving/env/bin/python /opt/aimee-native-serving/current/distribution/vllm/deployment/preflight.py --config /opt/aimee-native-serving/serving.json
+ExecStart=/opt/aimee-native-serving/env/bin/python /opt/aimee-native-serving/current/distribution/vllm/deployment/launch.py --config /opt/aimee-native-serving/serving.json
+ExecStartPost=/opt/aimee-native-serving/env/bin/python /opt/aimee-native-serving/current/distribution/vllm/deployment/ready.py --config /opt/aimee-native-serving/serving.json
+Restart=on-failure
+RestartSec=15
+TimeoutStartSec=1800
+TimeoutStopSec=120
+KillMode=control-group
+MemoryMax=56G
+MemorySwapMax=0
+OOMPolicy=stop
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectHome=read-only
+ProtectSystem=full
+ReadOnlyPaths=/opt/aimee-native-serving/releases /opt/aimee-native-serving/env /var/lib/aimee-large-release-validation/cuda-5080-20260930/env /mnt/pve/backup/aimee-experiments/native-serving-20261004
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

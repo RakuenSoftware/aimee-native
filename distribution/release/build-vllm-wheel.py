@@ -4,6 +4,7 @@ Run in the pinned runtime's Python with Cython/setuptools/wheel installed.
 """
 import argparse,os,pathlib,shutil,subprocess,sys,tempfile,zipfile
 p=argparse.ArgumentParser();p.add_argument('--output',required=True);p.add_argument('--version',default='0.2.2');a=p.parse_args()
+p.error('Shared-plugin building is retired; use build-model-plugins.py')
 repo=pathlib.Path(__file__).resolve().parents[2];out=pathlib.Path(a.output).resolve();out.mkdir(parents=True,exist_ok=True)
 module_pairs=[
  ('stream_completion','_p0'),('selection','_p1'),('gguf_loader','_p2'),('control','_p3'),
