@@ -140,3 +140,59 @@ func TestPublishedReaderDropsPinnedStateAfterWithdrawalCheck(t *testing.T) {
 	requests.Close()
 	responses.Close()
 }
+
+func TestNativePublishedProtocolBindingAndWithdrawal(t *testing.T) {
+	s := sparse.Store{Root: t.TempDir()}
+	ref := sparse.Ref{Namespace: "general", ID: "one", Revision: "1"}
+	id, e := s.Build(sparse.ChangeSet{Namespace: "general", Kind: "general", Generation: 1, Source: "authorized knowledge snapshot", Coverage: []string{"test"}, Authorization: "released", Serving: &sparse.ServingConfig{Version: 1, CandidateRoutes: []sparse.CandidateRoute{{Partition: "one", Authority: "test", Cues: []string{"beacon"}, Records: []sparse.Ref{ref}}}}, Records: []sparse.Record{{Ref: ref, Scope: sparse.Scope{Type: "global", Value: "_global"}, Key: "beacon record", Content: "teal", Kind: "fact", Lifecycle: "active", Confidence: 1}}})
+	if e != nil {
+		t.Fatal(e)
+	}
+	if e = s.Publish(id, ""); e != nil {
+		t.Fatal(e)
+	}
+	input, send := io.Pipe()
+	output, reply := io.Pipe()
+	done := make(chan error, 1)
+	go func() { done <- servePublished(s, input, reply); reply.Close() }()
+	encoder := json.NewEncoder(send)
+	decoder := json.NewDecoder(output)
+	ask := func(req any) map[string]any {
+		t.Helper()
+		if e := encoder.Encode(req); e != nil {
+			t.Fatal(e)
+		}
+		var r map[string]any
+		if e := decoder.Decode(&r); e != nil {
+			t.Fatal(e)
+		}
+		return r
+	}
+	if ask(map[string]any{"op": "pin"})["view"] != id {
+		t.Fatal("pin failed")
+	}
+	address := sparse.NativeAddress{Schema: 1, View: id, Representation: "text-query-v1"}
+	req := map[string]any{"op": "native_recall", "query": "beacon", "limit": 2, "authority": "test", "address": address}
+	if r := ask(req); r["outcome"] != "hit" || r["candidate_records"] != float64(1) {
+		t.Fatal(r)
+	}
+	address.View = "wrong"
+	req["address"] = address
+	if r := ask(req); r["error"] == nil {
+		t.Fatal("unbound address accepted")
+	}
+	address.View = id
+	req["address"] = address
+	if e = os.Remove(filepath.Join(s.Root, "CURRENT")); e != nil {
+		t.Fatal(e)
+	}
+	if r := ask(req); r["error"] == nil || r["response"] != nil {
+		t.Fatal("withdrawn record returned", r)
+	}
+	send.Close()
+	if e = <-done; e != nil {
+		t.Fatal(e)
+	}
+	input.Close()
+	output.Close()
+}

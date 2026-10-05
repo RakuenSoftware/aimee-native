@@ -314,7 +314,17 @@ c.sendall(b'{"state":"restart_required"}\n');c.close();time.sleep(8)
         let guard = lock(tmp.path()).unwrap();
         assert!(lock(tmp.path()).is_err());
         drop(guard);
-        assert!(lock(tmp.path()).is_ok());
+        // Parallel supervisor tests may fork while this descriptor is open.
+        // CLOEXEC closes the inherited descriptor at exec, so allow that short
+        // child transition before asserting the released lock is available.
+        let deadline = Instant::now() + Duration::from_secs(2);
+        loop {
+            match lock(tmp.path()) {
+                Ok(_) => break,
+                Err(error) if Instant::now() >= deadline => panic!("released lock unavailable: {error}"),
+                Err(_) => std::thread::sleep(Duration::from_millis(5)),
+            }
+        }
         fs::write(tmp.path().join("control.sock"), b"keep").unwrap();
         assert!(clean_sockets(tmp.path()).is_err());
         assert_eq!(fs::read(tmp.path().join("control.sock")).unwrap(), b"keep");

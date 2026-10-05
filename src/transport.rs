@@ -220,6 +220,16 @@ pub trait MemorySource {
     fn begin(&mut self) -> Result<String>;
     fn search(&mut self, query: &str, limit: usize) -> Result<Value>;
     fn native_search(&mut self, query: &str, limit: usize) -> Result<Value>;
+    fn native_address(
+        &mut self,
+        query: &str,
+        limit: usize,
+        _view: &str,
+        _step: usize,
+        _representation: &str,
+    ) -> Result<Value> {
+        self.native_search(query, limit)
+    }
 }
 pub struct LocalFirst {
     pub local: ImageReader,
@@ -230,6 +240,7 @@ pub struct LocalFirst {
     last_read_local: bool,
     remote_binding: Option<String>,
     pub events: Vec<Value>,
+    pending_address: Option<Value>,
 }
 impl LocalFirst {
     pub fn state(&self) -> (bool, bool) {
@@ -245,6 +256,7 @@ impl LocalFirst {
             last_read_local: false,
             remote_binding: None,
             events: vec![],
+            pending_address: None,
         }
     }
     fn remote_binding(&mut self) -> Result<String> {
@@ -267,11 +279,14 @@ impl LocalFirst {
     }
     fn read(&mut self, query: &str, limit: usize) -> Result<Value> {
         self.last_read_local = false;
+        let address = self.pending_address.take();
+        let request = if self.local.published && address.is_some() {
+            json!({"op":"native_recall","query":query,"limit":limit,"authority":self.authority,"address":address})
+        } else {
+            json!({"op":"recall","query":query,"limit":limit,"authority":self.authority})
+        };
         if self.local_ready {
-            match self
-                .local
-                .call(json!({"op":"recall","query":query,"limit":limit,"authority":self.authority}))
-            {
+            match self.local.call(request) {
                 Ok(r) => {
                     ensure!(r["view"] == self.local.view, "image changed inside request");
                     if r["outcome"] == "hit" {
@@ -322,6 +337,24 @@ impl MemorySource for LocalFirst {
         Ok(())
     }
 
+    fn native_address(
+        &mut self,
+        query: &str,
+        limit: usize,
+        view: &str,
+        step: usize,
+        representation: &str,
+    ) -> Result<Value> {
+        ensure!(
+            self.admitted && view == self.local.view,
+            "native address generation differs"
+        );
+        self.pending_address =
+            Some(json!({"schema":1,"view":view,"step":step,"representation":representation}));
+        let result = self.native_search(query, limit);
+        self.pending_address = None;
+        result
+    }
     fn native_search(&mut self, query: &str, limit: usize) -> Result<Value> {
         let mut response = self.search(query, limit)?;
         if self.local.published && self.last_read_local {

@@ -29,7 +29,10 @@ pub mod streaming_copy;
 #[cfg(feature = "torch")]
 pub mod native_ffi;
 
-#[cfg(any(feature = "preparation-service", not(any(feature = "native-client", feature = "vllm-client"))))]
+#[cfg(any(
+    feature = "preparation-service",
+    not(any(feature = "native-client", feature = "vllm-client"))
+))]
 pub mod preparation_cache;
 
 mod native_format;
@@ -37,9 +40,6 @@ pub mod native_store;
 
 #[cfg(feature = "vllm-client")]
 pub mod native_store_ffi;
-
-#[cfg(feature = "vllm-client")]
-pub mod vllm_runtime;
 
 pub mod device_cache;
 
@@ -54,3 +54,11 @@ pub mod native_transport_codec;
 
 #[cfg(any(feature = "preparation-service", feature = "vllm-runtime"))]
 mod native_transport;
+
+#[cfg(all(feature = "torch", not(feature = "native-client")))]
+pub mod native_schedule;
+
+#[cfg(feature = "torch")]
+pub mod prepared_recurrent;
+
+pub mod model_adapters;

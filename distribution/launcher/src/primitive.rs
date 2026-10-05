@@ -6,6 +6,7 @@ use reqwest::blocking::Client;
 use serde::{Deserialize, Serialize};
 use std::collections::HashSet;
 use std::fs;
+use std::io::Read;
 
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 pub struct SourceVersion {
@@ -59,6 +60,12 @@ pub fn fetch(http: &Client, connection: &Config, query: &str, limit_tokens: u32)
     fetch_with_token(http, &connection.endpoint, &token, query, limit_tokens)
 }
 
+pub fn fetch_for_recipient(connection: &Config, query: &str, limit_tokens: u32, recipient: &str) -> Result<Primitive> {
+    let current = crate::thin_client::open(connection)?;
+    ensure!(current.recipient == recipient, "Aimee enrollment changed; restart the model connection");
+    fetch_with_token(&current.http, &connection.endpoint, &current.token, query, limit_tokens)
+}
+
 pub fn fetch_with_token(http: &Client, endpoint: &str, token: &str, query: &str, limit_tokens: u32) -> Result<Primitive> {
     ensure!(!query.trim().is_empty() && query.len() <= 16384, "invalid memory query");
     ensure!((64..=8192).contains(&limit_tokens), "invalid memory budget");
@@ -70,7 +77,9 @@ pub fn fetch_with_token(http: &Client, endpoint: &str, token: &str, query: &str,
         .body(serde_json::to_vec(&serde_json::json!({"task_hint": query, "limit_tokens": limit_tokens, "store": "user"}))?)
         .send()?
         .error_for_status()?;
-    let bytes = response.bytes()?;
+    ensure!(response.content_length().is_none_or(|length| length <= 1 << 20), "memory primitive exceeds limit");
+    let mut bytes = Vec::new();
+    response.take((1 << 20) + 1).read_to_end(&mut bytes)?;
     ensure!(bytes.len() <= 1 << 20, "memory primitive exceeds limit");
     let primitive: Primitive = serde_json::from_slice(&bytes).context("invalid memory primitive")?;
     primitive.validate()?;

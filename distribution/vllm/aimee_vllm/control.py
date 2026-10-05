@@ -23,11 +23,14 @@ async def start(owner, engine):
             logging.getLogger(__name__).exception('Native control operation failed')
             result={'error':'native control operation failed; admission remains stopped'}
         writer.write(json.dumps(result).encode()+b'\n');await writer.drain();writer.close();await writer.wait_closed()
-    server=await asyncio.start_unix_server(handle,path=str(path),limit=4096)
+    server=await asyncio.start_unix_server(handle,path=str(path),limit=1024*1024+4096)
     os.chmod(path,0o600)
     return server
 
 async def operate(owner,engine,request):
+    if request.get('op') == 'prepare':
+        from .preparation import prepare
+        return await prepare(owner,engine,request,owner.model_adapter)
     if request == {'op':'status'}:
         return {'state':'restart_required' if owner.poisoned else ('paused' if owner.paused else 'active')}
     if request == {'op':'metrics'}:
@@ -37,6 +40,7 @@ async def operate(owner,engine,request):
         expected=owner.config.get('serve',{}).get('tensor_parallel_size',1)
         if len(workers)!=expected:raise RuntimeError('incomplete worker metrics')
         return {'workers':workers,'active_requests':owner.active,
+                'frontend_host_stages':owner.stages.snapshot() if hasattr(owner,'stages') else None,
                 'state':'restart_required' if owner.poisoned else ('paused' if owner.paused else 'active')}
     guarded_refresh=(set(request)=={'op','generation'} and request['op']=='refresh'
                      and type(request['generation']) is int and request['generation']>=0)

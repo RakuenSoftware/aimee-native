@@ -264,6 +264,26 @@ fn read_check(c: Connection) -> Result<()> {
 #[cfg(feature = "torch")]
 #[derive(clap::Args)]
 struct Serve {
+    /// Server-owned research schedule; clients cannot increase read work.
+    #[arg(long, value_enum, default_value_t = aimee_qwen::native_schedule::Mode::EveryStep)]
+    native_schedule: aimee_qwen::native_schedule::Mode,
+    #[arg(long, default_value_t = 4)]
+    native_refresh_interval: usize,
+    /// Includes preload and failed reads. Omit for legacy unbounded retrieval.
+    #[arg(long)]
+    native_max_reads: Option<usize>,
+    /// Total merged active records; overflow fails without silent eviction.
+    #[arg(long)]
+    max_active_records: Option<usize>,
+    /// Send a publication-bound address to the owner-approved bundle router.
+    #[arg(long)]
+    native_candidate_routing: bool,
+    /// Complete convolution/recurrent prefix states, jointly encoded.
+    #[arg(long)]
+    enable_hybrid_native: bool,
+    /// Hard cap for immutable hybrid convolution/recurrent prefix state.
+    #[arg(long, default_value_t = 256)]
+    max_recurrent_mib: usize,
     /// Research-only bounded native snapshot; enables explicit offline preparation.
     #[arg(long, conflicts_with = "prepared_memory")]
     compact_working_root: Option<PathBuf>,
@@ -326,6 +346,9 @@ struct PrepareMemory {
     requests: PathBuf,
     #[arg(long)]
     record_encoding: bool,
+    /// Complete native prefix framing; derived artifacts retain distinct keys.
+    #[arg(long)]
+    memory_encoding: Option<String>,
 }
 #[cfg(feature = "torch")]
 fn prepared_identity(args: &Serve) -> Result<String> {
@@ -339,7 +362,11 @@ fn prepared_identity(args: &Serve) -> Result<String> {
         "immutable model revision required"
     );
     let mut hash = Sha256::new();
-    hash.update(b"aimee-native-codec-v1");
+    hash.update(if args.enable_hybrid_native {
+        b"aimee-complete-hybrid-v1".as_slice()
+    } else {
+        b"aimee-native-codec-v1".as_slice()
+    });
     hash.update(revision.as_bytes());
     hash.update([u8::from(args.int8)]);
     for file in ["config.json", "tokenizer.json"] {
@@ -366,6 +393,16 @@ fn prepare_memory(args: PrepareMemory) -> Result<()> {
         runtime.max_memory_tokens,
         0,
     );
+    adapter.candidate_routing = runtime.native_candidate_routing;
+    adapter.max_active_records = runtime.max_active_records;
+    adapter.max_recurrent_bytes = runtime
+        .max_recurrent_mib
+        .checked_mul(1 << 20)
+        .context("recurrent byte budget overflow")?;
+    ensure!(
+        !runtime.enable_hybrid_native || !args.record_encoding,
+        "complete hybrid preparation requires a joint bank"
+    );
     adapter.prepared_store = Some(Store::open(path, &identity, true)?);
     adapter.preparation_mode = true;
     let requests: Vec<Value> = serde_json::from_slice(&std::fs::read(&args.requests)?)?;
@@ -380,6 +417,12 @@ fn prepare_memory(args: PrepareMemory) -> Result<()> {
         adapter.expected_preparation_refs = Some(expected.clone());
         let mut state = adapter.begin(false, false)?;
         state.record_encoding = args.record_encoding;
+        state.hybrid_native = runtime.enable_hybrid_native;
+        let encoding = args.memory_encoding.as_deref().unwrap_or("content");
+        ensure!(matches!(encoding, "content" | "system-message" | "system-message-keyed"), "unsupported preparation encoding");
+        ensure!(!matches!(encoding, "system-message" | "system-message-keyed") || state.hybrid_native, "system prefix requires complete hybrid state");
+        state.encoding_format = encoding.to_owned();
+        state.encoding_context = request["system_context"].as_str().unwrap_or("").trim().to_owned();
         adapter.recall(
             &model,
             &tokenizer,
@@ -449,6 +492,12 @@ fn chat(messages: &[Message]) -> Result<String> {
     s += "<|im_start|>assistant\n<think>\n\n</think>\n\n";
     Ok(s)
 }
+#[cfg(any(feature = "torch", test))]
+fn native_system_continuation(messages: &[Message]) -> Result<String> {
+    chat(messages)?; // Validate before stripping only the already encoded role.
+    chat(if messages.first().is_some_and(|m| m.role == "system") { &messages[1..] } else { messages })
+}
+
 #[cfg(feature = "torch")]
 fn write_private(path: &std::path::Path, value: &Value) -> Result<()> {
     use std::{io::Write, os::unix::fs::OpenOptionsExt};
@@ -503,6 +552,27 @@ fn serve(args: Serve) -> Result<()> {
             .checked_mul(1 << 20)
             .context("cache budget overflow")?,
     );
+    adapter.schedule = aimee_qwen::native_schedule::Policy {
+        mode: args.native_schedule,
+        interval: args.native_refresh_interval,
+        max_reads: args.native_max_reads.unwrap_or(usize::MAX),
+    }
+    .validate()?;
+    ensure!(
+        args.native_schedule != aimee_qwen::native_schedule::Mode::BoundedRefresh
+            || args.native_max_reads.is_some(),
+        "bounded refresh requires a source-read budget"
+    );
+    ensure!(
+        args.max_active_records != Some(0),
+        "active record limit must be positive"
+    );
+    adapter.max_active_records = args.max_active_records;
+    adapter.max_recurrent_bytes = args
+        .max_recurrent_mib
+        .checked_mul(1 << 20)
+        .context("recurrent byte budget overflow")?;
+    adapter.candidate_routing = args.native_candidate_routing;
     adapter.compact_root = args.compact_working_root.clone();
     if let Some(path) = &args.prepared_memory {
         adapter.prepared_store = Some(aimee_qwen::prepared_memory::Store::open_with_idle(
@@ -569,6 +639,7 @@ fn serve(args: Serve) -> Result<()> {
                 "temperature",
                 "stream",
                 "aimee_memory",
+                "native_recurrent_state",
                 "preload_memory",
                 "decode_recall",
                 "recall_mode",
@@ -607,7 +678,17 @@ fn serve(args: Serve) -> Result<()> {
             ensure!(
                 input.get("memory_encoding").is_none_or(|v| matches!(
                     v.as_str(),
-                    Some("content" | "keyed" | "json" | "keyed-neutral" | "keyed-suffix")
+                    Some(
+                        "content"
+                            | "keyed"
+                            | "json"
+                            | "keyed-neutral"
+                            | "keyed-suffix"
+                            | "chat-content"
+                            | "chat-keyed"
+                            | "system-message"
+                            | "system-message-keyed"
+                    )
                 )),
                 "unsupported memory encoding"
             );
@@ -631,7 +712,7 @@ fn serve(args: Serve) -> Result<()> {
             .any(|k| input.get(*k).is_some())
                 || matches!(
                     input["memory_encoding"].as_str(),
-                    Some("keyed-neutral" | "keyed-suffix")
+                    Some("keyed-neutral" | "keyed-suffix" | "chat-content" | "chat-keyed" | "system-message-keyed")
                 );
             ensure!(
                 !diagnostic_request || args.enable_memory_diagnostics,
@@ -649,7 +730,24 @@ fn serve(args: Serve) -> Result<()> {
                     .is_none_or(|v| v.as_i64().is_some_and(|n| (-8192..=8192).contains(&n))),
                 "invalid rotary shift"
             );
+            ensure!(
+                !flag("native_recurrent_state", args.enable_hybrid_native)?
+                    || args.enable_hybrid_native,
+                "complete hybrid native states disabled"
+            );
             flag("memory_before_prompt", true)?;
+            let hybrid = flag("native_recurrent_state", args.enable_hybrid_native)?;
+            let encoding = input["memory_encoding"].as_str().unwrap_or("content");
+            ensure!(!matches!(encoding, "system-message" | "system-message-keyed") || hybrid, "system prefix requires complete hybrid state");
+            ensure!(!matches!(encoding, "system-message" | "system-message-keyed") || flag("preload_memory", true)?, "system prefix requires preload");
+            if flag("native_recurrent_state", args.enable_hybrid_native)? {
+                ensure!(
+                    input["memory_encoding_granularity"] != "record"
+                        && flag("memory_before_prompt", true)?
+                        && input["memory_position_shift"].as_i64().unwrap_or(0) == 0,
+                    "complete hybrid state requires a joint prefix"
+                );
+            }
             if let Some(candidates) = input.get("diagnostic_candidates") {
                 let candidates = candidates.as_array().context("candidate array required")?;
                 ensure!(
@@ -692,9 +790,8 @@ fn serve(args: Serve) -> Result<()> {
         let id = format!("rust-{stamp}-{counter}");
         let mut state = None;
         let result = (|| -> Result<(String, Value)> {
-            let prompt_text = chat(&messages)?;
-            let prompt = tokenizer.encode(&prompt_text)?;
-            ensure!(prompt.len() <= 8192, "prompt exceeds experimental bound");
+            let ordinary_prompt = chat(&messages)?;
+            ensure!(tokenizer.encode(&ordinary_prompt)?.len() <= 8192, "prompt exceeds experimental bound");
             let native_ready_started = std::time::Instant::now();
             let mut native_ready_ns = None;
             state = if enabled {
@@ -703,7 +800,11 @@ fn serve(args: Serve) -> Result<()> {
                 None
             };
             if let Some(s) = state.as_mut() {
+                s.hybrid_native = input["native_recurrent_state"]
+                    .as_bool()
+                    .unwrap_or(args.enable_hybrid_native);
                 s.record_encoding = input["memory_encoding_granularity"] == "record";
+                s.encoding_context = messages.first().filter(|m|m.role=="system").map(|m|m.content.trim().to_owned()).unwrap_or_default();
                 s.diagnostic_steps = input["memory_diagnostics"].as_u64().unwrap_or(0) as usize;
                 s.position_shift = input["memory_position_shift"].as_i64().unwrap_or(0);
                 s.before_prompt = memory_before_prompt(&input);
@@ -733,6 +834,13 @@ fn serve(args: Serve) -> Result<()> {
                 state.as_ref().unwrap().prepare_ready(&model)?;
                 native_ready_ns = Some(native_ready_started.elapsed().as_nanos());
             }
+            let prompt_text = if state.as_ref().is_some_and(|s| matches!(s.encoding_format.as_str(), "system-message" | "system-message-keyed") && !s.memory_ids.is_empty()) {
+                native_system_continuation(&messages)?
+            } else {
+                ordinary_prompt
+            };
+            let prompt = tokenizer.encode(&prompt_text)?;
+            ensure!(prompt.len() <= 8192, "prompt exceeds experimental bound");
             let mut cache = Cache::new(model.config.num_hidden_layers);
             let mut next = prompt.clone();
             let mut generated = vec![];
@@ -779,7 +887,7 @@ fn serve(args: Serve) -> Result<()> {
             if let Some(s) = state.as_ref() {
                 adapter.check_generation(&s.binding)?;
             }
-            let trace = json!({"native_ready_ns":native_ready_ns,"cache_transition":state.as_ref().map(|s|&s.cache_transition),"runtime":"rust-libtorch","id":id,"logit_trace":logit_trace,"attention_trace":state.as_ref().map(|s|&s.attention_trace),"generation_prompt":prompt_text,"prompt_token_ids":prompt,"generated_token_ids":generated,"memory_prompt_tokens":0,"publication":state.as_ref().map(|s|&s.binding),"memory_encoding":state.as_ref().map(|s|&s.encoding_format),"memory_encoding_granularity":state.as_ref().map(|s|if s.record_encoding {"record"} else {"bank"}),"memory_before_prompt":state.as_ref().map(|s|s.before_prompt),"memory_position_offset":state.as_ref().map(|s|s.bank_position_offset()),"answer":answer,"finish_reason":finish_reason,"elapsed_ms":started.elapsed().as_secs_f64()*1000.,"memory_encoding_passes":state.as_ref().map(|s|s.encodings).unwrap_or(0),"native_reads":state.as_ref().map(|s|s.native_reads).unwrap_or(0),"bank_residence":"layer_devices","native_bank_preparations":state.as_ref().map(|s|s.bank_preparations.get()),"native_bank_reuses":state.as_ref().map(|s|s.bank_reuses.get()),"native_bank_application_cpu_ns":state.as_ref().map(|s|s.bank_application_cpu_ns.get()),"recall_events":state.as_ref().map(|s|&s.events),"main_cache_length":cache.length});
+            let trace = json!({"native_ready_ns":native_ready_ns,"native_addressing_ns":state.as_ref().map(|s|s.addressing_wall_ns),"native_memory_metrics":state.as_ref().map(|s|s.native_metrics()),"cache_transition":state.as_ref().map(|s|&s.cache_transition),"runtime":"rust-libtorch","id":id,"logit_trace":logit_trace,"attention_trace":state.as_ref().map(|s|&s.attention_trace),"routing_trace":state.as_ref().map(|s|&s.routing_trace),"generation_prompt":prompt_text,"prompt_token_ids":prompt,"generated_token_ids":generated,"memory_prompt_tokens":0,"publication":state.as_ref().map(|s|&s.binding),"memory_encoding":state.as_ref().map(|s|&s.encoding_format),"memory_encoding_granularity":state.as_ref().map(|s|if s.record_encoding {"record"} else {"bank"}),"memory_before_prompt":state.as_ref().map(|s|s.before_prompt),"memory_position_offset":state.as_ref().map(|s|s.bank_position_offset()),"answer":answer,"finish_reason":finish_reason,"elapsed_ms":started.elapsed().as_secs_f64()*1000.,"memory_encoding_passes":state.as_ref().map(|s|s.encodings).unwrap_or(0),"native_system_context_sha256":state.as_ref().filter(|s|matches!(s.encoding_format.as_str(), "system-message" | "system-message-keyed")).map(|s|format!("{:x}",Sha256::digest(s.encoding_context.trim().as_bytes()))),"native_recurrent_state":state.as_ref().map(|s|s.hybrid_native),"native_replays":state.as_ref().map(|s|s.native_replays),"native_reads":state.as_ref().map(|s|s.native_reads).unwrap_or(0),"bank_residence":"layer_devices","native_bank_preparations":state.as_ref().map(|s|s.bank_preparations.get()),"native_bank_reuses":state.as_ref().map(|s|s.bank_reuses.get()),"native_bank_application_cpu_ns":state.as_ref().map(|s|s.bank_application_cpu_ns.get()),"recall_events":state.as_ref().map(|s|&s.events),"main_cache_length":cache.length});
             Ok((answer, trace))
         })();
         match result {
@@ -798,7 +906,7 @@ fn serve(args: Serve) -> Result<()> {
             Err(e) => {
                 write_private(
                     &args.trace_dir.join(format!("{id}-failed.json")),
-                    &json!({"id":id,"status":"failed","recall_events":state.as_ref().map(|s|&s.events)}),
+                    &json!({"id":id,"status":"failed","elapsed_ms":started.elapsed().as_secs_f64()*1000.,"native_addressing_ns":state.as_ref().map(|s|s.addressing_wall_ns),"native_memory_metrics":state.as_ref().map(|s|s.native_metrics()),"recall_events":state.as_ref().map(|s|&s.events)}),
                 )?;
                 eprintln!("request failed: {e}");
                 reply(
@@ -859,6 +967,16 @@ fn main() -> Result<()> {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn native_system_prefix_preserves_instruction_and_conversation_boundaries() {
+        let messages = vec![Message { role: "system".into(), content: "Keep the caller's rules.".into() }, Message { role: "user".into(), content: "Question".into() }];
+        let suffix = native_system_continuation(&messages).unwrap();
+        assert_eq!(suffix, "<|im_start|>user\nQuestion<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n");
+        let no_system = native_system_continuation(&messages[1..]).unwrap();
+        assert!(no_system.starts_with("<|im_start|>user\n"));
+        assert_eq!(suffix, no_system);
+        assert!(!suffix.contains("Authoritative memory"));
+    }
     use super::*;
     #[test]
     fn normal_request_uses_disjoint_native_memory_positions() {

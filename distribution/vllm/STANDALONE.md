@@ -1,5 +1,8 @@
 # Standalone Aimee vLLM plugin
 
+This document describes the earlier shared-plugin releases. For the model-specific
+release candidates, use [the dedicated package instructions](MODEL_PLUGINS.md).
+
 Enroll the standard Aimee thin client using the invitation issued in Aimee's
 Settings → Clients and the existing `aimee remote set URL INVITATION` command.
 The thin client pins TLS and enrolls its certificate. Then run

@@ -1,10 +1,12 @@
 """GPU ownership bridge; Rust owns admission, accounting and eviction decisions."""
 import ctypes
 import json
+from .telemetry import Stages
 
 
 class DeviceCache:
-    def __init__(self, lib, budget, device, rank, world):
+    def __init__(self, lib, budget, device, rank, world, telemetry=False):
+        self.stages = Stages(telemetry)
         self.lib, self.device, self.rank, self.world = lib, device, rank, world
         lib.aimee_cache_open.argtypes = [ctypes.c_size_t]
         lib.aimee_cache_open.restype = ctypes.c_void_p
@@ -19,6 +21,10 @@ class DeviceCache:
         self.stats = {'uploads': 0, 'evictions': 0, 'resident_bytes': 0, 'peak_bytes': 0, 'raw_uploads': 0}
 
     def ensure(self, stores, clear_tables):
+        with self.stages.measure('activation_and_cache'):
+            return self._ensure(stores, clear_tables)
+
+    def _ensure(self, stores, clear_tables):
         if self.poisoned:
             raise RuntimeError('native device activation failed; restart worker')
         required = {s.uid: s for s in stores}
@@ -37,7 +43,8 @@ class DeviceCache:
                 self.stats['evictions'] += 1
             for uid in plan['upload']:
                 store = required[uid]
-                store.activate(self.device, self.rank, self.world, staging_budget=plan["staging_limits"][str(uid)])
+                with self.stages.measure('bank_activation'):
+                    store.activate(self.device, self.rank, self.world, staging_budget=plan["staging_limits"][str(uid)])
                 self.resident[uid] = store
                 self.stats['uploads'] += 1
             self.stats['raw_uploads'] += len(plan['raw_upload'])

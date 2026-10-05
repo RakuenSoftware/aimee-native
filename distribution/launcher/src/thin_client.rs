@@ -8,6 +8,7 @@ use std::{fs::{self, OpenOptions}, io::Read, os::unix::fs::{MetadataExt, OpenOpt
 pub struct Authorization {
     pub http: Client,
     pub token: String,
+    pub recipient: String,
 }
 
 fn secret(path: &Path) -> Result<Vec<u8>> {
@@ -35,6 +36,8 @@ pub fn open(connection: &Config) -> Result<Authorization> {
     ensure!(crate::validate_endpoint(endpoint)? == crate::validate_endpoint(&connection.endpoint)?,
         "Aimee thin-client endpoint changed; reconnect the plugin");
     let mut identity = secret(&home.join("tls/client.crt"))?;
+    use sha2::{Digest, Sha256};
+    let recipient = hex::encode(Sha256::digest([connection.endpoint.as_bytes(), identity.as_slice()].concat()));
     identity.push(b'\n');
     identity.extend(secret(&home.join("tls/client.key"))?);
     let mut builder = Client::builder().https_only(true)
@@ -43,9 +46,12 @@ pub fn open(connection: &Config) -> Result<Authorization> {
         .timeout(Duration::from_secs(3600))
         .identity(reqwest::Identity::from_pem(&identity)?);
     match fs::read(home.join("remote-ca.pem")) {
-        Ok(ca) => builder = builder.add_root_certificate(reqwest::Certificate::from_pem(&ca)?),
+        Ok(_) => {
+            let pin = secret(&home.join("remote-ca.pem"))?;
+            builder = builder.use_preconfigured_tls(crate::thin_client_pinning::config(&pin, &identity)?);
+        },
         Err(error) if error.kind() == std::io::ErrorKind::NotFound => {},
         Err(error) => return Err(error.into()),
     }
-    Ok(Authorization {http: builder.build()?, token})
+    Ok(Authorization {http: builder.build()?, token, recipient})
 }

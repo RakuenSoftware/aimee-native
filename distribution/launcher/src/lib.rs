@@ -17,6 +17,7 @@ pub mod delivery;
 pub mod local_delivery;
 pub mod local_publisher;
 pub mod primitive;
+pub mod model_broker;
 pub mod thin_client;
 pub mod runtime;
 
@@ -801,3 +802,5 @@ mod tests {
         );
     }
 }
+
+mod thin_client_pinning;

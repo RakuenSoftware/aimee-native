@@ -1,0 +1,12 @@
+[Unit]
+Description=Bounded executable JIT workspace for native serving
+Before=aimee-native-serving.service
+
+[Mount]
+What=tmpfs
+Where=/opt/aimee-native-serving/jit-runtime
+Type=tmpfs
+Options=size=512M,mode=0700,nodev,nosuid,exec
+
+[Install]
+WantedBy=multi-user.target

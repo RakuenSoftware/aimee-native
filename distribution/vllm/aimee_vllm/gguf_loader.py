@@ -42,7 +42,11 @@ class UnifiedGGUFLoader(GGUFModelLoader):
         names=get_gguf_tensor_names(files.all_files)
         # Gemma4Unified retains the text parameter naming consumed by this mapper.
         # Its encoder-free projections retain canonical HF names in this profile.
-        mapping={name:(name if name.startswith('model.') else adapter.map_name(name)) for name in names}
+        # Standard converters emit this derived rotary-frequency tensor. The
+        # HF/vLLM Gemma implementation computes frequencies from its config;
+        # it has no weight parameter to receive it. Omit only that known tensor.
+        mapping={name:(name if name.startswith('model.') else adapter.map_name(name))
+                 for name in names if name!='rope_freqs.weight'}
         if any(value is None for value in mapping.values()):raise RuntimeError('unmapped GGUF tensor')
         return adapter,GGUFLoadPlan(files,mapping,_get_unquantized_modules(files,mapping),{})
 

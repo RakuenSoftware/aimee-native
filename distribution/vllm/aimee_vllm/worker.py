@@ -47,6 +47,8 @@ class AimeeWorker(Worker):
             config = json.load(f)
         if str(self.vllm_config.model_config.model) != config['model']:
             raise RuntimeError('native publication model path mismatch')
+        if config.get('quantization') and torch.cuda.get_device_capability(self.device)!=(12,0):
+            raise RuntimeError('this FP8 native profile requires Blackwell SM120')
         state.CURRENT = state.State(config, self.model_runner, self.device,
                                     get_tensor_model_parallel_rank(), get_tensor_model_parallel_world_size())
 
@@ -76,6 +78,8 @@ class AimeeWorker(Worker):
         # Scheduler output can advance while the previous GPU forward is still
         # running. Wait before retiring pins or evicting pointer-table owners.
         self._aimee_wait_for_forward()
+        from . import capture_session as capture
+        if capture.CURRENT is not None:capture.CURRENT.begin(scheduler_output)
         state.CURRENT.begin(scheduler_output)
         result=super().execute_model(scheduler_output)
         if (self.vllm_config.scheduler_config.async_scheduling
@@ -102,7 +106,11 @@ class AimeeWorker(Worker):
         if state.CURRENT is None:
             raise RuntimeError('native memory worker is not initialized')
         result=dict(state.CURRENT.cache.stats)
+        result["hybrid_seed_events"]=state.CURRENT.hybrid_seed_events
+        result["host_stages"]=state.CURRENT.cache.stages.snapshot()
         result['catalogue_payload_bytes']=sum(s.metadata['bytes'] for s in state.CURRENT.stores.values())
+        result['catalogue_hybrid_payload_bytes']=sum(len(s.hybrid.data) for s in state.CURRENT.stores.values() if s.hybrid is not None)
+        result['catalogue_host_admission_bytes']=sum(s.host_reservation_bytes() for s in state.CURRENT.stores.values())
         result['disk_backed']=state.CURRENT.config.get('disk_backed',False)
         # Explicit control-plane telemetry; never executed inside attention.
         resident=0;native_mapping=False
@@ -130,3 +138,34 @@ class AimeeWorker(Worker):
         result['process']={key:int(fields[key].split()[0])*1024
                            for key in ('VmRSS','VmHWM') if key in fields}
         return result
+
+    def aimee_capture_begin(self, tokens, context, destination, exclusive_control=False):
+        from . import capture_session as capture
+        if capture.CURRENT is not None:raise RuntimeError('capture already active')
+        from .capture import PrefixCapture
+        config = self._aimee_capture_config(exclusive_control)
+        capture.CURRENT=PrefixCapture(config,self.model_runner,tokens,context,destination)
+        return {'state':'armed'}
+
+    def aimee_capture_finish(self):
+        from . import capture_session as capture
+        if capture.CURRENT is None:raise RuntimeError('capture is not active')
+        try:return capture.CURRENT.finish()
+        finally:
+            capture.CURRENT.close();capture.CURRENT=None
+
+    def _aimee_capture_config(self, exclusive_control):
+        config = state.CURRENT.config
+        if exclusive_control:
+            if config.get('native_preparation_enabled') is not True:
+                raise RuntimeError('enrolled native preparation is disabled')
+            config = dict(config, offline_prefix_capture=True)
+        return config
+
+    def aimee_attention_capture_begin(self, tokens, text, destination, exclusive_control=False):
+        from . import capture_session as capture
+        from .attention_capture import AttentionPrefixCapture
+        if capture.CURRENT is not None:raise RuntimeError('capture already active')
+        config = self._aimee_capture_config(exclusive_control)
+        capture.CURRENT=AttentionPrefixCapture(config,self.model_runner,tokens,text,destination)
+        return {'state':'armed'}
