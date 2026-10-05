@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 """Check complete plugin packaging, RECORD integrity and binary disclosure hardening."""
 import argparse
+import ast
 import base64
 import csv
 from email.parser import BytesParser
 import hashlib
 import io
 import json
+import re
 from pathlib import Path
 import subprocess
 import tempfile
@@ -27,6 +29,12 @@ FORBIDDEN_SECTIONS = ('.debug_', '.symtab', '.comment', '.note.gnu.build-id', '.
 def audit_elf(data, name, temporary):
     path = Path(temporary) / ('artifact-' + hashlib.sha256(name.encode()).hexdigest()[:16])
     path.write_bytes(data)
+    symbols = subprocess.check_output(['objdump', '-T', str(path)], text=True)
+    glibc_versions = [tuple(map(int, match.groups())) for match in
+                      re.finditer(r'GLIBC_(\d+)\.(\d+)(?!\.)', symbols)]
+    highest_glibc = max(glibc_versions, default=(0, 0))
+    if highest_glibc > (2, 34):
+        raise ValueError(f'{name}: requires GLIBC {highest_glibc}, above 2.34')
     sections = subprocess.check_output(['readelf', '-S', str(path)], text=True)
     leaked_sections = [section for section in FORBIDDEN_SECTIONS if section in sections]
     if leaked_sections:
@@ -43,6 +51,7 @@ def audit_elf(data, name, temporary):
             if unexpected:
                 raise ValueError(f'{name}: unexpected extension exports: {unexpected}')
     return {'name': name, 'sha256': hashlib.sha256(data).hexdigest(),
+            'highest_glibc': '.'.join(map(str, highest_glibc)),
             'bytes': len(data), 'dynamic_exports': exports}
 
 
@@ -73,6 +82,17 @@ with zipfile.ZipFile(a.wheel) as z:
                       'aimee_vllm/native_compiler/__init__.py']
     if portable:
         allowed_python += ['aimee_vllm/_k.py', 'aimee_vllm/_d.py']
+        for module in ('aimee_vllm/_k.py', 'aimee_vllm/_d.py'):
+            tree = ast.parse(z.read(module).decode())
+            functions = [node for node in tree.body if isinstance(node, ast.FunctionDef)]
+            if not functions:
+                raise ValueError(f'{module}: missing runtime Triton kernels')
+            for function in functions:
+                arguments = {arg.arg for arg in function.args.posonlyargs + function.args.args + function.args.kwonlyargs}
+                references = {node.id for node in ast.walk(function)
+                              if isinstance(node, ast.Name) and re.fullmatch(r'a\d+', node.id)}
+                if any(not re.fullmatch(r'a\d+', name) for name in arguments) or references - arguments:
+                    raise ValueError(f'{module}: renamed Triton arguments do not match kernel body')
     public_module_names = ('stream_completion','selection','gguf_loader','control','admission',
                            'backend','binary_kernel','cache','cache_identity','cli','state','store',
                            'worker','runtime_ops','runtime_owner','compatibility')
@@ -81,6 +101,10 @@ with zipfile.ZipFile(a.wheel) as z:
         if n.startswith('aimee_vllm/') and n.endswith('.so'):
             if any('/' + module + '.' in n for module in public_module_names):
                 raise ValueError('descriptive compiled plugin module name in release')
+        if n.endswith('.so') or n.endswith('/aimee-native'):
+            data = z.read(n)
+            if any(b'aimee_vllm.' + module.encode() in data for module in public_module_names):
+                raise ValueError(f'{n}: source-only module import in release artifact')
         assert not Path(n).is_absolute() and '..' not in Path(n).parts
         assert not n.endswith(('.gguf', '.safetensors', '.pt', '.pth', '.pyc', '.c', '.cpp', '.pyx'))
         if n.endswith('.py'):

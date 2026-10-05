@@ -18,7 +18,7 @@ class GgufWeights(Mapping):
         self.reads = 0
         self.aliases = dict(aliases)
         architecture = ('gemma4' if text_model.config.model_type in
-                        ('gemma4', 'gemma4_unified_text') else 'qwen35')
+                        ('gemma4', 'gemma4_text', 'gemma4_unified_text') else 'qwen35')
         self.architecture = architecture
         self.config = text_model.config
         self.parsed = (load_gguf_checkpoint(str(path), return_tensors=False)
@@ -31,9 +31,7 @@ class GgufWeights(Mapping):
         for tensor in self.reader.tensors:
             target = mapping.get(tensor.name)
             if target is None and architecture == 'gemma4':
-                match = re.fullmatch(r'blk\.(\d+)\.layer_output_scale\.weight', tensor.name)
-                if match:
-                    target = f'layers.{match[1]}.layer_scalar'
+                target = self._gemma_fallback_target(tensor.name)
             if target is None and architecture == 'qwen35':
                 match = re.fullmatch(r'blk\.(\d+)\.(.*)', tensor.name)
                 if match:
@@ -86,6 +84,24 @@ class GgufWeights(Mapping):
         self.tensors.clear()
         self.reader = None
 
+    @staticmethod
+    def _gemma_fallback_target(name):
+        match = re.fullmatch(r'blk\.(\d+)\.(.*)', name)
+        if not match:
+            return None
+        suffix = {
+            'layer_output_scale.weight': 'layer_scalar',
+            'ffn_down_exps.weight': 'experts.down_proj',
+            'ffn_gate_up_exps.weight': 'experts.gate_up_proj',
+            'post_ffw_norm_1.weight': 'post_feedforward_layernorm_1.weight',
+            'post_ffw_norm_2.weight': 'post_feedforward_layernorm_2.weight',
+            'pre_ffw_norm_2.weight': 'pre_feedforward_layernorm_2.weight',
+            'ffn_down_exps.scale': 'router.per_expert_scale',
+            'ffn_gate_inp.weight': 'router.proj.weight',
+            'ffn_gate_inp.scale': 'router.scale',
+        }.get(match[2])
+        return f'layers.{match[1]}.{suffix}' if suffix else None
+
     def _untile(self, values, dimension, head_dim):
         keys = self.config.linear_num_key_heads
         ratio = self.config.linear_num_value_heads // keys
@@ -94,6 +110,16 @@ class GgufWeights(Mapping):
         return values.reshape(shape).swapaxes(dimension, dimension + 1).reshape(values.shape)
 
     def _qwen_restore(self, name, values):
+        # GGUF stores the effective scale for Qwen's zero-centered RMSNorm,
+        # while the Transformers implementation applies (1 + weight). Undo
+        # the GGUF conversion before the independent preparation pass. The
+        # gated-delta SSM norm is not zero-centered and must stay unchanged.
+        if (name.endswith(('.input_layernorm.weight',
+                           '.post_attention_layernorm.weight',
+                           '.self_attn.q_norm.weight',
+                           '.self_attn.k_norm.weight'))
+                or name == 'model.language_model.norm.weight'):
+            return values - 1.0
         if self.config.linear_num_key_heads == self.config.linear_num_value_heads:
             if name.endswith('.linear_attn.A_log'):
                 return np.log(-values)

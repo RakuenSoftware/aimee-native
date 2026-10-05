@@ -9,7 +9,7 @@ import torch
 from safetensors.torch import save_file
 from tokenizers import Tokenizer, models, pre_tokenizers
 from transformers import Gemma4TextConfig, Gemma4TextModel, Qwen3_5TextConfig, Qwen3_5TextModel, PreTrainedTokenizerFast
-from bounded_compile import BoundedTextCompiler
+from benchmarks.native_addressing.legacy_cpu_preparation.bounded_compile import BoundedTextCompiler, ensure_qwen_cpu_solver
 
 
 class ExportParity(unittest.TestCase):
@@ -32,6 +32,8 @@ class ExportParity(unittest.TestCase):
                     for policy in (['negative'] if family == 'gemma4' else ['nonnegative', 'negative'])]
         for family, cls, config, policy in policies:
             with self.subTest(family=family, policy=policy), tempfile.TemporaryDirectory() as directory:
+                if family == 'qwen3_5':
+                    ensure_qwen_cpu_solver()
                 torch.manual_seed(20260928)
                 config._attn_implementation = 'eager'
                 reference = cls(config).eval()
@@ -52,6 +54,7 @@ class ExportParity(unittest.TestCase):
                     tokenizer.chat_template = "{{ raise_exception('Qwen memory must use the raw independent text path') }}"
                 compiler = BoundedTextCompiler.__new__(BoundedTextCompiler)
                 compiler.model_path = directory
+                compiler.gguf_weights = None
                 compiler.max_memory_tokens = 32
                 compiler.compute_dtype = torch.float32
                 compiler.memory_positions = policy

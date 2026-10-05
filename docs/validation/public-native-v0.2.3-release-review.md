@@ -1,5 +1,8 @@
 # Self-hosted native plugin release review — 2 October 2026
 
+This is the 2 October snapshot. The [3 October follow-up](public-native-v0.2.3-followup-20261003.md)
+records the later Qwen regression, encoder correction, and signed r12 candidate.
+
 The `native-memory-v0.2.3` GitHub Release assets are signed and staged, **not
 published**. The public Aimee server primitive is on the separate
 `feature/native-delivery-current` branch, PR #3001, and must be included in

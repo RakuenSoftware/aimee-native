@@ -9,6 +9,7 @@ import sys
 import tempfile
 from setuptools import Extension, setup
 from Cython.Build import cythonize
+from Cython.Compiler import Options
 
 MODULES = (('publisher', '_c0'), ('checkpoint_weights', '_c1'), ('gguf_weights', '_c2'),
            ('gemma_compile', '_c3'), ('bounded_compile', '_c4'), ('local_compile', '_c5'))
@@ -43,6 +44,10 @@ def build(source, output):
             content = original.read_text()
             for old, new in replacements.items():
                 content = content.replace(old, new)
+            # These names are private implementation detail and are not needed
+            # as stable API in the compiled release components.
+            content = content.replace('gguf_weights', 'g_w')
+            content = content.replace('publisher', 'provider')
             target.write_text(content)
             extensions.append(Extension(
                 'aimee_vllm.native_compiler.' + opaque, [str(target)],
@@ -54,11 +59,12 @@ def build(source, output):
         old_cflags = os.environ.get('CFLAGS', '')
         os.environ['CFLAGS'] = old_cflags + ' -ffile-prefix-map=' + str(root) + '=/aimee-compiler'
         try:
+            Options.docstrings = False
             setup(name='aimee-native-compiler',
                   ext_modules=cythonize(
                       extensions,
                       compiler_directives={'language_level': '3', 'binding': False,
-                                           'embedsignature': False, 'docstrings': False},
+                                           'embedsignature': False},
                       quiet=True, build_dir=str(root / 'cython')),
                   script_args=['build_ext', '--build-lib', str(root / 'build'),
                                '--build-temp', str(root / 'objects')],

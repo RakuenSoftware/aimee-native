@@ -88,7 +88,9 @@ with tempfile.TemporaryDirectory() as tmp:
     thread.start()
     home = base / "aimee"
     (home / "tls").mkdir(parents=True)
-    endpoint = f"https://localhost:{server.server_port}"
+    # Aimee may enroll through a server IP even when the pinned certificate
+    # names only localhost. This matches the real self-hosted appliance case.
+    endpoint = f"https://127.0.0.1:{server.server_port}"
     (home / "remote.conf").write_text(endpoint + "\nenrolled-token\n")
     (home / "remote-ca.pem").write_bytes(ca_crt.read_bytes())
     (home / "tls/client.crt").write_bytes(client_crt.read_bytes())
@@ -120,6 +122,12 @@ with tempfile.TemporaryDirectory() as tmp:
                              text=True, capture_output=True, env=environment)
     assert fetched.returncode == 0, (fetched.stdout, fetched.stderr)
     assert json.loads(fetched.stdout) == {"records": 1, "schema": 1}
+    _, wrong_ca = cert(base, "untrusted-ca", "")
+    (home / "remote-ca.pem").write_bytes(wrong_ca.read_bytes())
+    rejected = subprocess.run([LAUNCHER, "--root", str(root), "fetch-primitive", "test query"],
+                              text=True, capture_output=True, env=environment)
+    assert rejected.returncode != 0, (rejected.stdout, rejected.stderr)
+    (home / "remote-ca.pem").write_bytes(ca_crt.read_bytes())
     connection = json.loads((root / "config.json").read_text())
     memory = pathlib.Path(connection["memory_root"])
     catalog = memory / "catalog.json"

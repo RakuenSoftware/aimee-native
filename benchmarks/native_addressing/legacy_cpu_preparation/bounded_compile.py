@@ -21,6 +21,18 @@ except ImportError:  # private standalone preparation tests
     from gemma_compile import GemmaCompiler
 
 
+def ensure_qwen_cpu_solver():
+    """Select Transformers' tensor-only Qwen solver if CPU BLAS is unavailable."""
+    try:
+        torch.linalg.solve_triangular(
+            torch.eye(2), torch.ones((2, 1)), upper=False, unitriangular=True)
+    except RuntimeError as error:
+        if 'requires compiling PyTorch with BLAS' not in str(error):
+            raise
+        from transformers.models.qwen3_5 import modeling_qwen3_5
+        modeling_qwen3_5.is_torchdynamo_exporting = lambda: True
+
+
 class BoundedTextCompiler(GemmaCompiler):
     def __init__(self, model, max_memory_tokens=1024, threads=12, reuse_library=None,
                  compute_dtype='float32', memory_positions=None, gguf_weights=None):
@@ -40,6 +52,12 @@ class BoundedTextCompiler(GemmaCompiler):
         if self.config.model_type not in ('gemma4', 'gemma4_unified', 'qwen3_5'):
             raise ValueError('unsupported bounded preparation architecture')
         self.memory_positions = memory_positions or ('negative' if self.config.model_type in ('gemma4', 'gemma4_unified') else 'nonnegative')
+        if self.config.model_type == 'qwen3_5':
+            # Some ROCm PyTorch wheels omit CPU BLAS. Qwen's reference delta
+            # rule then fails in solve_triangular while preparing CPU memory.
+            # Its existing export path implements the same unit-triangular
+            # solve with tensor operations and works on those wheels.
+            ensure_qwen_cpu_solver()
         self.model = None
         self.weights = None
         self.last_metrics = {}

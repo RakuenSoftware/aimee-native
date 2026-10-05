@@ -48,10 +48,25 @@ class Primitive(BaseHTTPRequestHandler):
             return
         request = json.loads(self.rfile.read(int(self.headers['Content-Length'])))
         assert request['store'] == 'user'
-        facts = [] if request['task_hint'] == 'native memory connection' else [
-            (7, 'The project codename is Halcyon.'),
-            (8, 'The owner prefers blue notebooks.'),
-        ]
+        if (request['task_hint'] == 'native memory connection'
+                or os.environ.get('AIMEE_LIVE_EMPTY_CONTROL') == '1'):
+            facts = []
+        elif os.environ.get('AIMEE_LIVE_REFERENCE') == '1':
+            facts = [
+                (7, 'The release verification vault code is 28461.'),
+                (8, 'The release verification project is Juniper.'),
+                (9, 'The release verification drink is hibiscus tea.'),
+            ]
+        elif os.environ.get('AIMEE_LIVE_NEUTRAL') == '1':
+            facts = [
+                (7, 'The release verification project codename is Halcyon.'),
+                (8, 'The release verification notebook color is blue.'),
+            ]
+        else:
+            facts = [
+                (7, 'The project codename is Halcyon.'),
+                (8, 'The owner prefers blue notebooks.'),
+            ]
         records = [{'id': identifier, 'content': content, 'version': {
             'schema_version': 1, 'owner_id': '00000000-0000-0000-0000-000000000001',
             'record_id': str(identifier), 'record_revision': '1'}}
@@ -67,13 +82,20 @@ class Primitive(BaseHTTPRequestHandler):
         pass
 
 
-def request(port):
-    body = {'model': str(model), 'messages': [{'role': 'user', 'content':
-        'What is the project codename, and what color notebooks does the owner prefer? Reply in one sentence.'}],
+def request(port, prompt=None, messages=None):
+    default_prompt = (
+        'Give the release verification vault code, project, and drink. Be concise.'
+        if os.environ.get('AIMEE_LIVE_REFERENCE') == '1' else
+        'What are the release verification project codename and notebook color? Reply in one sentence.'
+        if os.environ.get('AIMEE_LIVE_NEUTRAL') == '1' else
+        'What is the project codename, and what color notebooks does the owner prefer? Reply in one sentence.')
+    body = {'model': str(model), 'messages': messages or [{'role': 'user', 'content':
+        prompt or default_prompt}],
         'temperature': 0, 'max_tokens': 80,
         'chat_template_kwargs': {'enable_thinking': False}}
     return urlopen(Request(f'http://127.0.0.1:{port}/v1/chat/completions',
-        data=json.dumps(body).encode(), headers={'Content-Type': 'application/json'}), timeout=240)
+        data=json.dumps(body).encode(), headers={'Content-Type': 'application/json'}),
+        timeout=float(os.environ.get('AIMEE_LIVE_REQUEST_TIMEOUT', '1200')))
 
 
 model = Path(sys.argv[1]).resolve()
@@ -110,10 +132,16 @@ with tempfile.TemporaryDirectory(prefix='aimee-enrolled-live-') as temporary:
     assert connected.returncode == 0, (connected.stdout, connected.stderr)
     assert not (root / 'credentials').exists()
     config = base / 'serve.json'
-    config.write_text(json.dumps({'model': str(model), 'gguf_matrix_backend': 'triton',
-        'max_memory_tokens': 1024, 'serve': {'port': port, 'tensor_parallel_size': 1,
+    settings = {'model': str(model),
+        'gguf_matrix_backend': os.environ.get('AIMEE_LIVE_MATRIX_BACKEND', 'triton'),
+        'max_memory_tokens': 1024, 'serve': {'port': port,
+        'tensor_parallel_size': int(os.environ.get('AIMEE_LIVE_TP', '1')),
         'max_model_len': 2048, 'max_num_seqs': 1, 'max_num_batched_tokens': 128,
-        'gpu_memory_utilization': 0.92}}))
+        'gpu_memory_utilization': float(os.environ.get('AIMEE_LIVE_GPU_MEMORY_UTILIZATION', '0.92'))}}
+    if (model / 'mmproj.gguf').is_file():
+        settings['gguf_weights'] = str(model / 'model.gguf')
+        settings['mm_proj'] = str(model / 'mmproj.gguf')
+    config.write_text(json.dumps(settings))
     log = (base / 'serve.log').open('w+')
     process = subprocess.Popen(launcher + ['serve', '--config', str(config)],
         stdout=log, stderr=subprocess.STDOUT, env=env)
@@ -131,13 +159,70 @@ with tempfile.TemporaryDirectory(prefix='aimee-enrolled-live-') as temporary:
                 time.sleep(2)
         else:
             raise AssertionError(f'serve did not become healthy; log: {base / "serve.log"}')
-        with request(port) as response:
-            result = json.load(response)
-        answer = result['choices'][0]['message']['content']
-        assert 'Halcyon' in answer and 'blue' in answer.lower(), answer
-        assert result['usage']['prompt_tokens'] < 80, result['usage']
-        print(json.dumps({'answer': answer, 'usage': result['usage'],
-            'bank_count': len(list(root.rglob('compact.pack')))}))
+        if os.environ.get('AIMEE_LIVE_EMPTY_CONTROL') == '1':
+            with request(port, messages=[
+                    {'role': 'system', 'content':
+                     'The release verification project codename is Halcyon. '
+                     'The release verification notebook color is blue.'},
+                    {'role': 'user', 'content':
+                     'What are the release verification project codename and notebook color?'}]) as response:
+                result = json.load(response)
+            answer = result['choices'][0]['message']['content']
+            count = len(list(root.rglob('compact.pack')))
+            print(json.dumps({'answer': answer, 'usage': result['usage'],
+                              'bank_count': count, 'condition': 'text-no-native'}), flush=True)
+            assert count == 0 and 'Halcyon' in answer and 'blue' in answer.lower(), answer
+            sys.exit(0)
+        if os.environ.get('AIMEE_LIVE_REFERENCE') == '1':
+            reference_cases = [
+                (None, ('28461', 'Juniper', 'hibiscus')),
+                ('What is the release verification vault code? Return only the code.', ('28461',)),
+                ('What is the release verification project? Return only the name.', ('Juniper',)),
+                ('What is the release verification drink? Return only the drink.', ('hibiscus',)),
+            ]
+            for prompt, expected in reference_cases:
+                with request(port, prompt) as response:
+                    result = json.load(response)
+                answer = result['choices'][0]['message']['content']
+                count = len(list(root.rglob('compact.pack')))
+                print(json.dumps({'answer': answer, 'usage': result['usage'],
+                    'bank_count': count, 'prompt': prompt,
+                    'condition': 'native-three-record'}), flush=True)
+                assert result['usage']['prompt_tokens'] < 80, result['usage']
+                assert count == 1 and all(value.lower() in answer.lower()
+                                          for value in expected), answer
+            Primitive.revoked = True
+            try:
+                with request(port):
+                    raise AssertionError('revoked memory request was served')
+            except HTTPError as error:
+                assert error.code == 503, (error.code, error.read())
+            print('revoked thin-client authorization withdrew native serving')
+            sys.exit(0)
+        prompts = [None]
+        if os.environ.get('AIMEE_LIVE_PROBE') == '1':
+            if os.environ.get('AIMEE_LIVE_NEUTRAL') == '1':
+                prompts += [
+                    'Use the available release verification facts. What are the project codename and notebook color?',
+                    'State the release verification project codename and notebook color in one sentence.',
+                ]
+            else:
+                prompts += [
+                    'Use the authoritative memory available to you. What is the project codename and the notebook color? Answer with both facts.',
+                    'From your available memory, state the project codename and notebook color in one sentence.',
+                ]
+        answered = False
+        for prompt in prompts:
+            with request(port, prompt) as response:
+                result = json.load(response)
+            answer = result['choices'][0]['message']['content']
+            print(json.dumps({'answer': answer, 'usage': result['usage'],
+                'bank_count': len(list(root.rglob('compact.pack'))), 'prompt': prompt}), flush=True)
+            assert result['usage']['prompt_tokens'] < 80, result['usage']
+            if 'Halcyon' in answer and 'blue' in answer.lower():
+                answered = True
+                break
+        assert answered, 'native memory did not answer both selected facts'
         Primitive.revoked = True
         try:
             with request(port):
@@ -148,7 +233,7 @@ with tempfile.TemporaryDirectory(prefix='aimee-enrolled-live-') as temporary:
     except Exception:
         log.flush()
         log.seek(0)
-        print(log.read()[-6000:], file=sys.stderr)
+        print(log.read()[-60000:], file=sys.stderr)
         raise
     finally:
         process.terminate()
@@ -163,5 +248,5 @@ with tempfile.TemporaryDirectory(prefix='aimee-enrolled-live-') as temporary:
         log.flush()
         if process.returncode not in (0, -15):
             log.seek(0)
-            print(log.read()[-6000:], file=sys.stderr)
+            print(log.read()[-60000:], file=sys.stderr)
         log.close()
