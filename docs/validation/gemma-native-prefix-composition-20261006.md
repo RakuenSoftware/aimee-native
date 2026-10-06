@@ -147,6 +147,11 @@ Protocol SHA-256 is
 `0e8ff8850e71f353ac45b547644a37674bd065e8223188f80a9ab98c203dac22`;
 executor manifest SHA-256 is
 `8030e0b37b3875001212e3fb226ffeb6383c8e388bcf9d609c7ac8d9428f7f40`.
+The additive reviewed executor revision is `executor-manifest-r2.json`, SHA-256
+`91181da13170cabcd50390e29738195b1faf4eb07c7ce75f2300b313d00b9c9c`.
+It preserves the original executor and adds exact inherited serving-config
+identity plus exclusive NAS evidence creation. Existing identical frozen inputs
+are verified and skipped; a differing existing artifact or receipt is rejected.
 The source freeze binds installed adapter/library, compiled candidate modules,
 config/tokenizer, GGUF weights and GGUF loader files. Six actual stock-tokenizer
 case checks and the installed binding/compiled runtime/test registration smoke
