@@ -133,3 +133,40 @@ storage volume, package installation or deployed-service operation was used.
 
 No full HTTP server execution, GPU answer evaluation or replay of the 218-case
 coherence matrix was performed. Those remain separate candidate validation gates.
+
+## Frozen adapter integration follow-up
+
+The private `gpu-validation/protocol.json` freezes a controlled-source actual
+vLLM Gemma 12B Q4_K_M adapter integration, using six previously selected SQuAD
+cases. It exercises resident capture, Rust immutable publication, candidate
+admission/rendering and unchanged native attention. It does not claim enrolled
+authority/broker end-to-end coverage. The actual supported released checkpoint
+is retained; BF16 weights or another model family are not substituted.
+
+Protocol SHA-256 is
+`0e8ff8850e71f353ac45b547644a37674bd065e8223188f80a9ab98c203dac22`;
+executor manifest SHA-256 is
+`8030e0b37b3875001212e3fb226ffeb6383c8e388bcf9d609c7ac8d9428f7f40`.
+The source freeze binds installed adapter/library, compiled candidate modules,
+config/tokenizer, GGUF weights and GGUF loader files. Six actual stock-tokenizer
+case checks and the installed binding/compiled runtime/test registration smoke
+check pass without initializing CUDA. The request uses the same stock
+`enable_thinking=False` template option as preparation.
+
+The passive owned unit is `jmlr-gemma-prefix-integration-20261006-r1.service`.
+It must wait for the full corrected SQuAD verified completion, independently
+verify its source/result hashes and original GPU lock, and find no GPU users
+before inference. Its output root is the private candidate NAS directory's
+`gpu-validation/`; completion is `verified-completion.json`. Success requires
+actual returned prompt token IDs, native-route call traces, two immutable
+canonical revisions, empty selection fallback, stale context denial, failed
+preparation recovery, unchanged identities and GPU release after owned cleanup.
+Greedy outputs and EM/F1 are diagnostic; no six-gold correctness assertion is
+made. Disagreements remain recorded for investigation. Legacy HTTP admission
+is explicitly not exercised in this GPU fixture; actual compiled admission
+CPU tests cover that denial.
+
+The 1024-token request-prefix validation bound follows the existing preparation
+bank budget `min(1024, max_model_len - 128)`. No new longer successful preparation
+contract is admitted by the existing capture path. The closed context-only
+request prefix and the memory-extended bank prefix are separate token sequences.
