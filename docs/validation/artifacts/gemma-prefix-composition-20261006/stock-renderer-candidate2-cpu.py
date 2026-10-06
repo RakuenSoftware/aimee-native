@@ -5,8 +5,12 @@ from types import SimpleNamespace
 import torch
 from transformers import AutoTokenizer,AutoConfig
 from vllm.renderers.hf import HfRenderer
-spec=importlib.util.spec_from_file_location('candidate_composition',sys.argv[1])
-c=importlib.util.module_from_spec(spec);spec.loader.exec_module(c)
+if sys.argv[1] == '--compiled':
+    from aimee_native_runtime import composition as c
+    assert c.__file__.endswith('.so') and '/candidate2-site/' in c.__file__
+else:
+    spec=importlib.util.spec_from_file_location('candidate_composition',sys.argv[1])
+    c=importlib.util.module_from_spec(spec);spec.loader.exec_module(c)
 root='/var/lib/aimee-large-release-validation/cuda-5080-20260930/models'
 tokenizer=AutoTokenizer.from_pretrained(root,local_files_only=True)
 model=SimpleNamespace(model=root,revision=None,code_revision=None,trust_remote_code=False,
@@ -32,5 +36,12 @@ empty=[{'role':'system','content':instruction},{'role':'user','content':'Reply w
 _,stock=render(empty,True)
 old=tokenizer.apply_chat_template(empty,tokenize=True,add_generation_prompt=True,enable_thinking=False)['input_ids']
 assert stock!=old and len(stock)==len(old)+1
+for context in ('', 'Literal <bos> and <|turn> markers.'):
+    _,bank,contract=c.prepare_contract(tokenizer,root,context,['Fact.'],stock_render=render)
+    tasks=[{'role':'user','content':'Question?'},{'role':'assistant','content':'Prior answer.'},{'role':'user','content':'Follow-up?'}]
+    _,incoming=render([{'role':'system','content':context}]+tasks,True)
+    _,full=render([{'role':'system','content':context+'\n\nAuthoritative memory:\nFact.'}]+tasks,True)
+    suffix=c.remaining_input({'type':'token','prompt_token_ids':incoming},contract)['prompt_token_ids']
+    assert bank+suffix==full
 assert not torch.cuda.is_initialized()
 print(json.dumps({'status':'passed','vllm':'0.30.0','scope':'actual installed vLLM synchronous text renderer; no engine/model inference','cuda_initialized':False,'raw_string_tokens':len(old),'stock_request_tokens':len(stock),'cases':rows},indent=2))

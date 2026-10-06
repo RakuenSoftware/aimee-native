@@ -68,7 +68,7 @@ class AdmissionTests(unittest.IsolatedAsyncioTestCase):
             root=Path(directory)
             for name in ('tokenizer.json','tokenizer_config.json'):(root/name).write_text('{}')
             tokenizer=StockTokenizer()
-            _,bank,contract=prepare_contract(tokenizer,root,'Approved instructions',['Fact.'])
+            _,bank,contract=prepare_contract(tokenizer,root,'Approved instructions',['Fact.'], stock_render=tokenizer.render)
             seen=[]
             broken={'value':False}
             async def render(request):
