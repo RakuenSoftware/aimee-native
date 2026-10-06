@@ -1,5 +1,11 @@
 # Gemma native transcript composition candidate — 6 October 2026
 
+Latest follow-up: `a149fa9` / `ee7bb8c` introduce the review-only
+`gemma-context-bound-chat-prefix-v2` contract below. The earlier v1 CPU result
+did not reproduce vLLM's actual content conversion; retain those historical
+receipts as superseded preparation evidence. No successful paired GPU result
+has been established yet.
+
 The installed Gemma 0.3.2 integration prepares a closed stock system turn
 containing the configured instructions and canonical facts. Its enrolled caller
 then submits a fresh system/user chat containing the same instructions.
@@ -180,3 +186,49 @@ The 1024-token request-prefix validation bound follows the existing preparation
 bank budget `min(1024, max_model_len - 128)`. No new longer successful preparation
 contract is admitted by the existing capture path. The closed context-only
 request prefix and the memory-extended bank prefix are separate token sequences.
+
+## Actual request-renderer follow-up
+
+Recovery r4 loaded the released Q4 model successfully and returned `ready`
+through an empty catalogue. Its exact stock-token assertion failed before any
+paired bank capture. The actual vLLM 0.30.0 renderer detects OpenAI list content
+for this template; Gemma adds a trailing system-content space in that branch.
+The actual empty request contained 55 tokens, whereas the direct raw-string
+Transformers template check contained 54. The failed receipt and raw response
+are retained under `gpu-results-recovery-r4`; GPU release is verified.
+
+Preparation now receives the configured serving handler's actual
+`HfRenderer.render_messages` callback. It obtains both the capture text and
+the actual stock tokens and rejects text that cannot reproduce those tokens.
+There is no direct-tokenizer fallback in the preparation API. The new v2
+profile rejects earlier candidate v1 banks, and the Rust working-set cache
+namespace changes to v2. Existing legacy opt-in and the Qwen path remain as
+documented above.
+
+The compiled candidate2 Python wheel is sealed privately with SHA256
+`3f9a315eb81279a0f1fd74f9aee0b8c8e4ac29f5f21cf43cbb4ed51fc7d1ce70`.
+Only the composition and preparation modules, wheel version and RECORD differ
+from candidate1. All other module binaries, notices and the corrected-coherence
+client binary are retained. Twenty-eight compiled tests pass without skips,
+including actual Rust-backed admission tests. Actual installed vLLM CPU
+rendering passes all six frozen cases, plus empty context and multiple turns:
+bank lengths 191/109/354/312/146/236, request prefix 37, and task suffixes
+21/26/28/22/25/19. These checks initialize no CUDA context.
+
+The broker v2 namespace change is source-only pending a capacity-safe Rust
+rebuild. The next controlled adapter test explicitly does not execute broker
+enrollment or its working-set cache. Its retained client binary SHA256 is
+`fc3725af30ee4e4aea1e801447a9ecf7dcbf07adce102748dc244344f92f9366`.
+Do not describe this Python wheel as a complete rebuilt broker bundle or a
+completed production fix.
+
+The sealed prospective recovery r6 uses the same checkpoint, configuration,
+cases, decoding and unchanged kernel. Its empty-selection expected token IDs
+come from the configured installed vLLM renderer. The executor activates only
+the private empty catalogue before checking health; this resolves paused-start
+readiness without operator intervention. The short Optane IPC path binds at
+89 bytes. Actual binding, spawn and CPU renderer preflights pass. Protocol
+SHA256 is `b9afea47b08b7d4e0b6c93be3c164de761c1c9fc726ebb13a71c74b28532bf1a`,
+executor manifest `7544361b5501022756af84a5e8b3ba3c060169a805fcf9771896d40830b5c839`,
+source freeze `8f36c8ec3cfdcab7a27543ec4de88197b7e7d3a15f05868c88542b274d0fbb38`.
+Unlaunched r3 and r5 prospective mistakes remain preserved separately.

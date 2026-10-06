@@ -1,0 +1,176 @@
+{
+  "format": "aimee-gemma-prefix-adapter-integration-v1",
+  "scope": "controlled-source actual vLLM adapter/capture/admission/native kernel; not enrolled authority/broker end-to-end; no production changes",
+  "six_case_ids": [
+    "572917743f37b3190047800f",
+    "56e127bccd28a01900c6765d",
+    "57269016708984140094ca42",
+    "572ff7ab04bcaa1900d76f53",
+    "56e2042ecd28a01900c67c1f",
+    "56f7eddca6d7ea1400e172d8"
+  ],
+  "decoding": {
+    "temperature": 0,
+    "max_tokens": 12,
+    "seed": 0,
+    "return_token_ids": true,
+    "repetition_penalty": 1.0
+  },
+  "instruction": "Use the external memory available to you. Answer with only the shortest exact answer span, without explanation. If the memory lacks the answer, reply unknown.",
+  "memory_framing": "instruction + \\n\\nAuthoritative memory:\\n + passage; actual stock template, add_generation_prompt=False for bank",
+  "prerequisite": {
+    "receipt": "/mnt/pve/backup/aimee-experiments/jmlr-second-review-20261005/squad/aligned-prefix-control-20261006-r2/verified-completion.json",
+    "protocol_sha256": "beb800ccbf5307e6e97a90ab96a0de5459e2853874fa539f895d114dc9edf17f",
+    "unit": "jmlr-squad-prefix-control-20261006-r2.service",
+    "gpu_lock": "/opt/jmlr-second-review-20261005/gpu-exclusive.lock",
+    "must_be_completed_and_verified": true
+  },
+  "execution": {
+    "unit": "jmlr-gemma-prefix-integration-recovery-20261006-r2.service",
+    "artifact_root": "/mnt/pve/backup/aimee-experiments/root-evacuation-20261005-r1/gemma-composition-candidate-r1/gpu-validation-recovery-r3",
+    "task_root": "/opt/jmlr-second-review-20261005/repair-cache/gemma-composition-candidate-r1/gpu-validation-recovery-r3",
+    "gpu": "RTX 5080 CUDA_VISIBLE_DEVICES=0",
+    "exclusive_lock_held_until_owned_children_exit": true,
+    "existing_gpu_processes": "abort; never terminate others",
+    "owned_process_cleanup": "terminate owned process group only; independently check GPU released before completion",
+    "runtime_paths": {
+      "short_task_root": "/opt/jmlr-second-review-20261005/repair-cache/gpr3",
+      "temporary_and_zmq_base": "/opt/jmlr-second-review-20261005/repair-cache/gpr3/t",
+      "control_socket": "/opt/jmlr-second-review-20261005/repair-cache/gpr3/c.sock",
+      "existing_optane_filesystem": true
+    }
+  },
+  "model": {
+    "model": "/var/lib/aimee-large-release-validation/cuda-5080-20260930/models",
+    "config_sha256": "478c46e8d2c52d5c2d85bf67e3b3e8c90e7c9d91086cee27e3c267907e936bd9",
+    "gguf_weights": "/mnt/pve/backup/aimee-experiments/native-serving-20261004/gemma12-q4/gemma12-q4_k_m.gguf",
+    "gguf_sha256": "a509d1e25b028dfcf9b311a3321e510b7d78309f04421891a62488feab3289e9",
+    "weight_profile": "Q4_K_M",
+    "loader": "aimee_gguf_unified",
+    "adapter": "gemma4-12b",
+    "serve": {
+      "max_model_len": 2048,
+      "max_num_seqs": 1,
+      "max_num_batched_tokens": 128,
+      "gpu_memory_utilization": 0.58,
+      "num_gpu_blocks_override": 512,
+      "flashinfer_sampler": false
+    }
+  },
+  "candidate": {
+    "source_commit": "b50e420",
+    "baseline_commit": "bf9e9cf",
+    "runtime_wheel_sha256": "295c4861b59ecc46faf56a9e62449c27285ccc3f6e9cf1806e381a4bbb2b7817",
+    "model_plugin_wheel_sha256": "33e4c156d4d3e8e6639f87be72444a65bb41dac37bba2763c27020dab2e485a7",
+    "private_source_tar_sha256": "3f737b93fb4fb893fce3516ade0a7b8ec1659a26125f0e3e877f68cee5cf07fa",
+    "composition_profile": "gemma-context-bound-chat-prefix-v1"
+  },
+  "pairs": {
+    "text": "fresh full stock system(memory)+user, no publication",
+    "native": "stock system(instruction-only)+same user, explicit fresh immutable publication",
+    "required_proof": "actual native HTTP response prompt_token_ids equal verified request suffix; published bank index tokens + native prompt IDs equal actual text prompt IDs; incoming native JSON contains no canonical passage; all task-role IDs retained",
+    "user_content": "exact question string from frozen case; no completion examples"
+  },
+  "controls": {
+    "canonical_revisions": [
+      {
+        "facts": [
+          "The workshop vault entry number is 68731."
+        ],
+        "query": "What is the workshop vault entry number?",
+        "expected": "68731"
+      },
+      {
+        "facts": [
+          "The workshop vault entry number is 94562."
+        ],
+        "query": "What is the workshop vault entry number?",
+        "expected": "94562"
+      }
+    ],
+    "immutable_revisions": "distinct destination/publication/profile keys; retain both; never overwrite",
+    "empty_selection": "empty own catalogue, fresh ordinary system+user text fallback, no native calls",
+    "stale_context": "HTTP request wrong system context with valid publication denied400 before reserve/kernel",
+    "failed_preparation": "over-budget token working set rejected on private control before capture; healthy admission can subsequently refresh",
+    "legacy_artifact": "if actual legacy fixture can be prepared safely, reject without explicit legacy opt-in; otherwise mark not exercised, no synthetic success"
+  },
+  "native_trace": {
+    "method": "test-only backend subclass delegates unchanged candidate attention implementation; record native route successful returns with request ID/publication digest/layer/query rows",
+    "kernel_sha": "must match unchanged release source inventory",
+    "no_model_or_attention_math_change": true
+  },
+  "pass_requirements": [
+    "six paired structural token proofs",
+    "native kernel traces for every native pair/revision",
+    "immutable checkpoint/config/tokenizer/dependency/source binding preflight and postflight",
+    "two canonical revisions correctly paired and previous immutable bank retained",
+    "empty selection stock fallback",
+    "stale context denial",
+    "failed preparation remains healthy",
+    "GPU released after all owned children exit"
+  ],
+  "diagnostics": {
+    "all_raw_outputs_token_ids_em_f1_retained": true,
+    "greedy_text_native_output_ids_compared": true,
+    "gold_correctness_not_gate": true,
+    "any_disagreement": "retain and investigate; no decoder/scoring change; do not claim full fix quality completion"
+  },
+  "completion": {
+    "status": "passed only for all structural requirements; otherwise failed",
+    "completed": true,
+    "gpu_released": true,
+    "paired_case_count": 6,
+    "six_case_ids": [
+      "572917743f37b3190047800f",
+      "56e127bccd28a01900c6765d",
+      "57269016708984140094ca42",
+      "572ff7ab04bcaa1900d76f53",
+      "56e2042ecd28a01900c67c1f",
+      "56f7eddca6d7ea1400e172d8"
+    ],
+    "required_true": [
+      "request_native_token_proof_passed",
+      "native_kernel_proof_passed",
+      "canonical_revision_controls_passed",
+      "empty_selection_control_passed",
+      "stale_context_denial_passed",
+      "failed_preparation_control_passed",
+      "weights_unchanged",
+      "config_unchanged",
+      "tokenizer_unchanged"
+    ],
+    "required_maps": [
+      "artifact_sha256",
+      "source_sha256",
+      "result_relative_paths"
+    ],
+    "required_binding": [
+      "protocol_sha256",
+      "protocol_relative_path",
+      "candidate_runtime_sha256"
+    ],
+    "receipt": "verified-completion.json",
+    "independent_verification": "all map paths confined to artifact root; known external source identities separately absolute; hash artifacts/protocol; fail closed on missing/false/mismatch; quality diagnostics distinct"
+  },
+  "inputs_sha256": {
+    "cases.json": "470b8390cf125d5e7e2824c849330acbc4f630a520e473bade87acdd0917bd49",
+    "research-fixture.json": "847e472b891acd1f138dccfcfe256dfecae43f23981764d93bfde97e3da3fcd2"
+  },
+  "recovery": {
+    "original_protocol_sha256": "8ec266fe23c10ad10cc7f896f9299d1d9440a5b6d61fb3391fa792ac4deb3c08",
+    "original_output_root": "/mnt/pve/backup/aimee-experiments/root-evacuation-20261005-r1/gemma-composition-candidate-r1/gpu-validation-recovery-r2",
+    "cause": "Worker spawn reimport of unguarded test service_boot reads /serve as config; priorIPC issue fixed",
+    "change_scope": "Test entrypoint __main__ guard + CPU spawn regression; fresh attempt paths only; candidate wheel/model/checkpoint/config/fixtures/decoding/math unchanged",
+    "original_failed_receipt_sha256": "da01946e619409814f824d86d35fa44dbfbe8667691903282c60a6d35ac3563a",
+    "preserved_failed_attempts": [
+      {
+        "root": "/mnt/pve/backup/aimee-experiments/root-evacuation-20261005-r1/gemma-composition-candidate-r1/gpu-validation",
+        "receipt_sha256": "aa263082ec3b52a713d8c80dcc0b7f012aa0f4c355ca1273b8a1788927f62649"
+      },
+      {
+        "root": "/mnt/pve/backup/aimee-experiments/root-evacuation-20261005-r1/gemma-composition-candidate-r1/gpu-validation-recovery-r2",
+        "receipt_sha256": "da01946e619409814f824d86d35fa44dbfbe8667691903282c60a6d35ac3563a"
+      }
+    ]
+  }
+}

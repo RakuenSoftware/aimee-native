@@ -1,0 +1,284 @@
+{
+  "seed": 20261004,
+  "common_instruction": "Use the external memory available to you. Answer with only the shortest exact answer span, without explanation. If the memory lacks the answer, reply unknown.",
+  "completion_examples": "Question: What color is a red badge?\nAnswer: red\nQuestion: What color is a blue badge?\nAnswer: blue\n",
+  "max_answer_tokens": 12,
+  "max_donor_tokens": 64,
+  "factual": [
+    {
+      "id": "F01",
+      "name": "Vexa",
+      "question": "What color is the Vexa badge?",
+      "a": {
+        "content": "The Vexa badge is green.",
+        "expected": "green"
+      },
+      "b": {
+        "content": "The Vexa badge is black.",
+        "expected": "black"
+      }
+    },
+    {
+      "id": "F02",
+      "name": "Torin",
+      "question": "What color is the Torin badge?",
+      "a": {
+        "content": "The Torin badge is orange.",
+        "expected": "orange"
+      },
+      "b": {
+        "content": "The Torin badge is white.",
+        "expected": "white"
+      }
+    },
+    {
+      "id": "F03",
+      "name": "Neris",
+      "question": "What color is the Neris badge?",
+      "a": {
+        "content": "The Neris badge is purple.",
+        "expected": "purple"
+      },
+      "b": {
+        "content": "The Neris badge is brown.",
+        "expected": "brown"
+      }
+    },
+    {
+      "id": "F04",
+      "name": "Pavo",
+      "question": "What color is the Pavo badge?",
+      "a": {
+        "content": "The Pavo badge is yellow.",
+        "expected": "yellow"
+      },
+      "b": {
+        "content": "The Pavo badge is pink.",
+        "expected": "pink"
+      }
+    },
+    {
+      "id": "F05",
+      "name": "Zulen",
+      "question": "What color is the Zulen badge?",
+      "a": {
+        "content": "The Zulen badge is silver.",
+        "expected": "silver"
+      },
+      "b": {
+        "content": "The Zulen badge is gold.",
+        "expected": "gold"
+      }
+    },
+    {
+      "id": "F06",
+      "name": "Ketra",
+      "question": "What color is the Ketra badge?",
+      "a": {
+        "content": "The Ketra badge is black.",
+        "expected": "black"
+      },
+      "b": {
+        "content": "The Ketra badge is gray.",
+        "expected": "gray"
+      }
+    },
+    {
+      "id": "F07",
+      "name": "Orven",
+      "question": "What color is the Orven badge?",
+      "a": {
+        "content": "The Orven badge is white.",
+        "expected": "white"
+      },
+      "b": {
+        "content": "The Orven badge is cyan.",
+        "expected": "cyan"
+      }
+    },
+    {
+      "id": "F08",
+      "name": "Dalis",
+      "question": "What color is the Dalis badge?",
+      "a": {
+        "content": "The Dalis badge is brown.",
+        "expected": "brown"
+      },
+      "b": {
+        "content": "The Dalis badge is green.",
+        "expected": "green"
+      }
+    },
+    {
+      "id": "F09",
+      "name": "Fenir",
+      "question": "What color is the Fenir badge?",
+      "a": {
+        "content": "The Fenir badge is pink.",
+        "expected": "pink"
+      },
+      "b": {
+        "content": "The Fenir badge is orange.",
+        "expected": "orange"
+      }
+    },
+    {
+      "id": "F10",
+      "name": "Luvan",
+      "question": "What color is the Luvan badge?",
+      "a": {
+        "content": "The Luvan badge is gold.",
+        "expected": "gold"
+      },
+      "b": {
+        "content": "The Luvan badge is purple.",
+        "expected": "purple"
+      }
+    },
+    {
+      "id": "F11",
+      "name": "Sorin",
+      "question": "What color is the Sorin badge?",
+      "a": {
+        "content": "The Sorin badge is gray.",
+        "expected": "gray"
+      },
+      "b": {
+        "content": "The Sorin badge is yellow.",
+        "expected": "yellow"
+      }
+    },
+    {
+      "id": "F12",
+      "name": "Mavel",
+      "question": "What color is the Mavel badge?",
+      "a": {
+        "content": "The Mavel badge is cyan.",
+        "expected": "cyan"
+      },
+      "b": {
+        "content": "The Mavel badge is silver.",
+        "expected": "silver"
+      }
+    }
+  ],
+  "learning": [
+    {
+      "id": "L01",
+      "name": "Vexa",
+      "expected": "yellow",
+      "source": "Vexa badge instance 1 is yellow. Vexa badge instance 2 is yellow. All Vexa badge instances have the same color.",
+      "donor_question": "Infer one reusable rule for all instances. Write only one sentence beginning with Every and stating the badge family and its color; do not include instance numbers.",
+      "question": "What color is Vexa badge instance 9?",
+      "unrelated": "Every unrelated Rulta badge is magenta."
+    },
+    {
+      "id": "L02",
+      "name": "Torin",
+      "expected": "silver",
+      "source": "Torin badge instance 1 is silver. Torin badge instance 2 is silver. All Torin badge instances have the same color.",
+      "donor_question": "Infer one reusable rule for all instances. Write only one sentence beginning with Every and stating the badge family and its color; do not include instance numbers.",
+      "question": "What color is Torin badge instance 9?",
+      "unrelated": "Every unrelated Rulta badge is magenta."
+    },
+    {
+      "id": "L03",
+      "name": "Neris",
+      "expected": "black",
+      "source": "Neris badge instance 1 is black. Neris badge instance 2 is black. All Neris badge instances have the same color.",
+      "donor_question": "Infer one reusable rule for all instances. Write only one sentence beginning with Every and stating the badge family and its color; do not include instance numbers.",
+      "question": "What color is Neris badge instance 9?",
+      "unrelated": "Every unrelated Rulta badge is magenta."
+    },
+    {
+      "id": "L04",
+      "name": "Pavo",
+      "expected": "white",
+      "source": "Pavo badge instance 1 is white. Pavo badge instance 2 is white. All Pavo badge instances have the same color.",
+      "donor_question": "Infer one reusable rule for all instances. Write only one sentence beginning with Every and stating the badge family and its color; do not include instance numbers.",
+      "question": "What color is Pavo badge instance 9?",
+      "unrelated": "Every unrelated Rulta badge is magenta."
+    },
+    {
+      "id": "L05",
+      "name": "Zulen",
+      "expected": "brown",
+      "source": "Zulen badge instance 1 is brown. Zulen badge instance 2 is brown. All Zulen badge instances have the same color.",
+      "donor_question": "Infer one reusable rule for all instances. Write only one sentence beginning with Every and stating the badge family and its color; do not include instance numbers.",
+      "question": "What color is Zulen badge instance 9?",
+      "unrelated": "Every unrelated Rulta badge is magenta."
+    },
+    {
+      "id": "L06",
+      "name": "Ketra",
+      "expected": "pink",
+      "source": "Ketra badge instance 1 is pink. Ketra badge instance 2 is pink. All Ketra badge instances have the same color.",
+      "donor_question": "Infer one reusable rule for all instances. Write only one sentence beginning with Every and stating the badge family and its color; do not include instance numbers.",
+      "question": "What color is Ketra badge instance 9?",
+      "unrelated": "Every unrelated Rulta badge is magenta."
+    },
+    {
+      "id": "L07",
+      "name": "Orven",
+      "expected": "gold",
+      "source": "Orven badge instance 1 is gold. Orven badge instance 2 is gold. All Orven badge instances have the same color.",
+      "donor_question": "Infer one reusable rule for all instances. Write only one sentence beginning with Every and stating the badge family and its color; do not include instance numbers.",
+      "question": "What color is Orven badge instance 9?",
+      "unrelated": "Every unrelated Rulta badge is magenta."
+    },
+    {
+      "id": "L08",
+      "name": "Dalis",
+      "expected": "gray",
+      "source": "Dalis badge instance 1 is gray. Dalis badge instance 2 is gray. All Dalis badge instances have the same color.",
+      "donor_question": "Infer one reusable rule for all instances. Write only one sentence beginning with Every and stating the badge family and its color; do not include instance numbers.",
+      "question": "What color is Dalis badge instance 9?",
+      "unrelated": "Every unrelated Rulta badge is magenta."
+    },
+    {
+      "id": "L09",
+      "name": "Fenir",
+      "expected": "cyan",
+      "source": "Fenir badge instance 1 is cyan. Fenir badge instance 2 is cyan. All Fenir badge instances have the same color.",
+      "donor_question": "Infer one reusable rule for all instances. Write only one sentence beginning with Every and stating the badge family and its color; do not include instance numbers.",
+      "question": "What color is Fenir badge instance 9?",
+      "unrelated": "Every unrelated Rulta badge is magenta."
+    },
+    {
+      "id": "L10",
+      "name": "Luvan",
+      "expected": "green",
+      "source": "Luvan badge instance 1 is green. Luvan badge instance 2 is green. All Luvan badge instances have the same color.",
+      "donor_question": "Infer one reusable rule for all instances. Write only one sentence beginning with Every and stating the badge family and its color; do not include instance numbers.",
+      "question": "What color is Luvan badge instance 9?",
+      "unrelated": "Every unrelated Rulta badge is magenta."
+    },
+    {
+      "id": "L11",
+      "name": "Sorin",
+      "expected": "orange",
+      "source": "Sorin badge instance 1 is orange. Sorin badge instance 2 is orange. All Sorin badge instances have the same color.",
+      "donor_question": "Infer one reusable rule for all instances. Write only one sentence beginning with Every and stating the badge family and its color; do not include instance numbers.",
+      "question": "What color is Sorin badge instance 9?",
+      "unrelated": "Every unrelated Rulta badge is magenta."
+    },
+    {
+      "id": "L12",
+      "name": "Mavel",
+      "expected": "purple",
+      "source": "Mavel badge instance 1 is purple. Mavel badge instance 2 is purple. All Mavel badge instances have the same color.",
+      "donor_question": "Infer one reusable rule for all instances. Write only one sentence beginning with Every and stating the badge family and its color; do not include instance numbers.",
+      "question": "What color is Mavel badge instance 9?",
+      "unrelated": "Every unrelated Rulta badge is magenta."
+    }
+  ],
+  "repeats": {
+    "case_ids": [
+      "F01",
+      "F02",
+      "F03",
+      "F04"
+    ],
+    "count": 5
+  }
+}
