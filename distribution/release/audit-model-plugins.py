@@ -13,14 +13,15 @@ import subprocess
 import tempfile
 import zipfile
 
-MODELS = {"gemma4-12b":"aimee_gemma4_12b", "gemma4-26b":"aimee_gemma4_26b", "qwen3-8-27b":"aimee_qwen3_8_27b"}
+MODELS = {"gemma4-12b":"aimee_gemma4_12b", "gemma4-26b":"aimee_gemma4_26b", "qwen3-8-27b":"aimee_qwen3_8_27b", "gemma4-e2b":"aimee_gemma4_e2b", "gemma4-e4b":"aimee_gemma4_e4b"}
 
 
-def audit(root):
+def audit(root, models=("gemma4-12b","gemma4-26b","qwen3-8-27b")):
+    selected={name:MODELS[name] for name in models}
     reports=[]
     owned=set()
     shared_requirements=[]
-    for model,package in MODELS.items():
+    for model,package in selected.items():
         wheels=list(root.glob(package+'-*.whl'))
         if len(wheels)!=1:raise ValueError('expected exactly one wheel for '+model)
         wheel=wheels[0]
@@ -64,7 +65,7 @@ def audit(root):
             reports.append({'adapter':model,'wheel':wheel.name,'sha256':hashlib.sha256(wheel.read_bytes()).hexdigest(),'bytes':wheel.stat().st_size,'members':len(names),'library_sha256':binding['library_sha256']})
     runtime=None
     if shared_requirements:
-        assert len(shared_requirements)==3 and len(set(shared_requirements))==1,'plugins must pin the same shared runtime'
+        assert len(shared_requirements)==len(selected) and len(set(shared_requirements))==1,'plugins must pin the same shared runtime'
         runtime_wheels=list(root.glob('aimee_native_runtime-*.whl'))
         assert len(runtime_wheels)==1,'shared runtime wheel missing'
         wheel=runtime_wheels[0]
@@ -88,10 +89,10 @@ def audit(root):
                 assert len(data)==int(size)
                 assert digest=='sha256='+base64.urlsafe_b64encode(hashlib.sha256(data).digest()).decode().rstrip('=')
             assert not any(name.endswith('/entry_points.txt') for name in names), 'shared runtime must not register a model plugin'
-        runtime={'wheel':wheel.name,'sha256':hashlib.sha256(wheel.read_bytes()).hexdigest(),'required_by':3}
+        runtime={'wheel':wheel.name,'sha256':hashlib.sha256(wheel.read_bytes()).hexdigest(),'required_by':len(selected)}
     return {'status':'passed','scope':__doc__,'plugins':reports,'shared_runtime':runtime}
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--wheels',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
-    report=audit(a.wheels);a.output.write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report))
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--wheels',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--models',nargs='+',choices=MODELS,default=['gemma4-12b','gemma4-26b','qwen3-8-27b']);a=p.parse_args()
+    report=audit(a.wheels,a.models);a.output.write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report))
