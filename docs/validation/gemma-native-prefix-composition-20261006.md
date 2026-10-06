@@ -232,3 +232,40 @@ SHA256 is `b9afea47b08b7d4e0b6c93be3c164de761c1c9fc726ebb13a71c74b28532bf1a`,
 executor manifest `7544361b5501022756af84a5e8b3ba3c060169a805fcf9771896d40830b5c839`,
 source freeze `8f36c8ec3cfdcab7a27543ec4de88197b7e7d3a15f05868c88542b274d0fbb38`.
 Unlaunched r3 and r5 prospective mistakes remain preserved separately.
+
+## Actual engine-input follow-up
+
+Recovery r6 was interrupted only in its owned cgroup after a foreign service
+started a GPU child during a transient empty-device interval. Recovery r7
+therefore also requires that whole foreign service to be terminal before
+acquiring the original GPU lock. Both failed attempts and raw responses remain
+preserved. No foreign process was stopped.
+
+Recovery r7 loaded the unchanged released model, passed the 55-token empty
+fallback, captured and Rust-published the actual 191-token first bank, and
+returned `food security` on the paired full-text request. Native admission
+rejected before kernel execution because stock vLLM adds `arrival_time` to its
+text TokensInput. The bank tokens exactly matched the full-text prompt prefix;
+this attempt provides no successful native-generation result.
+
+Candidate3 preserves that declared timestamp alongside the existing token and
+cache-salt fields. Multimodal, embedding and positional metadata remain denied.
+Only composition, wheel version and RECORD differ from candidate2; preparation,
+kernel and bundled client are unchanged. The sealed wheel SHA256 is
+`ce14f2abe92479142c4208194dc2cb1fa28faf11f9df39b3f15133e6acff6f94`;
+source archive SHA256 is
+`1e507f3b83701f3d1f1c2eb533077322901d786d2a21d98f3287a7d7b95e4009`.
+Twenty-nine compiled tests pass without skips. CPU validation calls actual
+installed `process_for_engine`, preserves its timestamp, and verifies all six
+bank/suffix boundaries. CUDA remains uninitialized.
+
+Prospective recovery r8 binds that candidate, unchanged science and model
+settings, short Optane paths and terminal-service guard. Its four CPU renderer,
+spawn, IPC and binding checks pass. Protocol SHA256 is
+`01d9fe3ad994f86b2e99f10266e2f05d7b6f4b04c31e42fa0d88b7098a04f871`,
+executor manifest
+`0b1875d4c9048c49790dedd2ed93f647cdc482d20e1bacadcf59aeab1ed44d72`,
+and source freeze
+`1f5b2e676c5cd2cc10b38941ce23d8e7ae29bd40e2594cc911c5beb0bf1f7ebb`.
+It has not yet produced a GPU result. Broker execution is still explicitly
+excluded, and the v2 broker namespace remains source-only pending rebuild.
