@@ -28,7 +28,7 @@ fn preparation_cache_key(recipient: &str, serving: &Value, source: &impl serde::
     if matches!(serving["adapter"].as_str(), Some("gemma4-12b" | "gemma4-26b"))
         && serving["gemma_composition"] != "legacy-independent-chat-v1" {
         // A new transcript contract must never find an old preparation receipt.
-        binding.as_array_mut().unwrap().push(json!("gemma-context-bound-chat-prefix-v1"));
+        binding.as_array_mut().unwrap().push(json!("gemma-context-bound-chat-prefix-v2"));
     }
     Ok(digest(&serde_json::to_vec(&binding)?))
 }

@@ -43,7 +43,8 @@ class PreparationTests(unittest.IsolatedAsyncioTestCase):
             calls = []
             publication = {'root': request['destination'], 'model': 'model', 'key': 'key'}
             tokenizer = StockTokenizer()
-            bank_text, bank_tokens, contract = prepare_contract(tokenizer, Path(directory), '', ['authorized fact'])
+            bank_text, bank_tokens, contract = prepare_contract(tokenizer, Path(directory), '', ['authorized fact'], stock_render=tokenizer.render)
+            owner.composition_renderer = (NS(renderer=NS(get_tokenizer=lambda:tokenizer)),)
             async def rpc(name, **kwargs):
                 calls.append((name, kwargs))
                 return [{'state': 'armed'}] if name == 'model-owned-capture' else [publication]
@@ -54,7 +55,8 @@ class PreparationTests(unittest.IsolatedAsyncioTestCase):
             engine = NS(collective_rpc=rpc, generate=generate)
             adapter = NS(description={'capture_rpc': 'model-owned-capture', 'capture_argument': 'text', 'prefix_renderer': 'stock'})
             with patch('aimee_vllm.model_adapter.ModelAdapter', return_value=adapter), \
-                    patch('transformers.AutoTokenizer.from_pretrained', return_value=tokenizer):
+                    patch('transformers.AutoTokenizer.from_pretrained', return_value=tokenizer), \
+                    patch('aimee_vllm.composition.stock_request_renderer', return_value=tokenizer.render):
                 pending = asyncio.create_task(prepare(owner, engine, request, adapter))
                 await asyncio.sleep(0)
                 self.assertEqual(calls, [])

@@ -20,6 +20,9 @@ class StockTokenizer:
         return text
     def encode(self, text, **kwargs):
         return list(text.encode())
+    def render(self, messages, generation=False):
+        text = self.apply_chat_template(messages, add_generation_prompt=generation)
+        return text, self.encode(text)
 
 
 class CompositionTests(unittest.IsolatedAsyncioTestCase):
@@ -33,7 +36,7 @@ class CompositionTests(unittest.IsolatedAsyncioTestCase):
         self.config = {'model': str(self.root), 'model_revision': 'revision-1',
                        'native_system_context': 'Use memory.'}
         self.text, self.bank, self.contract = prepare_contract(self.tokenizer, self.root,
-            'Use memory.', ['Canonical fact with literal <bos> markers.'], 'revision-1')
+            'Use memory.', ['Canonical fact with literal <bos> markers.'], 'revision-1', stock_render=self.tokenizer.render)
 
     def engine_input(self, messages):
         text = self.tokenizer.apply_chat_template(messages, add_generation_prompt=True)
@@ -69,7 +72,7 @@ class CompositionTests(unittest.IsolatedAsyncioTestCase):
             with self.assertRaises(ValueError): remaining_input(incoming, self.contract)
 
     def test_empty_context_uses_explicit_stock_system_prefix(self):
-        _, bank, contract = prepare_contract(self.tokenizer, self.root, '', ['Fact.'])
+        _, bank, contract = prepare_contract(self.tokenizer, self.root, '', ['Fact.'], stock_render=self.tokenizer.render)
         messages = [{'role': 'system', 'content': ''}, {'role': 'user', 'content': 'Q?'}]
         check_request({'messages': messages}, contract)
         adjusted = remaining_input(self.engine_input(messages), contract)
@@ -148,7 +151,27 @@ class CompositionTests(unittest.IsolatedAsyncioTestCase):
             def apply_chat_template(self, messages, **kwargs):
                 return str(len(messages)) + super().apply_chat_template(messages, **kwargs)
         with self.assertRaisesRegex(ValueError, 'boundary'):
-            prepare_contract(Incompatible(), self.root, 'Use memory.', ['Fact.'])
+            tokenizer = Incompatible()
+            prepare_contract(tokenizer, self.root, 'Use memory.', ['Fact.'], stock_render=tokenizer.render)
+
+    def test_request_content_conversion_changes_the_verified_prefix(self):
+        # Like Gemma's actual list-content system branch, the configured
+        # renderer appends a space that raw-string HF preparation misses.
+        def render(messages, generation=False):
+            text = '<bos>' + ''.join('<turn>' + m['role'] + '\n' + m['content'].strip()
+                + (' ' if m['role'] == 'system' else '') + '</turn>\n' for m in messages)
+            if generation: text += '<turn>assistant\n<thought></thought>'
+            return text, self.tokenizer.encode(text)
+        _, bank, contract = prepare_contract(self.tokenizer, self.root, 'Use memory.', ['Fact.'], stock_render=render)
+        messages = [{'role':'system','content':'Use memory.'}, {'role':'user','content':'Q?'}]
+        _, tokens = render(messages, True)
+        suffix = remaining_input({'type':'token','prompt_token_ids':tokens}, contract)['prompt_token_ids']
+        _, full = render([{'role':'system','content':'Use memory.\n\nAuthoritative memory:\nFact.'}, messages[1]], True)
+        self.assertEqual(bank + suffix, full)
+        with self.assertRaises(ValueError):
+            remaining_input(self.engine_input(messages), contract)
+        with self.assertRaisesRegex(ValueError, 'profile'):
+            validate_contract({'composition':dict(contract, format='gemma-context-bound-chat-prefix-v1')}, self.config)
 
 
 if __name__ == '__main__': unittest.main()

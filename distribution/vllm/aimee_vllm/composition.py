@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 from importlib import metadata
 
-FORMAT = 'gemma-context-bound-chat-prefix-v1'
+FORMAT = 'gemma-context-bound-chat-prefix-v2'
 LEGACY = 'legacy-independent-chat-v1'
 
 def digest(value):
@@ -20,11 +20,31 @@ def tokenizer_identity(root):
         raise ValueError('missing installed tokenizer identity files')
     return identity
 
-def prepare_contract(tokenizer, root, context, facts, revision=None):
+def stock_request_renderer(handler):
+    """Use the configured stock request renderer, including content conversion."""
+    from vllm.entrypoints.openai.chat_completion.protocol import ChatCompletionRequest
     def render(messages, generation=False):
-        text = tokenizer.apply_chat_template(messages, tokenize=False,
-            add_generation_prompt=generation, enable_thinking=False)
-        return text, tokenizer.encode(text, add_special_tokens=False)
+        request = ChatCompletionRequest(model=handler.model_config.model,
+            messages=messages, add_generation_prompt=generation,
+            chat_template_kwargs={'enable_thinking': False})
+        params = request.build_chat_params(handler.chat_template,
+            handler.chat_template_content_format).with_defaults(handler.default_chat_template_kwargs)
+        # Get both actual stock tokenization and the exact capture text. Reject
+        # any renderer whose text cannot reproduce its request token sequence.
+        _, token_prompt = handler.renderer.render_messages(messages, params)
+        params.chat_template_kwargs['tokenize'] = False
+        _, text_prompt = handler.renderer.render_messages(messages, params)
+        text, tokens = text_prompt.get('prompt'), token_prompt.get('prompt_token_ids')
+        if (not isinstance(text, str) or not isinstance(tokens, list)
+                or set(token_prompt) != {'prompt_token_ids'}
+                or handler.renderer.get_tokenizer().encode(text, add_special_tokens=False) != tokens):
+            raise ValueError('stock Gemma preparation requires reproducible text-only rendering')
+        return text, tokens
+    return render
+
+def prepare_contract(tokenizer, root, context, facts, revision=None, *, stock_render):
+    def render(messages, generation=False):
+        return stock_render(messages, generation)
     instruction = context.strip()
     system = {'role': 'system', 'content': instruction}
     memory = {'role': 'system', 'content': instruction + '\n\nAuthoritative memory:\n' + '\n'.join(facts)}

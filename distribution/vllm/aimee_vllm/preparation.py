@@ -38,9 +38,12 @@ async def prepare(owner, engine, request, adapter):
         if adapter.description['prefix_renderer']=='adapter':
             text=adapter.call('render_prefix',context=context,facts=facts)['text']
         elif adapter.description['prefix_renderer']=='stock':
-            from .composition import prepare_contract
+            from .composition import prepare_contract, stock_request_renderer
+            handler = owner.composition_renderer[0]
+            tokenizer = handler.renderer.get_tokenizer()
             text, tokens, contract = prepare_contract(tokenizer, owner.config['model'],
-                context, facts, owner.config.get('model_revision'))
+                context, facts, owner.config.get('model_revision'),
+                stock_render=stock_request_renderer(handler))
             return {'text': text, 'composition': contract}, tokens
         else:
             raise ValueError('unsupported dedicated prefix renderer')
