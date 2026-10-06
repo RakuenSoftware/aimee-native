@@ -1,0 +1,31 @@
+{
+  "adapter": "gemma4-12b",
+  "plugin": "aimee_gemma4_12b",
+  "python_module": "aimee_gemma4_12b",
+  "model": "/var/lib/aimee-large-release-validation/cuda-5080-20260930/models",
+  "gguf_weights": "/mnt/pve/backup/aimee-experiments/native-serving-20261004/gemma12-q4/gemma12-q4_k_m.gguf",
+  "gguf_weights_sha256": "a509d1e25b028dfcf9b311a3321e510b7d78309f04421891a62488feab3289e9",
+  "gguf_weight_profile": "Q4_K_M",
+  "library": "/opt/aimee-native-serving/clean-release-env-build2/lib/python3.12/site-packages/aimee_gemma4_12b/native/libaimee_native.so",
+  "catalog": "/opt/jmlr-second-review-20261005/repair-cache/gemma-composition-candidate-r1/gpu-validation-recovery-r8/catalog.json",
+  "recipient": "gemma-prefix-integration-private",
+  "host_memory_budget": 1073741824,
+  "device_memory_budget": 134217728,
+  "native_stage_telemetry": true,
+  "lossless_transport": false,
+  "control_socket": "/opt/jmlr-second-review-20261005/repair-cache/gpr8/c.sock",
+  "serve": {
+    "max_model_len": 2048,
+    "max_num_seqs": 1,
+    "max_num_batched_tokens": 128,
+    "gpu_memory_utilization": 0.58,
+    "num_gpu_blocks_override": 512,
+    "flashinfer_sampler": false,
+    "host": "127.0.0.1",
+    "port": 18968
+  },
+  "native_preparation_enabled": true,
+  "preparation_root": "/opt/jmlr-second-review-20261005/repair-cache/gemma-composition-candidate-r1/gpu-validation-recovery-r8/prepared",
+  "start_paused": true,
+  "native_system_context": "Use the external memory available to you. Answer with only the shortest exact answer span, without explanation. If the memory lacks the answer, reply unknown."
+}

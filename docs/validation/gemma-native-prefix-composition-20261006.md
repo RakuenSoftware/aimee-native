@@ -269,3 +269,35 @@ and source freeze
 `1f5b2e676c5cd2cc10b38941ce23d8e7ae29bd40e2594cc911c5beb0bf1f7ebb`.
 It has not yet produced a GPU result. Broker execution is still explicitly
 excluded, and the v2 broker namespace remains source-only pending rebuild.
+
+## Completed controlled adapter and bundle checks
+
+Recovery r8 subsequently passed actual GPU execution. Completion receipt
+SHA256 is `b4675377428f68b8bf84783dc013fd55388642816f2cdc35551b1eb98a377116`.
+All six diagnostic text/native greedy output IDs match, with identical scores
+(5/6 EM; the sixth has F1 2/3 on both paths). Both canonical revisions have
+EM 1. Eight actual published-bank plus native-suffix token proofs, successful
+native-kernel traces, empty selection, stale-context denial and failed
+preparation recovery pass. Model/config/tokenizer/source hashes are unchanged;
+the owned service stopped and GPU release is verified. An independent
+reviewer validated the sealed structural receipt and hashes.
+
+The v2 broker has now been rebuilt from the sealed candidate source with
+pinned Rust 1.98.1, offline and locked, on the workstation's large filesystem.
+All 27 Rust tests pass. The new client SHA256 is
+`47583282d2278741ded4183df7707183855366a72760eeca2df876fbaa82a3ce`.
+Actual ELF requirements reach GLIBC 2.39; the target's GLIBC 2.41 loader and
+private-binary `--help` checks pass without starting a service.
+
+Candidate4 combines that client with unchanged candidate3 compiled Python
+modules, kernel and notices. Only client/version/RECORD bytes differ. Its wheel
+SHA256 is `1e6d6f30bf076f5ab9920b8c51c80fafb771b15bb167cdd2edf102d1af7aac38`.
+The compiled 29-test suite passes without skips from a private NAS extraction,
+with CUDA uninitialized. The GPU result applies to candidate3 adapter modules;
+the broker rebuild is verified separately by CPU tests and target ABI checks.
+No enrolled broker end-to-end test or production deployment is claimed.
+
+All canonical NAS publications and raw results remain preserved. Only inactive
+owned r8 Optane duplicates were removed after exact canonical hash verification
+and repeated checks for open references; its cache was archived and verified.
+The earlier failed attempts remain immutable.

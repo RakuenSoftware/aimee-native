@@ -1,0 +1,57 @@
+{
+  "status": "passed",
+  "source_archive_sha256": "1e507f3b83701f3d1f1c2eb533077322901d786d2a21d98f3287a7d7b95e4009",
+  "source_snapshot": "d397c85; isolated corrected-coherence2/r12-derived candidate",
+  "toolchain": "rustc 1.98.1 (48a229cea 2026-09-01), copied read-only from trusted CT101; tar stream independently hash-matched",
+  "toolchain_archive_sha256": "01bb0b48a04d50f673715ec453d9a8a5e42273a803996367d49861dce3f0ef75",
+  "registry_archive_sha256": "30b42639e6b81aa88e712a14cf4f010490859746a8dbfa74ffafdec315cc60d3",
+  "registry_scope": "only cargo-home extracted, no prior build targets reused",
+  "commands": [
+    "cargo test --offline --locked --features model-plugin-client --lib",
+    "cargo build --offline --locked --release --features model-plugin-client --bin aimee-model-client"
+  ],
+  "environment": {
+    "CARGO_HOME": "/home/virant/dev/jmlr-validation-runs-20261004/gemma-broker-v2-build-r1/cargo-home",
+    "CARGO_TARGET_DIR": "/home/virant/dev/jmlr-validation-runs-20261004/gemma-broker-v2-build-r1/target",
+    "CARGO_INCREMENTAL": "0",
+    "CARGO_PROFILE_DEV_DEBUG": "0",
+    "CARGO_PROFILE_TEST_DEBUG": "0",
+    "PATH_toolchain": "/home/virant/dev/jmlr-validation-runs-20261004/gemma-broker-v2-build-r1/1.98.1-x86_64-unknown-linux-gnu/bin"
+  },
+  "tests": {
+    "passed": 27,
+    "failed": 0,
+    "ignored": 0,
+    "new_namespace_test": "gemma_composition_uses_new_cache_namespace_without_changing_qwen_or_explicit_legacy"
+  },
+  "build_host": {
+    "architecture": "x86_64",
+    "glibc": [
+      "glibc",
+      "2.44"
+    ]
+  },
+  "target_compatibility": {
+    "target_glibc": "2.41",
+    "maximum_required_glibc": "2.39",
+    "actual_target_ldd_and_help_passed": true,
+    "executed_command": "private NAS candidate binary --help; no enrollment/service/install"
+  },
+  "deployment": false,
+  "broker_end_to_end_tested": false,
+  "artifact_relative_sha256": {
+    "pinned-toolchain.tar": "01bb0b48a04d50f673715ec453d9a8a5e42273a803996367d49861dce3f0ef75",
+    "owned-ct-build-scratch.tar": "30b42639e6b81aa88e712a14cf4f010490859746a8dbfa74ffafdec315cc60d3",
+    "gemma-candidate3-source.tar.gz": "1e507f3b83701f3d1f1c2eb533077322901d786d2a21d98f3287a7d7b95e4009",
+    "distribution/launcher/Cargo.lock": "d20b6c13a2c9667c4ea9e8f96ad98b1caa5d2cdc700f0e3a4f96fe3ae8d6d440",
+    "distribution/launcher/src/model_broker.rs": "31a99f16aa09970950eb10e84610caee757627395748b70ec3597f78d9a3a0f7",
+    "rust-v2-tests.log": "9c683d5cba2f9d4e12748e9ce40207f666a4528d471ebae3a6eb2ffb95a49e4a",
+    "rust-v2-build.log": "5a56b0bd34de1459a0b060f7b6f2c89b94d21993bebad3775da5a84df31c59b0",
+    "elf-symbol-versions.log": "357c57acd2511c9dda0cb654916fc4406f74b3cc32d9aca5f9fe6d3fb799d36c",
+    "target-host-abi-help.log": "4eb778aa19c1bb978231a047a068b17d6c6f85fe59f5f9f688f5c365dbde5930",
+    "target/release/aimee-model-client": "47583282d2278741ded4183df7707183855366a72760eeca2df876fbaa82a3ce",
+    "package_candidate4.py": "66497a03cb44e61b45d21fca1463cf442bc486b5292b1e2ba99247f2bfa50dac",
+    "candidate4-packaging-receipt.json": "de5b636969a0a0967224f820d484462ec4a7fa75c5f4774ec841ac95a161d46c",
+    "aimee_native_runtime-0.3.2+gemma.prefix.candidate4-cp312-cp312-linux_x86_64.whl": "1e6d6f30bf076f5ab9920b8c51c80fafb771b15bb167cdd2edf102d1af7aac38"
+  }
+}
