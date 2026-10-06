@@ -1,0 +1,84 @@
+{
+  "status": "passed",
+  "scope": "Isolated CPU build and compiled integration validation; no deployed service or GPU model execution",
+  "python": "3.12.14",
+  "runtime": {
+    "vllm": "0.30.0",
+    "torch": "2.13.0",
+    "triton": "3.7.1"
+  },
+  "rust_toolchain": "1.98.1",
+  "cython": "3.1.4",
+  "cargo_flags": [
+    "--locked",
+    "--offline"
+  ],
+  "cargo_home": "/opt/jmlr-gemma-prefix-build-20261006-r1/cargo-home",
+  "cargo_target_dir": "/opt/jmlr-gemma-prefix-build-20261006-r1/target",
+  "rust_lib_tests": 27,
+  "compiled_python_tests": 27,
+  "cuda_initialized": false,
+  "physical_pool_reserve_gib": 103.92325000000004,
+  "task_fs_available_bytes": 25305985024,
+  "wheel": {
+    "version": "0.3.2+gemma.prefix.candidate1",
+    "wheel": "aimee_native_runtime-0.3.2+gemma.prefix.candidate1-cp312-cp312-linux_x86_64.whl",
+    "sha256": "295c4861b59ecc46faf56a9e62449c27285ccc3f6e9cf1806e381a4bbb2b7817",
+    "bytes": 3060986,
+    "modules": [
+      "composition",
+      "preparation",
+      "runtime_ops",
+      "control",
+      "stream_completion",
+      "selection",
+      "gguf_loader",
+      "admission",
+      "backend",
+      "binary_kernel",
+      "cache",
+      "cache_identity",
+      "cli",
+      "state",
+      "store",
+      "worker",
+      "compatibility",
+      "precision",
+      "telemetry",
+      "model_adapter",
+      "capture_session",
+      "hybrid",
+      "capture",
+      "attention_capture"
+    ],
+    "licenses": {
+      "CYTHON_COPYING.txt": "e1eb1c49a8508e8173dac30157e4a6439a44ad8846194746c424fbc3fc2b95d7",
+      "CYTHON_LICENSE.txt": "9568a2b155e66ac3e0ba1fd80b52b827b9460e6cf6f233125e7cbca8e206ddc3",
+      "SHARED_CLIENT_NOTICES.txt": "40786e89193ff4a45fb79f2479319f701ce8f9f8e2f2b4bb7373e56a837c9a73"
+    },
+    "record_validation": "passed"
+  },
+  "files": {
+    "gemma-composition-candidate-r1.tar.gz": "3f737b93fb4fb893fce3516ade0a7b8ec1659a26125f0e3e877f68cee5cf07fa",
+    "gemma-composition-source-inventory.json": "7fb5fcc92d0f6f6b530984e30dc1a8de87c7bfcee3c69df23f0b91eca6e4300c",
+    "rust-all-lib-tests.log": "16e5da6cf272a46a9c324aad804b192e8817f96d1561e5f8211a01aa8393e3ec",
+    "rust-tests.log": "489db151c925cbb10f6f062be3ba896f5614d4a5243600b4a460ac7db2906608",
+    "rust-client-build.log": "f3894e9734816b1c74cb27f54a23d68088466fd5a65cba6c2fa361fdc60deac7",
+    "build_gemma_shared_runtime.py": "9a6f6b8da4b01e7d3bddbe2847492cf6f97118a8b6b8b8a1f4eab79c462573dc",
+    "cython-wheel-build.log": "8b35a01c3b0cff0e909f1ed065f614f345aa9d6f92df250d412c33dda8cb32e5",
+    "finalize_gemma_candidate.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "aimee_native_runtime-0.3.2+gemma.prefix.candidate1-cp312-cp312-linux_x86_64.whl": "295c4861b59ecc46faf56a9e62449c27285ccc3f6e9cf1806e381a4bbb2b7817",
+    "wheel-build-result.json": "f3351f76dd462be3e90b3390d43bb6970ad4fa28cad6fc5eddcfd890b5f3b322",
+    "compiled_candidate_tests.py": "226c19382d2a6c1311b6f3d9197ccd094df848be2b13d91ca92497a3638434db",
+    "compiled-candidate-tests.log": "fa72e95012d778fcc417308fc677e435565e24331fb8ff19f4c245961ebc7e41",
+    "actual_candidate_cpu_validation.py": "ca3fab225ae62cc441f758222386cdceb33a50a892b477b582e65fe4f25fd483",
+    "actual-candidate-cpu-validation.log": "a1bfe8b4f2aa269275704fbce87cc2ba6a8bbfde75504e5d40b6f71b502337f7"
+  },
+  "commands": [
+    "cargo test --locked --offline --manifest-path /opt/jmlr-gemma-prefix-build-20261006-r1/source/distribution/launcher/Cargo.toml --lib",
+    "cargo build --locked --offline --release --manifest-path /opt/jmlr-gemma-prefix-build-20261006-r1/source/distribution/launcher/Cargo.toml --bin aimee-model-client --features model-plugin-client",
+    "plugin-build-env/bin/python -B build_gemma_shared_runtime.py",
+    "clean-release-env-build2/bin/python -B compiled_candidate_tests.py",
+    "clean-release-env-build2/bin/python -B actual_candidate_cpu_validation.py"
+  ]
+}

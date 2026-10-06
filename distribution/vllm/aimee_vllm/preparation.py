@@ -38,9 +38,10 @@ async def prepare(owner, engine, request, adapter):
         if adapter.description['prefix_renderer']=='adapter':
             text=adapter.call('render_prefix',context=context,facts=facts)['text']
         elif adapter.description['prefix_renderer']=='stock':
-            text = tokenizer.apply_chat_template([{'role': 'system', 'content':
-                context.strip() + '\n\nAuthoritative memory:\n' + '\n'.join(facts)}],
-                tokenize=False, add_generation_prompt=False, enable_thinking=False)
+            from .composition import prepare_contract
+            text, tokens, contract = prepare_contract(tokenizer, owner.config['model'],
+                context, facts, owner.config.get('model_revision'))
+            return {'text': text, 'composition': contract}, tokens
         else:
             raise ValueError('unsupported dedicated prefix renderer')
         return text, tokenizer.encode(text, add_special_tokens=False)

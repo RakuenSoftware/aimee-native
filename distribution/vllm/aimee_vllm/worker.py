@@ -163,6 +163,8 @@ class AimeeWorker(Worker):
         return config
 
     def aimee_attention_capture_begin(self, tokens, text, destination, exclusive_control=False):
+        # text is a legacy rendered string or the versioned {text, composition}
+        # envelope. Keep this RPC unannotated so Cython accepts both wire shapes.
         from . import capture_session as capture
         from .attention_capture import AttentionPrefixCapture
         if capture.CURRENT is not None:raise RuntimeError('capture already active')

@@ -58,6 +58,7 @@ class NativeAdmission:
         world=config.get("serve",{}).get("tensor_parallel_size",1)
         banks={}
         self.hybrid_contexts={}
+        self.gemma_contexts={}
         for uid,(name,spec) in enumerate(catalog['publications'].items()):
             store=PreparedStore(lib,{**spec,'byte_budget':config['host_memory_budget'],'disk_backed':config.get('disk_backed',False),'lossless_transport':False,'device_budget':config.get('device_memory_budget',256*1024**2)})
             try:
@@ -69,6 +70,15 @@ class NativeAdmission:
                     validate_model_identity(hybrid.spec,config['model'],config.get('model_revision'),config)
                     if hybrid.spec['model_config_sha256']!=hashlib.sha256((Path(config['model'])/'config.json').read_bytes()).hexdigest():raise RuntimeError('hybrid publication model mismatch')
                     if hybrid.spec['encoding']=='system-message':self.hybrid_contexts[name]=hybrid.spec['system_context_sha256']
+                else:
+                    from .composition import validate_contract, validate_publication
+                    profile_bytes=(Path(spec['root'])/'profile.json').read_bytes()
+                    profile=json.loads(profile_bytes)
+                    contract=validate_contract(profile, config)
+                    if contract is not None:
+                        index=json.loads((Path(spec['root'])/'index.json').read_bytes())
+                        validate_publication(profile_bytes,index,spec)
+                        self.gemma_contexts[name]=contract
                 banks[name]=(uid,max(store.device_bytes(world,rank) for rank in range(world)))
             finally:store.close()
         return banks
@@ -93,11 +103,21 @@ class NativeAdmission:
             async def lifecycle(event):
                 nonlocal server
                 if event['type']=='lifespan.startup.complete':
+                    if self.model_adapter.description['prefix_renderer']=='stock':
+                        from .composition import install_renderer
+                        install_renderer(self,scope['app'])
                     server=await start(self,scope['app'].state.engine_client)
+                if event['type'] in ('lifespan.shutdown.complete','lifespan.shutdown.failed'):
+                    from .composition import uninstall_renderer
+                    uninstall_renderer(self)
                 if event['type']=='lifespan.shutdown.complete' and server is not None:
                     server.close();await server.wait_closed();Path(self.config['control_socket']).unlink(missing_ok=True)
                 await send(event)
-            return await self.app(scope,receive,lifecycle)
+            try:
+                return await self.app(scope,receive,lifecycle)
+            finally:
+                from .composition import uninstall_renderer
+                uninstall_renderer(self)
         if scope['type']!='http':return await self.app(scope,receive,send)
         if (self.poisoned or self.paused) and scope.get('path')=='/health':
             return await self.error(send,503,'native admission requires restart')
@@ -144,6 +164,11 @@ class NativeAdmission:
             if self.poisoned or self.paused:
                 return await self.error(send,503,'native publication update in progress')
         bank=None
+        contract=getattr(self,'gemma_contexts',{}).get(publication)
+        if contract is not None:
+            from .composition import check_request
+            try:check_request(body,contract)
+            except ValueError as exc:return await self.error(send,400,str(exc))
         context=getattr(self,'hybrid_contexts',{}).get(publication)
         if context is not None:
             messages=body.get('messages')

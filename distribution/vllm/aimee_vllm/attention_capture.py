@@ -22,6 +22,10 @@ class AttentionPrefixCapture(CaptureSession):
             raise RuntimeError("attention capture requires one GPU")
         if not tokens or len(tokens) > config["serve"]["max_model_len"]:
             raise ValueError("prefix token budget exceeded")
+        composition = None
+        if isinstance(text, dict):
+            composition = text["composition"]
+            text = text["text"]
         root = Path(config["model"])
         c = json.loads((root / "config.json").read_bytes())
         from tokenizers import Tokenizer
@@ -55,6 +59,12 @@ class AttentionPrefixCapture(CaptureSession):
             "tokenizer_sha256": hashlib.sha256((root / "tokenizer.json").read_bytes()).hexdigest(),
         }
 
+        if composition is not None:
+            from .composition import digest, validate_contract
+            self.profile["composition"] = composition
+            validate_contract(self.profile, config)
+            if digest(self.tokens) != composition["bank_prefix_sha256"]:
+                raise ValueError("capture bank prefix identity mismatch")
 
     def finish(self):
         expected = set(range(self.architecture["num_hidden_layers"]))

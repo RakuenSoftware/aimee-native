@@ -5,10 +5,14 @@ from types import SimpleNamespace as NS
 import unittest
 from unittest.mock import patch
 from aimee_vllm.preparation import prepare
+from aimee_vllm.composition import prepare_contract
+from test_composition import StockTokenizer
 
 
 class PreparationTests(unittest.IsolatedAsyncioTestCase):
     def fixture(self, root):
+        (root / 'tokenizer.json').write_text('{}')
+        (root / 'tokenizer_config.json').write_text('{}')
         idle = asyncio.Event()
         idle.set()
         owner = NS(config={'native_preparation_enabled': True, 'preparation_root': str(root),
@@ -38,16 +42,16 @@ class PreparationTests(unittest.IsolatedAsyncioTestCase):
             owner.idle.clear()
             calls = []
             publication = {'root': request['destination'], 'model': 'model', 'key': 'key'}
+            tokenizer = StockTokenizer()
+            bank_text, bank_tokens, contract = prepare_contract(tokenizer, Path(directory), '', ['authorized fact'])
             async def rpc(name, **kwargs):
                 calls.append((name, kwargs))
                 return [{'state': 'armed'}] if name == 'model-owned-capture' else [publication]
             async def generate(prompt, params, request_id):
-                self.assertEqual(prompt, {'prompt_token_ids': [1, 2]})
+                self.assertEqual(prompt, {'prompt_token_ids': bank_tokens})
                 self.assertTrue(request_id.startswith('aimee-prepare-'))
                 yield NS()
             engine = NS(collective_rpc=rpc, generate=generate)
-            tokenizer = NS(apply_chat_template=lambda *a, **k: 'closed-prefix',
-                           encode=lambda *a, **k: [1, 2])
             adapter = NS(description={'capture_rpc': 'model-owned-capture', 'capture_argument': 'text', 'prefix_renderer': 'stock'})
             with patch('aimee_vllm.model_adapter.ModelAdapter', return_value=adapter), \
                     patch('transformers.AutoTokenizer.from_pretrained', return_value=tokenizer):
@@ -57,7 +61,7 @@ class PreparationTests(unittest.IsolatedAsyncioTestCase):
                 owner.idle.set()
                 result = await pending
             self.assertEqual(result['publication'], publication)
-            self.assertEqual(calls[0][1]['args'], ([1, 2], 'closed-prefix', request['destination'], True))
+            self.assertEqual(calls[0][1]['args'], (bank_tokens, {'text':bank_text,'composition':contract}, request['destination'], True))
             self.assertEqual(calls[1][0], 'aimee_capture_finish')
             self.assertTrue(owner.paused)
             self.assertFalse(owner.poisoned)

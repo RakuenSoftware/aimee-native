@@ -23,6 +23,16 @@ fn control(path: &Path, request: Value) -> Result<Value> {
     Ok(response)
 }
 
+fn preparation_cache_key(recipient: &str, serving: &Value, source: &impl serde::Serialize) -> Result<String> {
+    let mut binding = json!([recipient, serving, source]);
+    if matches!(serving["adapter"].as_str(), Some("gemma4-12b" | "gemma4-26b"))
+        && serving["gemma_composition"] != "legacy-independent-chat-v1" {
+        // A new transcript contract must never find an old preparation receipt.
+        binding.as_array_mut().unwrap().push(json!("gemma-context-bound-chat-prefix-v1"));
+    }
+    Ok(digest(&serde_json::to_vec(&binding)?))
+}
+
 fn select(connection: &Config, serving: &Value, query: &str) -> Result<Value> {
 
     let ctl = Path::new(serving["control_socket"].as_str().context("control socket missing")?);
@@ -30,9 +40,7 @@ fn select(connection: &Config, serving: &Value, query: &str) -> Result<Value> {
     let recipient = serving["recipient"].as_str().context("recipient missing")?;
     let source = primitive::fetch_for_recipient(connection, query, 1024, recipient)?;
     let view = digest(&serde_json::to_vec(&source)?);
-    let cache_key = digest(&serde_json::to_vec(&json!([
-        recipient, serving, source
-    ]))?);
+    let cache_key = preparation_cache_key(recipient, serving, &source)?;
     let current: Value = serde_json::from_slice(&fs::read(catalog)?)?;
     ensure!(current["recipient"] == recipient, "catalog recipient mismatch");
     if current["authorized_view"] == view && control(ctl, json!({"op":"status"}))?["state"] == "active" {
@@ -137,6 +145,21 @@ pub fn serve(connection: Config, serving_path: &Path) -> Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn gemma_composition_uses_new_cache_namespace_without_changing_qwen_or_explicit_legacy() {
+        let source = json!({"records":["fact"]});
+        for serving in [json!({"adapter":"qwen3-8-27b"}),
+                        json!({"adapter":"gemma4-12b","gemma_composition":"legacy-independent-chat-v1"})] {
+            let legacy = digest(&serde_json::to_vec(&json!(["recipient",serving,source])).unwrap());
+            assert_eq!(preparation_cache_key("recipient", &serving, &source).unwrap(), legacy);
+        }
+        let serving = json!({"adapter":"gemma4-12b"});
+        let legacy = digest(&serde_json::to_vec(&json!(["recipient",serving,source])).unwrap());
+        let corrected = preparation_cache_key("recipient", &serving, &source).unwrap();
+        assert_ne!(corrected, legacy);
+        assert_ne!(corrected, preparation_cache_key("other-recipient", &serving, &source).unwrap());
+        assert_ne!(corrected, preparation_cache_key("recipient", &serving, &json!({"records":["changed"]})).unwrap());
+    }
     #[test]
     fn dedicated_dispatch_retires_catalog_when_source_read_fails() {
         let tmp = tempfile::tempdir().unwrap();

@@ -2,7 +2,7 @@
 from pathlib import Path
 
 COMMON_MODULES = (
-    'preparation', 'runtime_ops', 'control', 'stream_completion', 'selection',
+    'composition', 'preparation', 'runtime_ops', 'control', 'stream_completion', 'selection',
     'gguf_loader', 'admission', 'backend', 'binary_kernel', 'cache',
     'cache_identity', 'cli', 'state', 'store', 'worker', 'compatibility',
     'precision', 'telemetry', 'model_adapter', 'capture_session', 'hybrid',

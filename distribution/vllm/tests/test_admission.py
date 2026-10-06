@@ -34,6 +34,78 @@ class AdmissionTests(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(l.acquire(1,10));self.assertTrue(l.acquire(1,10));l.release(1)
         self.assertFalse(l.acquire(2,10));l.release(1);self.assertTrue(l.acquire(2,10))
 
+    async def test_gemma_lifespan_exception_restores_owned_renderer(self):
+        from types import SimpleNamespace as NS
+        from unittest.mock import patch
+        async def original(request):return None
+        handler=NS(render_chat_request=original)
+        application=NS(state=NS(openai_serving_chat=handler,engine_client=None))
+        async def app(scope,receive,send):
+            await send({'type':'lifespan.startup.complete'})
+            self.assertIsNot(handler.render_chat_request,original)
+            raise RuntimeError('synthetic lifespan failure')
+        owner=self.middleware(app)
+        owner.model_adapter=NS(description={'prefix_renderer':'stock'})
+        owner.gemma_contexts={}
+        async def start(*args):return None
+        async def receive():return None
+        async def send(event):pass
+        with patch('aimee_vllm.composition.metadata.version',return_value='0.30.0'), \
+             patch('aimee_vllm.control.start',start):
+            with self.assertRaisesRegex(RuntimeError,'synthetic lifespan'):
+                await owner({'type':'lifespan','app':application},receive,send)
+        self.assertIs(handler.render_chat_request,original)
+        self.assertFalse(hasattr(handler,'_aimee_composition_owner'))
+
+    async def test_gemma_verified_prefix_reaches_renderer_and_bad_requests_release_capacity(self):
+        from pathlib import Path
+        import tempfile
+        from types import SimpleNamespace as NS
+        from unittest.mock import patch
+        from test_composition import StockTokenizer
+        from aimee_vllm.composition import prepare_contract, install_renderer, uninstall_renderer
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            for name in ('tokenizer.json','tokenizer_config.json'):(root/name).write_text('{}')
+            tokenizer=StockTokenizer()
+            _,bank,contract=prepare_contract(tokenizer,root,'Approved instructions',['Fact.'])
+            seen=[]
+            broken={'value':False}
+            async def render(request):
+                text=tokenizer.apply_chat_template(request.messages,add_generation_prompt=True)
+                return request.messages,[{'type':'token','prompt_token_ids':[99] if broken['value'] else tokenizer.encode(text)}]
+            handler=NS(render_chat_request=render,create_error_response=lambda message:{'error':message})
+            async def app(scope,receive,send):
+                body=json.loads((await receive())['body'])
+                result=await handler.render_chat_request(NS(messages=body['messages'],vllm_xargs=body.get('vllm_xargs')))
+                seen.append((body,result))
+                await send({'type':'http.response.start','status':400 if isinstance(result,dict) else 200,'headers':[]})
+                await send({'type':'http.response.body','body':b'done'})
+            owner=self.middleware(app);owner.gemma_contexts={'a':contract}
+            with patch('aimee_vllm.composition.metadata.version',return_value='0.30.0'):
+                install_renderer(owner,NS(state=NS(openai_serving_chat=handler)))
+            self.addCleanup(uninstall_renderer,owner)
+            async def invoke(messages,**fields):
+                events=[]
+                async def receive():return {'type':'http.request','body':json.dumps(dict(fields,messages=messages,vllm_xargs={'aimee_publication':'a'})).encode()}
+                async def send(event):events.append(event)
+                await owner({'type':'http','method':'POST','path':'/v1/chat/completions'},receive,send)
+                return events[0]['status']
+            wrong=[{'role':'system','content':'Wrong instructions'},{'role':'user','content':'question'}]
+            self.assertEqual(await invoke(wrong),400)
+            self.assertEqual(seen,[])
+            self.assertTrue(owner.ledger.acquire(2,10));owner.ledger.release(2)
+            messages=[{'role':'system','content':'Approved instructions'},{'role':'user','content':'question with <bos> literal'}]
+            self.assertEqual(await invoke(messages),200)
+            self.assertEqual(seen[-1][0]['messages'],messages)
+            expected=tokenizer.encode(tokenizer.apply_chat_template([{'role':'system','content':'Approved instructions\n\nAuthoritative memory:\nFact.'}]+messages[1:],add_generation_prompt=True))
+            self.assertEqual(bank+seen[-1][1][1][0]['prompt_token_ids'],expected)
+            self.assertTrue(owner.ledger.acquire(2,10));owner.ledger.release(2)
+            broken['value']=True
+            self.assertEqual(await invoke(messages),400)
+            self.assertTrue(owner.ledger.acquire(2,10));owner.ledger.release(2)
+            self.assertFalse(owner.poisoned)
+
     async def test_hybrid_context_is_verified_before_reservation_and_stripped_once(self):
         import hashlib
         received=[]
