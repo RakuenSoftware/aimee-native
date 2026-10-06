@@ -35,7 +35,21 @@ class CliTests(unittest.TestCase):
                 path.write_text(json.dumps(dict(base,serve={'cpu_offload_gb':value})))
                 with self.assertRaisesRegex(ValueError,'cpu_offload'):command(path)
             path.write_text(json.dumps(dict(base,gguf_weights='/models/qwen.gguf')))
-            with self.assertRaisesRegex(ValueError,'matching BF16'):command(path)
+            with self.assertRaisesRegex(ValueError,'bound Q4_K_M'):command(path)
+
+    def test_hybrid_q4_uses_checksum_bound_loader_with_no_cpu_offload(self):
+        from unittest.mock import patch
+        with tempfile.TemporaryDirectory() as directory,patch('torch.cuda.get_device_capability',return_value=(11,0)):
+            path=pathlib.Path(directory)/'config.json'
+            config={'adapter':'qwen3-8-27b','model':'model','library':'library','catalog':'catalog','recipient':'fixture',
+                    'host_memory_budget':1024,'enable_hybrid_native':True,'model_revision':'a'*40,
+                    'gguf_weights':'/checkpoint.gguf','gguf_weights_sha256':'b'*64,'gguf_weight_profile':'Q4_K_M'}
+            path.write_text(json.dumps(config));args,env=command(path)
+            self.assertNotIn('--cpu-offload-gb',args)
+            self.assertEqual(json.loads(args[args.index('--model-loader-extra-config')+1]),
+                             {'gguf_weights':'/checkpoint.gguf','gguf_weights_sha256':'b'*64})
+            self.assertEqual(args[args.index('--quantization')+1],'gguf')
+            self.assertEqual(env['VLLM_GGUF_USE_CUDA'],'0')
 
     def test_quantization_is_explicit_and_offline_capture_cannot_serve_http(self):
         with tempfile.TemporaryDirectory() as tmp:
