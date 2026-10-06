@@ -187,22 +187,9 @@ fn local_model_fingerprint(model: &std::path::Path, gguf: Option<&str>) -> Resul
 }
 fn connect_from_aimee(root: &std::path::Path, home: &std::path::Path) -> Result<()> {
     let credentials = read_aimee_credentials(home)?;
-    let http = if let Some(pin) = credentials.ca.as_deref() {
-        reqwest::blocking::Client::builder()
-            .https_only(true)
-            .redirect(reqwest::redirect::Policy::none())
-            .connect_timeout(Duration::from_secs(15))
-            .timeout(Duration::from_secs(3600))
-            .tls_built_in_root_certs(false)
-            .danger_accept_invalid_hostnames(true)
-            .add_root_certificate(reqwest::Certificate::from_pem(pin)?)
-            .identity(reqwest::Identity::from_pem(&credentials.identity)?)
-            .build()?
-    } else {
-        tls_client(None, Some(&credentials.identity), Some(&credentials.endpoint), None)?
-    };
     native::primitive::fetch_with_token(
-        &http,
+        &tls_client(credentials.ca.as_deref(), Some(&credentials.identity),
+            Some(&credentials.endpoint), None)?,
         &credentials.endpoint, &credentials.token, "native memory connection", 64,
     )?;
     native::connect_with_thinclient(root, &credentials.endpoint, home)?;
@@ -520,7 +507,7 @@ fn run() -> Result<()> {
                     // Keep the venv interpreter path: canonicalizing its symlink
                     // switches to the base Python and loses installed extensions.
                     let mut command = vec![PathBuf::from(&python).to_string_lossy().into_owned(),
-                    "-c".into(), "from aimee_vllm.native_compiler._c5 import main; main()".into(),
+                    "-c".into(), "from aimee_vllm.native_compiler.local_compile import main; main()".into(),
                     "--model".into(), model.to_string_lossy().into_owned(),
                     "--max-memory-tokens".into(), limit_tokens.to_string()];
                     if let Some(gguf) = settings["gguf_weights"].as_str() {
@@ -530,20 +517,12 @@ fn run() -> Result<()> {
                 },
             };
             let model_config: serde_json::Value = serde_json::from_slice(&fs::read(model.join("config.json"))?)?;
-            // Bind the release to the negative-position preparation profile
-            // validated for both supported model families. The revision also
-            // prevents reuse of any prior nonnegative Qwen bank.
-            let position_policy = "negative";
-            let encoding_revision = if model_config["model_type"] == "qwen3_5" {
-                "local-primitive-negative-v2"
-            } else {
-                "local-primitive-v1"
-            };
+            let position_policy = if model_config["model_type"] == "qwen3_5" { "nonnegative" } else { "negative" };
             let local = native::local_delivery::Settings {
                 compiler,
                 model_config_sha256:profile.model_config_sha256.clone(),
                 runtime_profile:format!("{}-vllm", native_model),
-                encoding_revision:encoding_revision.into(),
+                encoding_revision:"local-primitive-v1".into(),
                 position_policy:position_policy.into(),
                 limit_tokens,
             };
@@ -559,7 +538,7 @@ fn run() -> Result<()> {
             let runtime_config = root.join("runtime.json");
             native::atomic(&runtime_config, &serde_json::to_vec(&serving)?)?;
             let mut cmd = Command::new(python);
-            cmd.args(["-c", "from aimee_vllm._p9 import main; main()", "--config"]).arg(runtime_config).env_remove("AIMEE_TOKEN");
+            cmd.args(["-c", "from aimee_vllm.cli import main; main()", "--config"]).arg(runtime_config).env_remove("AIMEE_TOKEN");
             return native::runtime::supervise(&root, &mut cmd, &defaults.native_model,
                 defaults.disk_budget, connection.memory_root.join("selection.sock"));
         }

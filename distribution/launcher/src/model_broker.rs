@@ -96,6 +96,24 @@ fn select(connection: &Config, serving: &Value, query: &str) -> Result<Value> {
     outcome
 }
 
+fn answer(connection: &Config, serving: &Value, line: &str) -> Result<Value> {
+    let result = (|| -> Result<Value> {
+        ensure!(line.len() <= 131072 && line.ends_with('\n'), "invalid selection request");
+        let request: Value = serde_json::from_str(line)?;
+        ensure!(request.as_object().is_some_and(|object| object.len() == 1), "invalid selection fields");
+        select(connection, serving, request["query"].as_str().context("missing query")?)
+    })();
+    match result {
+        Ok(response) => Ok(response),
+        Err(_) => {
+            let ctl = Path::new(serving["control_socket"].as_str().context("control socket missing")?);
+            let catalog = Path::new(serving["catalog"].as_str().context("catalog missing")?);
+            crate::broker::retire_unavailable(ctl, catalog)?;
+            Ok(json!({"error":"authorized native selection unavailable"}))
+        }
+    }
+}
+
 pub fn serve(connection: Config, serving_path: &Path) -> Result<()> {
     let serving: Value = serde_json::from_slice(&fs::read(serving_path)?)?;
     let socket = Path::new(serving["selection_socket"].as_str().context("selection socket missing")?);
@@ -107,16 +125,64 @@ pub fn serve(connection: Config, serving_path: &Path) -> Result<()> {
         let mut stream = incoming?;
         stream.set_read_timeout(Some(Duration::from_secs(10)))?;
         stream.set_write_timeout(Some(Duration::from_secs(10)))?;
-        let response = (|| -> Result<Value> {
-            let mut line = String::new();
-            BufReader::new(stream.try_clone()?).take(131073).read_line(&mut line)?;
-            ensure!(line.len() <= 131072 && line.ends_with('\n'), "invalid selection request");
-            let request: Value = serde_json::from_str(&line)?;
-            ensure!(request.as_object().is_some_and(|object| object.len() == 1), "invalid selection fields");
-            select(&connection, &serving, request["query"].as_str().context("missing query")?)
-        })().unwrap_or_else(|_| json!({"error":"authorized native selection unavailable"}));
+        let mut line = String::new();
+        BufReader::new(stream.try_clone()?).take(131073).read_line(&mut line)?;
+        let response = answer(&connection, &serving, &line)?;
         serde_json::to_writer(&mut stream, &response)?;
         stream.write_all(b"\n")?;
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn dedicated_dispatch_retires_catalog_when_source_read_fails() {
+        let tmp = tempfile::tempdir().unwrap();
+        let ctl = tmp.path().join("control.sock");
+        let catalog = tmp.path().join("catalog.json");
+        fs::write(&catalog, serde_json::to_vec(&json!({
+            "recipient":"recipient", "model_config_sha256":"model",
+            "authorized_view":"old", "selected_publication":"old",
+            "publications":{"old":{"root":"retained"}}, "selections":[]
+        })).unwrap()).unwrap();
+        let serving = json!({"recipient":"recipient","control_socket":ctl,"catalog":catalog});
+        let connection = Config {
+            schema:1, endpoint:"https://127.0.0.1:1".into(),
+            token_file:tmp.path().join("absent-token"), memory_root:tmp.path().into(),
+            ca_file:None, client_identity:None, connect_address:None,
+            thinclient_home:Some(tmp.path().join("absent-profile"))
+        };
+        let listener = UnixListener::bind(&ctl).unwrap();
+        let worker = std::thread::spawn(move || {
+            let (mut stream, _) = listener.accept().unwrap();
+            let mut line = String::new();
+            BufReader::new(stream.try_clone().unwrap()).read_line(&mut line).unwrap();
+            assert_eq!(serde_json::from_str::<Value>(&line).unwrap(), json!({"op":"withdraw"}));
+            writeln!(stream, "{}", json!({"state":"withdrawn","generation":8})).unwrap();
+        });
+        let response = answer(&connection, &serving, "{\"query\":\"badge\"}\n").unwrap();
+        worker.join().unwrap();
+        assert!(response.get("error").is_some());
+        let retired: Value = serde_json::from_slice(&fs::read(catalog).unwrap()).unwrap();
+        assert_eq!(retired["publications"], json!({}));
+        assert!(retired["selected_publication"].is_null());
+        assert!(retired.get("authorized_view").is_none());
+        assert_eq!(retired["recipient"], "recipient");
+    }
+    #[test]
+    fn dedicated_dispatch_fails_supervision_when_withdrawal_cannot_be_acknowledged() {
+        let tmp = tempfile::tempdir().unwrap();
+        let serving = json!({"recipient":"recipient",
+            "control_socket":tmp.path().join("missing-control.sock"),
+            "catalog":tmp.path().join("catalog.json")});
+        let connection = Config {
+            schema:1, endpoint:"https://127.0.0.1:1".into(),
+            token_file:tmp.path().join("absent-token"), memory_root:tmp.path().into(),
+            ca_file:None, client_identity:None, connect_address:None,
+            thinclient_home:Some(tmp.path().join("absent-profile"))
+        };
+        assert!(answer(&connection, &serving, "{\"query\":\"badge\"}\n").is_err());
+    }
 }

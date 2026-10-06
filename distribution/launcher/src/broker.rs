@@ -76,6 +76,24 @@ fn select_current(http: &reqwest::blocking::Client, connection: &Config, query: 
     }
 }
 
+pub(crate) fn retire_unavailable(control_path: &Path, catalog: &Path) -> Result<()> {
+    // A failed authority refresh cannot leave a warm grant eligible. Withdraw
+    // first so in-flight captures are superseded before changing the catalog.
+    // If withdrawal fails, propagate the error: the supervisor stops the worker
+    // when this owned broker exits rather than serving an unretired grant.
+    control(control_path, json!({"op":"withdraw"}))?;
+    let mut value: Value = serde_json::from_slice(&fs::read(catalog)?)?;
+    value["publications"] = json!({});
+    value["selections"] = json!([]);
+    if value.get("selected_publication").is_some() {
+        value["selected_publication"] = Value::Null;
+    }
+    if let Some(fields) = value.as_object_mut() {
+        fields.remove("authorized_view");
+    }
+    atomic(catalog, &serde_json::to_vec(&value)?)
+}
+
 pub fn serve(
     http: reqwest::blocking::Client,
     connection: Config,
@@ -245,10 +263,14 @@ pub fn serve(
                 json!({"publication":offer.key,"catalog_digest":hex::encode(Sha256::digest(&bytes))}),
             )
         })();
-        let response = result.unwrap_or_else(|error| {
-            eprintln!("native selection unavailable: {error:#}");
-            json!({"error":"native_selection_unavailable"})
-        });
+        let response = match result {
+            Ok(response) => response,
+            Err(error) => {
+                eprintln!("native selection unavailable: {error:#}");
+                retire_unavailable(ctl, catalog)?;
+                json!({"error":"native_selection_unavailable"})
+            }
+        };
         // Disconnects do not kill the host broker or undo a completed installation.
         let _ = serde_json::to_writer(&mut s, &response);
         let _ = s.write_all(b"\n");
@@ -259,6 +281,33 @@ pub fn serve(
 #[cfg(test)]
 mod health_tests {
     use super::*;
+    #[test]
+    fn failed_authority_refresh_retires_warm_catalog_after_withdrawal() {
+        let tmp = tempfile::tempdir().unwrap();
+        let path = tmp.path().join("control.sock");
+        let catalog = tmp.path().join("catalog.json");
+        fs::write(&catalog, serde_json::to_vec(&json!({
+            "recipient":"recipient", "model_config_sha256":"model",
+            "authorized_view":"old", "publications":{"old":{"root":"retained"}},
+            "selections":[{"publication":"old"}]
+        })).unwrap()).unwrap();
+        let listener = UnixListener::bind(&path).unwrap();
+        let worker = std::thread::spawn(move || {
+            let (mut stream, _) = listener.accept().unwrap();
+            let mut line = String::new();
+            BufReader::new(stream.try_clone().unwrap()).read_line(&mut line).unwrap();
+            assert_eq!(serde_json::from_str::<Value>(&line).unwrap(), json!({"op":"withdraw"}));
+            writeln!(stream, "{}", json!({"state":"withdrawn","generation":7})).unwrap();
+        });
+        retire_unavailable(&path, &catalog).unwrap();
+        worker.join().unwrap();
+        let retired: Value = serde_json::from_slice(&fs::read(catalog).unwrap()).unwrap();
+        assert_eq!(retired["recipient"], "recipient");
+        assert_eq!(retired["model_config_sha256"], "model");
+        assert_eq!(retired["publications"], json!({}));
+        assert_eq!(retired["selections"], json!([]));
+        assert!(retired.get("authorized_view").is_none());
+    }
     #[test]
     fn renewed_lease_must_name_the_same_publication() {
         let original = delivery::Offer {
