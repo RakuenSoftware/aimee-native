@@ -36,7 +36,7 @@ def load_binding(contract):
 def shared_source(origin: Path, module: str) -> str:
     body = (origin / (module + '.py')).read_text().replace('aimee_vllm', 'aimee_native_runtime')
     if module == 'compatibility':
-        body = body.replace("if not (Version('0.30.0') <= v < Version('0.31')):", "if v != Version('0.30.0'):").replace('supports the vLLM 0.30.x plugin interface', 'release requires the validated vLLM 0.30.0 interface')
+        body = body.replace("if not (Version('0.30.0') <= v < Version('0.31')):", "if Version(v.public) != Version('0.30.0'):").replace('supports the vLLM 0.30.x plugin interface', 'release requires the validated vLLM 0.30.0 interface')
     if module == 'model_adapter':
         body = body.replace('def __init__(self, config, library=None):', 'def __init__(self, config, library=None, binding=None):')
         body = body.replace('        from ._model import BOUND_ADAPTER',

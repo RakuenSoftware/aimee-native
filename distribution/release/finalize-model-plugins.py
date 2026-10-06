@@ -6,7 +6,7 @@ from email.parser import BytesParser
 import zipfile
 
 
-def finalize(wheels,dependency,output,build_tag='2',notices=None):
+def finalize(wheels,dependency,output,build_tag='2',notices=None,models=('gemma4-12b','gemma4-26b','qwen3-8-27b')):
     output.mkdir(parents=True,exist_ok=False)
     dependency_bytes=dependency.read_bytes()
     with zipfile.ZipFile(dependency) as z:
@@ -54,10 +54,11 @@ def finalize(wheels,dependency,output,build_tag='2',notices=None):
             shared_runtime=entry
         else:
             reports.append(entry)
-    assert len(reports)==3
+    assert len(reports)==len(models)
+    assert {entry["wheel"].split("-")[0] for entry in reports} == {"aimee_"+name.replace("-","_") for name in models}
     report={'status':'passed','scope':__doc__,'plugins':reports,'shared_runtime':shared_runtime,'gguf_dependency':{'file':dependency.name,'sha256':hashlib.sha256(dependency_bytes).hexdigest(),'bytes':len(dependency_bytes)}}
     (output/'finalization.json').write_text(json.dumps(report,indent=2)+'\n')
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--wheels',type=Path,required=True);p.add_argument('--dependency',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--notices',type=Path);a=p.parse_args();finalize(a.wheels,a.dependency,a.output,notices=a.notices)
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--wheels',type=Path,required=True);p.add_argument('--dependency',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--notices',type=Path);p.add_argument('--models',nargs='+',default=['gemma4-12b','gemma4-26b','qwen3-8-27b']);a=p.parse_args();finalize(a.wheels,a.dependency,a.output,notices=a.notices,models=a.models)

@@ -1,7 +1,8 @@
 # Dedicated model plugins
 
-The release has three model-specific plugins. All three depend on exactly the
-same `aimee-native-runtime` version; installing a plugin installs that dependency.
+Five model-specific plugins use exactly the same `aimee-native-runtime` version;
+installing a plugin installs that dependency. The two small-model plugins are
+0.3.3 release candidates, with the qualified hardware scope described below.
 Install the plugin for your model:
 
 | Model | Installable package | Command |
@@ -9,8 +10,10 @@ Install the plugin for your model:
 | Gemma4 12B | `aimee-gemma4-12b` | `aimee-gemma4-12b` |
 | Gemma4 26B A4B | `aimee-gemma4-26b` | `aimee-gemma4-26b` |
 | Qwen 3.8 27B | `aimee-qwen3-8-27b` | `aimee-qwen3-8-27b` |
+| Gemma4 E2B | `aimee-gemma4-e2b` | `aimee-gemma4-e2b` |
+| Gemma4 E4B | `aimee-gemma4-e4b` | `aimee-gemma4-e4b` |
 
-The shared Linux x86-64 / CPython 3.12 candidates are in
+The original three shared Linux x86-64 / CPython 3.12 candidates are in
 [`../release/candidates/shared-model-plugins-0.3.2-20261004`](../release/candidates/shared-model-plugins-0.3.2-20261004).
 These wheels require glibc 2.39 or newer and exactly vLLM 0.30.0. Their
 [recorded execution gates pass on the RTX 5080 host](../../docs/validation/native-memory-shared-runtime-20261004.md). From the release wheel directory:
@@ -83,8 +86,10 @@ than defining model geometry or manipulating stock rotary caches. Common Python
 code exists only where vLLM/Torch/Triton require framework integration; Cython
 compilation does not count as a Rust implementation.
 
-Build all three with `distribution/release/build-model-plugins.py` and audit them
-with `distribution/release/audit-model-plugins.py`. The private builder needs a
+Build all five with `distribution/release/build-model-plugins.py`. For the full
+set, pass `--models gemma4-12b gemma4-26b qwen3-8-27b gemma4-e2b gemma4-e4b`
+to the finalizer and wheel auditor. Their default selection preserves the original
+three-model release workflow. The private builder needs a
 pinned complete Rust source snapshot, its lockfile/native bridge, Cython and the
 C++ toolchain. Clients need the resulting wheel and supported vLLM runtime.
 
@@ -92,3 +97,35 @@ See [the adapter ownership design](../../docs/proposals/pending/model-dedicated-
 for the implementation boundary and validation requirements. Earlier published
 shared-plugin releases remain historical artifacts; their validation does not
 establish execution coverage for these new packages.
+
+## Small-model 0.3.3 release candidates
+
+E2B and E4B each have a dedicated Rust adapter and use the existing shared runtime
+and thin CLI/registration/ABI bindings. Rust supplies the shared-K/V layer-source
+mapping. The model binding observes upstream K/V tensors for shared layers and
+maps the small models' per-layer GGUF input weights. Only their replicated
+input gate/projection matrices are materialized as BF16.
+
+The [0.3.3 candidate directory](../release/candidates/model-plugins-0.3.3-20261006)
+contains all five model wheels and the corrected shared runtime. Every model
+pins `aimee-native-runtime==0.3.3`. The builder defaults to 0.3.3. These unsigned
+candidates preserve every executable payload byte and permission from the
+qualified 0.3.2 inputs; version metadata, runtime dependency pins and RECORD
+entries are updated. The promotion report records that continuity. Historical
+0.3.2 evidence retains its original version, paths and hashes.
+
+[Qualification and installed-candidate checks](../../docs/validation/gemma4-small-20261006/README.md)
+cover both small adapters on CPU, RTX 5080 and 7900 XTX. Each small model passed
+27/27 extended native lifecycle checks on CUDA and ROCm with the corrected shared
+runtime. The 240-token memory spans two 128-token prefill chunks. The checks
+include correction, retirement, streaming, concurrency, real source outage and
+recovery, recipient rejection and server revocation. The release interface
+accepts the pinned public vLLM version 0.30.0 with vendor suffixes such as
+`+rocm723`; other public versions are rejected.
+
+Larger native smokes passed 18/18 each: Gemma4 12B Q8_0 and 26B Q3_K_M on one
+7900 XTX, and Qwen 27B FP8 with 18 GiB CPU offload on RTX 5080. The current
+enrolled launcher/capture qualifies one GPU. The installed gfx1100 stack rejects
+Qwen's required FP8 capture arithmetic, so the CUDA result does not qualify that
+path on the AMD cards. Signing, manifest inclusion and published-release
+installation remain release gates.

@@ -1,16 +1,18 @@
-#[cfg(any(all(feature="adapter-gemma4-12b",feature="adapter-gemma4-26b"),all(feature="adapter-gemma4-12b",feature="adapter-qwen3-8-27b"),all(feature="adapter-gemma4-26b",feature="adapter-qwen3-8-27b")))]
+#[cfg(any(all(feature="adapter-gemma4-12b",feature="adapter-gemma4-26b"),all(feature="adapter-gemma4-12b",feature="adapter-qwen3-8-27b"),all(feature="adapter-gemma4-12b",feature="adapter-gemma4-e2b"),all(feature="adapter-gemma4-12b",feature="adapter-gemma4-e4b"),all(feature="adapter-gemma4-26b",feature="adapter-qwen3-8-27b"),all(feature="adapter-gemma4-26b",feature="adapter-gemma4-e2b"),all(feature="adapter-gemma4-26b",feature="adapter-gemma4-e4b"),all(feature="adapter-qwen3-8-27b",feature="adapter-gemma4-e2b"),all(feature="adapter-qwen3-8-27b",feature="adapter-gemma4-e4b"),all(feature="adapter-gemma4-e2b",feature="adapter-gemma4-e4b")))]
 compile_error!("A release library contains exactly one model adapter");
-// Three dedicated model adapters. Shared code here is ABI plumbing only.
-#[cfg(any(feature="adapter-gemma4-12b", not(any(feature="adapter-gemma4-12b",feature="adapter-gemma4-26b",feature="adapter-qwen3-8-27b"))))]
+#[cfg(any(feature="adapter-gemma4-12b", not(any(feature="adapter-gemma4-12b",feature="adapter-gemma4-26b",feature="adapter-qwen3-8-27b",feature="adapter-gemma4-e2b",feature="adapter-gemma4-e4b"))))]
 pub mod gemma4_12b;
-#[cfg(any(feature="adapter-gemma4-26b", not(any(feature="adapter-gemma4-12b",feature="adapter-gemma4-26b",feature="adapter-qwen3-8-27b"))))]
+#[cfg(any(feature="adapter-gemma4-26b", not(any(feature="adapter-gemma4-12b",feature="adapter-gemma4-26b",feature="adapter-qwen3-8-27b",feature="adapter-gemma4-e2b",feature="adapter-gemma4-e4b"))))]
 pub mod gemma4_26b;
-#[cfg(any(feature="adapter-qwen3-8-27b", not(any(feature="adapter-gemma4-12b",feature="adapter-gemma4-26b",feature="adapter-qwen3-8-27b"))))]
+#[cfg(any(feature="adapter-qwen3-8-27b", not(any(feature="adapter-gemma4-12b",feature="adapter-gemma4-26b",feature="adapter-qwen3-8-27b",feature="adapter-gemma4-e2b",feature="adapter-gemma4-e4b"))))]
 pub mod qwen3_8_27b;
+#[cfg(any(feature="adapter-gemma4-e2b", not(any(feature="adapter-gemma4-12b",feature="adapter-gemma4-26b",feature="adapter-qwen3-8-27b",feature="adapter-gemma4-e2b",feature="adapter-gemma4-e4b"))))]
+pub mod gemma4_e2b;
+#[cfg(any(feature="adapter-gemma4-e4b", not(any(feature="adapter-gemma4-12b",feature="adapter-gemma4-26b",feature="adapter-qwen3-8-27b",feature="adapter-gemma4-e2b",feature="adapter-gemma4-e4b"))))]
+pub mod gemma4_e4b;
 mod abi;
 mod publication;
-
-#[cfg(all(test,not(any(feature="adapter-gemma4-12b",feature="adapter-gemma4-26b",feature="adapter-qwen3-8-27b"))))]
+#[cfg(all(test,not(any(feature="adapter-gemma4-12b",feature="adapter-gemma4-26b",feature="adapter-qwen3-8-27b",feature="adapter-gemma4-e2b",feature="adapter-gemma4-e4b"))))]
 mod tests {
     use super::*;
     use serde_json::{Value,json};
@@ -58,4 +60,32 @@ mod tests {
             let mut invalid=input.clone();invalid["segments"][1]=invalid["segments"][0].clone();assert!(request(&invalid).is_err());
         }
     }
+    #[test]
+    fn small_adapters_reject_all_other_models_and_changed_architecture() {
+        let names=["gemma4-12b","gemma4-26b","qwen3-8-27b","gemma4-e2b","gemma4-e4b"];
+        for (target,validate) in [("gemma4-e2b",gemma4_e2b::validate as fn(&Value)->anyhow::Result<()>),("gemma4-e4b",gemma4_e4b::validate)] {
+            for name in names { assert_eq!(validate(&config(name)).is_ok(),name==target,"{target} admitted {name}"); }
+            for key in ["num_kv_shared_layers","hidden_size_per_layer_input","sliding_window","num_key_value_heads"] {
+                let mut bad=config(target); bad["text_config"][key]=json!(999); assert!(validate(&bad).is_err(),"changed {key} admitted");
+            }
+        }
+    }
+    #[test]
+    fn small_adapters_validate_complete_banks_and_shared_layer_sources() {
+        for (name,request,layers,heads,period,sources) in [("gemma4-e2b",gemma4_e2b::request as fn(&Value)->anyhow::Result<Value>,35,1,5,gemma4_e2b::kv_source_layers()),("gemma4-e4b",gemma4_e4b::request,42,2,6,gemma4_e4b::kv_source_layers())] {
+            let c=config(name); let types=c["text_config"]["layer_types"].as_array().unwrap();
+            let shared=c["text_config"]["num_kv_shared_layers"].as_u64().unwrap() as usize;
+            for (layer,source) in sources.into_iter().enumerate() {
+                assert!(source<layers-shared || source==layer); assert_eq!(types[layer],types[source]);
+                if layer<layers-shared {assert_eq!(source,layer);}
+            }
+            let segments:Vec<_>=(0..layers).flat_map(|i| [false,true].map(move |value|json!({"layer":i,"value":value,"heads":heads,"width":if i%period==period-1 {512}else{256},"positions":82}))).collect();
+            let input=json!({"config":c,"op":"segments","positions":82,"segments":segments}); request(&input).unwrap();
+            for bad in ["heads","width","positions"] {let mut invalid=input.clone();invalid["segments"][0][bad]=json!(999); assert!(request(&invalid).is_err());}
+            let mut invalid=input.clone();invalid["segments"][1]=invalid["segments"][0].clone();assert!(request(&invalid).is_err());
+            let mut invalid=input.clone();invalid["segments"].as_array_mut().unwrap().pop();assert!(request(&invalid).is_err());
+            assert_eq!(request(&json!({"config":config(name),"op":"positions","positions":[[0,1,10]],"ranges":[[0,2,82],[2,3,0]]})).unwrap(),json!([[82,83,10]]));
+        }
+    }
+
 }

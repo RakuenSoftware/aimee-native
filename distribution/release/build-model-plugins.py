@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build three separately installable model plugins with isolated Rust libraries.
+"""Build separately installable model plugins with isolated Rust libraries.
 
 The Rust source directory supplies the pinned manifest, lockfile and native ABI
 bridge. Repository adapter sources override that private build snapshot.
@@ -22,6 +22,8 @@ MODELS = {
     "gemma4-12b": "aimee_gemma4_12b",
     "gemma4-26b": "aimee_gemma4_26b",
     "qwen3-8-27b": "aimee_qwen3_8_27b",
+    "gemma4-e2b": "aimee_gemma4_e2b",
+    "gemma4-e4b": "aimee_gemma4_e4b",
 }
 
 
@@ -103,6 +105,13 @@ def build(model, package, source, output, version):
     from .model_adapter import ModelAdapter
     ModelAdapter(config)
     from .compatibility''', 1)
+        if model in ("gemma4-e2b", "gemma4-e4b"):
+            shutil.copyfile(repo / "distribution/release/small_model_capture.py", pkg / "small_model_capture.py")
+            registration = registration.replace('    ModelAdapter(config)\n',
+                '    ModelAdapter(config)\n    from .small_model_capture import install\n    install()\n')
+            shutil.copyfile(repo / "distribution/release/small_model_gguf.py", pkg / "small_model_gguf.py")
+            registration = registration.replace('from .gguf_loader import register as register_gguf',
+                                                'from .small_model_gguf import register as register_gguf')
         (pkg / "__init__.py").write_text(registration)
         native = pkg / "native"
         native.mkdir()
@@ -127,7 +136,7 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--rust-source", type=Path, required=True)
     p.add_argument("--output", type=Path, required=True)
-    p.add_argument("--version", default="0.3.2")
+    p.add_argument("--version", default="0.3.3")
     a = p.parse_args()
     output = a.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
