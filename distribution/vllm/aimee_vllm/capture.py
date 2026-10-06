@@ -7,7 +7,7 @@ import hashlib
 import json
 from pathlib import Path
 import torch
-from .precision import runtime_profile, model_identity
+from .precision import runtime_profile, model_identity, encoder_weight_profile
 
 from .capture_session import CaptureSession, raw_tensor
 
@@ -15,14 +15,15 @@ from .capture_session import CaptureSession, raw_tensor
 
 class PrefixCapture(CaptureSession):
     def __init__(self, config, runner, tokens, context, destination):
-        if config.get('quantization')!='fp8':
-            raise RuntimeError('engine capture currently supports only FP8')
+        if config.get('quantization')!='fp8' and not config.get('gguf_weights'):
+            raise RuntimeError('engine capture requires FP8 or bound Q4_K_M GGUF')
         if config.get('offline_prefix_capture') is not True:
             raise RuntimeError('prefix capture requires an offline worker')
         if config.get('serve', {}).get('tensor_parallel_size', 1) != 1:
             raise RuntimeError('prefix capture currently requires one GPU')
         if not tokens or len(tokens) > config.get('serve', {}).get('max_model_len', 2048):
             raise ValueError('prefix token budget exceeded')
+        profile = runtime_profile(config)  # Validate the exact quantized checkpoint binding.
         from tokenizers import Tokenizer
         tokenizer = Tokenizer.from_file(str(Path(config['model'])/'tokenizer.json'))
         text = tokenizer.decode(tokens, skip_special_tokens=False)
@@ -36,6 +37,8 @@ class PrefixCapture(CaptureSession):
         self.attention, self.recurrent, self.hooks = {}, {}, []
         self.request = None
         c = json.loads((Path(config['model'])/'config.json').read_bytes())
+        if profile and profile['quantization']=='gguf' and c.get('quantization_config'):
+            raise RuntimeError('GGUF capture requires an unquantized HF configuration')
         self.architecture = c.get('text_config', c)
         from vllm.model_executor.layers.mamba.gdn.qwen_gdn_linear_attn import QwenGatedDeltaNetAttention
         from vllm.model_executor.layers.mamba.mamba_utils import is_conv_state_dim_first
@@ -104,7 +107,7 @@ class PrefixCapture(CaptureSession):
         spec = {'schema': 1, 'model': model, 'key': key, 'architecture': c,
                 'positioning': 'native-prefix-absolute-v1', 'attention_index_sha256': digest(index_raw),
                 'model_config_sha256': digest(config), 'model_revision': self.config['model_revision'],
-                'tokenizer_sha256': digest(tokenizer), 'encoder_weight_profile': 'vllm-fp8' if profile else 'bf16',
+                'tokenizer_sha256': digest(tokenizer), 'encoder_weight_profile': encoder_weight_profile(profile),
                 'runtime_profile': profile, 'encoding': 'system-message',
                 'system_context_sha256': digest(self.context.strip().encode()),
                 'recurrent': {'version': 1, 'bytes': len(recurrent), 'sha256': rnn_digest,

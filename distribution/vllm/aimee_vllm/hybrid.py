@@ -17,20 +17,22 @@ def validate_model_identity(spec, model_path, revision, runtime_config=None):
     root=Path(model_path)
     config=(root/'config.json').read_bytes()
     tokenizer=(root/'tokenizer.json').read_bytes()
-    from .precision import runtime_profile,model_identity
+    from .precision import runtime_profile,model_identity,encoder_weight_profile
     profile=runtime_profile(runtime_config or {})
-    if profile:
+    if profile and profile['quantization']=='fp8':
         quantized=json.loads(config).get('quantization_config',{})
         if (quantized.get('quant_method')!='fp8' or quantized.get('activation_scheme')!='dynamic'
             or quantized.get('weight_block_size') is not None):
             raise RuntimeError('unsupported hybrid FP8 checkpoint arithmetic')
+    if profile and profile['quantization']=='gguf' and json.loads(config).get('quantization_config'):
+        raise RuntimeError('GGUF capture requires an unquantized HF configuration')
     expected=model_identity(config,tokenizer,revision,profile)
     if spec.get('runtime_profile')!=profile:
         raise RuntimeError('hybrid serving arithmetic profile mismatch')
     if (spec.get('model_revision')!=revision or spec['model']!=expected
         or spec.get('tokenizer_sha256')!=hashlib.sha256(tokenizer).hexdigest()
         or spec['model_config_sha256']!=hashlib.sha256(config).hexdigest()
-        or spec['encoder_weight_profile']!=('vllm-fp8' if profile else 'bf16')):
+        or spec['encoder_weight_profile']!=encoder_weight_profile(profile)):
         raise RuntimeError('hybrid checkpoint/revision/tokenizer mismatch')
 
 

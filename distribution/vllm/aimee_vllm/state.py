@@ -79,7 +79,8 @@ class State:
             raise RuntimeError('complete hybrid native serving disabled')
         serve=self.config.get('serve',{})
         if self.config.get('gguf_weights'):
-            raise RuntimeError('complete hybrid prefixes currently require matching BF16 weights')
+            from .precision import runtime_profile
+            runtime_profile(self.config)
         if any(serve.get(k,False) for k in ('enable_prefix_caching','async_scheduling','enable_model_compilation','v2_model_runner','enable_piecewise_graphs')):
             raise RuntimeError('complete hybrid native serving requires eager synchronous V1')
         from vllm.model_executor.layers.mamba.gdn.qwen_gdn_linear_attn import QwenGatedDeltaNetAttention

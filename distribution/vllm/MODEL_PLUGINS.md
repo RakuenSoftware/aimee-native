@@ -56,7 +56,7 @@ This enrolled path reads authorized personal memory through Aimee's native
 source endpoint. Shared organization memory requires its separate core
 authorization and selection contract.
 
-The serving config supplies local model files and memory budgets. Gemma GGUF serving also binds
+The serving config supplies local model files and memory budgets. GGUF serving also binds
 `gguf_weights`, `gguf_weights_sha256` and `gguf_weight_profile`; the supported
 GGUF loader dependency must be installed in the vLLM runtime. Memory prepared
 for a different model, checkpoint, precision or position protocol is rejected.
@@ -109,10 +109,12 @@ input gate/projection matrices are materialized as BF16.
 The [0.3.3 candidate directory](../release/candidates/model-plugins-0.3.3-20261006)
 contains all five model wheels and the corrected shared runtime. Every model
 pins `aimee-native-runtime==0.3.3`. The builder defaults to 0.3.3. These unsigned
-candidates preserve every executable payload byte and permission from the
-qualified 0.3.2 inputs; version metadata, runtime dependency pins and RECORD
-entries are updated. The promotion report records that continuity. Historical
-0.3.2 evidence retains its original version, paths and hashes.
+model candidates preserve every executable payload byte and permission from
+the qualified 0.3.2 inputs. Shared runtime build 4 adds the exact-checkpoint Q4
+native capture profile by rebuilding six modules. Build 5 replaces only its
+GGUF loader to support explicit text-only Qwen configurations. Both build reports
+record the changed executable members. The original promotion report and
+historical 0.3.2 evidence retain their versions, paths and hashes.
 
 [Qualification and installed-candidate checks](../../docs/validation/gemma4-small-20261006/README.md)
 cover both small adapters on CPU, RTX 5080 and 7900 XTX. Each small model passed
@@ -129,3 +131,27 @@ enrolled launcher/capture qualifies one GPU. The installed gfx1100 stack rejects
 Qwen's required FP8 capture arithmetic, so the CUDA result does not qualify that
 path on the AMD cards. Signing, manifest inclusion and published-release
 installation remain release gates.
+
+### Qwen Q4 on ROCm
+
+Qwen's text-only Q4_K_M GGUF uses a local `qwen3_5_text` configuration with
+`architectures: ["Qwen3_5ForCausalLM"]` and the matching tokenizer. A nested
+multimodal `qwen3_5` configuration still requires its vision projector. The loader
+does not silently convert that configuration to text-only.
+
+Bind `gguf_weights_sha256` to the actual local checkpoint, set
+`gguf_weight_profile` to `Q4_K_M` and `gguf_matrix_backend` to `triton`, and enable
+`enable_hybrid_native`. Install the pinned `vllm-gguf-plugin==0.0.5+triton` loader
+alongside the model plugin and shared runtime. The Q4 path retains eager,
+synchronous, single-GPU execution and rejects a mismatched capture profile.
+
+Use a 256 MiB native-memory device budget for the short recall fixture. Its
+complete attention/recurrent state exceeds 128 MiB even for one small record.
+This budget is separate from model weights and vLLM's KV cache. Exceeding the
+configured budget refuses admission.
+
+[Qwen's Q4 native-memory smoke](../../docs/validation/qwen-q4-rocm-20261006/README.md)
+passed cold and warm recall, warm bank reuse and unauthenticated inference
+denial on one 7900 XTX with zero CPU weight offload, using runtime 0.3.3 build 5.
+The report records the exact NAS checkpoint, tested configuration, runtime wheel
+and remaining diagnostics.
