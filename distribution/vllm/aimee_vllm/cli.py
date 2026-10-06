@@ -52,7 +52,8 @@ def command(config_path):
     if hybrid and any((prefix_caching,async_scheduling,model_compilation,v2_runner,piecewise_graphs)):
         raise ValueError('complete hybrid native serving requires eager synchronous V1 without prefix caching')
     if hybrid and config.get('gguf_weights'):
-        raise ValueError('complete hybrid prefixes currently require matching BF16 weights')
+        from .precision import runtime_profile
+        runtime_profile(config)
     offload=serve.get('cpu_offload_gb',0)
     pinned_offload=serve.get('cpu_offload_pinned_memory',True)
     disable_uva=serve.get('cpu_offload_disable_uva',False)
@@ -115,6 +116,7 @@ def command(config_path):
     if offload and disable_uva:env['VLLM_WEIGHT_OFFLOADING_DISABLE_UVA']='1'
     if config.get('gguf_weights'):
         loader = {'gguf_weights': config['gguf_weights']}
+        if hybrid:loader['gguf_weights_sha256']=config['gguf_weights_sha256']
         if config.get('mm_proj'):
             loader['mm_proj'] = config['mm_proj']
         backend = config.get('gguf_matrix_backend')

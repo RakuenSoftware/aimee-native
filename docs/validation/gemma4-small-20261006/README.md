@@ -32,8 +32,13 @@ required FP8 arithmetic; that native capture path has CUDA coverage only.
 [Candidate wheels, promotion report and audit](../../../distribution/release/candidates/model-plugins-0.3.3-20261006)
 record every input and output digest. Version promotion changes distribution
 metadata, exact shared-runtime dependency pins and RECORD entries. Every
-executable payload member and its permissions remain identical to the qualified
-input. Historical inputs are not overwritten. These are unsigned candidates;
+model executable payload member and its permissions remain identical to the
+qualified input. Shared runtime build 4 recompiles six modules for an
+exact-checkpoint Q4 native capture profile; its separate build report identifies
+the changed modules and unchanged members. Build 5 replaces its GGUF loader for
+explicit text-only Qwen configurations; [the new Q4 smoke](../qwen-q4-rocm-20261006/README.md)
+records that validation separately. Historical inputs are not overwritten.
+These are unsigned candidates;
 signing, release manifest inclusion and published installation remain required.
 
 The 0.3.3 wheels were installed on .253 and passed:

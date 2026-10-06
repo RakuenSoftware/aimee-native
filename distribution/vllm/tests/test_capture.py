@@ -11,15 +11,17 @@ from aimee_vllm.hybrid import HybridPrefix,validate_model_identity
 
 
 class CaptureTests(unittest.TestCase):
-    def test_published_attention_and_recurrent_states_round_trip_exactly(self):
-        with tempfile.TemporaryDirectory() as directory,patch('importlib.metadata.version',return_value='test'):
+    def _round_trip(self, gguf=False):
+        with tempfile.TemporaryDirectory() as directory,patch('importlib.metadata.version',return_value='test'),patch('torch.cuda.get_device_capability',return_value=(11,0)):
             root=Path(directory);model=root/'model';model.mkdir()
             c={'quantization_config':{'quant_method':'fp8','activation_scheme':'dynamic'},'layer_types':['full_attention','linear_attention'],'num_key_value_heads':2,'head_dim':3,
                'linear_num_key_heads':2,'linear_num_value_heads':4,'linear_key_head_dim':2,
                'linear_value_head_dim':3,'linear_conv_kernel_dim':4}
+            if gguf:c.pop('quantization_config')
             (model/'config.json').write_text(json.dumps(c));(model/'tokenizer.json').write_bytes(b'tokenizer')
             capture=PrefixCapture.__new__(PrefixCapture)
             capture.config={'model':str(model),'model_revision':'a'*40,'quantization':'fp8'}
+            if gguf:capture.config.update(quantization=None,gguf_weights='/checkpoint.gguf',gguf_weights_sha256='a'*64,gguf_weight_profile='Q4_K_M')
             capture.architecture=c;capture.tokens=[11,12,13,14,15];capture.context='system'
             capture.destination=root/'output';capture.attention={};capture.recurrent={}
             keys=torch.arange(30,dtype=torch.bfloat16).reshape(5,2,3);values=keys+100
@@ -36,6 +38,12 @@ class CaptureTests(unittest.TestCase):
             self.assertTrue(prefix.parts[1,'conv'].equal(conv));self.assertTrue(prefix.parts[1,'recurrent'].equal(rnn))
             validate_model_identity(prefix.spec,model,'a'*40,capture.config)
             with self.assertRaisesRegex(RuntimeError,'profile'):validate_model_identity(prefix.spec,model,'a'*40,{})
+
+    def test_fp8_states_round_trip_exactly(self):
+        self._round_trip()
+
+    def test_q4_states_round_trip_exactly(self):
+        self._round_trip(gguf=True)
 
     def test_incomplete_layers_and_capture_past_boundary_are_rejected(self):
         capture=PrefixCapture.__new__(PrefixCapture);capture.tokens=[1];capture.attention={};capture.recurrent={}

@@ -15,8 +15,18 @@ class UnifiedGGUFLoader(GGUFModelLoader):
     def __init__(self, load_config):
         extra=dict(load_config.model_loader_extra_config or {})
         self.weights=extra.pop('gguf_weights',None)
+        expected=extra.pop('gguf_weights_sha256',None)
         if self.weights is not None and not Path(self.weights).is_absolute():
             raise ValueError('certified GGUF requires a local absolute weight path')
+        if expected is not None:
+            import hashlib
+            if not self.weights or not isinstance(expected,str) or len(expected)!=64 or any(c not in '0123456789abcdef' for c in expected):
+                raise ValueError('invalid GGUF checkpoint checksum')
+            digest=hashlib.sha256()
+            with Path(self.weights).open('rb') as stream:
+                for block in iter(lambda:stream.read(8*1024*1024),b''):digest.update(block)
+            if digest.hexdigest()!=expected:
+                raise ValueError('GGUF checkpoint checksum mismatch')
         compatible=copy(load_config)
         compatible.model_loader_extra_config=extra
         super().__init__(compatible)
@@ -31,6 +41,15 @@ class UnifiedGGUFLoader(GGUFModelLoader):
 
     def _prepare_adapter(self, model_config):
         model_type=model_config.hf_config.model_type
+        if model_type=='qwen3_5_text':
+            adapter,plan=super()._prepare_adapter(model_config)
+            if plan.files.mm_proj is not None or getattr(model_config.hf_config,'vision_config',None) is not None:
+                raise RuntimeError('text-only Qwen GGUF requires a backbone without a vision projector')
+            # The upstream GGUF adapter assigns the multimodal architecture to
+            # text configs too. Keep its tensor/layout mapping, but instantiate
+            # vLLM's registered text model for a backbone-only checkpoint.
+            model_config.hf_config.architectures=['Qwen3_5ForCausalLM']
+            return adapter,plan
         if model_type in ('gemma4', 'qwen3_5'):
             # Preserve upstream MoE tensor splitting and hybrid-attention weight
             # layouts. Do not apply the Unified-only name mapping to these.
