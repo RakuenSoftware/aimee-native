@@ -152,6 +152,11 @@ The additive reviewed executor revision is `executor-manifest-r2.json`, SHA-256
 It preserves the original executor and adds exact inherited serving-config
 identity plus exclusive NAS evidence creation. Existing identical frozen inputs
 are verified and skipped; a differing existing artifact or receipt is rejected.
+The final additive executor is `executor-manifest-r3.json`, SHA-256
+`a750758d717b1a6e5855f5fe3a6e9995ceeaef46d7641e3a791ae0e88ddc3ac0`.
+It retains r2 and removes final stdout writes after artifact hashing, so the
+queue log's sealed hash remains valid. The initial passive queue was stopped
+with no children and no inference to apply this executor-only correction.
 The source freeze binds installed adapter/library, compiled candidate modules,
 config/tokenizer, GGUF weights and GGUF loader files. Six actual stock-tokenizer
 case checks and the installed binding/compiled runtime/test registration smoke
