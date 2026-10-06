@@ -173,5 +173,13 @@ class CompositionTests(unittest.IsolatedAsyncioTestCase):
         with self.assertRaisesRegex(ValueError, 'profile'):
             validate_contract({'composition':dict(contract, format='gemma-context-bound-chat-prefix-v1')}, self.config)
 
+    def test_stock_arrival_time_survives_verified_token_adjustment(self):
+        incoming = self.engine_input([{'role':'system','content':'Use memory.'}, {'role':'user','content':'Q?'}])
+        incoming['arrival_time'] = 4501.25
+        adjusted = remaining_input(incoming, self.contract)
+        self.assertEqual(adjusted['arrival_time'], 4501.25)
+        self.assertEqual(adjusted['cache_salt'], 'revision')
+        self.assertEqual(adjusted['prompt_token_ids'], incoming['prompt_token_ids'][len(self.contract['request_prefix_tokens']):])
+
 
 if __name__ == '__main__': unittest.main()

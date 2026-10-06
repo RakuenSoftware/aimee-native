@@ -94,7 +94,7 @@ def check_request(body, contract):
         raise ValueError('native system instruction context was not prepared')
 
 def remaining_input(engine_input, contract):
-    allowed = {'type', 'prompt_token_ids', 'prompt', 'cache_salt',
+    allowed = {'type', 'prompt_token_ids', 'prompt', 'cache_salt', 'arrival_time',
                'prompt_token_offsets', 'assistant_tokens_mask'}
     if (not isinstance(engine_input, dict) or engine_input.get('type') != 'token'
             or set(engine_input) - allowed

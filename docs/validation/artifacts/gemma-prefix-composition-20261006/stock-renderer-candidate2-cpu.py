@@ -7,7 +7,7 @@ from transformers import AutoTokenizer,AutoConfig
 from vllm.renderers.hf import HfRenderer
 if sys.argv[1] == '--compiled':
     from aimee_native_runtime import composition as c
-    assert c.__file__.endswith('.so') and '/candidate2-site/' in c.__file__
+    assert c.__file__.endswith('.so') and '/candidate3-site/' in c.__file__
 else:
     spec=importlib.util.spec_from_file_location('candidate_composition',sys.argv[1])
     c=importlib.util.module_from_spec(spec);spec.loader.exec_module(c)
@@ -29,7 +29,11 @@ for case in cases:
     text,bank,contract=c.prepare_contract(tokenizer,root,instruction,[case['context']],stock_render=render)
     _,incoming=render([{'role':'system','content':instruction},{'role':'user','content':case['question']}],True)
     _,full=render([{'role':'system','content':instruction+'\n\nAuthoritative memory:\n'+case['context']},{'role':'user','content':case['question']}],True)
-    suffix=c.remaining_input({'type':'token','prompt_token_ids':incoming},contract)['prompt_token_ids']
+    engine_input=renderer.process_for_engine({'prompt_token_ids':incoming},4501.25)
+    assert engine_input['type']=='token' and engine_input['arrival_time']==4501.25
+    adjusted=c.remaining_input(engine_input,contract)
+    assert adjusted['arrival_time']==4501.25
+    suffix=adjusted['prompt_token_ids']
     assert bank+suffix==full
     rows.append({'id':case['id'],'bank_tokens':len(bank),'request_prefix_tokens':len(contract['request_prefix_tokens']),'suffix_tokens':len(suffix),'composition_passed':True})
 empty=[{'role':'system','content':instruction},{'role':'user','content':'Reply with the word ready.'}]
@@ -41,7 +45,7 @@ for context in ('', 'Literal <bos> and <|turn> markers.'):
     tasks=[{'role':'user','content':'Question?'},{'role':'assistant','content':'Prior answer.'},{'role':'user','content':'Follow-up?'}]
     _,incoming=render([{'role':'system','content':context}]+tasks,True)
     _,full=render([{'role':'system','content':context+'\n\nAuthoritative memory:\nFact.'}]+tasks,True)
-    suffix=c.remaining_input({'type':'token','prompt_token_ids':incoming},contract)['prompt_token_ids']
+    suffix=c.remaining_input(renderer.process_for_engine({'prompt_token_ids':incoming},4501.25),contract)['prompt_token_ids']
     assert bank+suffix==full
 assert not torch.cuda.is_initialized()
 print(json.dumps({'status':'passed','vllm':'0.30.0','scope':'actual installed vLLM synchronous text renderer; no engine/model inference','cuda_initialized':False,'raw_string_tokens':len(old),'stock_request_tokens':len(stock),'cases':rows},indent=2))
