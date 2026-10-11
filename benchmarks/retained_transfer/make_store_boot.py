@@ -16,6 +16,8 @@ s=s.replace("short = Path('/mnt/pve/backup/aimee-lrn-ready-r' + run_suffix)","sh
 s=s.replace("    short.mkdir()", "    subprocess.run(['mount', '--make-rprivate', '/'], check=True)\n    short.mkdir()")
 s=s.replace("    script = short / 'readiness-harness.sh'", '''    # Retain the deployed-service startup and liveness checks, then expose
     # the owner socket. Omit the deterministic learning fixtures entirely.
+    harness = harness.replace('deploy server learning "$SRVHOME"', 'deploy server learning "$SRVHOME"\ndeploy server memory "$SRVHOME"')
+    harness = harness.replace('for m in config postgres aimee learning; do attach', 'for m in config postgres aimee learning memory; do attach')
     harness = harness.split('reset_learning_state() {', 1)[0]
     harness += r"""
 python3 - <<'READY'
@@ -31,11 +33,11 @@ receipt={'private_experiment_instance':True,'study':'retained-transfer-20261011-
          'namespace_controller_pid':controller,'source_commit':os.environ['STUDY_COMMIT'],
          'storage':'Dedicated NAS workspace.ext4; private mount and loopback network',
          'utc':datetime.datetime.now(datetime.timezone.utc).isoformat()}
-with (study/'canonical-store-ready.json').open('x') as out:json.dump(receipt,out,indent=2)
+with (study/('canonical-store-ready-'+os.environ['LINKED_STORE_REVISION']+'.json')).open('x') as out:json.dump(receipt,out,indent=2)
 READY
-while [ ! -f "$LINKED_STUDY_ROOT/canonical-store-stop" ]; do sleep 2; done
+while [ ! -f "$LINKED_STORE_INSTANCE/stop" ]; do sleep 2; done
 """
-    env.update(LINKED_STUDY_ROOT=str(root.parent), LINKED_NAMESPACE_PID=str(os.getpid()))
+    env.update(LINKED_STUDY_ROOT=str(root.parent), LINKED_NAMESPACE_PID=str(os.getpid()), LINKED_STORE_INSTANCE=str(root), LINKED_STORE_REVISION='r'+run_suffix)
     script = short / 'readiness-harness.sh' ''')
 s=s.replace('child.wait(timeout=600)','child.wait(timeout=43200)')
 s=s.replace("receipt['passed'] = receipt['exit_code'] == 0 and receipt.get('harness-failed.txt') == 0", "receipt['passed'] = receipt['exit_code'] == 0\n    receipt['scope'] = 'Isolated canonical store lifecycle; no learning efficacy or native result'\n    (root.parent / 'canonical-store-stopped.json').write_text(json.dumps({'namespace_pid': os.getpid(), 'exit_code': receipt['exit_code']}))")

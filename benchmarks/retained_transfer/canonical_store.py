@@ -16,17 +16,22 @@ class CanonicalStore:
         assert self.identity['data_root'].startswith('/mnt/pve/backup/aimee-experiments/retained-transfer-20261011-r1/')
         self.path=self.identity['http_socket']
         assert Path(self.path).is_socket()
-        self.ready=self.call('/v1/ready');assert self.ready['ready']
+        # Retrieval/embedding readiness is outside this exact-record study.
+        # Preserve a degraded global report and test the required operations.
+        self.ready=self.call('/v1/ready',accepted_statuses=(200,503))
         self.manifest=self.call('/v1/cli/manifest')
         encoded=json.dumps(self.manifest)
         assert 'memory.store' in encoded and 'memory.get' in encoded
-    def call(self,route,body=None):
+        self.preflight=self.admit({'family_id':'readiness-probe','source_session':'store-preflight',
+            'content':'Readiness probe, not a learned rule.',
+            'content_sha256':hashlib.sha256(b'Readiness probe, not a learned rule.').hexdigest()})
+    def call(self,route,body=None,accepted_statuses=(200,)):
         connection=UnixHTTP(self.path)
         try:
             connection.request('GET' if body is None else 'POST',route,
                 body=None if body is None else json.dumps(body),headers={'Content-Type':'application/json'})
             response=connection.getresponse();data=response.read()
-            if response.status!=200:raise RuntimeError({'status':response.status,'body':data.decode()})
+            if response.status not in accepted_statuses:raise RuntimeError({'status':response.status,'body':data.decode()})
             return json.loads(data)
         finally:connection.close()
     def admit(self,candidate):
