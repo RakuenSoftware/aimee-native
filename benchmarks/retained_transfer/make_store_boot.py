@@ -16,7 +16,7 @@ s=s.replace("short = Path('/mnt/pve/backup/aimee-lrn-ready-r' + run_suffix)","sh
 s=s.replace("    short.mkdir()", "    subprocess.run(['mount', '--make-rprivate', '/'], check=True)\n    short.mkdir()")
 s=s.replace("    script = short / 'readiness-harness.sh'", '''    # Retain the deployed-service startup and liveness checks, then expose
     # the owner socket. Omit the deterministic learning fixtures entirely.
-    harness = harness.replace('deploy server learning "$SRVHOME"', 'deploy server learning "$SRVHOME"\ndeploy server memory "$SRVHOME"')
+    harness = harness.replace('deploy server learning "$SRVHOME"', 'deploy server learning "$SRVHOME"'+chr(10)+'deploy server memory "$SRVHOME"')
     harness = harness.replace('for m in config postgres aimee learning; do attach', 'for m in config postgres aimee learning memory; do attach')
     harness = harness.split('reset_learning_state() {', 1)[0]
     harness += r"""
@@ -29,7 +29,7 @@ parent=os.getppid()
 controller=int(os.environ['LINKED_NAMESPACE_PID'])
 sock='/proc/'+str(controller)+'/root'+os.environ['AIMEE_API_ENDPOINT'][5:]
 receipt={'private_experiment_instance':True,'study':'retained-transfer-20261011-r1',
-         'data_root':str(study/'canonical-store-r1'),'http_socket':sock,
+         'data_root':os.environ['LINKED_STORE_INSTANCE'],'http_socket':sock,
          'namespace_controller_pid':controller,'source_commit':os.environ['STUDY_COMMIT'],
          'storage':'Dedicated NAS workspace.ext4; private mount and loopback network',
          'utc':datetime.datetime.now(datetime.timezone.utc).isoformat()}

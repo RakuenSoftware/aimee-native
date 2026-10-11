@@ -18,10 +18,10 @@ def main():
     root=Path(sys.argv[1]);assert str(root).startswith('/mnt/pve/backup/aimee-experiments/')
     # Gate the linked cycle on a real, isolated canonical store. Candidate
     # JSONL alone must never be presented as retained Aimee learning.
-    while not (root/'canonical-store-ready-r2.json').exists():
+    while not (root/'canonical-store-ready-r3.json').exists():
         time.sleep(15)
     from canonical_store import CanonicalStore
-    owner=CanonicalStore(root/'canonical-store-ready-r2.json')
+    owner=CanonicalStore(root/'canonical-store-ready-r3.json')
     while not (root/'calibration-gemma12b-r1/process-termination.json').exists():
         time.sleep(15)
     eligibility={};evidence={}
@@ -49,11 +49,11 @@ def main():
     # Only the input/output budget changes; no model or adapter mathematics.
     freeze={'files':{str(p.relative_to(rt)):sha(p) for p in (rt/'source').rglob('*') if p.is_file() and p.suffix in ('.py','.json')},
         'learner_export_sha256':sha(root/'fixture/learner/families.jsonl'),'max_model_len':4096,
-        'source_commit':json.loads((root/'acquisition-driver-freeze-v5.json').read_text())['commit'],
+        'source_commit':json.loads((root/'acquisition-driver-freeze-v6.json').read_text())['commit'],
         'utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'frozen_before_learner_start':True}
     with (root/'acquisition-runtime-freeze.json').open('x') as f:json.dump(freeze,f,indent=2)
-    driver_freeze=json.loads((root/'acquisition-driver-freeze-v5.json').read_text())
-    for name,digest in driver_freeze['files'].items():assert sha(root/'source-v5'/name)==digest
+    driver_freeze=json.loads((root/'acquisition-driver-freeze-v6.json').read_text())
+    for name,digest in driver_freeze['files'].items():assert sha(root/'source-v6'/name)==digest
     lock=open('/opt/jmlr-second-review-20261005/gpu-exclusive.lock','a');fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
     assert not subprocess.check_output(['nvidia-smi','--query-compute-apps=pid','--format=csv,noheader,nounits'],text=True).strip()
     sys.path.insert(0,str(rt/'source'))
