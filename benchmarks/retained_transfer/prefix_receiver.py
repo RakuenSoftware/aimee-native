@@ -8,12 +8,21 @@ import copy,hashlib,json,time
 from pathlib import Path
 
 
+def state_leaves(name,value):
+    # Modern hybrid caches index convolution/recurrent tensors by state ID.
+    # Walk every populated state rather than assuming one tensor per layer.
+    if value is None:return
+    if isinstance(value,dict):
+        for key in sorted(value,key=str):yield from state_leaves(name+'.'+str(key),value[key])
+    elif isinstance(value,(list,tuple)):
+        for index,child in enumerate(value):yield from state_leaves(name+'.'+str(index),child)
+    else:yield name,value
+
+
 def cache_tensors(cache):
     for index,layer in enumerate(cache.layers):
         for field in ('keys','values','conv_states','recurrent_states'):
-            value=getattr(layer,field,None)
-            if value is not None:
-                yield str(index)+'.'+field,value
+            yield from state_leaves(str(index)+'.'+field,getattr(layer,field,None))
 
 
 def state_identity(cache):
