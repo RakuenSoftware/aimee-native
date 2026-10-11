@@ -12,6 +12,12 @@ def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 
 def main():
     root=Path(sys.argv[1]);assert str(root).startswith('/mnt/pve/backup/aimee-experiments/')
+    # Gate the linked cycle on a real, isolated canonical store. Candidate
+    # JSONL alone must never be presented as retained Aimee learning.
+    while not (root/'canonical-store-ready.json').exists():
+        time.sleep(15)
+    from canonical_store import CanonicalStore
+    owner=CanonicalStore(root/'canonical-store-ready.json')
     while not (root/'calibration-gemma12b-r1/process-termination.json').exists():
         time.sleep(15)
     eligibility={};evidence={}
@@ -39,11 +45,11 @@ def main():
     # Only the input/output budget changes; no model or adapter mathematics.
     freeze={'files':{str(p.relative_to(rt)):sha(p) for p in (rt/'source').rglob('*') if p.is_file() and p.suffix in ('.py','.json')},
         'learner_export_sha256':sha(root/'fixture/learner/families.jsonl'),'max_model_len':4096,
-        'source_commit':json.loads((root/'acquisition-driver-freeze.json').read_text())['commit'],
+        'source_commit':json.loads((root/'acquisition-driver-freeze-v4.json').read_text())['commit'],
         'utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'frozen_before_learner_start':True}
     with (root/'acquisition-runtime-freeze.json').open('x') as f:json.dump(freeze,f,indent=2)
-    driver_freeze=json.loads((root/'acquisition-driver-freeze.json').read_text())
-    for name,digest in driver_freeze['files'].items():assert sha(root/'source-v3'/name)==digest
+    driver_freeze=json.loads((root/'acquisition-driver-freeze-v4.json').read_text())
+    for name,digest in driver_freeze['files'].items():assert sha(root/'source-v4'/name)==digest
     lock=open('/opt/jmlr-second-review-20261005/gpu-exclusive.lock','a');fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
     assert not subprocess.check_output(['nvidia-smi','--query-compute-apps=pid','--format=csv,noheader,nounits'],text=True).strip()
     sys.path.insert(0,str(rt/'source'))
@@ -62,11 +68,19 @@ def main():
                 '--training',str(root/'fixture/learner/families.jsonl'),'--expected-training-sha256',freeze['learner_export_sha256'],
                 '--out',str(root/'acquisition-r1'),'--url','http://127.0.0.1:18991','--model',serving.MODEL,'--session',session],
                 env=env,stdout=log,stderr=subprocess.STDOUT,check=True)
+        # Admission occurs while producer session A is alive; only afterwards
+        # can its process/context terminate and fresh receivers begin.
+        with (root/'records.jsonl').open('x') as records:
+            for line in (root/'acquisition-r1/proposed_records.jsonl').open():
+                admitted=owner.admit(json.loads(line))
+                records.write(json.dumps(admitted)+'\n');records.flush();os.fsync(records.fileno())
+        with (root/'canonical-store-receipt.json').open('x') as receipt:
+            json.dump({'instance':owner.identity,'ready':owner.ready,'manifest':owner.manifest,'records_sha256':sha(root/'records.jsonl')},receipt,indent=2)
         with (root/'learner-final-residency.json').open('x') as f:json.dump(serving.physical_summary(service.control({'op':'metrics'})),f,indent=2)
     finally:
         if service is not None:
             service.stop()
             with (root/'learner-process-termination.json').open('x') as f:json.dump({'pid':service.process.pid,'exit_code':service.process.poll(),
-                'end_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'canonical_admission':'pending authorized store receipt; receivers not launched'},f,indent=2)
+                'end_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'canonical_admission_complete':(root/'canonical-store-receipt.json').exists(),'receivers_launched':False},f,indent=2)
 
 if __name__=='__main__':main()
