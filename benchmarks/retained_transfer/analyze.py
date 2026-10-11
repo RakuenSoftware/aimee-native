@@ -51,6 +51,8 @@ def main():
     info={f['family_id']:f for f in families};elig=json.loads((root/'eligibility.json').read_text())
     assert elig['frozen_before_acquisition']
     eligible=set(elig['eligible_family_ids']);assert eligible<=set(info)
+    shuffle=json.loads((root/'shuffle-manifest.json').read_text())
+    assert shuffle['frozen_before_heldout_scoring']
     grouped=defaultdict(list);seen=set()
     for line in (root/'responses.jsonl').open():
         row=json.loads(line);key=(row['receiver'],row['arm'],row['repeat'],row['input_id'])
@@ -81,7 +83,7 @@ def main():
         pairs.append(('C1-fidelity','Native','Text','noninferiority'))
         for claim,arm,control,kind in pairs:
             key=model+'/'+claim;v=differences(model,arm,control);ci,draws=intervals(v,languages)
-            if claim=='C2-content' and not elig.get('shuffled_occupied_comparison_available',False):p=None
+            if claim=='C2-content' and not shuffle['primary_content_control_available']:p=None
             elif kind=='superiority':p=superiority(v)
             else:
                 p=None if draws is None else float((1+np.sum(draws-np.mean(v)>=np.mean(v)+.03))/(DRAWS+1))

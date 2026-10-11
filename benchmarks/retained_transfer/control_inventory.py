@@ -6,6 +6,7 @@ are exact first proposals. This script runs no model and changes no admission.
 import argparse,hashlib,json,os
 from pathlib import Path
 from canonical_store import CanonicalStore
+from receiver_plan import shuffled_records
 
 def rows(path):return [json.loads(x) for x in path.read_text().splitlines()]
 def main():
@@ -36,6 +37,16 @@ def main():
                     'source_session':source,'control':kind,'validation':'not used for control admission'})
                 record['canonical_source_family_id']=record['family_id'];record['family_id']=fid
                 stream.write(json.dumps(record)+'\n');stream.flush();os.fsync(stream.fileno());count[kind]+=1
+    accepted=rows(root/'records.jsonl');mapping=shuffled_records(accepted)
+    eligible=set(json.loads((root/'eligibility.json').read_text())['eligible_family_ids'])
+    admitted={x['family_id'] for x in accepted}&eligible
+    occupied=set(mapping)&eligible
+    (root/'shuffle-manifest.json').write_text(json.dumps({
+        'mapping':{f:r['family_id'] for f,r in mapping.items()},
+        'occupied_eligible_family_ids':sorted(occupied),
+        'primary_content_control_available':len(occupied)>=2 and admitted<=occupied,
+        'criterion':'Every admitted eligible family has a different same-language record; at least two occupied eligible controls.',
+        'frozen_before_heldout_scoring':True},indent=2))
     (root/'control-inventory-manifest.json').write_text(json.dumps({'passed':True,'counts':count,
         'missing':missing,'oracle_absent_from_learner':True,'producer_already_terminated':True,
         'controls_are_not_acquired_records':True,

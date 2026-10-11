@@ -67,7 +67,7 @@ def main():
     session='receiver-'+args.name+'-'+str(os.getpid())
     (out/'metadata.json').write_text(json.dumps({'session_id':session,'pid':os.getpid(),
         'start_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'receiver':args.model_id,
-        'repeat':args.repeat,'checkpoint_files':before,'execution_freeze':frozen,
+        'repeat':args.repeat-1,'process_repetition_label':args.repeat,'checkpoint_files':before,'execution_freeze':frozen,
         'dtype':'BF16','model_class':type(receiver.model).__name__,'config':receiver.model.config.to_dict(),
         'torch':torch.__version__,'gpu':torch.cuda.get_device_name(),'prefix_caching':False,
         'all_weights_cuda':True,'trainable_parameter_count':0,'no_tool_or_file_access_for_model':True,
@@ -112,7 +112,7 @@ def main():
                     frontend_ms=(time.perf_counter()-started)*1000
                     result=receiver.answer(execution_ids,key if native else None)
                     count+=1
-                    append(response_stream,dict(result,receiver=args.model_id,arm=arm,repeat=args.repeat,
+                    append(response_stream,dict(result,receiver=args.model_id,arm=arm,repeat=args.repeat-1,
                         input_id=item['id'],family_id=family['family_id'],language=family['language'],session_id=session,
                         score=int(result['output']==item['output']),expected=item['output'],
                         ttft_ms=frontend_ms+result['engine_ttft_ms'],end_to_end_ms=frontend_ms+result['engine_end_ms'],
