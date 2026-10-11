@@ -1,10 +1,10 @@
 """Exclusive RTX5080 expansion queue; all mutable output stays on dedicated NAS."""
 from pathlib import Path
 import datetime,hashlib,json,os,subprocess,time,fcntl
-ROOT=Path('/mnt/pve/backup/aimee-experiments/learning-expansion-20261011-r3')
-SOURCE=ROOT/'source-r3';PYTHON='/opt/aimee-native-serving/clean-release-env-build2/bin/python'
+ROOT=Path('/mnt/pve/backup/aimee-experiments/learning-expansion-20261011-r4')
+SOURCE=ROOT/'source-r4';PYTHON='/opt/aimee-native-serving/clean-release-env-build2/bin/python'
 MODEL='/mnt/pve/backup/aimee-experiments/native-top9-20260930/native-tooling-next-20261004/models/qwen'
-env=dict(os.environ,HF_HUB_OFFLINE='1',PYTHONDONTWRITEBYTECODE='1',TMPDIR=str(ROOT/'tmp'))
+env=dict(os.environ,HF_HUB_OFFLINE='1',PYTHONDONTWRITEBYTECODE='1',TMPDIR=str(ROOT/'tmp'),PYTORCH_CUDA_ALLOC_CONF='expandable_segments:True')
 (ROOT/'tmp').mkdir(exist_ok=True)
 def status(state,**kw):
  (ROOT/'status.json').write_text(json.dumps({'state':state,'utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'controller_pid':os.getpid(),**kw},indent=2)+'\n')
@@ -24,7 +24,7 @@ try:
   if not occupied and available:break
   status('waiting-for-exclusive-5080',active_gpu_pids=occupied.splitlines(),ownership_lock_available=available);time.sleep(15)
  status('mechanism-tests'); execute([SOURCE/'test_scoped_cache.py'],'mechanism-tests')
- for name,pilot in [('pilot-r1',True),('main-r1',False)]:
+ for name,pilot in [('pilot-r1',True)]:
   repeats=1 if pilot else 3; run=ROOT/name
   for rep in range(repeats):
    status('running',run=name,repeat=rep)
@@ -39,6 +39,6 @@ try:
      monitor.terminate();monitor.wait(timeout=10)
   execute([SOURCE/'score.py',run],name+'-scoring')
   execute([SOURCE/'audit.py',run],name+'-accounting')
- status('complete',pilot_responses=288,main_responses=6480)
+ status('pilot-complete',pilot_responses=288,main_deferred='New linked learning study is primary; main requires separate launch.')
 except BaseException as exc:
  status('failed',error=repr(exc));raise

@@ -185,6 +185,9 @@ def main():
                         after_answer_counters = dict(engine.counters)
                         cache_bytes_answer = sum(t.numel()*t.element_size() for pair in engine.pairs(query_cache) for t in pair)
                         torch.cuda.synchronize(); inference_total = time.perf_counter()-turn_start
+                        # answer() grows selected in place. Its decode cache is no
+                        # longer needed once the answer and counters are captured.
+                        del selected
                         commit_ids = msg('user', 'The private operation has finished. Please acknowledge completion.')+msg('assistant', 'Acknowledged.')
                         if arm == 'persistent-text':
                             # Preserve the injected record, but replace the private
@@ -192,9 +195,12 @@ def main():
                             retained = before_length+(len(bank_ids[record]) if record is not None else 0)
                             pairs = [(k[..., :retained, :], v[..., :retained, :]) for k, v in engine.pairs(query_cache)]
                             public_base = engine.wrap(pairs)
+                            del query_cache
                             current, cleanup = timed(lambda: engine.prefill(commit_ids, public_base))
+                            del pairs, public_base
                             if record is not None: public_ids.extend(bank_ids[record])
                         else:
+                            del query_cache
                             current, cleanup = timed(lambda: engine.prefill(commit_ids, checkpoint))
                         public_ids.extend(commit_ids)
                         torch.cuda.synchronize(); total = time.perf_counter()-turn_start
@@ -236,7 +242,7 @@ def main():
                                    cuda_allocated_bytes=torch.cuda.memory_allocated(), cuda_reserved_bytes=torch.cuda.memory_reserved(),
                                    physical_devices=sorted(set(str(t.device) for pair in engine.pairs(current) for t in pair)))
                         stream.write(json.dumps(row)+'\n'); stream.flush(); os.fsync(stream.fileno())
-                        del selected, query_cache, checkpoint
+                        del checkpoint
                     assert tensor_digest(engine.pairs(initial)) == initial_hash
                     del current
                 del initial, banks
