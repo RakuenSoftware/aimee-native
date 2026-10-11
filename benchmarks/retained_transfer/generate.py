@@ -45,8 +45,8 @@ def sha(value):
     return hashlib.sha256(canonical(value)).hexdigest()
 
 
-def bundle():
-    rng = random.Random(SEED)
+def bundle(seed=SEED):
+    rng = random.Random(seed)
     used = set()
     def word():
         while True:
@@ -93,9 +93,9 @@ def bundle():
     return {'learner':learner, 'evaluation':evaluation, 'calibration':calibration}
 
 
-def export(root):
+def export(root, seed=SEED):
     root.mkdir(parents=True, exist_ok=False)
-    data = bundle(); manifest = {'seed':SEED, 'family_count':60, 'training_pairs':480,
+    data = bundle(seed); manifest = {'seed':seed, 'family_count':60, 'training_pairs':480,
         'heldout_inputs':1200, 'calibration_inputs':480, 'files':{}}
     for role, families in data.items():
         folder=root/role; folder.mkdir()
@@ -107,5 +107,6 @@ def export(root):
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('root',type=Path)
-    print(json.dumps(export(p.parse_args().root),indent=2))
+    p=argparse.ArgumentParser();p.add_argument('root',type=Path);p.add_argument('--seed',default=SEED)
+    args=p.parse_args()
+    print(json.dumps(export(args.root,args.seed),indent=2))

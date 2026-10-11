@@ -3,7 +3,7 @@ from pathlib import Path
 import os,subprocess,json,datetime,sys
 r=Path(sys.argv[1])
 python='/opt/aimee-native-serving/clean-release-env-build2/bin/python'
-models=[('gemma-e2b','google/gemma-4-E2B-it','/mnt/pve/backup/aimee-experiments/native-top9-20260930/native-capabilities-20261004/models/gemma'),('qwen35','Qwen/Qwen3.5-0.8B','/mnt/pve/backup/aimee-experiments/native-top9-20260930/native-capability-models-20261004/hybrid')]
+models=[('qwen3','Qwen/Qwen3-0.6B','/mnt/pve/backup/aimee-experiments/native-top9-20260930/native-tooling-next-20261004/models/qwen'),('gemma-e2b','google/gemma-4-E2B-it','/mnt/pve/backup/aimee-experiments/native-top9-20260930/native-capabilities-20261004/models/gemma'),('qwen35','Qwen/Qwen3.5-0.8B','/mnt/pve/backup/aimee-experiments/native-top9-20260930/native-capability-models-20261004/hybrid')]
 env=dict(os.environ,HF_HUB_OFFLINE='1',PYTHONDONTWRITEBYTECODE='1',TMPDIR=str(r/'tmp'))
 try:
     for name,identifier,model in models:

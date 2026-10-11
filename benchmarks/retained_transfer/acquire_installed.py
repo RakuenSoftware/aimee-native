@@ -75,7 +75,7 @@ def main():
             'calibration_session_distinct':True,'api_tools':False},f,indent=2)
         env=dict(os.environ,RETAINED_STUDY_API_KEY='tmlr-local-fixture-only',HF_HUB_OFFLINE='1',PYTHONDONTWRITEBYTECODE='1',TMPDIR=str(root/'tmp'))
         with (root/'acquisition.log').open('x') as log:
-            subprocess.run(['/opt/aimee-native-serving/clean-release-env-build2/bin/python',str(root/'source-v3/acquire.py'),
+            subprocess.run(['/opt/aimee-native-serving/clean-release-env-build2/bin/python',str(root/'source-v7/acquire.py'),
                 '--training',str(root/'fixture/learner/families.jsonl'),'--expected-training-sha256',freeze['learner_export_sha256'],
                 '--out',str(root/'acquisition-r1'),'--url','http://127.0.0.1:18991','--model',serving.MODEL,'--session',session],
                 env=env,stdout=log,stderr=subprocess.STDOUT,check=True)

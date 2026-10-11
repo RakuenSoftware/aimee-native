@@ -1,15 +1,21 @@
+import json
 import unittest
-from acquire import rule
+from acquire import checked_record, validation_outputs
 
-class SchemaTests(unittest.TestCase):
-    def test_rule_preserves_literal_and_order(self):
-        self.assertEqual(rule('{"output_template":"pami-{verb} {noun} {adjective}"}')['output_template'],'pami-{verb} {noun} {adjective}')
-    def test_rejects_unsafe_or_nonrule_payload(self):
-        for raw in ['{"output_template":"{noun.x} {verb} {adjective}"}',
-                    '{"output_template":"{noun} {noun} {verb}"}',
-                    '{"output_template":"{noun!r} {verb} {adjective}"}',
-                    '{"output_template":"{noun} {verb} {adjective}","oracle":true}',
-                    '```json\n{}\n```']:
-            with self.subTest(raw=raw),self.assertRaises(ValueError):rule(raw)
+class TransportTests(unittest.TestCase):
+    def test_written_record_is_preserved(self):
+        examples=[{'id':'train-01','input':'an example input','output':'an example output'}]
+        for text in ['Use verb then noun.', '```json\n{"record_schema":{"output_template":"{verb} {noun}"}}\n```']:
+            self.assertEqual(checked_record(text,examples),text)
+    def test_experience_is_not_a_rule(self):
+        examples=[{'id':'train-01','input':'an example input','output':'an example output'}]
+        for text in ['', 'train-01', 'an example output', 'x'*2001]:
+            with self.assertRaises(ValueError):checked_record(text,examples)
+    def test_validation_transport_only(self):
+        outputs=['answer']*8
+        for raw in [json.dumps(outputs),'```json\n'+json.dumps(outputs)+'\n```']:
+            self.assertEqual(validation_outputs(raw),outputs)
+        for raw in ['[]','{}',json.dumps([1]*8)]:
+            with self.assertRaises(ValueError):validation_outputs(raw)
 
 if __name__=='__main__':unittest.main()

@@ -1,6 +1,10 @@
 # Retained and transferable learning through native memory
 
-Protocol v1, 11 October 2026. This linked study supersedes the broad expansion
+Protocol v2, 11 October 2026. The first acquisition was invalidated because an
+agent-added bare-JSON gate rejected written rules before any application
+validation. Original proposals and format rejections are preserved. This version
+uses fresh frozen instances (seed `retained-transfer-20261011-v2-written-rule`),
+not rescoring of those cases. Endpoints, splits and models are unchanged. This linked study supersedes the broad expansion
 roadmap as the next primary experiment. No linked-study inference has occurred.
 
 ## Object and claims
@@ -24,12 +28,15 @@ The generated languages use family-specific word order and particles/affixes.
 They test controlled construction induction, not acquisition of an unrestricted
 natural grammar. No affine fixture is reused.
 
-The learner writes a JSON record with a single `output_template` field. Its
-three placeholders represent target-language noun, verb and adjective lexicon
-entries. This transparent hypothesis class makes true-rule diagnostics
-reproducible. It restricts the induction task and must be stated in the paper.
-Receivers themselves apply the record by model inference: the evaluator never
-computes an answer for them. Record text is never rewritten for a receiver.
+The learner writes one reusable rule. A JSON `output_template` notation is
+suggested, with noun, verb and adjective placeholders representing the target
+lexicon entries; prose, fenced or nested output is accepted as written. The exact
+raw text is forwarded to validation and canonical storage without rewriting.
+Records must be nonempty, at most 2,000 characters, and contain no literal
+training input, output or example ID: experience itself must be absent.
+Receivers apply the record by model inference, never by the evaluator.
+Post-admission diagnostics may extract templates read-only; unparseable true-rule
+status is unknown, not automatically wrong. No diagnostic enters admission.
 
 Generate separate learner, calibration and evaluator exports; freeze their
 hashes, protocol, executed source and checkpoint identities before inference.
@@ -50,8 +57,10 @@ the RTX5080. Eight examples per family, no held-out inputs or oracle rule.
 Maximum three proposals per family, greedy decoding, 512 proposal output tokens.
 For each proposal, a separate inference call applies it to the same eight
 training inputs, requesting eight answers, maximum 512 output tokens. Admission
-requires valid schema and at least **7/8 exact outputs**. Invalid JSON or a
-failed call is logged as an unsuccessful attempt; there is no silent repair.
+requires a rule-only record and at least **7/8 exact outputs**. Only a complete
+outer JSON code fence is removed from validation arrays for transport parsing;
+the rule is never transformed. Invalid validation arrays or failed calls are
+logged as unsuccessful attempts; there is no semantic repair.
 Retry feedback states the match count, with the original examples, never hidden
 answers. Stop at the first admission. Preserve all first proposals for the
 Unvalidated arm. Missing admissions remain results, not oracle substitutions.

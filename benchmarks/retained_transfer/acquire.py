@@ -8,27 +8,33 @@ import datetime
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
-import string
 import urllib.request
 
-SYSTEM = ('Infer the translation rule from the supplied examples. Lexicon entries '
-          'are fixed. Do not invent examples or claim test results. Follow the '
-          'requested JSON output schema exactly; no markdown or explanation.')
+SYSTEM = ('Infer and apply translation rules using the supplied fixed lexicon. '
+          'For proposals return only a reusable rule, without examples. '
+          'For validation return the requested JSON array of translations.')
 
 
-def rule(raw):
-    value=json.loads(raw)
-    if not isinstance(value,dict) or set(value)!={'output_template'}:raise ValueError('record schema')
-    text=value['output_template']
-    if not isinstance(text,str) or len(text)>2000:raise ValueError('template length/type')
-    fields=[]
-    for _,name,format_spec,conversion in string.Formatter().parse(text):
-        if name is not None:
-            if format_spec or conversion:raise ValueError('unsafe formatting')
-            fields.append(name)
-    if sorted(fields)!=['adjective','noun','verb']:raise ValueError('placeholders')
-    return value
+def checked_record(raw, examples):
+    if not isinstance(raw,str) or not raw.strip() or len(raw)>2000:
+        raise ValueError('missing or oversized written rule')
+    if any(x['input'] in raw or x['output'] in raw or x['id'] in raw for x in examples):
+        raise ValueError('record repeats experience instead of a rule')
+    return raw
+
+
+def validation_outputs(raw):
+    # Strip only a complete transport fence from the validation response.
+    # Rule records themselves are never parsed, stripped or rewritten.
+    text=raw.strip()
+    match=re.fullmatch(r'```(?:json)?\s*\n(.*?)\n```',text,re.S)
+    if match:text=match.group(1)
+    outputs=json.loads(text)
+    if not isinstance(outputs,list) or len(outputs)!=8 or not all(isinstance(x,str) for x in outputs):
+        raise ValueError('validation schema')
+    return outputs
 
 
 def append(stream,value):
@@ -67,14 +73,13 @@ def main():
                 raw=None;validation=None;score=0;error=None
                 try:
                     raw=call({'operation':'propose','family':family,'prior_match_count':feedback,
-                        'instruction':'Return only a JSON object matching record_schema. Placeholders use target-language words; derive word order and literals from examples.'},[family['family_id'],attempt,'proposal'])
-                    rule(raw)
+                        'instruction':'Write one reusable translation rule, using the supplied placeholder notation where helpful. Derive order and particles from examples. Return the rule only, not the examples.'},[family['family_id'],attempt,'proposal'])
+                    checked_record(raw,family['examples'])
                     validation=call({'operation':'validate','lexicon':family['lexicon'],
                         'source_pattern':family['source_pattern'],'record_text':raw,
                         'inputs':[{'id':x['id'],'input':x['input'],'slots':x['slots']} for x in family['examples']],
                         'instruction':'Apply this proposed rule. Return a JSON array of exactly eight translated output strings, in input order.'},[family['family_id'],attempt,'validation'])
-                    outputs=json.loads(validation)
-                    if not isinstance(outputs,list) or len(outputs)!=8 or not all(isinstance(x,str) for x in outputs):raise ValueError('validation schema')
+                    outputs=validation_outputs(validation)
                     score=sum(a.strip()==b['output'] for a,b in zip(outputs,family['examples']))
                 except (ValueError,KeyError,IndexError,OSError) as exc:error=repr(exc)
                 admitted=error is None and score>=7
