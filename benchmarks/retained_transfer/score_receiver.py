@@ -31,6 +31,7 @@ def readback(socket,record):
 def main():
     p=argparse.ArgumentParser();p.add_argument('root',type=Path);p.add_argument('--model',type=Path,required=True)
     p.add_argument('--model-id',required=True);p.add_argument('--name',required=True)
+    p.add_argument('--mechanical-root',type=Path,required=True)
     p.add_argument('--repeat',type=int,choices=(1,2,3),required=True);p.add_argument('--execution-freeze',type=Path,required=True)
     args=p.parse_args();root=args.root
     assert str(root).startswith('/mnt/pve/backup/aimee-experiments/')
@@ -40,7 +41,7 @@ def main():
     ended=json.loads((root/'learner-process-termination-r2.json').read_text())
     assert ended['canonical_admission_complete'] and ended['exit_code'] is not None
     assert ended['pid']!=os.getpid()
-    mechanical=json.loads((root/('mechanical-'+args.name)/'completion.json').read_text())
+    mechanical=json.loads((args.mechanical_root/('mechanical-'+args.name)/'completion.json').read_text())
     assert mechanical['passed'] and mechanical['model']==str(args.model)
     fixture=json.loads((root/'fixture/freeze.json').read_text())
     for name,digest in fixture['files'].items():assert sha(root/'fixture'/name)==digest
@@ -65,7 +66,7 @@ def main():
     before={str(p.relative_to(args.model)):sha(p) for p in args.model.rglob('*') if p.is_file() and p.suffix in ('.json','.safetensors')}
     calibrated=json.loads((root/('calibration-'+args.name+'-r1')/'metadata.json').read_text())
     assert before==calibrated['checkpoint_files'] and calibrated['model_id']==args.model_id
-    mechanical_freeze=json.loads((root/'mechanical-freeze.json').read_text())
+    mechanical_freeze=json.loads((args.mechanical_root/'mechanical-freeze.json').read_text())
     assert frozen['files']['prefix_receiver.py']==mechanical_freeze['files']['prefix_receiver.py']
     receiver=PrefixReceiver(args.model);torch=receiver.torch
     session='receiver-'+args.name+'-'+str(os.getpid())
