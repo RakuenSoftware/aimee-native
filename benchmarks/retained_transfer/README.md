@@ -4,11 +4,18 @@ The frozen design is in [PROTOCOL.md](PROTOCOL.md). Generated data and all run
 outputs live on the GPU host's dedicated NAS directory:
 `/mnt/pve/backup/aimee-experiments/retained-transfer-20261011-r1`.
 
-The four calibration sessions have completed: each receiver scored 0/480 with
-lexicon only on separate calibration phrases. These are prerequisite controls,
-not learning or transfer results. The training and held-out exports are frozen
-at commit `1bbf683`, with full file hashes in `fixture/freeze.json` on NAS.
-Runtime corrections have separate source snapshots and additive receipts.
+The original v1 calibration sessions each scored 0/480. Their acquisition run
+is excluded: an agent-added bare-JSON record gate rejected written rules before
+application validation. All original requests and outputs remain archived; no
+learning conclusion is drawn from that run.
+
+The corrected cycle uses fresh seed `retained-transfer-20261011-v2-written-rule`,
+frozen protocol and source commit `9afd2fe`. Its data and receipts are in
+`corrected-cycle-r2/` below the NAS root. It reruns all four calibration sessions
+before acquisition, preserves the learner's exact written record, and accepts
+prose or fenced/nested JSON. Validation parses only the eight-answer transport.
+Scored cases from v1 are not retried or reused. The same private canonical store
+is reused explicitly; only readiness probes, no acquired v1 rules, preexist.
 
 The acquisition controller first checks a separate, disposable Aimee store's
 actual memory-store/get operations. Accepted proposals are admitted and read
@@ -24,6 +31,7 @@ Scripts:
 - `acquire_installed.py`: source/hash and session gates, canonical admission before termination.
 - `canonical_store.py`: real owner API write/read-back, no stand-in database.
 - `make_store_boot.py`: private mount/network namespace, disposable NAS-backed store.
+- `mechanical_receiver.py`: non-study native/text cache-continuation gate.
 - `analyze.py`: complete-coverage checks, family-unit bootstrap, paired tests and Holm correction.
 
 The receiver seven-arm driver and the ten-turn variant still require completion
