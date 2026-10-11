@@ -34,6 +34,7 @@ Scripts:
 - `mechanical_receiver.py`: non-study native/text cache-continuation gate.
 - `analyze.py`: complete-coverage checks, family-unit bootstrap, paired tests and Holm correction.
 
-The receiver seven-arm driver and the ten-turn variant still require completion
-and mechanical validation. No C1–C5 result is claimed by this readiness code.
+The HF seven-arm driver is implemented but requires its queued native mechanical
+checks before scoring. The installed 12B scoring path and ten-turn variant still
+require completion and mechanical validation. No C1–C5 result is claimed by this readiness code.
 Related-work checks are tracked in [RELATED_WORK_AUDIT.md](RELATED_WORK_AUDIT.md).

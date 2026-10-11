@@ -8,13 +8,13 @@ cross-model transfer result yet.
 | Fresh deterministic languages | Seed `retained-transfer-20261011-v2-written-rule`; 60 families, disjoint vocabulary; frozen before inference at `9afd2fe` |
 | Original acquisition | Excluded: agent-added bare-JSON gate rejected 113 proposals across 38 families before any application validation; raw evidence preserved |
 | Corrected acquisition | Accepts exact written prose/fenced/nested records; application-validation threshold 7/8, maximum three proposals; no rule rewriting |
-| Fresh None calibration | Qwen complete 0/480; Gemma-E2B running; hybrid and installed 12B queued sequentially on the 5080 |
+| Fresh None calibration | Qwen, Gemma-E2B and hybrid complete: each 0/480; installed 12B running sequentially on the 5080 |
 | Canonical admission | Actual isolated Aimee store/get preflight verified; existing private NAS-backed instance explicitly reused, no acquired original-cycle rules |
 | Learner session A | Queued after all four calibration completions, exclusion freeze and token preflight; proposals fit the unchanged 2048 installed profile |
-| Producer termination and payload audit | Queued; compares exact training-only request fields, proposed/validated content and canonical readback |
+| Producer termination and payload audit | Queued; compares exact training-only request fields, proposed/validated content and canonical readback; separate canonical evaluator controls queued after this audit |
 | Receiver native paths | Non-study HF cache-continuation checks implemented and queued after complete acquisition; installed 12B mechanical gate still required |
 | Entire cycle has no additional training | Frozen weights/inference-only paths implemented; final executed-path audit across all four receiver profiles remains required |
-| Seven-arm held-out scoring | Not enabled; receiver driver and required mechanical gates still need completion |
+| Seven-arm held-out scoring | Not enabled; HF seven-arm driver implemented and source tests passed; native mechanical gates and installed 12B scoring path remain |
 | Statistical tables and manuscript claims | Pending completed linked cycle; manuscript unchanged |
 
 Corrected campaign outputs:
