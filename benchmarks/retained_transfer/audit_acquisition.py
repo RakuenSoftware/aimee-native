@@ -1,6 +1,7 @@
 """Post-acquisition information-flow audit; never used to admit a rule."""
 import argparse,hashlib,json
 from pathlib import Path
+from acquire import validation_outputs
 
 def rows(path):return [json.loads(x) for x in path.read_text().splitlines()]
 def digest(path):return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -10,7 +11,7 @@ def audit(root):
     evaluations=rows(root/'fixture/evaluation/families.jsonl')
     hidden_inputs=[i['input'] for f in evaluations for i in f['inputs']]
     requests=rows(root/'acquisition-r1/requests.jsonl')
-    proposals={};validation_calls=0;request_count=0
+    proposals={};applications={};validation_calls=0;request_count=0
     for row in requests:
         if 'body' not in row:continue
         request_count+=1;fid,attempt,operation=row['tag'];body=row['body']
@@ -26,6 +27,7 @@ def audit(root):
             assert payload['lexicon']==family['lexicon'] and payload['source_pattern']==family['source_pattern']
             assert payload['inputs']==[{'id':x['id'],'input':x['input'],'slots':x['slots']} for x in family['examples']]
             assert (fid,attempt) in proposals
+            applications[(fid,attempt)]=payload
             validation_calls+=1
         sent=json.dumps(body,sort_keys=True)
         assert not any(x in sent for x in hidden_inputs),'Held-out input in learner request'
@@ -34,8 +36,12 @@ def audit(root):
     accepted={x['family_id']:x for x in log if x['admitted_candidate']}
     for row in log:
         assert (row['family_id'],row['attempt']) in proposals
+        if row['validation_raw'] is not None:
+            assert applications[(row['family_id'],row['attempt'])]['record_text']==row['rule_text']
         if row['admitted_candidate']:
             assert row['error'] is None and row['training_matches']>=7
+            outputs=validation_outputs(row['validation_raw'])
+            assert sum(a.strip()==b['output'] for a,b in zip(outputs,train[row['family_id']]['examples']))==row['training_matches']
     records=rows(root/'records.jsonl')
     assert len(records)==len(accepted) and len({x['family_id'] for x in records})==len(records)
     for record in records:
