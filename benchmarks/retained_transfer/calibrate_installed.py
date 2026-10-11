@@ -33,7 +33,11 @@ def main():
                 'input':item['input'],'slots':item['slots']},sort_keys=True)}],
             'temperature':0,'seed':20261011,'max_tokens':64,'stream':False,
             'chat_template_kwargs':{'enable_thinking':False}}
-    maximum=max(len(tok.apply_chat_template(body(f,x)['messages'],tokenize=True,add_generation_prompt=True,enable_thinking=False)) for f in families for x in f['inputs'])
+    def token_count(messages):
+        ids=tok.apply_chat_template(messages,tokenize=True,add_generation_prompt=True,enable_thinking=False,return_dict=False)
+        if not isinstance(ids,list):ids=ids['input_ids']
+        return len(ids)
+    maximum=max(token_count(body(f,x)['messages']) for f in families for x in f['inputs'])
     assert maximum+64<=2048
     model_dir=Path(serving.MODEL)
     pins={str(p.relative_to(model_dir)):digest(p) for p in model_dir.rglob('*') if p.is_file() and p.suffix in ('.json','.safetensors','.gguf')}
