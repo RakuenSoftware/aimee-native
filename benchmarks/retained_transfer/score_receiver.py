@@ -63,6 +63,10 @@ def main():
     lock=open('/opt/jmlr-second-review-20261005/gpu-exclusive.lock','a');fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
     assert not subprocess.check_output(['nvidia-smi','--query-compute-apps=pid','--format=csv,noheader,nounits'],text=True).strip()
     before={str(p.relative_to(args.model)):sha(p) for p in args.model.rglob('*') if p.is_file() and p.suffix in ('.json','.safetensors')}
+    calibrated=json.loads((root/('calibration-'+args.name+'-r1')/'metadata.json').read_text())
+    assert before==calibrated['checkpoint_files'] and calibrated['model_id']==args.model_id
+    mechanical_freeze=json.loads((root/'mechanical-freeze.json').read_text())
+    assert frozen['files']['prefix_receiver.py']==mechanical_freeze['files']['prefix_receiver.py']
     receiver=PrefixReceiver(args.model);torch=receiver.torch
     session='receiver-'+args.name+'-'+str(os.getpid())
     (out/'metadata.json').write_text(json.dumps({'session_id':session,'pid':os.getpid(),
@@ -108,7 +112,9 @@ def main():
                     # for both arms. No task KV is prepared or reused.
                     execution_ids=full_ids[len(prefix):] if native else full_ids
                     assert not native or prefix+execution_ids==full_ids
-                    if native:assert record['content'] not in request_text
+                    if native:
+                        assert request_messages==messages(family,item,arm,None,training[family['family_id']])
+                        assert set(task_payload)=={'messages','record_id'}
                     frontend_ms=(time.perf_counter()-started)*1000
                     result=receiver.answer(execution_ids,key if native else None)
                     count+=1
