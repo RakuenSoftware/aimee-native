@@ -40,7 +40,8 @@ def main():
     (out/'token-preflight.json').write_text(json.dumps({'maximum_tokens':maximum,'cap':64,'model_limit':2048})+'\n')
     service=None
     try:
-        service=serving.Service(service_root,block,False)
+        service=serving.Service.__new__(serving.Service)
+        serving.Service.__init__(service,service_root,block,False)
         proof=serving.physical_summary(service.control({'op':'metrics'}))
         (out/'metadata.json').write_text(json.dumps({'pid':service.process.pid,'start_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),
             'checkpoint_files':pins,'runtime_freeze':execution,'residency':proof,'prefix_caching':False,'cpu_offload':0,
