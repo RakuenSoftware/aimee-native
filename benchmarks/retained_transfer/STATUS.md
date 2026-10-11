@@ -1,6 +1,6 @@
 # Linked-study status
 
-11 October 2026. Acquisition complete; receiver mechanics running; no completed retained-learning or
+11 October 2026. Acquisition complete; held-out HF receiver scoring running; no completed retained-learning or
 cross-model transfer result yet.
 
 | Gate | Status |
@@ -12,9 +12,9 @@ cross-model transfer result yet.
 | Canonical admission | Actual isolated Aimee store/get preflight verified; existing private NAS-backed instance explicitly reused, no acquired original-cycle rules |
 | Learner session A | Complete: 166 proposals, 157 application-validation calls, 7/60 admitted records; unchanged 2048 installed profile |
 | Producer termination and payload audit | Passed: learner terminated; training-only request audit and exact canonical readback passed; 60 Oracle and 60 Unvalidated controls separately canonicalized |
-| Receiver native paths | Original Qwen/Gemma-E2B mechanical checks passed; hybrid inspector corrected for dictionary-indexed recurrent states, fresh mechanics running; installed 12B gate still required |
+| Receiver native paths | All three HF profiles passed fresh native/text mechanics after hybrid inspector correction; installed 12B gate still required |
 | Entire cycle has no additional training | Frozen weights/inference-only paths implemented; final executed-path audit across all four receiver profiles remains required |
-| Seven-arm held-out scoring | Not enabled; HF seven-arm driver implemented and source tests passed; native mechanical gates and installed 12B scoring path remain |
+| Seven-arm held-out scoring | HF queue launched: three receivers × seven arms × 1,200 inputs × three process repetitions = 75,600 planned scored requests; Qwen first process active. Installed 12B scoring path remains |
 | Statistical tables and manuscript claims | Pending completed linked cycle; manuscript unchanged |
 
 Corrected campaign outputs:
