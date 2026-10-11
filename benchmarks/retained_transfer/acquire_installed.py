@@ -39,28 +39,32 @@ def main():
     ledger={'frozen_before_acquisition':True,'criterion':'Exclude if any receiver scores at least 2/8 on separate calibration inputs; never on heldout inputs',
         'eligible_family_ids':sorted(f for f,v in eligibility.items() if v),'excluded_family_ids':sorted(f for f,v in eligibility.items() if not v),
         'calibration_evidence':evidence,'utc':datetime.datetime.now(datetime.timezone.utc).isoformat()}
-    with (root/'eligibility.json').open('x') as f:json.dump(ledger,f,indent=2)
-    rt=root/'acquisition-runtime';rt.mkdir()
+    if (root/'eligibility.json').exists():
+        prior=json.loads((root/'eligibility.json').read_text())
+        for key in ('eligible_family_ids','excluded_family_ids','calibration_evidence','criterion'):
+            assert prior[key]==ledger[key]
+    else:
+        with (root/'eligibility.json').open('x') as f:json.dump(ledger,f,indent=2)
+    rt=root/'acquisition-runtime-r2';rt.mkdir()
     shutil.copytree(root/'installed-calibration-runtime/source',rt/'source')
     for name in ('tmp','prepared'):(rt/name).mkdir()
-    helper=rt/'source/run_composition_main.py'
-    text=helper.read_text();assert text.count('max_model_len=2048')==1
-    helper.write_text(text.replace('max_model_len=2048','max_model_len=4096'))
-    # Only the input/output budget changes; no model or adapter mathematics.
+    # Keep the validated 2048 profile and its residency guard unchanged.
+    preflight=json.loads((root/'learner-token-preflight-2048.json').read_text())
+    assert preflight['fits_2048'] and preflight['maximum_prompt_tokens']+512<=2048
     freeze={'files':{str(p.relative_to(rt)):sha(p) for p in (rt/'source').rglob('*') if p.is_file() and p.suffix in ('.py','.json')},
-        'learner_export_sha256':sha(root/'fixture/learner/families.jsonl'),'max_model_len':4096,
-        'source_commit':json.loads((root/'acquisition-driver-freeze-v6.json').read_text())['commit'],
+        'learner_export_sha256':sha(root/'fixture/learner/families.jsonl'),'max_model_len':2048,
+        'source_commit':json.loads((root/'acquisition-driver-freeze-v7.json').read_text())['commit'],
         'utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'frozen_before_learner_start':True}
-    with (root/'acquisition-runtime-freeze.json').open('x') as f:json.dump(freeze,f,indent=2)
-    driver_freeze=json.loads((root/'acquisition-driver-freeze-v6.json').read_text())
-    for name,digest in driver_freeze['files'].items():assert sha(root/'source-v6'/name)==digest
+    with (root/'acquisition-runtime-r2-freeze.json').open('x') as f:json.dump(freeze,f,indent=2)
+    driver_freeze=json.loads((root/'acquisition-driver-freeze-v7.json').read_text())
+    for name,digest in driver_freeze['files'].items():assert sha(root/'source-v7'/name)==digest
     lock=open('/opt/jmlr-second-review-20261005/gpu-exclusive.lock','a');fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
     assert not subprocess.check_output(['nvidia-smi','--query-compute-apps=pid','--format=csv,noheader,nounits'],text=True).strip()
     sys.path.insert(0,str(rt/'source'))
     import run_composition_main as serving
     model_directory=Path(serving.MODEL)
     weight_pins={str(p.relative_to(model_directory)):sha(p) for p in model_directory.rglob('*') if p.is_file() and p.suffix in ('.json','.safetensors','.gguf')}
-    with (root/'learner-weights-before.json').open('x') as f:json.dump(weight_pins,f,indent=2)
+    with (root/'learner-weights-before-r2.json').open('x') as f:json.dump(weight_pins,f,indent=2)
     service=None;block=rt/'execution';block.mkdir()
     try:
         service=serving.Service.__new__(serving.Service);serving.Service.__init__(service,rt,block,False)
@@ -85,12 +89,12 @@ def main():
             json.dump({'instance':owner.identity,'ready':owner.ready,'manifest':owner.manifest,'preflight':owner.preflight,'records_sha256':sha(root/'records.jsonl')},receipt,indent=2)
         after={str(p.relative_to(model_directory)):sha(p) for p in model_directory.rglob('*') if p.is_file() and p.suffix in ('.json','.safetensors','.gguf')}
         assert after==weight_pins
-        with (root/'learner-weights-after.json').open('x') as f:json.dump(after,f,indent=2)
+        with (root/'learner-weights-after-r2.json').open('x') as f:json.dump(after,f,indent=2)
         with (root/'learner-final-residency.json').open('x') as f:json.dump(serving.physical_summary(service.control({'op':'metrics'})),f,indent=2)
     finally:
         if service is not None:
             service.stop()
-            with (root/'learner-process-termination.json').open('x') as f:json.dump({'pid':service.process.pid,'exit_code':service.process.poll(),
+            with (root/'learner-process-termination-r2.json').open('x') as f:json.dump({'pid':service.process.pid,'exit_code':service.process.poll(),
                 'end_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'canonical_admission_complete':(root/'canonical-store-receipt.json').exists(),'receivers_launched':False},f,indent=2)
 
 if __name__=='__main__':main()
