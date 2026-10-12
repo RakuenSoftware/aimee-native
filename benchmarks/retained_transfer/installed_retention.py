@@ -25,6 +25,7 @@ def main():
  rt=root/'installed-retention-runtime';freeze=json.loads((root/'installed-retention-freeze.json').read_text())
  for name,digest in freeze['files'].items():assert sha(rt/name)==digest
  assert sha(Path(__file__))==freeze['driver_sha256']
+ for name,digest in freeze['driver_files'].items():assert sha(Path(__file__).parent/name)==digest
  assert json.loads((root/'resumed-store-readback-audit.json').read_text())['passed']
  assert json.loads((root/'acquisition-audit.json').read_text())['passed']
  ended=json.loads((root/'learner-process-termination-r2.json').read_text());assert ended['canonical_admission_complete']
