@@ -20,17 +20,19 @@ def prompt_ids(response):
 
 def main():
  p=argparse.ArgumentParser();p.add_argument('root',type=Path);p.add_argument('--mechanical-only',action='store_true')
+ p.add_argument('--run-revision',choices=('r1','r2'),default='r1')
  p.add_argument('--repeat',type=int,choices=(1,2,3),default=1);args=p.parse_args();root=args.root
  assert str(root).startswith('/mnt/pve/backup/aimee-experiments/')
- rt=root/'installed-retention-runtime';freeze=json.loads((root/'installed-retention-freeze.json').read_text())
+ suffix='' if args.run_revision=='r1' else '-'+args.run_revision
+ rt=root/('installed-retention-runtime'+suffix);freeze=json.loads((root/('installed-retention-freeze'+suffix+'.json')).read_text())
  for name,digest in freeze['files'].items():assert sha(rt/name)==digest
  assert sha(Path(__file__))==freeze['driver_sha256']
  for name,digest in freeze['driver_files'].items():assert sha(Path(__file__).parent/name)==digest
  assert json.loads((root/'resumed-store-readback-audit.json').read_text())['passed']
  assert json.loads((root/'acquisition-audit.json').read_text())['passed']
  ended=json.loads((root/'learner-process-termination-r2.json').read_text());assert ended['canonical_admission_complete']
- if not args.mechanical_only:assert json.loads((root/'installed-retention-mechanical/completion.json').read_text())['passed']
- out=root/('installed-retention-mechanical' if args.mechanical_only else 'receiver-gemma12b-r'+str(args.repeat))
+ if not args.mechanical_only:assert json.loads((root/('installed-retention-mechanical'+suffix)/'completion.json').read_text())['passed']
+ out=root/('installed-retention-mechanical'+suffix if args.mechanical_only else 'receiver-gemma12b-r'+str(args.repeat))
  out.mkdir(exist_ok=False);block=out/'execution';block.mkdir()
  owner=CanonicalStore(root/'canonical-store-resumed-ready.json')
  accepted_rows=rows(root/'records.jsonl');controls=rows(root/'control-records.jsonl')
@@ -78,8 +80,14 @@ def main():
   request({'input':'Hello.'})
   if args.mechanical_only:
    checks=[]
+   from transformers import AutoTokenizer
+   tok=AutoTokenizer.from_pretrained(serving.MODEL,local_files_only=True)
    for size in (0,200,600):
-    memory='Record: the visitor badge is cobalt.\n'+'neutral note '*size
+    words=('neutral note '*size).split()
+    memory='Record: the visitor badge is cobalt.\n'+' '.join(words)
+    def length(value):return len(tok.apply_chat_template([{'role':'system','content':SYSTEM+'\n\nAuthoritative memory:\n'+value}],tokenize=True,add_generation_prompt=False,enable_thinking=False,return_dict=False))
+    while length(memory)>900:
+     words=words[:-8];memory='Record: the visitor badge is cobalt.\n'+' '.join(words)
     pub,bank,prep=prepare('mechanical:'+str(size),memory)
     item={'input':'What color is the visitor badge?'}
     native,nbody,nids=request(item,pub=pub);text,tb,tids=request(item,memory=memory)
