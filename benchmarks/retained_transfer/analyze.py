@@ -45,6 +45,53 @@ def holm(values):
     return result
 
 
+
+def acquired_diagnostics(grouped, records, eligible, info):
+    """Describe real admitted content separately from no-record fallbacks.
+
+    These are post-acquisition diagnostics, not replacement primary hypotheses.
+    Accuracy and uncertainty remain family-based; repeats add no families.
+    """
+    occupied=sorted(set(records)&set(eligible))
+    languages=[info[f]['language'] for f in occupied]
+    rules=[];fidelity=[];costs=[]
+    for model in MODELS:
+        differences=[];agreement=[]
+        for fid in occupied:
+            record=records[fid]
+            row={'receiver':model,'family_id':fid,'language':info[fid]['language'],
+                 'canonical_record_id':record['canonical_record_id'],
+                 'content_sha256':record['content_sha256'],
+                 'training_validation_matches':record['validation']['matches'],
+                 'training_validation_total':record['validation']['total']}
+            for arm in ARMS:
+                row[arm+'_accuracy']=float(np.mean([r['score'] for r in grouped[model,arm,fid]]))
+            native={(r['repeat'],r['input_id']):r for r in grouped[model,'Native',fid]}
+            text={(r['repeat'],r['input_id']):r for r in grouped[model,'Text',fid]}
+            assert native.keys()==text.keys()
+            row['native_text_output_agreement']=float(np.mean([native[k]['output']==text[k]['output'] for k in native]))
+            row['native_only_correct']=sum(native[k]['score']==1 and text[k]['score']==0 for k in native)
+            row['text_only_correct']=sum(native[k]['score']==0 and text[k]['score']==1 for k in native)
+            rules.append(row);differences.append(row['Native_accuracy']-row['Text_accuracy'])
+            agreement.append(row['native_text_output_agreement'])
+        ci,_=intervals(differences,languages)
+        fidelity.append({'receiver':model,'admitted_eligible_families':len(occupied),
+                         'mean_native_minus_text':float(np.mean(differences)) if differences else None,
+                         'family_clustered_ci':ci,
+                         'mean_output_agreement':float(np.mean(agreement)) if agreement else None,
+                         'scope':'Post-acquisition diagnostic; excludes missing-record fallbacks; not a new primary test.'})
+        for arm in ('Native','Text'):
+            rr=[r for fid in occupied for r in grouped[model,arm,fid]]
+            costs.append({'receiver':model,'arm':arm,'admitted_eligible_families':len(occupied),
+                          'requests':len(rr),
+                          'median_ttft_ms':float(np.median([r['ttft_ms'] for r in rr])) if rr else None,
+                          'median_request_ms':float(np.median([r['end_to_end_ms'] for r in rr])) if rr else None,
+                          'mean_prompt_tokens':float(np.mean([r['prompt_tokens'] for r in rr])) if rr else None,
+                          'mean_prefill_tokens':float(np.mean([r['prefill_tokens'] for r in rr])) if rr else None,
+                          'scope':'Only requests with an admitted record; request timing excludes native preparation. Token counters follow the receiver profile.'})
+    return rules,fidelity,costs
+
+
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('root',type=Path);args=parser.parse_args();root=args.root
     families=[json.loads(x) for x in (root/'fixture/evaluation/families.jsonl').read_text().splitlines()]
@@ -60,7 +107,11 @@ def main():
         assert row['receiver'] in MODELS and row['arm'] in ARMS and row['repeat'] in (0,1,2)
         family=info[row['family_id']];expected=next(x['output'] for x in family['inputs'] if x['id']==row['input_id'])
         assert row['score']==int(row['output'].strip()==expected)
-        grouped[(row['receiver'],row['arm'],row['family_id'])].append(row)
+        # Full requests/traces remain in immutable source files. Keep only
+        # analysis fields in RAM when aggregating 100,800 responses.
+        compact={k:row[k] for k in ('repeat','input_id','output','score',
+                 'end_to_end_ms','ttft_ms','prompt_tokens','prefill_tokens')}
+        grouped[(row['receiver'],row['arm'],row['family_id'])].append(compact)
     expected={(m,a,r,x['id']) for m in MODELS for a in ARMS for r in range(3) for f in families for x in f['inputs']}
     assert seen==expected,('incomplete coverage',len(seen),len(expected))
     results=[];tests={};hypotheses=[]
@@ -93,6 +144,14 @@ def main():
     for h in hypotheses:
         h['holm_p']=adjusted[h['id']]
         h['success']=h['holm_p'] is not None and h['holm_p']<.05 and (h['kind']!='noninferiority' or (h['ci'] is not None and h['ci'][0]>-.03))
+    records={r['family_id']:r for r in [json.loads(x) for x in (root/'records.jsonl').read_text().splitlines()]}
+    diagnostics,fidelity,costs=acquired_diagnostics(grouped,records,eligible,info)
+    for filename,data in (('per_rule_diagnostics.csv',diagnostics),('acquired_record_costs.csv',costs)):
+        with (root/filename).open('x') as f:
+            if data:
+                writer=csv.DictWriter(f,fieldnames=list(data[0]));writer.writeheader();writer.writerows(data)
+    with (root/'acquired_record_fidelity.json').open('x') as f:
+        json.dump({'diagnostic_only':True,'results':fidelity},f,indent=2)
     with (root/'summary_tables.csv').open('x') as f:
         writer=csv.DictWriter(f,fieldnames=list(results[0]));writer.writeheader();writer.writerows(results)
     with (root/'statistics.json').open('x') as f:json.dump({'unit':'family','bootstrap_draws':DRAWS,'seed':SEED,'primary_hypotheses':hypotheses,'process_repeats_independent':False},f,indent=2)

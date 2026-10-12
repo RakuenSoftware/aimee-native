@@ -67,3 +67,12 @@ campaign directory. Scored failures are retained; results are not retried to
 change their outcomes. Final claims and family-clustered inference require the
 complete analysis and acquired-record diagnostics.
 Related-work checks are tracked in [RELATED_WORK_AUDIT.md](RELATED_WORK_AUDIT.md).
+
+`run_analysis.py` waits for retention and context timings to complete before CPU
+aggregation. It verifies each primary shard's completion receipt and row count,
+hashes and merges all 100,800 responses, then runs the unchanged declared
+family-unit endpoints. Additional `per_rule_diagnostics.csv`,
+`acquired_record_fidelity.json` and `acquired_record_costs.csv` isolate requests
+with a real admitted record; they do not replace the 60-family primary analysis.
+The analysis-only SciPy dependency is installed into the NAS campaign directory,
+without modifying the shared inference environment.
