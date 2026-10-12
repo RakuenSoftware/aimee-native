@@ -34,7 +34,36 @@ Scripts:
 - `mechanical_receiver.py`: non-study native/text cache-continuation gate.
 - `analyze.py`: complete-coverage checks, family-unit bootstrap, paired tests and Holm correction.
 
-The HF seven-arm driver is implemented but requires its queued native mechanical
-checks before scoring. The installed 12B scoring path and ten-turn variant still
-require completion and mechanical validation. No C1–C5 result is claimed by this readiness code.
+## Execution status (12 October 2026)
+
+The corrected acquisition completed with seven admitted records from 60 families.
+Every accepted raw proposal was validated on training examples and read back
+unchanged from the isolated Aimee owner API before the producer ended.
+
+All three HF receiver profiles passed their non-study native-continuation checks.
+Their seven-arm evaluation completed: 75,600 requests across three receivers,
+three fresh processes per receiver, and 1,200 held-out inputs per arm. Repeated
+requests do not increase the statistical unit beyond the 60 rule families.
+The fresh installed 12B learner-retention evaluation is running (25,200 planned
+requests). Its separate mechanical and token-budget checks passed; the primary
+four-receiver analysis awaits its completion.
+
+A secondary context-growth phase is frozen and queued after retention:
+`context_growth.py`, three HF receivers, three fresh processes each, twenty
+seven-turn episodes per arm, 3,780 requests total. Seven admissions support seven
+turns, rather than the originally proposed ten distinct-record turns. Its arms
+are persistent text, removed text and request-bound native records. Persistent
+text serializes prior rule blocks into reconstructed history; all arms retain
+public tasks and generated answers. Prompt/history caching is disabled. This
+phase uses the complete-prefix reference profile, not mid-turn insertion after
+cached history. It measures full preparation wall time separately from model
+prefill, prepared-state residency, carried tokens and per-turn latency. Its
+cache byte-seconds quantity is explicitly a proxy, not an allocation-time
+integral; energy is not measured. The installed 12B context phase remains to be
+implemented.
+
+All outputs, source freezes and process receipts remain in the dedicated NAS
+campaign directory. Scored failures are retained; results are not retried to
+change their outcomes. Final claims and family-clustered inference require the
+complete analysis and acquired-record diagnostics.
 Related-work checks are tracked in [RELATED_WORK_AUDIT.md](RELATED_WORK_AUDIT.md).
