@@ -19,6 +19,12 @@ class TransportTests(unittest.TestCase):
         examples=[{'id':'train-01','input':'an example input','output':'an example output'}]
         for text in ['', 'train-01', 'an example output', 'x'*2001]:
             with self.assertRaises(ValueError):checked_record(text,examples)
+    def test_experience_policy_is_explicit_and_does_not_rewrite_content(self):
+        examples=[{'id':'train-01','input':'seen input','output':'seen output'}]
+        text='Rule then noun. Worked example: seen input -> seen output'
+        with self.assertRaises(ValueError):checked_record(text,examples)
+        self.assertEqual(checked_record(text,examples,allow_training_examples=True),text)
+
     def test_validation_transport_only(self):
         outputs=['answer']*8
         for raw in [json.dumps(outputs),'```json\n'+json.dumps(outputs)+'\n```']:

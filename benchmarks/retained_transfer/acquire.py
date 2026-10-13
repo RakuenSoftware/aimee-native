@@ -17,10 +17,10 @@ SYSTEM = ('Infer and apply translation rules using the supplied fixed lexicon. '
           'For validation return the requested JSON array of translations.')
 
 
-def checked_record(raw, examples):
+def checked_record(raw, examples, allow_training_examples=False):
     if not isinstance(raw,str) or not raw.strip() or len(raw)>2000:
         raise ValueError('missing or oversized written rule')
-    if any(x['input'] in raw or x['output'] in raw or x['id'] in raw for x in examples):
+    if not allow_training_examples and any(x['input'] in raw or x['output'] in raw or x['id'] in raw for x in examples):
         raise ValueError('record repeats experience instead of a rule')
     return raw
 
@@ -59,6 +59,7 @@ def main():
     p.add_argument('--model',required=True);p.add_argument('--session',required=True)
     p.add_argument('--expected-training-sha256',required=True)
     p.add_argument('--max-attempts',type=int,default=3)
+    p.add_argument('--record-policy',choices=('rule-only','experience-derived'),default='rule-only',help='New protocol arm: experience-derived records may retain worked training examples')
     p.add_argument('--refine',action='store_true',help='New protocol: expose previous rule and training failures to retries')
     args=p.parse_args()
     assert 1 <= args.max_attempts <= 10
@@ -69,7 +70,7 @@ def main():
     args.out.mkdir(parents=True,exist_ok=False)
     requests=(args.out/'requests.jsonl').open('x')
     def call(payload,tag):
-        body={'model':args.model,'messages':[{'role':'system','content':SYSTEM},
+        body={'model':args.model,'messages':[{'role':'system','content':SYSTEM if args.record_policy=='rule-only' else SYSTEM.replace('For proposals return only a reusable rule, without examples.', 'For proposals return a reusable rule, optionally with one or two worked training examples.')},
             {'role':'user','content':json.dumps(payload,sort_keys=True)}],
             'temperature':0,'seed':20261011,'max_tokens':512,
             'chat_template_kwargs':{'enable_thinking':False}}
@@ -92,8 +93,10 @@ def main():
                     if args.refine:
                         proposal['revision_feedback']=revision
                         proposal['instruction']='Return a reusable output template using {noun}, {verb}, {adjective} and literal particles/affixes. State any conditions separately. Use training failures to correct your previous rule; no worked examples.'
+                    if args.record_policy=='experience-derived':
+                        proposal['instruction']+=' You may retain one or two worked training examples alongside the reusable rule; no executable code.'
                     raw=call(proposal,[family['family_id'],attempt,'proposal'])
-                    checked_record(raw,family['examples'])
+                    checked_record(raw,family['examples'],allow_training_examples=args.record_policy=='experience-derived')
                     validation=call({'operation':'validate','lexicon':family['lexicon'],
                         'source_pattern':family['source_pattern'],'record_text':raw,
                         'inputs':[{'id':x['id'],'input':x['input'],'slots':x['slots']} for x in family['examples']],
@@ -104,12 +107,12 @@ def main():
                 admitted=error is None and score>=7
                 row={'family_id':family['family_id'],'language':family['language'],'source_session':args.session,
                      'attempt':attempt,'rule_text':raw,'validation_raw':validation,'training_matches':score,
-                     'admitted_candidate':admitted,'error':error}
+                     'admitted_candidate':admitted,'error':error,'record_policy':args.record_policy}
                 append(log,row)
                 if admitted:
                     append(records,{'family_id':family['family_id'],'language':family['language'],
                         'content':raw,'source_session':args.session,'validation':{'matches':score,'total':8,'threshold':7},
-                        'version':1,'content_sha256':hashlib.sha256(raw.encode()).hexdigest(),
+                        'version':1,'record_policy':args.record_policy,'content_sha256':hashlib.sha256(raw.encode()).hexdigest(),
                         'canonical_admission':'pending-authorized-store-receipt'})
                     break
                 feedback=score
