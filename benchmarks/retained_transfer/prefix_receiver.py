@@ -5,6 +5,7 @@ All active weights and cache tensors remain on CUDA. Forensic hash copies are
 outside timed inference and never replace the active state.
 """
 import copy,hashlib,json,time
+from contextlib import nullcontext
 from pathlib import Path
 
 
@@ -39,7 +40,7 @@ def state_identity(cache):
 
 
 class PrefixReceiver:
-    def __init__(self,path):
+    def __init__(self,path,sdpa_backend=None):
         import torch
         from transformers import AutoConfig,AutoTokenizer,AutoModelForCausalLM,AutoModelForImageTextToText
         self.torch=torch;self.tokenizer=AutoTokenizer.from_pretrained(path,local_files_only=True)
@@ -50,6 +51,13 @@ class PrefixReceiver:
         assert all(p.device.type=='cuda' and not p.requires_grad for p in self.model.parameters())
         self.versions=[(id(p),p._version) for p in self.model.parameters()]
         self.config=self.model.config.get_text_config()
+        # The installed torch SDPA auto dispatcher produces a large non-square
+        # masked-attention error on the Gemma4 split-prefill regression. Math
+        # SDPA and eager both recover 20/20; FP32 auto SDPA still fails 0/20.
+        # Apply the same arithmetic backend to full and split execution.
+        self.sdpa_backend = sdpa_backend or ('math' if config.model_type=='gemma4' else 'auto')
+        if self.sdpa_backend not in ('math','auto'):
+            raise ValueError('supported SDPA backend policies: math, auto')
         eos=self.model.generation_config.eos_token_id
         self.eos=set(eos if isinstance(eos,list) else [eos])
         self.prepared={}
@@ -67,7 +75,10 @@ class PrefixReceiver:
               'attention_mask':torch.ones((1,offset+len(ids)),dtype=torch.long,device='cuda'),
               'position_ids':torch.arange(offset,offset+len(ids),device='cuda').unsqueeze(0)}
         if cache is not None:args['past_key_values']=cache
-        return self.model(**args)
+        from torch.nn.attention import sdpa_kernel, SDPBackend
+        context=sdpa_kernel(SDPBackend.MATH) if self.sdpa_backend=='math' else nullcontext()
+        with context:
+            return self.model(**args)
 
     def prepare(self,key,prefix_ids):
         assert key not in self.prepared and prefix_ids
@@ -108,7 +119,7 @@ class PrefixReceiver:
             'engine_ttft_ms':first*1000,'engine_end_ms':end*1000,'attachment_ms':attached*1000,
             'prefill_tokens':len(ids),'native_prefix_tokens':prefix,
             'peak_cuda_allocated_bytes':peak_allocated,'peak_cuda_reserved_bytes':peak_reserved,
-            'all_active_cache_cuda':True,'weights_version_unchanged':True,
+            'all_active_cache_cuda':True,'weights_version_unchanged':True,'sdpa_backend_policy':self.sdpa_backend,
             'timing_scope':'Engine call including cache clone/attachment, tensor construction and decode; caller must add frontend/tokenization for request-level C5.'}
 
     def retire(self,key):

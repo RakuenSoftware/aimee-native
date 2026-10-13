@@ -1,8 +1,16 @@
 import json
 import unittest
-from acquire import checked_record, validation_outputs
+from acquire import checked_record, validation_outputs, revision_feedback
 
 class TransportTests(unittest.TestCase):
+    def test_retry_receives_failed_training_case_and_exact_previous_record(self):
+        examples=[{'id':'train-seen','input':'seen input','slots':{'noun':'seen'},'output':'correct'}]
+        feedback=revision_feedback('unchanged rule',['wrong'],examples,None)
+        self.assertEqual(feedback['previous_rule'],'unchanged rule')
+        self.assertEqual(feedback['training_failures'][0]['observed'],'wrong')
+        self.assertEqual(feedback['training_failures'][0]['expected'],'correct')
+        self.assertEqual(revision_feedback('r',['correct'],examples,None)['training_failures'],[])
+
     def test_written_record_is_preserved(self):
         examples=[{'id':'train-01','input':'an example input','output':'an example output'}]
         for text in ['Use verb then noun.', '```json\n{"record_schema":{"output_template":"{verb} {noun}"}}\n```']:

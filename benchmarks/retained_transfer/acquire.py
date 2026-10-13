@@ -37,6 +37,18 @@ def validation_outputs(raw):
     return outputs
 
 
+def revision_feedback(raw, outputs, examples, error):
+    """Deployment-visible training evidence only; never evaluator references."""
+    failures=[{'example_id':example['id'], 'expected':example['output'], 'observed':observed}
+              for example,observed in zip(examples,outputs or [])
+              if observed.strip()!=example['output']]
+    return {'previous_rule': raw[:512] if raw else raw,
+            'previous_rule_excerpted': bool(raw and len(raw)>512),
+            'validation_error': error, 'failure_count':len(failures),
+            'training_failures': failures[:2]}
+
+
+
 def append(stream,value):
     stream.write(json.dumps(value,sort_keys=True)+'\n');stream.flush();os.fsync(stream.fileno())
 
@@ -46,7 +58,10 @@ def main():
     p.add_argument('--out',type=Path,required=True);p.add_argument('--url',required=True)
     p.add_argument('--model',required=True);p.add_argument('--session',required=True)
     p.add_argument('--expected-training-sha256',required=True)
+    p.add_argument('--max-attempts',type=int,default=3)
+    p.add_argument('--refine',action='store_true',help='New protocol: expose previous rule and training failures to retries')
     args=p.parse_args()
+    assert 1 <= args.max_attempts <= 10
     blob=args.training.read_bytes();assert hashlib.sha256(blob).hexdigest()==args.expected_training_sha256
     families=[json.loads(x) for x in blob.splitlines()]
     assert len(families)==60
@@ -68,12 +83,16 @@ def main():
         return value['choices'][0]['message']['content']
     with (args.out/'acquisition_log.jsonl').open('x') as log, (args.out/'proposed_records.jsonl').open('x') as records:
         for family in families:
-            feedback=None
-            for attempt in range(1,4):
-                raw=None;validation=None;score=0;error=None
+            feedback=None; revision=None
+            for attempt in range(1,args.max_attempts+1):
+                raw=None;validation=None;outputs=None;score=0;error=None
                 try:
-                    raw=call({'operation':'propose','family':family,'prior_match_count':feedback,
-                        'instruction':'Write one reusable translation rule, using the supplied placeholder notation where helpful. Derive order and particles from examples. Return the rule only, not the examples.'},[family['family_id'],attempt,'proposal'])
+                    proposal={'operation':'propose','family':family,'prior_match_count':feedback,
+                        'instruction':'Write one reusable translation rule, using the supplied placeholder notation where helpful. Derive order and particles from examples. Return the rule only, not the examples.'}
+                    if args.refine:
+                        proposal['revision_feedback']=revision
+                        proposal['instruction']='Return a reusable output template using {noun}, {verb}, {adjective} and literal particles/affixes. State any conditions separately. Use training failures to correct your previous rule; no worked examples.'
+                    raw=call(proposal,[family['family_id'],attempt,'proposal'])
                     checked_record(raw,family['examples'])
                     validation=call({'operation':'validate','lexicon':family['lexicon'],
                         'source_pattern':family['source_pattern'],'record_text':raw,
@@ -94,6 +113,7 @@ def main():
                         'canonical_admission':'pending-authorized-store-receipt'})
                     break
                 feedback=score
+                revision=revision_feedback(raw,outputs,family['examples'],error)
     requests.close()
     (args.out/'completion.json').write_text(json.dumps({'training_sha256':args.expected_training_sha256,
         'driver_pid':os.getpid(),'source_session':args.session,'driver_complete':True,
