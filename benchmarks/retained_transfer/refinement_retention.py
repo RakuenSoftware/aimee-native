@@ -6,7 +6,8 @@ from prefix_receiver import PrefixReceiver
 from receiver_plan import messages,common_prefix
 r=Path(sys.argv[1]);out=Path(sys.argv[2]);assert str(out).startswith('/mnt/pve/backup/aimee-experiments/')
 out.mkdir(exist_ok=False)
-pilot=r/'acquisition-refinement-development-r1'
+pilot=Path(sys.argv[3]) if len(sys.argv)>3 else r/'acquisition-refinement-development-r1'
+assert str(pilot).startswith('/mnt/pve/backup/aimee-experiments/')
 while not (pilot/'producer-termination.json').exists():time.sleep(10)
 assert (pilot/'completion.json').exists(), 'Acquisition failed; refuse evaluation'
 ended=json.loads((pilot/'producer-termination.json').read_text());assert ended['exit_code'] is not None
