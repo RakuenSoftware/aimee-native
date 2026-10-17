@@ -1,0 +1,20 @@
+{
+  "archive_members_scanned": 537,
+  "findings": [
+    {
+      "archive": "public-testing-current-selected-source.tar.gz",
+      "path": "server-go/modules/memory/public_store_test.go",
+      "kind": "private-key"
+    },
+    {
+      "archive": "pr-3020-head-source.tar.gz",
+      "path": "server-go/modules/memory/public_store_test.go",
+      "kind": "private-key"
+    }
+  ],
+  "purpose": "Preserve exact previously public source before authorized privacy cleanup.",
+  "manual_review": {
+    "status": "all findings are non-key test strings",
+    "details": "public_store_test.go uses deliberately invalid PEM strings containing literal secret body / secret to test refusal and redaction; no encoded key material is present."
+  }
+}

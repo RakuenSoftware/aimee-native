@@ -1,0 +1,22 @@
+{
+  "number": 3001,
+  "title": "Provide native-memory source records to enrolled thin clients",
+  "body": "A standard Aimee server returned 404 when an enrolled thinclient requested native-memory source records. This PR adds `POST /v1/native/primitive`: an authenticated, model-neutral personal-memory read that returns bounded selected records with their current revisions. The vLLM plugin uses the existing thinclient enrollment, fetches those records, and prepares model-specific native memory beside the model. The Aimee server does not download model weights or compute K/V tensors.\n\nThe change is limited to the server endpoint, its API contract, the generated route descriptor, and thinclient setup documentation. The older optional Unix-socket publication bridge and its export-policy code have been removed from this PR. The signed plugin executable is handled separately in PR #3002.\n\nValidation against `testing`: Go memory and execution-policy package tests pass; the C `unit-test-server-http` route test passes; `docs-gen-check` and `git diff --check` pass. The separate private plugin validation previously exercised enrolled mTLS thinclient retrieval, GGUF-only Gemma4 12B local preparation and live vLLM consumption on an RTX 5080, including revocation. No release asset is published by this PR.",
+  "state": "closed",
+  "merged": true,
+  "head": "feature/native-delivery-current",
+  "head_sha": "4e822e6ee4b90c2dfa39a249b6730bcc495e0b28",
+  "base": "testing",
+  "base_sha": "40eaba7493ed3acce9c96fdc9c24916bd0ed6a6b",
+  "files": [
+    ".gitleaksignore",
+    "README.md",
+    "api/openapi-server-v1.yaml",
+    "docs/NATIVE_MEMORY_PLUGIN.md",
+    "docs/gen/v1-route-descriptor.json",
+    "src/server/server_api.c",
+    "src/server/server_http_routes.c",
+    "src/tests/test_server_http.c",
+    "tests/baselines/modules/memory-ownership.json"
+  ]
+}

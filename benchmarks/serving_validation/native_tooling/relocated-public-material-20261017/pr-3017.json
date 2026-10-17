@@ -1,0 +1,11 @@
+{
+  "number": 3017,
+  "title": "Prepare 1.0.1 with five signed model plugin files and doc updates",
+  "body": "Include exactly five model plugin bundles in the regular 1.0.1 release preparation: Gemma4 E2B, E4B, 12B, 26B A4B and Qwen3.8 27B. Each ZIP contains one adapter, its required shared runtime and GGUF loader, and the existing verified Ed25519 signatures and signed metadata. Plugin wheel bytes remain unchanged at 0.3.3, runtime build 5.\n\nUpdate release notes and installation documentation with model selection, pinned-key verification, offline installation and enrollment. The next version resolves to 1.0.1 through the existing application release process.\n\nScope: five binary files and Markdown documentation only.\n\nValidation: extracted all five bundles; verified every included wheel and both metadata signatures; checked hashes against the signed manifest and checksum file; confirmed exactly one model adapter per bundle and rejected a tampered adapter in each bundle. New GPU serving tests were not run because the qualified wheel bytes are unchanged.",
+  "state": "closed",
+  "merged": true,
+  "head": "release/1.0.1-model-plugins",
+  "head_sha": "4b287e065d980b76d36f6230cff36d4df23d58b8",
+  "base": "testing",
+  "base_sha": "74b98a644cd5a57ee5bfd0ae31ec54fa163efb22"
+}
