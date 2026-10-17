@@ -1,0 +1,56 @@
+INFO 10-14 08:37:21 [__init__.py:52] Available plugins for group vllm.platform_plugins:
+INFO 10-14 08:37:21 [__init__.py:54] - aimee_cpu_native_platform -> aimee_vllm.cpu_plugin:register
+INFO 10-14 08:37:21 [__init__.py:57] All plugins in this group will be loaded. Set `VLLM_PLUGINS` to control which plugins to load.
+WARNING 10-14 08:37:25 [importing.py:45] Triton is installed, but doesn't include CPU backend. Disabling Triton.
+INFO 10-14 08:37:25 [importing.py:74] Triton is installed but 0 active driver(s) found (expected 1). Disabling Triton to prevent runtime errors.
+INFO 10-14 08:37:25 [importing.py:98] Triton not installed or not compatible; certain GPU-related functions will not be available.
+sssssssssss.....ssss...................Native control operation failed
+Traceback (most recent call last):
+  File "/opt/native-tooling-research/phase3-owner-wave-v107/aimee_vllm/control.py", line 21, in handle
+    async with lock:result=await operate(owner,engine,request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/native-tooling-research/phase3-owner-wave-v107/aimee_vllm/control.py", line 63, in operate
+    if generation!=getattr(owner,'generation',0):raise RuntimeError('superseded publication activation')
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: superseded publication activation
+......EEs.....s...sssss..................ss...
+======================================================================
+ERROR: test_export_hybrid (unittest.loader._FailedTest.test_export_hybrid)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_export_hybrid
+Traceback (most recent call last):
+  File "/root/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/unittest/loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/unittest/loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "/opt/native-tooling-research/phase3-owner-wave-v107/tests/test_export_hybrid.py", line 13, in <module>
+    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1132, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1190, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/opt/benchmarks/native_addressing/export_hybrid.py'
+
+
+======================================================================
+ERROR: test_gguf_loader (unittest.loader._FailedTest.test_gguf_loader)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_gguf_loader
+Traceback (most recent call last):
+  File "/root/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/unittest/loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/unittest/loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "/opt/native-tooling-research/phase3-owner-wave-v107/tests/test_gguf_loader.py", line 5, in <module>
+    from aimee_vllm.gguf_loader import UnifiedGGUFLoader
+  File "/opt/native-tooling-research/phase3-owner-wave-v107/aimee_vllm/gguf_loader.py", line 9, in <module>
+    from vllm_gguf_plugin.loader import GGUFModelLoader,GGUFLoadPlan,_get_unquantized_modules
+ModuleNotFoundError: No module named 'vllm_gguf_plugin'
+
+
+----------------------------------------------------------------------
+Ran 85 tests in 0.093s
+
+FAILED (errors=2, skipped=24)

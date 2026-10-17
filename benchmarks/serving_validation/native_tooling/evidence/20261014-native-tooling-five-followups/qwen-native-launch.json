@@ -1,0 +1,27 @@
+{
+  "args": [
+    "pct",
+    "exec",
+    "9222",
+    "--",
+    "systemd-run",
+    "--unit=phase3-owner-v107-qwen-native",
+    "--property=MemoryMax=8G",
+    "--property=TasksMax=256",
+    "--property=CPUQuota=400%",
+    "--working-directory=/opt/native-tooling-research/phase3-owner-wave-v107",
+    "--setenv=OMP_NUM_THREADS=4",
+    "--setenv=VLLM_CPU_OMP_THREADS_BIND=11,19,23,24",
+    "--setenv=CUDA_VISIBLE_DEVICES=",
+    "--setenv=HIP_VISIBLE_DEVICES=",
+    "--setenv=ROCR_VISIBLE_DEVICES=",
+    "/opt/vllm-cpu/bin/python",
+    "-m",
+    "aimee_vllm.cpu_cli",
+    "--config",
+    "/opt/native-tooling-research/phase3-owner-wave-v107/cpu-config.json"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "Running as unit: phase3-owner-v107-qwen-native.service; invocation ID: 9162772eb36f497b89f5bb54a0bd6ccc\n"
+}

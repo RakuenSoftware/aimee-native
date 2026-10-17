@@ -1,0 +1,18 @@
+{
+  "args": [
+    "pct",
+    "exec",
+    "9222",
+    "--",
+    "systemd-run",
+    "--unit=phase3-owner-v110-qwen-episodes",
+    "--property=MemoryMax=2G",
+    "--working-directory=/opt/native-tooling-research/phase3-owner-wave-v107",
+    "sh",
+    "-c",
+    "while systemctl is-active --quiet phase3-owner-v110-qwen-lifecycle; do sleep 5; done; /opt/vllm-cpu/bin/python cpu_episodes.py > cpu-episode-log.txt 2>&1"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "Running as unit: phase3-owner-v110-qwen-episodes.service; invocation ID: 7660f95601734bbca7d4849ed933c4d8\n"
+}

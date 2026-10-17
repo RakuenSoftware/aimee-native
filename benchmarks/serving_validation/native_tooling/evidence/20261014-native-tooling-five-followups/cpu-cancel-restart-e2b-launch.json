@@ -1,0 +1,18 @@
+{
+  "args": [
+    "pct",
+    "exec",
+    "9205",
+    "--",
+    "systemd-run",
+    "--unit=phase3-owner-v117-e2b-cancel-restart",
+    "--property=MemoryMax=1G",
+    "--working-directory=/opt/native-tooling-research/phase3-owner-wave-v107",
+    "sh",
+    "-c",
+    "while systemctl is-active --quiet phase3-owner-v116-9205-budget-resume; do sleep 5; done; /opt/vllm-cpu/bin/python -c 'import json;from pathlib import Path;rows=[json.loads(x) for x in Path(\"cpu-budget-v116-results.jsonl\").read_text().splitlines()];assert rows[-1][\"kind\"]==\"terminal\"' && /opt/vllm-cpu/bin/python cpu_cancel_restart.py > cpu-cancel-log.txt 2>&1 && /opt/vllm-cpu/bin/python cpu_e2b_restart_verification.py > cpu-cancel-restart-verification-log.txt 2>&1"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "Running as unit: phase3-owner-v117-e2b-cancel-restart.service; invocation ID: 06b867c4d12b49f9adecc01944609cc6\n"
+}

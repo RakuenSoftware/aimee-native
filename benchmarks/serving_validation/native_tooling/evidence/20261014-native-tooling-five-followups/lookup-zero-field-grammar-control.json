@@ -1,0 +1,176 @@
+{
+  "request": {
+    "model": "research-e2b-native",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Return exactly this JSON object: {\"kind\": \"need\", \"capability_id\": \"lookup-0\", \"quotes\": {}, \"reason\": \"request temperature-adjusted capacity\"}"
+      }
+    ],
+    "max_tokens": 96,
+    "temperature": 0,
+    "stream": false,
+    "response_format": {
+      "json_schema": {
+        "name": "aimee_semantic_intake",
+        "schema": {
+          "oneOf": [
+            {
+              "additionalProperties": false,
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "need"
+                  ],
+                  "type": "string"
+                },
+                "capability_id": {
+                  "const": "lookup-0",
+                  "type": "string"
+                },
+                "quotes": {
+                  "additionalProperties": false,
+                  "properties": {},
+                  "required": [],
+                  "type": "object"
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "unsupported_claims": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "kind",
+                "capability_id",
+                "quotes",
+                "reason"
+              ],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "need"
+                  ],
+                  "type": "string"
+                },
+                "capability_id": {
+                  "const": "lookup-1",
+                  "type": "string"
+                },
+                "quotes": {
+                  "additionalProperties": false,
+                  "properties": {},
+                  "required": [],
+                  "type": "object"
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "unsupported_claims": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "kind",
+                "capability_id",
+                "quotes",
+                "reason"
+              ],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "content"
+                  ],
+                  "type": "string"
+                },
+                "capability_id": {
+                  "const": "report",
+                  "type": "string"
+                },
+                "quotes": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "body": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "body"
+                  ],
+                  "type": "object"
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "unsupported_claims": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "kind",
+                "capability_id",
+                "quotes",
+                "reason"
+              ],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "clarify",
+                    "refusal",
+                    "none"
+                  ],
+                  "type": "string"
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "unsupported_claims": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "kind",
+                "reason"
+              ],
+              "type": "object"
+            }
+          ]
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    }
+  },
+  "response": "{\"id\":\"chatcmpl-8acd24637d0bccb2\",\"object\":\"chat.completion\",\"created\":1791975490,\"model\":\"research-e2b-native\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"kind\\\": \\\"need\\\", \\\"capability_id\\\": \\\"lookup-0\\\", \\\"quotes\\\": {}, \\\"reason\\\": \\\"request temperature-adjusted capacity\\\"}\",\"refusal\":null,\"annotations\":null,\"audio\":null,\"function_call\":null,\"reasoning\":null},\"logprobs\":null,\"finish_reason\":\"stop\",\"stop_reason\":106,\"token_ids\":null,\"routed_experts\":null}],\"service_tier\":null,\"system_fingerprint\":\"vllm-0.30.0-f903b3db\",\"usage\":{\"prompt_tokens\":45,\"total_tokens\":76,\"completion_tokens\":31,\"prompt_tokens_details\":null,\"completion_tokens_details\":null},\"prompt_logprobs\":null,\"prompt_token_ids\":null,\"prompt_text\":null,\"kv_transfer_params\":null,\"ec_transfer_params\":null,\"metrics\":null}\n",
+  "stderr": "",
+  "returncode": 0,
+  "purpose": "Zero-field semantic lookup grammar viability only; explicit output supplied, not task/need-discovery evidence."
+}

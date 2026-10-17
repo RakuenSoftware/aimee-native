@@ -1,0 +1,19 @@
+{
+  "args": [
+    "pct",
+    "exec",
+    "9222",
+    "--",
+    "systemd-run",
+    "--unit=phase3-owner-v114-9222-scalar-feedback",
+    "--property=MemoryMax=2G",
+    "--working-directory=/opt/native-tooling-research/phase3-owner-wave-v107",
+    "sh",
+    "-c",
+    "while systemctl is-active --quiet phase3-owner-v113-9222-scalar-r2; do sleep 5; done; test -S /opt/native-tooling-research/phase3-owner-wave-v107/cpu-control.sock && /opt/vllm-cpu/bin/python cpu_scalar_feedback_v114.py > cpu-scalar-feedback-v114-log.txt 2>&1"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "Running as unit: phase3-owner-v114-9222-scalar-feedback.service; invocation ID: 531dae7153b64893b4511b6d58eb76e9\n",
+  "condition": "Development follow-up on four v113 goals: known mandatory checker runs automatically; only actual rejection findings are distributed natively. No hidden replacement candidate, no prose extraction, no per-tool training. Native vs identical current token-prefix reference; max3 attempts."
+}

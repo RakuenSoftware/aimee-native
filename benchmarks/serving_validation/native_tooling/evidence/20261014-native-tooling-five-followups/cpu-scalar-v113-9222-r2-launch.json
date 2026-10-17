@@ -1,0 +1,19 @@
+{
+  "args": [
+    "pct",
+    "exec",
+    "9222",
+    "--",
+    "systemd-run",
+    "--unit=phase3-owner-v113-9222-scalar-r2",
+    "--property=MemoryMax=2G",
+    "--working-directory=/opt/native-tooling-research/phase3-owner-wave-v107",
+    "sh",
+    "-c",
+    "test -S /opt/native-tooling-research/phase3-owner-wave-v107/cpu-control.sock && /opt/vllm-cpu/bin/python cpu_scalar_v113.py > cpu-scalar-v113-log.txt 2>&1"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "Running as unit: phase3-owner-v113-9222-scalar-r2.service; invocation ID: 86db6efd33b5419b9d38dc0cf113889c\n",
+  "amendment": "Publisher-socket readiness replaces blocked HTTP health check. Original failed/waiting launch preserved."
+}

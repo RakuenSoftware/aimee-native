@@ -1,0 +1,25 @@
+{
+  "args": [
+    "pct",
+    "exec",
+    "9205",
+    "--",
+    "systemd-run",
+    "--unit=phase3-owner-v108-schema-intake",
+    "--property=MemoryMax=512M",
+    "--property=CPUQuota=100%",
+    "--property=TasksMax=32",
+    "--working-directory=/opt/native-tooling-research/phase3-owner-wave-v107",
+    "--setenv=AIMEE_RESOLVER_ENDPOINT=http://127.0.0.1:8436/v1/chat/completions",
+    "--setenv=AIMEE_RESOLVER_MODEL=research-e2b",
+    "--setenv=AIMEE_RESOLVER_SCHEMA=1",
+    "/bin/sh",
+    "-c",
+    "./resolver-schema < automatic-intake-inputs.jsonl > schema-intake-results.jsonl"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "Running as unit: phase3-owner-v108-schema-intake.service; invocation ID: 910ab311442e4575bad7bfea55ab8e7f\n",
+  "resolver_sha256": "29acaddd3ac8a9057d1a92512843d8483ce47e280f8caaaa904356fd9541fd03",
+  "condition": "Owner-only typed JSON grammar; same22inputs, no references sent, no model training or task-model format restriction."
+}

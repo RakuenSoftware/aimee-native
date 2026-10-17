@@ -1,0 +1,18 @@
+{
+  "args": [
+    "pct",
+    "exec",
+    "9222",
+    "--",
+    "systemd-run",
+    "--unit=phase3-owner-v110-plugin-tests",
+    "--property=MemoryMax=3G",
+    "--working-directory=/opt/native-tooling-research/phase3-owner-wave-v107",
+    "sh",
+    "-c",
+    "/opt/vllm-cpu/bin/python -m unittest discover -s tests -p \"test_*.py\" > cpu-plugin-unit-tests.txt 2>&1"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "Running as unit: phase3-owner-v110-plugin-tests.service; invocation ID: c5fa82492dea480d94273163a9671904\n"
+}

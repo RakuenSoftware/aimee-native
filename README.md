@@ -15,6 +15,8 @@ native states reside in RAM/disk, with temporary device copies for attention.
 
 ## Start here
 
+- [Private native-tooling research: code, results and evidence index](docs/research/native-tooling-results-index.txt). Companion plugin implementation: private PR #8.
+
 - [Native addressing, bounded working sets, and completed evaluation decisions](benchmarks/native_addressing/RESULTS.md)
 
 - [Native distribution implementation and remaining release gates](distribution/README.md)

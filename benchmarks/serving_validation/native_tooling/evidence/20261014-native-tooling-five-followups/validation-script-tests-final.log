@@ -1,0 +1,16 @@
+script-tests: ../scripts/tests/test_thin_client_proxy.py
+.........F..................
+======================================================================
+FAIL: test_document_hook_scope_and_identity_recovery_over_mtls (__main__.ThinClientProxyTest.test_document_hook_scope_and_identity_recovery_over_mtls)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/virant/dev/aimee-native-tooling-owner/scripts/tests/test_thin_client_proxy.py", line 464, in test_document_hook_scope_and_identity_recovery_over_mtls
+    self.assertNotIn('"deny"', result.stdout)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '"deny"' unexpectedly found in '{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"worktree required"}}\n'
+
+----------------------------------------------------------------------
+Ran 28 tests in 16.602s
+
+FAILED (failures=1)
+make: *** [Makefile:1060: script-tests] Error 1

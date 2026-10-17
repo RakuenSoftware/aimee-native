@@ -1,0 +1,22 @@
+{
+  "args": [
+    "pct",
+    "exec",
+    "9205",
+    "--",
+    "systemd-run",
+    "--unit=phase3-owner-v116-9205-budget",
+    "--property=MemoryMax=2G",
+    "--working-directory=/opt/native-tooling-research/phase3-owner-wave-v107",
+    "--setenv=EPISODE_MODEL=research-e2b-native",
+    "--setenv=EPISODE_PORT=8437",
+    "--setenv=EPISODE_CHECKPOINT=/opt/research-models/gemma",
+    "sh",
+    "-c",
+    "while systemctl is-active --quiet phase3-owner-v112-e2b-compiled-episodes; do sleep 5; done; /opt/vllm-cpu/bin/python cpu_budget_v116.py > cpu-budget-v116-log.txt 2>&1"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "Running as unit: phase3-owner-v116-9205-budget.service; invocation ID: 4480d25a0fc44c3e977f42c0aa6d851e\n",
+  "condition": "Predeclared budget follow-up after E2B128-token contribution truncation. Identical v112 semantic/source-routing protocol, max384 instead of128, one repetition, bothnative/ordinaryprefix. No repaired terminal outputs."
+}

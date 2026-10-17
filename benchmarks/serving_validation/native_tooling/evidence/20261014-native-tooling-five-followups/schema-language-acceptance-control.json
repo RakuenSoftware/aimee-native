@@ -1,0 +1,81 @@
+{
+  "schema": {
+    "oneOf": [
+      {
+        "additionalProperties": false,
+        "properties": {
+          "capability_id": {
+            "const": "propose",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "content",
+              "need"
+            ],
+            "type": "string"
+          },
+          "quotes": {
+            "additionalProperties": false,
+            "properties": {
+              "value": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "value"
+            ],
+            "type": "object"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "unsupported_claims": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "kind",
+          "capability_id",
+          "quotes",
+          "reason"
+        ],
+        "type": "object"
+      },
+      {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "enum": [
+              "clarify",
+              "refusal",
+              "none"
+            ],
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "unsupported_claims": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "kind",
+          "reason"
+        ],
+        "type": "object"
+      }
+    ]
+  },
+  "expected": "{\"kind\":\"content\",\"capability_id\":\"propose\",\"quotes\":{\"value\":\"13\"},\"reason\":\"explicit proposed value\"}",
+  "returncode": 0,
+  "stdout": "False\n",
+  "stderr": ""
+}

@@ -1,0 +1,22 @@
+{
+  "args": [
+    "pct",
+    "exec",
+    "9222",
+    "--",
+    "systemd-run",
+    "--unit=phase3-owner-v110-qwen-intake",
+    "--property=MemoryMax=512M",
+    "--working-directory=/opt/native-tooling-research/phase3-owner-wave-v107",
+    "--setenv=AIMEE_RESOLVER_ENDPOINT=http://127.0.0.1:8437/v1/chat/completions",
+    "--setenv=AIMEE_RESOLVER_MODEL=research-qwen-native",
+    "--setenv=AIMEE_RESOLVER_SCHEMA=1",
+    "--setenv=AIMEE_RESOLVER_DISABLE_THINKING=1",
+    "sh",
+    "-c",
+    "./resolver-v110 < automatic-intake-inputs.jsonl > kind-first-qwen-results.jsonl"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "Running as unit: phase3-owner-v110-qwen-intake.service; invocation ID: 41c021f1213645babae1977a324819eb\n"
+}
