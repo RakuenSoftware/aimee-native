@@ -13,3 +13,6 @@ dependencies = ["vllm>=0.30.0,<0.31"]
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["aimee_vllm*"]
+
+[project.entry-points."vllm.platform_plugins"]
+aimee_cpu_native_platform = "aimee_vllm.cpu_plugin:register"

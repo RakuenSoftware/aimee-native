@@ -28,6 +28,9 @@ async def start(owner, engine):
     return server
 
 async def operate(owner,engine,request):
+    if owner.config.get("cpu_native_profile") is True:
+        from .cpu_control import operate as cpu_operate
+        return await cpu_operate(owner,engine,request)
     if request.get('op') == 'prepare':
         from .preparation import prepare
         return await prepare(owner,engine,request,owner.model_adapter)
