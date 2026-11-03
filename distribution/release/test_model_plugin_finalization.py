@@ -25,7 +25,10 @@ class FinalizationTests(unittest.TestCase):
     def test_dependency_notices_are_recorded_without_changing_executables(self):
         self.check_metadata(b'\n\n', include_notices=True)
 
-    def check_metadata(self, ending, include_notices=False):
+    def test_notices_can_be_added_to_a_versioned_qualified_wheel(self):
+        self.check_metadata(b'\n\n', include_notices=True, existing_extra=True)
+
+    def check_metadata(self, ending, include_notices=False, existing_extra=False):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             wheels = root / 'wheels'
@@ -36,8 +39,9 @@ class FinalizationTests(unittest.TestCase):
             packages = ('aimee_gemma4_12b', 'aimee_gemma4_26b', 'aimee_qwen3_8_27b', 'aimee_native_runtime')
             for package in packages:
                 with zipfile.ZipFile(wheels / (package + '-0.3.0-cp312-cp312-linux_x86_64.whl'), 'w') as archive:
+                    extra = '\nProvides-Extra: gguf\nRequires-Dist: vllm-gguf-plugin==0.0.5+triton; extra == "gguf"' if existing_extra and 'gemma' in package else ''
                     archive.writestr(package + '-0.3.0.dist-info/METADATA',
-                        ('Metadata-Version: 2.4\nName: ' + package + '\nVersion: 0.3.0').encode() + ending)
+                        ('Metadata-Version: 2.4\nName: ' + package + '\nVersion: 0.3.0' + extra).encode() + ending)
                     archive.writestr(package + '/native/libaimee_native.so', b'previously-tested-executable')
                     if package == 'aimee_native_runtime':
                         executable = zipfile.ZipInfo(package + '/native/aimee-model-client')

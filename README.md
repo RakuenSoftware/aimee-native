@@ -17,6 +17,7 @@ standalone Rust Qwen server and Go publication tools are retained research paths
 - [Build and test from source](docs/development.md)
 - [Documentation map](docs/README.md)
 - [Public release preparation and outstanding gates](docs/public-release.md)
+- [0.3.4 candidate, signatures and rollback](docs/releases/0.3.4.md)
 - [Aimee v1.0.2 validation on .252](docs/validation/aimee-v1.0.2-20261103.md)
 - [RTX 5080 execution on .253](docs/validation/aimee-5080-20261103.md)
 - [Research results and historical validation](docs/research-index.md)
@@ -58,7 +59,7 @@ personal-memory support does not imply shared organization-memory support.
 ## License and evidence
 
 Current source is [GNU AGPL version 3](LICENSE), `AGPL-3.0-only`.
-[Third-party notices](THIRD_PARTY_NOTICES.md), dataset provenance and model
+[Third-party notices](THIRD_PARTY_NOTICES.md), [data and archive notices](DATASETS.md) and model
 licenses remain applicable. New binary releases require their exact corresponding
 source, license and notices. Archived binaries retain their recorded metadata.
 

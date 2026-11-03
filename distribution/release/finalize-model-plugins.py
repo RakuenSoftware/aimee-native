@@ -32,7 +32,12 @@ def finalize(wheels,dependency,output,build_tag='2',notices=None,models=('gemma4
         if info.startswith('aimee_gemma4_'):
             metadata=files[info+'/METADATA'].rstrip(b'\n')+b'\n\n'
             headers,_,body=metadata.partition(b'\n\n')
-            headers+=b'\nProvides-Extra: gguf\nRequires-Dist: vllm-gguf-plugin==0.0.5+triton; extra == "gguf"'
+            existing=BytesParser().parsebytes(headers+b'\n\n')
+            if 'gguf' not in existing.get_all('Provides-Extra',[]):
+                headers+=b'\nProvides-Extra: gguf'
+            requirement='vllm-gguf-plugin==0.0.5+triton; extra == "gguf"'
+            if requirement not in existing.get_all('Requires-Dist',[]):
+                headers+=b'\nRequires-Dist: '+requirement.encode()
             files[info+'/METADATA']=headers+b'\n\n'+body
             parsed=BytesParser().parsebytes(files[info+'/METADATA'])
             assert parsed.get_all('Provides-Extra')==['gguf']

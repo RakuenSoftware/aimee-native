@@ -111,6 +111,15 @@ server-side release assets require their own review.
 
 ## Final publication gates
 
+The [0.3.4 candidate guide](releases/0.3.4.md) documents signed offline delivery.
+The follow-up detector review covers all 420 reachable commits (2,486 matches)
+and a clean tracked-tree export (749 matches), including nested archives to
+depth four. The 13 added findings are model/config/source hashes in validation
+JSON. No added operational credential was identified. Raw detector reports
+remain private; the [aggregate review](validation/artifacts/public-release-20261103/secret-review.json)
+and [data notices](../DATASETS.md) record the reviewed scope. This does not
+cover inaccessible server-side attachments or unfetched refs.
+
 1. Review public source/history and third-party dataset/archive redistribution
    scope, including the separately owned Aimee dependency.
 2. Enable GitHub private vulnerability reporting and preserve automatic Codex
