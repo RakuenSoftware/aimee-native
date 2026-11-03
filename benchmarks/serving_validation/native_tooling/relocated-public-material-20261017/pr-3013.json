@@ -1,0 +1,11 @@
+{
+  "number": 3013,
+  "title": "Qualify E2B and E4B native plugins and document security governance",
+  "body": "Adds the dedicated Gemma 4 E2B and E4B adapter candidates, their generated wheels and bounded release evidence. The root README explains Aimee's value, compatibility and security/governance boundary.\n\nBoth small models passed 42 CPU lifecycle checks, 45 installed Rust admission checks, 26 CUDA short-prefix checks and 27 CUDA multi-chunk checks. With the corrected shared-runtime build-3 candidate, both repeated the complete 27-check CUDA matrix and each passed the same 27-check matrix on RX 7900 XTX / ROCm. Tests include real source outage/recovery, streaming, concurrent recall, frozen-recipient rejection and server revocation; memory remains outside the chat prompt.\n\nLarger-model native smokes passed 18/18 each: Gemma 4 12B Q8_0 and 26B Q3_K_M on one 7900 XTX; Qwen 27B FP8 with 18 GiB CPU offload on RTX 5080. The enrolled launcher certifies one GPU. Qwen's current FP8 capture is unsupported on the installed gfx1100 stack, confirmed by kernel eligibility checks and an actual scaled-matmul probe; its CUDA result does not qualify that AMD profile.\n\nTesting corrected small-model GGUF mapping, replicated projection loading and a release version gate that rejected vLLM 0.30.0+rocm723. The unsigned replacement shared-runtime build-3 wheel and unchanged build-4 small-model wheels are included. Eight installed compiled-module version checks, wheel RECORD/member-permission audits, PR download hashes and the five-plugin namespace/Rust-symbol audit passed. All 33 non-compatibility runtime members remain byte-identical to signed build 2.\n\nHardware qualification is complete for the named profiles. Owned model services and temporary forwards/control stopped, test records cleaned up, source fixture recovered and GPUs clear. Final signing/manifest inclusion and installation from a published release remain release gates, so this stays draft. PR #3003's branch was not modified.",
+  "state": "closed",
+  "merged": true,
+  "head": "docs/security-governance-native-cpu-validation",
+  "head_sha": "48790bbaa6db7533f3953eb89e39fbe03eba96c9",
+  "base": "testing",
+  "base_sha": "14a76c0e9724a81ed56d83bda5ebd413aeb3fb68"
+}
