@@ -64,6 +64,20 @@ package_data={{'aimee_native_runtime':['native/*','*.so']}},distclass=Binary,pyt
     return {'wheel': wheel.name, 'sha256': hashlib.sha256(wheel.read_bytes()).hexdigest()}
 
 
+def stage_rust_source(source, repo, rust):
+    """Stage code inputs without copying caches, evidence or model data."""
+    rust.mkdir()
+    for name in ("Cargo.toml", "Cargo.lock"):
+        shutil.copyfile(source / name, rust / name)
+    toolchain = source / "rust-toolchain.toml"
+    shutil.copyfile(toolchain if toolchain.exists() else repo / "rust-toolchain.toml",
+                    rust / "rust-toolchain.toml")
+    shutil.copytree(source / "native", rust / "native")
+    shutil.copytree(repo / "src", rust / "src", dirs_exist_ok=True)
+    shutil.copyfile(repo / "build.rs", rust / "build.rs")
+    shutil.copyfile(repo / "native/vllm_runtime_portable.cpp", rust / "native/vllm_runtime_portable.cpp")
+
+
 def build(model, package, source, output, version):
     repo = Path(__file__).resolve().parents[2]
     origin = repo / "distribution/vllm/aimee_vllm"
@@ -71,10 +85,7 @@ def build(model, package, source, output, version):
         root = Path(temporary)
         shutil.copyfile(repo / "LICENSE", root / "LICENSE")
         rust = root / "rust"
-        shutil.copytree(source, rust, ignore=shutil.ignore_patterns("target", ".git"))
-        shutil.copytree(repo / "src", rust / "src", dirs_exist_ok=True)
-        shutil.copyfile(repo / "build.rs", rust / "build.rs")
-        shutil.copyfile(repo / "native/vllm_runtime_portable.cpp", rust / "native/vllm_runtime_portable.cpp")
+        stage_rust_source(source, repo, rust)
         manifest = rust / "Cargo.toml"
         text = manifest.read_text().replace('name = "aimee-qwen"', 'name = "aimee-native"')
         text = text.replace('license = "LicenseRef-Proprietary"', 'license = "AGPL-3.0-only"')
@@ -139,7 +150,8 @@ entry_points={{'vllm.general_plugins':[{package+'='+package+':register'!r}],'con
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--rust-source", type=Path, required=True)
+    p.add_argument("--rust-source", type=Path, default=Path(__file__).resolve().parents[2],
+                   help="Rust manifest/native inputs; defaults to this repository")
     p.add_argument("--output", type=Path, required=True)
     p.add_argument("--version", default="0.3.3")
     a = p.parse_args()

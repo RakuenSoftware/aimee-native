@@ -18,6 +18,8 @@ class AsyncOwnershipTests(unittest.TestCase):
             def execute_model(self,output):events.append('forward');return 'ok'
         base.Worker=Worker
         config=ModuleType('vllm.config');config.CUDAGraphMode=NS(NONE='none',PIECEWISE='piecewise')
+        hybrid=ModuleType('vllm.v1.worker.gpu.model_states.mamba_hybrid')
+        hybrid.MambaHybridModelState=type('MambaHybridModelState', (), {})
         state=ModuleType('aimee_vllm.state')
         state.CURRENT=NS(begin=lambda output:events.append('begin'),
                          requests={'native':NS(store=object())},
@@ -26,6 +28,9 @@ class AsyncOwnershipTests(unittest.TestCase):
                      'vllm.v1':ModuleType('vllm.v1'),
                      'vllm.v1.worker':ModuleType('vllm.v1.worker'),
                      'vllm.v1.worker.gpu_worker':base,'vllm.config':config,
+                     'vllm.v1.worker.gpu':ModuleType('vllm.v1.worker.gpu'),
+                     'vllm.v1.worker.gpu.model_states':ModuleType('vllm.v1.worker.gpu.model_states'),
+                     'vllm.v1.worker.gpu.model_states.mamba_hybrid':hybrid,
                      'aimee_vllm.state':state}):
             cached=sys.modules.pop('aimee_vllm.worker',None)
             prior=None

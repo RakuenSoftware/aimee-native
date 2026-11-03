@@ -1,5 +1,11 @@
 # Rust native-memory runtime
 
+> This guide covers the standalone Qwen research runtime. For current enrolled
+> vLLM model installation use [usage](usage.md), and for the isolated Go
+> dependency use [development](development.md). This research gateway is not
+> the Aimee v1.0.2 source-release endpoint.
+
+
 The Rust implementation owns the model adapter, attention-request translation,
 read-only Aimee transport, credential gateway, native state cache, tokenizer,
 text-only HTTP serving, and frozen Qwen text forward-pass orchestration.

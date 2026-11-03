@@ -1,5 +1,10 @@
 # Dedicated model plugins
 
+> For current installation and Aimee v1.0.2 use [the usage guide](../../docs/usage.md).
+> The candidate versions and GPU results below describe their recorded artifacts;
+> renamed AGPL source builds require fresh qualification.
+
+
 Five model-specific plugins use exactly the same `aimee-native-runtime` version;
 installing a plugin installs that dependency. The two small-model plugins are
 0.3.3 release candidates, with the qualified hardware scope described below.

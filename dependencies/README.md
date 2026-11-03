@@ -1,5 +1,11 @@
 # Aimee research dependency snapshot
 
+> Current application compatibility is recorded in [aimee-release.json](aimee-release.json).
+> The historical Go source pin is prepared into an ignored dependency directory
+> with [the development instructions](../docs/development.md). The maintained
+> enrolled runtime consumes HTTPS source releases and needs no core source checkout.
+
+
 This archive records the implementation **before** the repository split on
 2026-09-21. The maintained image, publisher, read-ingress and source projection
 code now lives in `aimee-native`. Authoritative memory and policy remain in Aimee.

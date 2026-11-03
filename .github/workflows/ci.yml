@@ -22,3 +22,5 @@ jobs:
         run: cargo test --manifest-path distribution/launcher/Cargo.toml --locked --features model-plugin-client
       - name: Packaging contracts
         run: python -m unittest discover -s distribution/release -p 'test_*.py' -v
+      - name: Maintained documentation links
+        run: python scripts/validation/docs.py

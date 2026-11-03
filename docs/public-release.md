@@ -6,6 +6,12 @@ Canonical repository: https://github.com/RakuenSoftware/aimee-native.
 This change prepares the source tree; it does not publish a release, change
 repository visibility or certify rebuilt GPU plugins.
 
+The follow-up [v1.0.2 validation](validation/aimee-v1.0.2-20261103.md),
+[compatibility guide](aimee-compatibility.md) and
+[development guide](development.md) supersede the original sibling-checkout
+build prerequisite below. Current enrolled serving targets Aimee v1.0.2; legacy
+Go research dependencies are isolated from that server release.
+
 ## Identity and license
 
 The current Go module is `github.com/RakuenSoftware/aimee-native`; the Rust
@@ -40,22 +46,20 @@ cargo test --manifest-path distribution/launcher/Cargo.toml --locked --features 
 python3 -m unittest discover -s distribution/release -p 'test_*.py' -v
 ```
 
-The Go compiler/readers depend on separately maintained Aimee packages, using
-`../aimee/server-go`. Use the exact revision in
-[dependencies/aimee-source.json](../dependencies/aimee-source.json).
-That pin is a research reproduction dependency, not a production server release
-recommendation. The historical dependency archive lacks current APIs and cannot
-replace it. A newer sibling checkout requires separate compatibility checks;
-do not copy Aimee's authoritative implementation into this repository.
+The Go compiler/readers are retained research utilities. Prepare their exact
+historical dependency with `scripts/prepare-research-dependency.py`; `go.mod`
+uses the isolated ignored extraction rather than a moving sibling checkout.
+See [development](development.md). The current enrolled runtime communicates
+with Aimee v1.0.2 over its source-release API and needs no core source checkout.
+The historical dependency archive lacks the research helper APIs and cannot
+replace the pinned revision. No core policy implementation is copied here.
 
-Standalone external Go builds remain gated on access to the required Aimee
-source revision and its redistribution terms. Go's module directive here is
-1.26.7; a newer sibling may require a newer compiler and dependency graph.
-CPU CI deliberately does not claim coverage for that external dependency or GPU
-execution. Plugin installation and qualified hardware profiles are documented
-in [MODEL_PLUGINS.md](../distribution/vllm/MODEL_PLUGINS.md).
+The research Go module requires Go 1.26.7. CPU CI covers the self-contained Rust,
+packaging and documentation checks. Separate `.252` validation covers the full
+research dependency suite and real released application; GPU qualification
+remains tied to each exact artifact/profile.
 
-## Validation in this preparation
+## Original source-preparation validation
 
 - Rust CPU runtime: 39 tests passed (35 library, 4 executable).
 - Launcher/model client: 28 tests passed across unit and integration suites.

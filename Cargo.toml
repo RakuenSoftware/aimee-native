@@ -8,6 +8,12 @@ repository = "https://github.com/RakuenSoftware/aimee-native"
 license = "AGPL-3.0-only"
 
 [features]
+# Dedicated model wheels select one adapter; unbound development exposes all.
+adapter-gemma4-12b = []
+adapter-gemma4-26b = []
+adapter-qwen3-8-27b = []
+adapter-gemma4-e2b = []
+adapter-gemma4-e4b = []
 default = ["torch"]
 torch = ["dep:tch"]
 # Client build excludes offline authoring entry points and research diagnostics.

@@ -1,5 +1,11 @@
 # Local sparse memory images (experimental v1)
 
+> These Go tools are retained research/publication utilities using an isolated
+> historical Aimee dependency. Follow [development](../../docs/development.md)
+> before building. Current enrolled serving uses Aimee v1.0.2
+> [source release](../../docs/aimee-compatibility.md), not raw database exports.
+
+
 This implements the first storage/reader slice of the
 [layered local-memory design](../../docs/proposals/pending/aimee-local-sparse-memory.md).
 Both source paths work:

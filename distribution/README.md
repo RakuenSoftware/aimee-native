@@ -1,5 +1,11 @@
 # Aimee Native distribution
 
+> Start with the current [usage guide](../docs/usage.md),
+> [release compatibility](../docs/aimee-compatibility.md), and
+> [source build/test guide](../docs/development.md). The dated implementation
+> records below retain their original scope; private-preview flows are historical.
+
+
 The current model-plugin candidates are [three separate packages](vllm/MODEL_PLUGINS.md),
 built on one shared runtime, with [current validation](../docs/validation/native-memory-shared-runtime-20261004.md).
 The [earlier dedicated-plugin results](../docs/validation/native-memory-serving-and-model-plugins-20261004.md)

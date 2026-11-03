@@ -25,3 +25,8 @@ production authorization integration. Keep that distinction in results.
 Current source licensing is AGPL-3.0-only. Preserve third-party notices and
 archived release metadata. New binary releases must include the license and
 corresponding source for the exact build. See `docs/public-release.md`.
+
+For current enrolled serving, start with `docs/aimee-compatibility.md` and
+`dependencies/aimee-release.json`. The Go research tools consume the separate
+historical source pin through `scripts/prepare-research-dependency.py`; do not
+point them at the current Aimee release or recreate retired core policy APIs.

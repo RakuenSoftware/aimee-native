@@ -3,6 +3,7 @@ import ctypes
 import json
 import os
 import unittest
+import importlib.util
 from aimee_vllm.admission import Ledger,NativeAdmission
 
 @unittest.skipUnless(os.environ.get('AIMEE_STORE_LIBRARY'),'set Rust library')
@@ -99,7 +100,7 @@ class AdmissionTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result[0]['status'],200)
         self.assertEqual(received[0]['vllm_xargs']['aimee_publication'],'a')
 
-    async def test_authorized_empty_overrides_caller_without_reserving_bank(self):
+    async def authorized_empty(self):
         from unittest.mock import patch
         received=[]
         async def app(scope,receive,send):
@@ -110,12 +111,20 @@ class AdmissionTests(unittest.IsolatedAsyncioTestCase):
         async def select(*args):return {'publication':None,'catalog_digest':'fixture'}
         with patch('aimee_vllm.selection.select',select):
             result=await self.call(m,'a')
+        return m, result, received
+
+    async def test_authorized_empty_overrides_caller_without_reserving_bank(self):
+        m, result, received = await self.authorized_empty()
         self.assertEqual(result[0]['status'],200)
         self.assertNotIn('aimee_publication',received[0]['vllm_xargs'])
         self.assertEqual(received[0]['vllm_xargs']['aimee_catalog_digest'],'fixture')
+        self.assertTrue(m.ledger.acquire(2,10));m.ledger.release(2)
+
+    @unittest.skipUnless(importlib.util.find_spec('vllm'), 'requires installed vLLM protocol')
+    async def test_authorized_empty_is_accepted_by_upstream_schema(self):
+        _, _, received = await self.authorized_empty()
         from vllm.entrypoints.openai.chat_completion.protocol import ChatCompletionRequest
         ChatCompletionRequest(model='fixture',messages=[{'role':'user','content':'17+24'}],vllm_xargs=received[0]['vllm_xargs'])
-        self.assertTrue(m.ledger.acquire(2,10));m.ledger.release(2)
 
     async def test_selection_error_is_not_empty_success(self):
         from unittest.mock import patch
