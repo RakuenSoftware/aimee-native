@@ -1,6 +1,6 @@
-# Qwen memory integration ownership
+# Aimee Native integration ownership
 
-Use this repository for all Qwen/Aimee memory integration code, experiments,
+Use `RakuenSoftware/aimee-native` for all model/Aimee memory integration code, experiments,
 tests, design notes, validation reports, and associated evidence. Do not add
 those files back to the sibling `aimee` repository.
 
@@ -21,3 +21,7 @@ credentials, private signing keys, model weights, or private production memory.
 
 Use the documented test commands. Research fixture grants do not establish
 production authorization integration. Keep that distinction in results.
+
+Current source licensing is AGPL-3.0-only. Preserve third-party notices and
+archived release metadata. New binary releases must include the license and
+corresponding source for the exact build. See `docs/public-release.md`.

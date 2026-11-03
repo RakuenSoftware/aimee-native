@@ -23,7 +23,7 @@ the inference host throughout.
 The `serve` path now fetches the primitive, prepares a complete selected bank
 on the inference host, and rechecks the primitive before activation and on
 subsequent requests. The local cache and portable Rust bank writer live in the
-private `aimee-qwen` implementation. The Aimee server neither receives model
+`aimee-native` implementation. The Aimee server neither receives model
 weights nor produces model-specific K/V tensors. The older
 `/v1/native/bootstrap`, `/v1/native/select` and lease-artifact flow remains a
 preview path for existing installations.

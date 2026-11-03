@@ -26,5 +26,5 @@ if tuple(map(int,a.version.split('.')[:3])) >= (0,2,3):
     run(sys.executable,repo/'distribution/release/build-local-compiler.py',
         '--output',out/'compiler')
     compiler_args=['--compiler-dir',out/'compiler']
-run(sys.executable,repo/'distribution/release/assemble-portable-wheel.py','--wheel',next((out/'modules').glob('*.whl')),'--launcher',out/'target/release/aimee-native','--library',out/'target/release/libaimee_qwen.so','--notices',a.notices.resolve(),'--output',out/'release','--gguf-wheel-url',a.download_base.rstrip('/')+'/'+dep['file'],'--gguf-wheel-sha256',dep['sha256'],'--version',a.version,*compiler_args)
+run(sys.executable,repo/'distribution/release/assemble-portable-wheel.py','--wheel',next((out/'modules').glob('*.whl')),'--launcher',out/'target/release/aimee-native','--library',out/'target/release/libaimee_native.so','--notices',a.notices.resolve(),'--output',out/'release','--gguf-wheel-url',a.download_base.rstrip('/')+'/'+dep['file'],'--gguf-wheel-sha256',dep['sha256'],'--version',a.version,*compiler_args)
 run(sys.executable,repo/'distribution/release/audit-plugin-wheel.py',next((out/'release').glob('*.whl')),'--output',out/'wheel-audit.json')

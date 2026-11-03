@@ -3,7 +3,7 @@ import argparse,sys,pathlib,os,json,time,hashlib
 p=argparse.ArgumentParser();p.add_argument("--output",required=True);args=p.parse_args()
 root=pathlib.Path(args.output);root.mkdir(parents=True,exist_ok=False)
 sys.path.insert(0,'/opt/aimee-native-compiler')
-os.environ['AIMEE_NATIVE_LIBRARY']='/opt/aimee-memory-lab/aimee-qwen/target/release/libaimee_qwen.so'
+os.environ['AIMEE_NATIVE_LIBRARY']='/opt/aimee-memory-lab/aimee-native/target/release/libaimee_native.so'
 os.environ['HF_HUB_OFFLINE']='1'
 from gemma_compile import GemmaCompiler
 import torch

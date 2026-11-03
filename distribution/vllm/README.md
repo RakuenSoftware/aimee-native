@@ -41,7 +41,7 @@ Configuration (paths must refer to admitted, publisher-owned artifacts):
 ```json
 {
   "model": "/models/certified-model",
-  "library": "/opt/aimee/libaimee_qwen.so",
+  "library": "/opt/aimee/libaimee_native.so",
   "catalog": "/var/lib/aimee/catalog.json",
   "recipient": "approved-recipient",
   "host_memory_budget": 1073741824,

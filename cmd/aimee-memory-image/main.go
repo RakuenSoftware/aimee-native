@@ -21,8 +21,8 @@ import (
 
 	store "github.com/JBailes/aimee/server-go/modules/aimee"
 	"github.com/JBailes/aimee/server-go/modules/memory"
-	"github.com/RakuenSoftware/aimee-qwen/aimeeexport"
-	"github.com/RakuenSoftware/aimee-qwen/memory/sparse"
+	"github.com/RakuenSoftware/aimee-native/aimeeexport"
+	"github.com/RakuenSoftware/aimee-native/memory/sparse"
 	"github.com/jackc/pgx/v5"
 )
 

@@ -7,7 +7,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	native "github.com/RakuenSoftware/aimee-qwen/memory/nativepublication"
+	native "github.com/RakuenSoftware/aimee-native/memory/nativepublication"
 	"net"
 	"net/http"
 	"os"

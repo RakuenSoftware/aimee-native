@@ -1,7 +1,7 @@
 # Private native delivery behind Aimee
 
 The maintained bridge belongs to Aimee; the service and all preparation code
-belong to `aimee-qwen`. The bridge requires Linux and runs **after** Aimee's
+belong to `aimee-native`. The bridge requires Linux and runs **after** Aimee's
 ordinary per-request bearer, certificate-grant and capability checks. It forwards
 only the resulting principal, hex encoded, over an operator-owned Unix socket.
 It does not pass client identity headers or credentials to the preparation worker.

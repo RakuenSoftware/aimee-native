@@ -1,4 +1,4 @@
-module github.com/RakuenSoftware/aimee-qwen
+module github.com/RakuenSoftware/aimee-native
 
 go 1.26.7
 

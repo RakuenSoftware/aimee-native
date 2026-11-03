@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	"github.com/RakuenSoftware/aimee-qwen/memory/sparse"
+	"github.com/RakuenSoftware/aimee-native/memory/sparse"
 	"os"
 	"path/filepath"
 	"testing"

@@ -1,4 +1,8 @@
-# Aimee native memory model integrations
+# Aimee Native
+
+[Aimee Native](https://github.com/RakuenSoftware/aimee-native) provides native memory integration for supported models.
+See [public release preparation](docs/public-release.md) for release status, build
+prerequisites and remaining gates.
 
 The next plugin release uses [one dedicated plugin and Rust adapter per supported model](distribution/vllm/MODEL_PLUGINS.md).
 
@@ -12,6 +16,14 @@ and Qwen's complete attention/recurrent prefix, without inserting memory text
 into the main conversation. The adapters do not learn or authorize knowledge. Aimee remains authoritative for memory,
 governance, authorization, and updates. Persistent local images and reusable
 native states reside in RAM/disk, with temporary device copies for attention.
+
+## License
+
+Aimee Native source is licensed under [GNU AGPL version 3](LICENSE)
+(`AGPL-3.0-only`). Third-party code, research datasets and model weights retain
+their own licenses; see [third-party notices](THIRD_PARTY_NOTICES.md).
+Archived release binaries retain their recorded metadata; new release artifacts
+must be built from the licensed source and provide corresponding source.
 
 ## Start here
 
@@ -56,11 +68,11 @@ Rich evidence, episode, and graph responses need authorized release codecs.
 
 ## Repository boundary
 
-| Here: `aimee-qwen` | Sibling: `aimee` |
+| Here: `aimee-native` | Sibling: `aimee` |
 |---|---|
-| Qwen attention/runtime adapter and transports | Authoritative memory and governance |
-| Qwen serving, sparse-image compiler/reader and publication tools | Scoped source export and shared read contract |
-| Qwen experiment drivers and validation artifacts | Canonical authorization policy |
+| Model-specific attention/runtime adapters and transports | Authoritative memory and governance |
+| Native serving, sparse-image compiler/reader and publication tools | Scoped source export and shared read contract |
+| Model experiment drivers and validation artifacts | Canonical authorization policy |
 | Source-row projection, integration tests and research fixture issuer | General Aimee benchmarks and poison fixtures |
 
 The image implementation and `aimee-memory-image`, `aimee-memory-publish`,

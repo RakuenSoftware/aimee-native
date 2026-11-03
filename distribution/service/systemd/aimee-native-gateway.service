@@ -13,7 +13,7 @@ UMask=0077
 # For a containerized frontend, override the source path with its existing
 # server-owned socket. Only this socket is mounted into the service namespace.
 BindReadOnlyPaths=/var/lib/aimee/aimee-http.sock:/run/aimee-native-gateway/upstream.sock
-ExecStart=/opt/aimee-native/bin/aimee-qwen gateway --image-reader /opt/aimee-native/bin/aimee-memory-image --memory-image /var/lib/aimee-native/image --socket /run/aimee-native-gateway/read.sock --upstream-unix /run/aimee-native-gateway/upstream.sock --upstream-namespace native-preview-user
+ExecStart=/opt/aimee-native/bin/aimee-native gateway --image-reader /opt/aimee-native/bin/aimee-memory-image --memory-image /var/lib/aimee-native/image --socket /run/aimee-native-gateway/read.sock --upstream-unix /run/aimee-native-gateway/upstream.sock --upstream-namespace native-preview-user
 Restart=on-failure
 RestartSec=3
 NoNewPrivileges=true

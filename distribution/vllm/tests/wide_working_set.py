@@ -17,7 +17,7 @@ else:
 assert len(prepared['records'])==32,prepared
 bank=pathlib.Path(prepared['root']);index=json.loads((bank/'index.json').read_text());report={'authority':'synthetic 32-record scoped source, actual reader and CPU compiler','preparation_seconds':time.perf_counter()-start,'preparation_reused':prepared['reused'],'selected_records':prepared['records'],'payload_bytes':(bank/'compact.pack').stat().st_size,'rows':[]}
 catalog={'recipient':'synthetic-validation','model_config_sha256':hashlib.sha256((root/'gemma4/config.json').read_bytes()).hexdigest(),'publications':{'wide':{k:prepared[k] for k in ('root','model','key')}}};(work/'catalog.json').write_text(json.dumps(catalog))
-config={'catalog':str(work/'catalog.json'),'recipient':'synthetic-validation','model':str(root/'gemma4'),'gguf_weights':str(root/'gemma4-aimee-q8.gguf'),'library':str(build/'target/release/libaimee_qwen.so'),'host_memory_budget':512*1024**2,'disk_backed':True,'serve':{'tensor_parallel_size':2,'port':8152}}
+config={'catalog':str(work/'catalog.json'),'recipient':'synthetic-validation','model':str(root/'gemma4'),'gguf_weights':str(root/'gemma4-aimee-q8.gguf'),'library':str(build/'target/release/libaimee_native.so'),'host_memory_budget':512*1024**2,'disk_backed':True,'serve':{'tensor_parallel_size':2,'port':8152}}
 (work/'serving.json').write_text(json.dumps(config));log=open(a.output+'.server.log','w');child=subprocess.Popen([str(root/'vllm-env/bin/aimee-vllm'),'--config',str(work/'serving.json')],stdout=log,stderr=subprocess.STDOUT)
 try:
  for _ in range(300):

@@ -58,7 +58,7 @@ cargo build --release --locked --no-default-features
 
 ## Run
 
-`aimee-qwen gateway --help` and `aimee-qwen serve --help` list all flags.
+`aimee-native gateway --help` and `aimee-native serve --help` list all flags.
 Run the credential gateway under a separate OS identity with exclusive access
 to the upstream mTLS keys. Run the model under an unprivileged identity with
 only its recipient-specific published image and gateway Unix socket. No local
@@ -67,7 +67,7 @@ receive unrestricted private source stores or issuer credentials. The gateway ex
 reference resolution. None permits knowledge writes.
 
 ```sh
-aimee-qwen gateway \
+aimee-native gateway \
   --socket /run/aimee/search.sock \
   --config /private/remote.conf --ca /private/ca.pem \
   --cert /private/client.crt --key /private/client.key \
@@ -75,7 +75,7 @@ aimee-qwen gateway \
   --authorization /authorized/grant.json --authority-key /authorized/issuer-public.hex \
   --subject MODEL_SUBJECT --policy-epoch POLICY_EPOCH
 
-aimee-qwen serve --model /models/qwen --placement /config/placement.json --int8 \
+aimee-native serve --model /models/qwen --placement /config/placement.json --int8 \
   --read-gateway /run/aimee/search.sock --read-authority AUTHORITY \
   --image-reader /bin/aimee-memory-image --memory-image /authorized/image \
   --trace-dir /private/model-traces --encoding-cache-mib 256
@@ -107,11 +107,11 @@ already delivered. See [the corrected boundary](validation/published-local.md).
 cargo test --locked --no-default-features
 cargo clippy --locked --no-default-features --all-targets -- -D warnings
 # Build the Go reader/fixture issuer as described in the repository README.
-RUST_QWEN="$PWD/target/release/aimee-qwen" \
+RUST_QWEN="$PWD/target/release/aimee-native" \
   PYTHONPATH=integrations/qwen_aimee python3 -m unittest -v test_authorized_gateway
 # Offline numerical reference; requires the historical Python test dependencies.
 python scripts/validate_rust_parity.py \
-  --binary target/release/aimee-qwen --output /private/rust-parity
+  --binary target/release/aimee-native --output /private/rust-parity
 ```
 
 Python reference code and historical tests remain for regression comparison.

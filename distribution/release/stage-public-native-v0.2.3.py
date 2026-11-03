@@ -81,7 +81,7 @@ def main():
             raise ValueError('GGUF dependency is not pinned to this asset')
         if any(b'192.168.' in archive.read(name) for name in names):
             raise ValueError('private-network address in public wheel')
-        for marker in (b'RakuenSoftware/aimee-qwen', b'/opt/aimee-qwen',
+        for marker in (b'RakuenSoftware/aimee-native', b'RakuenSoftware/aimee-qwen', b'/opt/aimee-native', b'/opt/aimee-qwen',
                        b'distribution/service/', b'distribution/release/'):
             if any(marker in archive.read(name) for name in names):
                 raise ValueError('private implementation/build marker in public wheel')

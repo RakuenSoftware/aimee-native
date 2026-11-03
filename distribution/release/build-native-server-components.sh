@@ -18,7 +18,7 @@ test -f "$aimee_checkout/server-go/go.mod" || {
     exit 2
 }
 test -f "$private_checkout/go.mod" || {
-    echo "aimee-qwen go.mod required" >&2
+    echo "aimee-native go.mod required" >&2
     exit 2
 }
 for checkout in "$private_checkout" "$aimee_checkout"; do
@@ -39,7 +39,7 @@ for name in aimee-native-delivery aimee-memory-publish aimee-memory-read aimee-m
 done
 
 {
-    printf 'aimee-qwen=%s\n' "$(git -C "$private_checkout" rev-parse HEAD)"
+    printf 'aimee-native=%s\n' "$(git -C "$private_checkout" rev-parse HEAD)"
     printf 'aimee=%s\n' "$(git -C "$aimee_checkout" rev-parse HEAD)"
     (cd "$output_dir" && sha256sum aimee-native-delivery aimee-memory-publish \
         aimee-memory-read aimee-memory-image)

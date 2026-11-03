@@ -1,5 +1,5 @@
 //! Paired complete-loading control. Exact dense RAM dictionary, not sparse reconstruction.
-use aimee_qwen::{
+use aimee_native::{
     compact_memory,
     model::{self, Bank, Placement},
     prepared_memory,

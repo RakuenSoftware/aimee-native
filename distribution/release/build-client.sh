@@ -7,4 +7,4 @@ export RUSTFLAGS="${RUSTFLAGS:-} --remap-path-prefix=$repo=/aimee-native -C link
 cd "$repo"
 # --lib deliberately excludes the research server and benchmark binaries.
 cargo build --locked --release --lib --no-default-features --features native-client
-python3 distribution/release/audit-client.py "${CARGO_TARGET_DIR:-target}/release/libaimee_qwen.so"
+python3 distribution/release/audit-client.py "${CARGO_TARGET_DIR:-target}/release/libaimee_native.so"

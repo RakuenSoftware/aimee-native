@@ -1,6 +1,6 @@
 //! Private control-plane preparation from an already authorized local publication.
 //! Configuration and compiler command are operator-owned, never model input.
-use aimee_qwen::{
+use aimee_native::{
     native_store::NativeStore,
     preparation_cache::{Cache, PreparationIdentity, RecordRevision},
     transport::{ImageConfig, ImageReader, LocalFirst, MemorySource},

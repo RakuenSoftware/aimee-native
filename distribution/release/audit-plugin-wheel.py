@@ -15,8 +15,8 @@ import tempfile
 import zipfile
 
 FORBIDDEN_BYTES = (
-    b'RakuenSoftware/aimee-qwen',
-    b'/opt/aimee-qwen',
+    b'RakuenSoftware/aimee-native', b'RakuenSoftware/aimee-qwen',
+    b'/opt/aimee-native', b'/opt/aimee-qwen',
     b'/home/',
     b'/Users/',
     b'\\Users\\',

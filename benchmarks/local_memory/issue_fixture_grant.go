@@ -10,7 +10,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/RakuenSoftware/aimee-qwen/memory/sparse"
+	"github.com/RakuenSoftware/aimee-native/memory/sparse"
 	"os"
 )
 

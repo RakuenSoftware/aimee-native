@@ -24,7 +24,7 @@ def main():
                   'preparation_backend': 'bounded_text_fp32', 'compute_dtype': 'float32',
                   'position_policy': 'negative', 'encoding_revision': 'bounded-fp32-negative-v1',
                   'threads': 8, 'max_memory_tokens': 1024, 'state': str(root / 'state'),
-                  'library': str(LAB / 'aimee-qwen/target/release/libaimee_qwen.so')}
+                  'library': str(LAB / 'aimee-native/target/release/libaimee_native.so')}
         cfg = root / 'resident.json'; cfg.write_text(json.dumps(config)); cfg.chmod(0o600)
         worker = root / 'worker.json'
         worker.write_text(json.dumps({'model_revision': identity, 'resident_socket': sock})); worker.chmod(0o600)

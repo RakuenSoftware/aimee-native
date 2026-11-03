@@ -6,8 +6,9 @@ The [earlier dedicated-plugin results](../docs/validation/native-memory-serving-
 and older shared-plugin releases remain historical records.
 
 
-All implementation, preparation, experiments and packaging remain in the private
-`RakuenSoftware/aimee-qwen` repository. Aimee owns authoritative memory,
+All implementation, preparation, experiments and packaging belong in
+[`RakuenSoftware/aimee-native`](https://github.com/RakuenSoftware/aimee-native).
+See [public release preparation](../docs/public-release.md) for current status. Aimee owns authoritative memory,
 permissions, selection and scoped publication.
 
 ## Distribution boundary — portable plugin, 30 September
