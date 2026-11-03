@@ -112,6 +112,8 @@ server-side release assets require their own review.
 ## Final publication gates
 
 The [0.3.4 candidate guide](releases/0.3.4.md) documents signed offline delivery.
+The [final qualification report](validation/public-release-20261103.md) records
+exact stable artifact identities, completed checks and remaining publication work.
 The follow-up detector review covers all 420 reachable commits (2,486 matches)
 and a clean tracked-tree export (749 matches), including nested archives to
 depth four. The 13 added findings are model/config/source hashes in validation

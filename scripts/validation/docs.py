@@ -18,6 +18,8 @@ PAGES = (
     'distribution/vllm/MODEL_PLUGINS.md', 'memory/sparse/README.md',
     'dependencies/README.md', 'docs/validation/aimee-v1.0.2-20261103.md',
     'docs/validation/aimee-5080-20261103.md',
+    'DATASETS.md', 'docs/releases/0.3.4.md',
+    'docs/validation/public-release-20261103.md',
 )
 
 

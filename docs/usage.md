@@ -138,6 +138,12 @@ copy an override between architectures or historical runtime profiles.
 The tested CUDA Gemma 26B GGUF profile uses no CPU offload: enabling it hit an
 upstream uninitialized-parameter error during loading. Use its qualified GPU
 memory allocation rather than assuming an offload budget will make it fit.
+The follow-up selective UVA attempt requested 8 GiB CPU offload with a roughly
+10 GiB GPU reservation. It reported only 0.02 GiB offloaded, reached 12.15 GiB
+GPU use and ran out of memory alongside another workload. That RAM/10 GiB
+profile is unsupported for this GGUF checkpoint. `gpu_memory_utilization` is
+an engine reservation target, not a hard process-memory cap. The qualified
+26B profile reserves 13.69 GiB and needs that space free at startup.
 
 The enrolled path qualifies a single GPU, eager synchronous V1 serving, no
 prefix caching, no model compilation, no speculative decoding and no multimodal

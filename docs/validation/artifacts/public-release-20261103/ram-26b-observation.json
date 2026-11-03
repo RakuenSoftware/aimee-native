@@ -1,0 +1,20 @@
+{
+  "status": "unsupported_profile",
+  "adapter": "gemma4-26b",
+  "checkpoint": "Q3_K_M cbb174d5585b8dd2e8f8d9d2294b8beb6eaa0022bceaf1989bc8d0e0ec2f473c",
+  "requested_gpu_memory_utilization": 0.64,
+  "requested_gpu_reservation_gib": 9.96,
+  "cpu_offload_gb": 8,
+  "cpu_offload_pinned_memory": true,
+  "cpu_offload_disable_uva": false,
+  "cpu_offload_params": [
+    "weight",
+    "w13_weight",
+    "w2_weight"
+  ],
+  "reported_cpu_offload_gib": 0.02,
+  "failure": "CUDA out of memory during model initialization; 208 MiB allocation requested with 140.94 MiB free; own process used 12.15 GiB.",
+  "concurrent_workload": "Unrelated encoder evaluation approximately 2.7 GiB; existing Wolf approximately 524 MiB. Neither was stopped.",
+  "conclusion": "The configured CPU budget did not offload eight GiB of this GGUF model. A 0.64 GPU utilization setting is not a hard process cap. This RAM/10 GiB profile is not qualified.",
+  "prior_offload_attempt": "cpu_offload_gb=6 with UVA disabled failed with GGUFUninitializedWeightTypeParameter.detach; see the earlier 5080 profile-corrections.json."
+}

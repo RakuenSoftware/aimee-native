@@ -1,0 +1,82 @@
+{
+  "scope": "Installed model GPU gate, invoked inside aimee-release.py's disposable stack.\n\nProfiles are local JSON configurations with real immutable checkpoint hashes.\nOnly synthetic facts are written. No existing model service is stopped; each\nowned process group is terminated, even on failure. Serving logs and enrollment\ncredentials stay in temporary directories, never in the public report.\n",
+  "models": [
+    {
+      "model": "gemma4-e2b",
+      "checks": [
+        {
+          "name": "actual checkpoint matches declared hash",
+          "passed": true
+        },
+        {
+          "name": "real enrolled profile accepted",
+          "passed": true
+        },
+        {
+          "name": "model ready",
+          "passed": true
+        },
+        {
+          "name": "missing API key denied",
+          "passed": true
+        },
+        {
+          "name": "synthetic source stored",
+          "passed": true
+        },
+        {
+          "name": "cold native recall",
+          "passed": true
+        },
+        {
+          "name": "warm native recall",
+          "passed": true
+        },
+        {
+          "name": "warm publication reused",
+          "passed": true
+        },
+        {
+          "name": "source correction accepted",
+          "passed": true
+        },
+        {
+          "name": "corrected native recall",
+          "passed": true
+        },
+        {
+          "name": "correction produces new publication",
+          "passed": true
+        },
+        {
+          "name": "source retirement accepted",
+          "passed": true
+        },
+        {
+          "name": "retired value no longer recalled",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "library_sha256": "4cba15998cc71c307ed37afd4fc21c7bb4a4fea79d19ad63154e4f0fbb4d1f00",
+      "checkpoint_sha256": "b52f438017efaec5debf1c0d8be690571e212a07c312f1102bbce927258cfc32",
+      "checkpoint_profile": "UD-Q4_K_XL",
+      "model_revision": null,
+      "model_config_sha256": "1b28f3d2c3100f6c594754b81107428bd7b822a7f48272ca681dae9d2ec38330",
+      "tokenizer_sha256": "cc8d3a0ce36466ccc1278bf987df5f71db1719b9ca6b4118264f45cb627bfe0f",
+      "serving": {
+        "host": "127.0.0.1",
+        "port": 34959,
+        "max_model_len": 2048,
+        "max_num_seqs": 1,
+        "max_num_batched_tokens": 128,
+        "gpu_memory_utilization": 0.6,
+        "num_gpu_blocks_override": 512,
+        "flashinfer_sampler": false,
+        "cpu_offload_gb": 0
+      },
+      "phase": "source_lifecycle"
+    }
+  ],
+  "passed": true
+}

@@ -23,7 +23,7 @@ for package in sorted(metadata['packages'],key=lambda p:(p['name'],p['version'])
       and re.match(r'^(license|copying|notice|copyright)([._-]|$)',candidate.name,re.I)
       and candidate.suffix.lower() not in {'.rs','.c','.h','.cpp','.py'}):files.append(candidate)
  sub=root/'LICENSES'
- if sub.is_dir():files.extend(f for f in sub.iterdir() if f.is_file() and f not in files)
+ if sub.is_dir():files.extend(f for f in sub.iterdir() if f.is_file() and f.resolve().is_relative_to(root.resolve()) and f not in files)
  if package.get('license_file'):
   f=(root/package['license_file']).resolve()
   if f.is_relative_to(root.resolve()) and f.is_file() and f not in files:files.append(f)

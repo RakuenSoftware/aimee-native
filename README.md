@@ -18,6 +18,7 @@ standalone Rust Qwen server and Go publication tools are retained research paths
 - [Documentation map](docs/README.md)
 - [Public release preparation and outstanding gates](docs/public-release.md)
 - [0.3.4 candidate, signatures and rollback](docs/releases/0.3.4.md)
+- [Signed installation and final release qualification](docs/validation/public-release-20261103.md)
 - [Aimee v1.0.2 validation on .252](docs/validation/aimee-v1.0.2-20261103.md)
 - [RTX 5080 execution on .253](docs/validation/aimee-5080-20261103.md)
 - [Research results and historical validation](docs/research-index.md)
