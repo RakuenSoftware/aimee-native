@@ -42,7 +42,7 @@ assert 'identical-complete-input' in pathlib.Path('/opt/aimee-native-compiler/ge
         subprocess.run(['pct', 'exec', '101', '--', 'systemctl', 'stop', 'aimee-native-compiler'], check=True)
         try:
             run('preparation-reuse-corrected', ['pct', 'exec', '101', '--', '/opt/aimee-memory-lab/venv/bin/python',
-                '/opt/aimee-memory-lab/aimee-qwen/distribution/tests/lab/preparation_reuse.py',
+                '/opt/aimee-memory-lab/aimee-native/distribution/tests/lab/preparation_reuse.py',
                 '--output', '/opt/aimee-memory-lab/release-candidate-20260927/fp32-preparation-reuse-corrected',
                 '--source', '/opt/aimee-native-compiler', '--library', '/opt/aimee-native-compiler/libaimee_prepare.so',
                 '--compute-dtype', 'float32'])

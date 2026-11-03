@@ -1,4 +1,9 @@
 > **2026-09-25 runtime decision:** The llama.cpp integration described below is
+
+> Superseded for current releases on 2026-11-03: Aimee Native is licensed
+> under AGPL-3.0-only. This proposal records the earlier closed-source design;
+> its secrecy and proprietary-distribution goals are historical. See
+> [public release preparation](../../public-release.md).
 > superseded. Production integration now targets unmodified vLLM through external
 > extension interfaces: no forks or upstream patches. See
 > [the current validation record](/docs/validation/vllm-native-20260925.md) and
@@ -189,7 +194,7 @@ release artifact rather than relying on obfuscator marketing.
 
 ## Current state
 
-`RakuenSoftware/aimee-qwen` was verified PRIVATE on 2026-09-20. The private repo
+`RakuenSoftware/aimee-native` was verified PRIVATE on 2026-09-20. The private repo
 retains the POC, test fixtures and historical evidence. No repository visibility,
 license or release publication was changed by this design update.
 

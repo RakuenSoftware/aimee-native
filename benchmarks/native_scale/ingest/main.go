@@ -1,6 +1,6 @@
 // Research driver around the actual Aimee extractor, memory store and exporter.
 package main
-import("bufio";"context";"encoding/json";"fmt";"os";"strings";"github.com/jackc/pgx/v5"; store "github.com/JBailes/aimee/server-go/modules/aimee"; "github.com/JBailes/aimee/server-go/modules/memory"; "github.com/RakuenSoftware/aimee-qwen/aimeeexport")
+import("bufio";"context";"encoding/json";"fmt";"os";"strings";"github.com/jackc/pgx/v5"; store "github.com/JBailes/aimee/server-go/modules/aimee"; "github.com/JBailes/aimee/server-go/modules/memory"; "github.com/RakuenSoftware/aimee-native/aimeeexport")
 type DB struct{c *pgx.Conn}
 func(d DB)Exec(c context.Context,q string,a ...any)(store.Tag,error){return d.c.Exec(c,q,a...)}
 func(d DB)Query(c context.Context,q string,a ...any)(store.Rows,error){return d.c.Query(c,q,a...)}

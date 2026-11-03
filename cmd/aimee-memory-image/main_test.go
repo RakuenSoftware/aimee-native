@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/RakuenSoftware/aimee-qwen/memory/sparse"
+	"github.com/RakuenSoftware/aimee-native/memory/sparse"
 )
 
 func TestBuildPublishImportAndPersistentReader(t *testing.T) {

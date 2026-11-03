@@ -92,10 +92,10 @@ with tempfile.TemporaryDirectory() as tmp:
     # names only localhost. This matches the real self-hosted appliance case.
     endpoint = f"https://127.0.0.1:{server.server_port}"
     (home / "remote.conf").write_text(endpoint + "\nenrolled-token\n")
-    (home / "remote-ca.pem").write_bytes(ca_crt.read_bytes())
+    (home / "remote-ca.pem").write_bytes(server_crt.read_bytes())
     (home / "tls/client.crt").write_bytes(client_crt.read_bytes())
     (home / "tls/client.key").write_bytes(client_key.read_bytes())
-    for name in ("remote.conf", "tls/client.crt", "tls/client.key"):
+    for name in ("remote.conf", "remote-ca.pem", "tls/client.crt", "tls/client.key"):
         os.chmod(home / name, 0o600)
     root = base / "plugin"
     command = [LAUNCHER, "--root", str(root), "connect-aimee", "--aimee-home", str(home)]
@@ -127,7 +127,7 @@ with tempfile.TemporaryDirectory() as tmp:
     rejected = subprocess.run([LAUNCHER, "--root", str(root), "fetch-primitive", "test query"],
                               text=True, capture_output=True, env=environment)
     assert rejected.returncode != 0, (rejected.stdout, rejected.stderr)
-    (home / "remote-ca.pem").write_bytes(ca_crt.read_bytes())
+    (home / "remote-ca.pem").write_bytes(server_crt.read_bytes())
     connection = json.loads((root / "config.json").read_text())
     memory = pathlib.Path(connection["memory_root"])
     catalog = memory / "catalog.json"

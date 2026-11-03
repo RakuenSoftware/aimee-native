@@ -11,7 +11,7 @@ python3 -m pip download --only-binary=:all: --require-hashes \
   -r distribution/container/runtime-requirements.lock -d /build/runtime-wheels
 python3 distribution/container/context.py \
   --wheel /build/aimee_vllm-0.1.0-cp312-cp312-linux_x86_64.whl \
-  --library /build/libaimee_qwen.so --kernels /build/certified-bank \
+  --library /build/libaimee_native.so --kernels /build/certified-bank \
   --gguf-wheel /build/vllm_gguf_plugin-0.0.5-cp310-abi3-linux_x86_64.whl \
   --runtime-wheels /build/runtime-wheels \
   --output /build/client-context

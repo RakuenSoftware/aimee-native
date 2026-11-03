@@ -12,7 +12,7 @@ import (
 
 	store "github.com/JBailes/aimee/server-go/modules/aimee"
 	"github.com/JBailes/aimee/server-go/modules/memory"
-	"github.com/RakuenSoftware/aimee-qwen/memory/sparse"
+	"github.com/RakuenSoftware/aimee-native/memory/sparse"
 )
 
 // ExportSparseRecords is a control-plane source export, not an authorization

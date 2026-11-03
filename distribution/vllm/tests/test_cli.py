@@ -39,7 +39,8 @@ class CliTests(unittest.TestCase):
 
     def test_hybrid_q4_uses_checksum_bound_loader_with_no_cpu_offload(self):
         from unittest.mock import patch
-        with tempfile.TemporaryDirectory() as directory,patch('torch.cuda.get_device_capability',return_value=(11,0)):
+        with tempfile.TemporaryDirectory() as directory,patch('torch.cuda.get_device_capability',return_value=(11,0)), \
+                patch('aimee_vllm.precision.importlib.metadata.version', return_value='fixture-runtime'):
             path=pathlib.Path(directory)/'config.json'
             config={'adapter':'qwen3-8-27b','model':'model','library':'library','catalog':'catalog','recipient':'fixture',
                     'host_memory_budget':1024,'enable_hybrid_native':True,'model_revision':'a'*40,

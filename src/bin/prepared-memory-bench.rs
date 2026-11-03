@@ -1,5 +1,5 @@
 //! Focused prepared-store latency benchmark. Does not claim model readiness.
-use aimee_qwen::prepared_memory::Store;
+use aimee_native::prepared_memory::Store;
 use anyhow::{Result, ensure};
 use clap::Parser;
 use serde_json::{Value, json};
@@ -21,7 +21,7 @@ struct Args {
     #[arg(long)]
     verify_only: bool,
     #[arg(long, value_enum, default_value = "raw")]
-    write_codec: aimee_qwen::native_compression::Codec,
+    write_codec: aimee_native::native_compression::Codec,
 }
 fn evict_and_check(path: &std::path::Path) -> Result<()> {
     let f = std::fs::File::open(path)?;
@@ -59,12 +59,12 @@ fn main() -> Result<()> {
         .placement
         .as_ref()
         .map(|p| -> Result<Vec<tch::Device>> {
-            let placement: aimee_qwen::model::Placement =
+            let placement: aimee_native::model::Placement =
                 serde_json::from_slice(&std::fs::read(p)?)?;
             placement
                 .layers
                 .iter()
-                .map(|s| aimee_qwen::model::device(s))
+                .map(|s| aimee_native::model::device(s))
                 .collect()
         })
         .transpose()?;

@@ -16,10 +16,14 @@ while pending:
 for package in sorted(metadata['packages'],key=lambda p:(p['name'],p['version'])):
  if package['id'] not in active or not package.get('source'):continue # never read private workspace source
  root=pathlib.Path(package['manifest_path']).parent;files=[]
- for candidate in root.iterdir():
-  if candidate.is_file() and re.match(r'^(license|copying|notice)([._-]|$)',candidate.name,re.I):files.append(candidate)
+ # Reachable crates may statically bundle native code with its own notices
+ # (for example lz4-sys/liblz4/LICENSE). Root-only collection omits those terms.
+ for candidate in root.rglob('*'):
+  if (candidate.is_file() and candidate.resolve().is_relative_to(root.resolve())
+      and re.match(r'^(license|copying|notice|copyright)([._-]|$)',candidate.name,re.I)
+      and candidate.suffix.lower() not in {'.rs','.c','.h','.cpp','.py'}):files.append(candidate)
  sub=root/'LICENSES'
- if sub.is_dir():files.extend(f for f in sub.iterdir() if f.is_file())
+ if sub.is_dir():files.extend(f for f in sub.iterdir() if f.is_file() and f.resolve().is_relative_to(root.resolve()) and f not in files)
  if package.get('license_file'):
   f=(root/package['license_file']).resolve()
   if f.is_relative_to(root.resolve()) and f.is_file() and f not in files:files.append(f)

@@ -7,8 +7,8 @@ export RUSTFLAGS="${RUSTFLAGS:-} --remap-path-prefix=$repo=/aimee-native -C link
 export CXXFLAGS="${CXXFLAGS:-} -ffile-prefix-map=$repo=/aimee-native -ffile-prefix-map=$PYTHON_INCLUDE=/runtime/python"
 cd "$repo"
 cargo build --locked --release --lib --no-default-features --features vllm-portable
-python3 distribution/release/harden-elf.py "${CARGO_TARGET_DIR:-target}/release/libaimee_qwen.so"
-python3 distribution/release/audit-client.py "${CARGO_TARGET_DIR:-target}/release/libaimee_qwen.so" --vllm --runtime
+python3 distribution/release/harden-elf.py "${CARGO_TARGET_DIR:-target}/release/libaimee_native.so"
+python3 distribution/release/audit-client.py "${CARGO_TARGET_DIR:-target}/release/libaimee_native.so" --vllm --runtime
 
 cargo build --manifest-path distribution/launcher/Cargo.toml --locked --release
 python3 distribution/release/harden-elf.py "${CARGO_TARGET_DIR:-target}/release/aimee-native"

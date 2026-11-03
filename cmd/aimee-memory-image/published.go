@@ -7,7 +7,7 @@ import (
 	"io"
 	"time"
 
-	"github.com/RakuenSoftware/aimee-qwen/memory/sparse"
+	"github.com/RakuenSoftware/aimee-native/memory/sparse"
 )
 
 // servePublished receives only an already-filtered recipient directory. No

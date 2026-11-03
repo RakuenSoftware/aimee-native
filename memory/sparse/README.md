@@ -1,5 +1,11 @@
 # Local sparse memory images (experimental v1)
 
+> These Go tools are retained research/publication utilities using an isolated
+> historical Aimee dependency. Follow [development](../../docs/development.md)
+> before building. Current enrolled serving uses Aimee v1.0.2
+> [source release](../../docs/aimee-compatibility.md), not raw database exports.
+
+
 This implements the first storage/reader slice of the
 [layered local-memory design](../../docs/proposals/pending/aimee-local-sparse-memory.md).
 Both source paths work:
@@ -45,7 +51,7 @@ snapshot directories. `serve-published --root RECIPIENT` understands this layout
 A pin/open lock prevents races with cleanup; ordinary reads use already-open
 files. The publisher, not the model, must own the delivery directory.
 
-Build the executable from the `aimee-qwen` repository root:
+Build the executable from the `aimee-native` repository root:
 
 ```sh
 go build -o /tmp/aimee-memory-image ./cmd/aimee-memory-image
@@ -161,8 +167,8 @@ changes that request's pinned view. `--view DIGEST` fixes a reader to a particul
 view instead of following `CURRENT` at pin boundaries. Scope grants are fixed
 at process startup; individual search requests cannot widen them.
 
-[Qwen integration code, configuration, and validation](../../../../../aimee-qwen/README.md)
-are maintained in the separate `aimee-qwen` repository.
+[Native integration code, configuration, and validation](../../README.md)
+are maintained in this `aimee-native` repository.
 
 ## Authoritative memory-row export
 

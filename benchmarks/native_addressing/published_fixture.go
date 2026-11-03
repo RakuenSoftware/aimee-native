@@ -8,7 +8,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	sparse "github.com/RakuenSoftware/aimee-qwen/memory/sparse"
+	sparse "github.com/RakuenSoftware/aimee-native/memory/sparse"
 	"os"
 	"path/filepath"
 	"sort"

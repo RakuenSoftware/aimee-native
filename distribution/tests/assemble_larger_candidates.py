@@ -19,7 +19,7 @@ def main():
     parser.add_argument('--runtime-commit', required=True,
                         help='Pinned upstream vLLM revision (runtime.lock.json), not the private integration revision')
     parser.add_argument('--integration-commit', required=True,
-                        help='Private aimee-qwen source revision; recorded separately from upstream runtime')
+                        help='Private aimee-native source revision; recorded separately from upstream runtime')
     args = parser.parse_args()
     if not re.fullmatch(r'[0-9a-f]{40}', args.runtime_commit):
         parser.error('--runtime-commit must be a full lowercase Git commit SHA')

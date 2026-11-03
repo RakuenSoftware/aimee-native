@@ -55,17 +55,17 @@ if p.returncode:save({'status':'failed','error':'could not stop learning server 
 save({'status':'certifying'})
 image='7303c9e9b0785a8574885594aafe87d8f65b54acdf3a3c20a003901be5f40605'
 with (ROOT/'certification.log').open('w') as log:
- p=subprocess.run(['pct','exec','101','--','python3','/opt/aimee-memory-lab/aimee-qwen/distribution/vllm/tests/image_certification.py','--image',image,'--output','/opt/aimee-memory-lab/release-candidate-20260927/exact-image-certification','--profiles','q8','--long-refresh','--requests','128','--context-tokens','8192','--gpu-utilization','0.8'],stdout=log,stderr=subprocess.STDOUT)
+ p=subprocess.run(['pct','exec','101','--','python3','/opt/aimee-memory-lab/aimee-native/distribution/vllm/tests/image_certification.py','--image',image,'--output','/opt/aimee-memory-lab/release-candidate-20260927/exact-image-certification','--profiles','q8','--long-refresh','--requests','128','--context-tokens','8192','--gpu-utilization','0.8'],stdout=log,stderr=subprocess.STDOUT)
 if p.returncode:
  save({'status':'failed','stage':'standard','returncode':p.returncode,'image':image});raise SystemExit(p.returncode)
 save({'status':'certifying_wide'})
 with (ROOT/'wide-certification.log').open('w') as log:
- p=subprocess.run(['pct','exec','101','--','python3','/opt/aimee-memory-lab/aimee-qwen/distribution/vllm/tests/wide_image_certification.py','--image',image,'--output','/opt/aimee-memory-lab/release-candidate-20260927/wide-image-certification','--stream','--context-tokens','8192','--gpu-utilization','0.8'],stdout=log,stderr=subprocess.STDOUT)
+ p=subprocess.run(['pct','exec','101','--','python3','/opt/aimee-memory-lab/aimee-native/distribution/vllm/tests/wide_image_certification.py','--image',image,'--output','/opt/aimee-memory-lab/release-candidate-20260927/wide-image-certification','--stream','--context-tokens','8192','--gpu-utilization','0.8'],stdout=log,stderr=subprocess.STDOUT)
 if p.returncode:
  save({'status':'failed','stage':'wide','returncode':p.returncode,'image':image});raise SystemExit(p.returncode)
 save({'status':'measuring_exact_image_activation'})
 with (ROOT/'activation-certification.log').open('w') as log:
- p=subprocess.run(['pct','exec','101','--','python3','/opt/aimee-memory-lab/aimee-qwen/distribution/vllm/tests/certify_activation.py','--image',image,'--output','/opt/aimee-memory-lab/release-candidate-20260927/activation-certification'],stdout=log,stderr=subprocess.STDOUT)
+ p=subprocess.run(['pct','exec','101','--','python3','/opt/aimee-memory-lab/aimee-native/distribution/vllm/tests/certify_activation.py','--image',image,'--output','/opt/aimee-memory-lab/release-candidate-20260927/activation-certification'],stdout=log,stderr=subprocess.STDOUT)
 if p.returncode:
  save({'status':'failed','stage':'activation','returncode':p.returncode,'image':image});raise SystemExit(p.returncode)
 save({'status':'upgrading_preparation'})
@@ -79,7 +79,7 @@ save({'status':'checking_fp32_preparation_reuse'})
 subprocess.run(['pct','exec','101','--','systemctl','stop','aimee-native-compiler'],check=True)
 try:
  with (ROOT/'preparation-reuse.log').open('w') as log:
-  p=subprocess.run(['pct','exec','101','--','/opt/aimee-memory-lab/venv/bin/python','/opt/aimee-memory-lab/aimee-qwen/distribution/tests/lab/preparation_reuse.py','--output','/opt/aimee-memory-lab/release-candidate-20260927/fp32-preparation-reuse','--source','/opt/aimee-native-compiler','--library','/opt/aimee-native-compiler/libaimee_prepare.so','--compute-dtype','float32'],stdout=log,stderr=subprocess.STDOUT)
+  p=subprocess.run(['pct','exec','101','--','/opt/aimee-memory-lab/venv/bin/python','/opt/aimee-memory-lab/aimee-native/distribution/tests/lab/preparation_reuse.py','--output','/opt/aimee-memory-lab/release-candidate-20260927/fp32-preparation-reuse','--source','/opt/aimee-native-compiler','--library','/opt/aimee-native-compiler/libaimee_prepare.so','--compute-dtype','float32'],stdout=log,stderr=subprocess.STDOUT)
 finally:
  subprocess.run(['pct','exec','101','--','systemctl','start','aimee-native-compiler'],check=True)
 if p.returncode:

@@ -2,7 +2,7 @@
 """Build separately installable model plugins with isolated Rust libraries.
 
 The Rust source directory supplies the pinned manifest, lockfile and native ABI
-bridge. Repository adapter sources override that private build snapshot.
+bridge. Repository adapter sources override that build snapshot.
 Cython compiles vLLM framework glue; it does not implement model semantics.
 """
 import argparse
@@ -34,6 +34,7 @@ def build_shared_runtime(repo, output, version):
                    env=env, check=True)
     with tempfile.TemporaryDirectory(prefix='aimee-native-runtime-') as temporary:
         root = Path(temporary)
+        shutil.copyfile(repo / 'LICENSE', root / 'LICENSE')
         package = root / 'aimee_native_runtime'
         (package / 'native').mkdir(parents=True)
         (package / '__init__.py').write_text('"""Shared Rust enrollment, selection and lifecycle runtime."""\n')
@@ -45,7 +46,7 @@ def build_shared_runtime(repo, output, version):
         (package / 'native/aimee-model-client').chmod(0o755)
         (root / 'setup.py').write_text(f'''from setuptools import setup, Extension
 from Cython.Build import cythonize
-setup(name='aimee-native-runtime',version={version!r},packages=['aimee_native_runtime'],
+setup(name='aimee-native-runtime',version={version!r},license='AGPL-3.0-only',license_files=['LICENSE'],url='https://github.com/RakuenSoftware/aimee-native',packages=['aimee_native_runtime'],
 ext_modules=cythonize([Extension('aimee_native_runtime.'+name,['aimee_native_runtime/'+name+'.py'],extra_compile_args=['-O3','-g0'],extra_link_args=['-s']) for name in {list(COMMON_MODULES)!r}],compiler_directives={{'language_level':3,'binding':True,'annotation_typing':False}}))
 ''')
         subprocess.run([sys.executable, 'setup.py', 'build_ext', '--inplace'], cwd=root, check=True)
@@ -55,7 +56,7 @@ ext_modules=cythonize([Extension('aimee_native_runtime.'+name,['aimee_native_run
         (root / 'setup.py').write_text(f'''from setuptools import setup, Distribution
 class Binary(Distribution):
  def has_ext_modules(self): return True
-setup(name='aimee-native-runtime',version={version!r},packages=['aimee_native_runtime'],
+setup(name='aimee-native-runtime',version={version!r},license='AGPL-3.0-only',license_files=['LICENSE'],url='https://github.com/RakuenSoftware/aimee-native',packages=['aimee_native_runtime'],
 package_data={{'aimee_native_runtime':['native/*','*.so']}},distclass=Binary,python_requires='>=3.12')
 ''')
         subprocess.run([sys.executable, 'setup.py', 'bdist_wheel', '--dist-dir', str(output / 'wheels')], cwd=root, check=True)
@@ -63,18 +64,33 @@ package_data={{'aimee_native_runtime':['native/*','*.so']}},distclass=Binary,pyt
     return {'wheel': wheel.name, 'sha256': hashlib.sha256(wheel.read_bytes()).hexdigest()}
 
 
+def stage_rust_source(source, repo, rust):
+    """Stage code inputs without copying caches, evidence or model data."""
+    rust.mkdir()
+    for name in ("Cargo.toml", "Cargo.lock"):
+        shutil.copyfile(source / name, rust / name)
+    toolchain = source / "rust-toolchain.toml"
+    shutil.copyfile(toolchain if toolchain.exists() else repo / "rust-toolchain.toml",
+                    rust / "rust-toolchain.toml")
+    shutil.copytree(source / "native", rust / "native")
+    shutil.copytree(repo / "src", rust / "src", dirs_exist_ok=True)
+    shutil.copyfile(repo / "build.rs", rust / "build.rs")
+    shutil.copyfile(repo / "native/vllm_runtime_portable.cpp", rust / "native/vllm_runtime_portable.cpp")
+
+
 def build(model, package, source, output, version):
     repo = Path(__file__).resolve().parents[2]
     origin = repo / "distribution/vllm/aimee_vllm"
     with tempfile.TemporaryDirectory(prefix=package + "-") as temporary:
         root = Path(temporary)
+        shutil.copyfile(repo / "LICENSE", root / "LICENSE")
         rust = root / "rust"
-        shutil.copytree(source, rust, ignore=shutil.ignore_patterns("target", ".git"))
-        shutil.copytree(repo / "src", rust / "src", dirs_exist_ok=True)
-        shutil.copyfile(repo / "build.rs", rust / "build.rs")
-        shutil.copyfile(repo / "native/vllm_runtime_portable.cpp", rust / "native/vllm_runtime_portable.cpp")
+        stage_rust_source(source, repo, rust)
         manifest = rust / "Cargo.toml"
-        text = manifest.read_text()
+        text = manifest.read_text().replace('name = "aimee-qwen"', 'name = "aimee-native"')
+        text = text.replace('license = "LicenseRef-Proprietary"', 'license = "AGPL-3.0-only"')
+        lock = rust / "Cargo.lock"
+        lock.write_text(lock.read_text().replace('name = "aimee-qwen"', 'name = "aimee-native"'))
         for name in MODELS:
             feature = "adapter-" + name
             if feature + " =" not in text:
@@ -85,7 +101,7 @@ def build(model, package, source, output, version):
         subprocess.run(["cargo", "build", "--manifest-path", str(manifest), "--locked",
                         "--release", "--lib", "--no-default-features", "--features",
                         "vllm-portable,adapter-" + model], env=env, check=True)
-        library = Path(env["CARGO_TARGET_DIR"]) / "release/libaimee_qwen.so"
+        library = Path(env["CARGO_TARGET_DIR"]) / "release/libaimee_native.so"
         symbols = subprocess.check_output(["nm", "-D", str(library)], text=True)
         for name, candidate in MODELS.items():
             symbol = candidate.replace("aimee_", "aimee_", 1) + "_adapter"
@@ -121,7 +137,7 @@ def build(model, package, source, output, version):
         (root / "setup.py").write_text(f'''from setuptools import setup, Distribution
 class Binary(Distribution):
  def has_ext_modules(self): return True
-setup(name={package.replace('_','-')!r},version={version!r},packages=[{package!r}],package_data={{{package!r}:['native/*']}},distclass=Binary,
+setup(name={package.replace('_','-')!r},version={version!r},license='AGPL-3.0-only',license_files=['LICENSE'],url='https://github.com/RakuenSoftware/aimee-native',packages=[{package!r}],package_data={{{package!r}:['native/*']}},distclass=Binary,
 entry_points={{'vllm.general_plugins':[{package+'='+package+':register'!r}],'console_scripts':[{package.replace('_','-')+'='+package+'.cli:main'!r}]}},install_requires=['vllm==0.30.0','aimee-native-runtime=={version}'],python_requires='>=3.12')
 ''')
         subprocess.run([sys.executable, "setup.py", "bdist_wheel", "--dist-dir", str(output / "wheels")], cwd=root, check=True)
@@ -134,7 +150,8 @@ entry_points={{'vllm.general_plugins':[{package+'='+package+':register'!r}],'con
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--rust-source", type=Path, required=True)
+    p.add_argument("--rust-source", type=Path, default=Path(__file__).resolve().parents[2],
+                   help="Rust manifest/native inputs; defaults to this repository")
     p.add_argument("--output", type=Path, required=True)
     p.add_argument("--version", default="0.3.3")
     a = p.parse_args()

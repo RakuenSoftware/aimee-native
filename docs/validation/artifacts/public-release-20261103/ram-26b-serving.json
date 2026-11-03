@@ -1,0 +1,53 @@
+{
+  "scope": "Installed model GPU gate, invoked inside aimee-release.py's disposable stack.\n\nProfiles are local JSON configurations with real immutable checkpoint hashes.\nOnly synthetic facts are written. No existing model service is stopped; each\nowned process group is terminated, even on failure. Serving logs and enrollment\ncredentials stay in temporary directories, never in the public report.\n",
+  "models": [
+    {
+      "model": "gemma4-26b",
+      "checks": [
+        {
+          "name": "actual checkpoint matches declared hash",
+          "passed": true
+        },
+        {
+          "name": "real enrolled profile accepted",
+          "passed": true
+        }
+      ],
+      "passed": false,
+      "library_sha256": "5a1c6b34007f7de60d60eb8478f4b5e745ee1447ef1f47f6e45e324fb5932dc0",
+      "checkpoint_sha256": "cbb174d5585b8dd2e8f8d9d2294b8beb6eaa0022bceaf1989bc8d0e0ec2f473c",
+      "checkpoint_profile": "Q3_K_M",
+      "model_revision": null,
+      "model_config_sha256": "ed0c1eb3633de771906e9ba004a44cc5635bcc06ee2062077c3d2e88a50707d3",
+      "tokenizer_sha256": "cc8d3a0ce36466ccc1278bf987df5f71db1719b9ca6b4118264f45cb627bfe0f",
+      "serving": {
+        "host": "127.0.0.1",
+        "port": 54107,
+        "tensor_parallel_size": 1,
+        "gpu_memory_utilization": 0.64,
+        "max_model_len": 2048,
+        "max_num_seqs": 1,
+        "max_num_batched_tokens": 128,
+        "num_gpu_blocks_override": 512,
+        "enable_prefix_caching": false,
+        "async_scheduling": false,
+        "v2_model_runner": false,
+        "enable_model_compilation": false,
+        "enable_piecewise_graphs": false,
+        "use_flashinfer_sampler": false,
+        "cpu_offload_gb": 8,
+        "flashinfer_sampler": false,
+        "cpu_offload_pinned_memory": true,
+        "cpu_offload_disable_uva": false,
+        "cpu_offload_params": [
+          "weight",
+          "w13_weight",
+          "w2_weight"
+        ]
+      },
+      "phase": "startup",
+      "error_type": "RuntimeError"
+    }
+  ],
+  "passed": false
+}

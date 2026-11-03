@@ -1,6 +1,6 @@
 //! Isolated CPU expansion experiment. Exact-table control is explicitly a dense
 //! RAM dictionary, not proof of sparse-state reconstruction or serving latency.
-use aimee_qwen::{
+use aimee_native::{
     compact_memory::{self, Schema},
     prepared_memory,
 };

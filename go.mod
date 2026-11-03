@@ -1,4 +1,4 @@
-module github.com/RakuenSoftware/aimee-qwen
+module github.com/RakuenSoftware/aimee-native
 
 go 1.26.7
 
@@ -14,4 +14,4 @@ require (
 	golang.org/x/text v0.41.0 // indirect
 )
 
-replace github.com/JBailes/aimee/server-go => ../aimee/server-go
+replace github.com/JBailes/aimee/server-go => ./.local/aimee-research-ad3585ac/server-go

@@ -1,13 +1,20 @@
 # Aimee Native distribution
 
+> Start with the current [usage guide](../docs/usage.md),
+> [release compatibility](../docs/aimee-compatibility.md), and
+> [source build/test guide](../docs/development.md). The dated implementation
+> records below retain their original scope; private-preview flows are historical.
+
+
 The current model-plugin candidates are [three separate packages](vllm/MODEL_PLUGINS.md),
 built on one shared runtime, with [current validation](../docs/validation/native-memory-shared-runtime-20261004.md).
 The [earlier dedicated-plugin results](../docs/validation/native-memory-serving-and-model-plugins-20261004.md)
 and older shared-plugin releases remain historical records.
 
 
-All implementation, preparation, experiments and packaging remain in the private
-`RakuenSoftware/aimee-qwen` repository. Aimee owns authoritative memory,
+All implementation, preparation, experiments and packaging belong in
+[`RakuenSoftware/aimee-native`](https://github.com/RakuenSoftware/aimee-native).
+See [public release preparation](../docs/public-release.md) for current status. Aimee owns authoritative memory,
 permissions, selection and scoped publication.
 
 ## Distribution boundary — portable plugin, 30 September

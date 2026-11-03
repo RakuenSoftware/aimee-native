@@ -10,4 +10,4 @@ export RUSTFLAGS="${RUSTFLAGS:-} --remap-path-prefix=$repo=/aimee-native"
 export CXXFLAGS="${CXXFLAGS:-} -ffile-prefix-map=$repo=/aimee-native -ffile-prefix-map=$LIBTORCH=/runtime/torch -ffile-prefix-map=$PYTHON_INCLUDE=/runtime/python"
 cd "$repo"
 cargo build --locked --release --lib --no-default-features --features vllm-runtime
-python3 distribution/release/audit-client.py "${CARGO_TARGET_DIR:-target}/release/libaimee_qwen.so" --vllm --runtime
+python3 distribution/release/audit-client.py "${CARGO_TARGET_DIR:-target}/release/libaimee_native.so" --vllm --runtime

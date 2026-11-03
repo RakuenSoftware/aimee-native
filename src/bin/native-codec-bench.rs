@@ -1,4 +1,4 @@
-use aimee_qwen::{native_store::NativeStore, native_transport_codec::Encoded};
+use aimee_native::{native_store::NativeStore, native_transport_codec::Encoded};
 use anyhow::{Result, ensure};
 use std::{
     fs::File,

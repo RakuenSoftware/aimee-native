@@ -3,7 +3,7 @@
 //! it does not claim to implement production authorization policy.
 #[cfg(feature = "torch")]
 mod validation {
-    use aimee_qwen::{adapter::Adapter, model::{Bank, Cache, Model}, tokens::Tokens,
+    use aimee_native::{adapter::Adapter, model::{Bank, Cache, Model}, tokens::Tokens,
         transport::MemorySource};
     use anyhow::{Result, ensure};
     use clap::Parser;

@@ -1,7 +1,7 @@
 # Private preparation service boundary
 
 Do not put this service in the client package. Its implementation and deployment
-specification belong in aimee-qwen. Consume Aimee's authoritative scoped exports;
+specification belong in aimee-native. Consume Aimee's authoritative scoped exports;
 do not clone membership, governance, selection or authorization policy.
 
 The existing publisher-controlled sparse-image lifecycle supplies installation,

@@ -1,5 +1,10 @@
 # Private, fork-free vLLM integration
 
+> Current enrolled model installation, Aimee v1.0.2 compatibility and operations
+> are documented in [usage](../../docs/usage.md). This page retains the original
+> development bridge and prepared-bank validation contracts.
+
+
 The current release uses [three thin model plugins on one shared runtime](MODEL_PLUGINS.md).
 Each plugin owns its dedicated Rust adapter; enrollment, selection, preparation,
 admission, scheduling and framework integration are shared.
@@ -41,7 +46,7 @@ Configuration (paths must refer to admitted, publisher-owned artifacts):
 ```json
 {
   "model": "/models/certified-model",
-  "library": "/opt/aimee/libaimee_qwen.so",
+  "library": "/opt/aimee/libaimee_native.so",
   "catalog": "/var/lib/aimee/catalog.json",
   "recipient": "approved-recipient",
   "host_memory_budget": 1073741824,

@@ -1,0 +1,194 @@
+test_authorized_empty_is_accepted_by_upstream_schema (test_admission.AdmissionTests.test_authorized_empty_is_accepted_by_upstream_schema) ... skipped 'requires installed vLLM protocol'
+test_authorized_empty_overrides_caller_without_reserving_bank (test_admission.AdmissionTests.test_authorized_empty_overrides_caller_without_reserving_bank) ... ok
+test_automatic_selection_overrides_caller_publication (test_admission.AdmissionTests.test_automatic_selection_overrides_caller_publication) ... ok
+test_done_disconnect_releases_but_interrupted_stream_stays_pinned (test_admission.AdmissionTests.test_done_disconnect_releases_but_interrupted_stream_stays_pinned) ... ok
+test_hybrid_catalogue_does_not_strip_system_context_from_empty_selection (test_admission.AdmissionTests.test_hybrid_catalogue_does_not_strip_system_context_from_empty_selection) ... ok
+test_hybrid_context_is_verified_before_reservation_and_stripped_once (test_admission.AdmissionTests.test_hybrid_context_is_verified_before_reservation_and_stripped_once) ... ok
+test_paused_selection_can_activate_but_cannot_bypass_pause (test_admission.AdmissionTests.test_paused_selection_can_activate_but_cannot_bypass_pause) ... ok
+test_pressure_rejected_before_app_and_capacity_released (test_admission.AdmissionTests.test_pressure_rejected_before_app_and_capacity_released) ... ok
+test_same_bank_shared_until_all_requests_finish (test_admission.AdmissionTests.test_same_bank_shared_until_all_requests_finish) ... ok
+test_selection_error_is_not_empty_success (test_admission.AdmissionTests.test_selection_error_is_not_empty_success) ... native selection failed (RuntimeError): unavailable
+ok
+test_selection_revision_race_rejects_before_generation (test_admission.AdmissionTests.test_selection_revision_race_rejects_before_generation) ... native selection failed (RuntimeError): selection/catalogue mismatch
+ok
+test_unknown_rejected_and_interrupted_request_retains_reservation (test_admission.AdmissionTests.test_unknown_rejected_and_interrupted_request_retains_reservation) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.022s
+
+OK (skipped=1)
+test_concurrent_native_and_empty_requests_keep_authorized_cache_identities (test_admission_cache_identity.AdmissionCacheTests.test_concurrent_native_and_empty_requests_keep_authorized_cache_identities) ... ok
+test_publication_refresh_drains_active_request_and_changes_cache_namespace (test_admission_cache_identity.AdmissionCacheTests.test_publication_refresh_drains_active_request_and_changes_cache_namespace) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.031s
+
+OK
+test_gpu_completion_precedes_next_scheduler_update (test_async_ownership.AsyncOwnershipTests.test_gpu_completion_precedes_next_scheduler_update) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+OK
+test_http_worker_cannot_arm_capture (test_attention_capture.AttentionCaptureTests.test_http_worker_cannot_arm_capture) ... ok
+test_variable_layer_geometry_is_preserved_exactly (test_attention_capture.AttentionCaptureTests.test_variable_layer_geometry_is_preserved_exactly) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.005s
+
+OK
+test_eviction_clears_pointer_owners_before_bank_release_and_reload (test_cache.CacheTests.test_eviction_clears_pointer_owners_before_bank_release_and_reload) ... ok
+test_pinned_overflow_never_evicts_active_banks (test_cache.CacheTests.test_pinned_overflow_never_evicts_active_banks) ... ok
+test_staging_pressure_uses_raw_without_inflating_residency (test_cache.CacheTests.test_staging_pressure_uses_raw_without_inflating_residency) ... ok
+test_upload_failure_poisoned_instead_of_reusing_partial_plan (test_cache.CacheTests.test_upload_failure_poisoned_instead_of_reusing_partial_plan) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.002s
+
+OK
+test_canonical_tuple_encoding_avoids_separator_collision (test_cache_identity.CacheIdentityTests.test_canonical_tuple_encoding_avoids_separator_collision) ... ok
+test_same_revision_reuses_and_every_authority_boundary_separates (test_cache_identity.CacheIdentityTests.test_same_revision_reuses_and_every_authority_boundary_separates) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.000s
+
+OK
+test_fp8_states_round_trip_exactly (test_capture.CaptureTests.test_fp8_states_round_trip_exactly) ... ok
+test_incomplete_layers_and_capture_past_boundary_are_rejected (test_capture.CaptureTests.test_incomplete_layers_and_capture_past_boundary_are_rejected) ... ok
+test_prompt_mismatch_or_batch_is_rejected_before_model_execution (test_capture.CaptureTests.test_prompt_mismatch_or_batch_is_rejected_before_model_execution) ... ok
+test_q4_states_round_trip_exactly (test_capture.CaptureTests.test_q4_states_round_trip_exactly) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.008s
+
+OK
+test_foreign_live_tokens_and_finished_capture_are_rejected (test_capture_session.CaptureOwnershipTests.test_foreign_live_tokens_and_finished_capture_are_rejected) ... ok
+test_old_request_cleanup_before_exclusive_capture (test_capture_session.CaptureOwnershipTests.test_old_request_cleanup_before_exclusive_capture) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.000s
+
+OK
+test_gguf_uses_registered_loader_options_without_upstream_patching_entrypoint (test_cli.CliTests.test_gguf_uses_registered_loader_options_without_upstream_patching_entrypoint) ... ok
+test_hybrid_profile_requires_supported_runner_and_accepts_cpu_offload (test_cli.CliTests.test_hybrid_profile_requires_supported_runner_and_accepts_cpu_offload) ... ok
+test_hybrid_q4_uses_checksum_bound_loader_with_no_cpu_offload (test_cli.CliTests.test_hybrid_q4_uses_checksum_bound_loader_with_no_cpu_offload) ... ok
+test_memory_aware_prefix_and_async_flags_are_explicit (test_cli.CliTests.test_memory_aware_prefix_and_async_flags_are_explicit) ... ok
+test_quantization_is_explicit_and_offline_capture_cannot_serve_http (test_cli.CliTests.test_quantization_is_explicit_and_offline_capture_cannot_serve_http) ... ok
+test_signed_larger_model_options_reach_upstream_plugin (test_cli.CliTests.test_signed_larger_model_options_reach_upstream_plugin) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 1.159s
+
+OK
+test_cancelled_drain_does_not_poison_untouched_workers (test_control.ControlTests.test_cancelled_drain_does_not_poison_untouched_workers) ... ok
+test_drain_timeout_is_retryable_without_worker_poisoning (test_control.ControlTests.test_drain_timeout_is_retryable_without_worker_poisoning) ... ok
+test_invalid_local_catalog_is_retryable_without_worker_mutation (test_control.ControlTests.test_invalid_local_catalog_is_retryable_without_worker_mutation) ... ok
+test_metrics_require_every_rank_and_do_not_change_admission (test_control.ControlTests.test_metrics_require_every_rank_and_do_not_change_admission) ... ok
+test_mixed_revision_never_reopens_admission (test_control.ControlTests.test_mixed_revision_never_reopens_admission) ... ok
+test_poisoned_status_requests_supervised_restart (test_control.ControlTests.test_poisoned_status_requests_supervised_restart) ... ok
+test_refresh_stays_closed_until_every_worker_acknowledges_same_revision (test_control.ControlTests.test_refresh_stays_closed_until_every_worker_acknowledges_same_revision) ... ok
+test_socket_health_and_withdrawal_remain_responsive_during_drain (test_control.ControlTests.test_socket_health_and_withdrawal_remain_responsive_during_drain) ... Native control operation failed
+Traceback (most recent call last):
+  File "/work/aimee-native/distribution/vllm/aimee_vllm/control.py", line 21, in handle
+    async with lock:result=await operate(owner,engine,request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/aimee-native/distribution/vllm/aimee_vllm/control.py", line 60, in operate
+    if generation!=getattr(owner,'generation',0):raise RuntimeError('superseded publication activation')
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: superseded publication activation
+ok
+test_superseded_activation_cannot_reopen_after_withdrawal (test_control.ControlTests.test_superseded_activation_cannot_reopen_after_withdrawal) ... ok
+test_withdraw_stops_new_admissions (test_control.ControlTests.test_withdraw_stops_new_admissions) ... ok
+test_withdrawal_during_worker_refresh_cannot_reopen_admission (test_control.ControlTests.test_withdrawal_during_worker_refresh_cannot_reopen_admission) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.087s
+
+OK
+test_export_keeps_base_keys_and_binds_lossless_recurrence (test_export_hybrid.HybridExportTests.test_export_keeps_base_keys_and_binds_lossless_recurrence) ... ok
+test_wrong_weight_profile_and_corrupt_attention_fail_before_publication (test_export_hybrid.HybridExportTests.test_wrong_weight_profile_and_corrupt_attention_fail_before_publication) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.012s
+
+OK
+test_ragged_requests_paged_text_memory_and_windows (test_gpu_attention.AttentionTests.test_ragged_requests_paged_text_memory_and_windows) ... skipped 'requires a real GPU'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+OK (skipped=1)
+test_conv_precision_mismatch_is_rejected_before_cache_write (test_hybrid_prefix.HybridPrefixTests.test_conv_precision_mismatch_is_rejected_before_cache_write) ... ok
+test_decode_and_plain_requests_never_copy_physical_slots_to_host (test_hybrid_prefix.HybridPrefixTests.test_decode_and_plain_requests_never_copy_physical_slots_to_host) ... ok
+test_matching_bf16_conv_seed_is_copied_without_conversion (test_hybrid_prefix.HybridPrefixTests.test_matching_bf16_conv_seed_is_copied_without_conversion) ... ok
+test_partition_slices_each_qkv_group_and_transposes_recurrence (test_hybrid_prefix.HybridPrefixTests.test_partition_slices_each_qkv_group_and_transposes_recurrence) ... ok
+test_payload_integrity_budget_and_manifest_binding (test_hybrid_prefix.HybridPrefixTests.test_payload_integrity_budget_and_manifest_binding) ... ok
+test_positions_shift_before_rotary_for_only_the_selected_requests (test_hybrid_prefix.HybridPrefixTests.test_positions_shift_before_rotary_for_only_the_selected_requests) ... ok
+test_reordered_mixed_requests_decode_and_preemption_keep_private_state (test_hybrid_prefix.HybridPrefixTests.test_reordered_mixed_requests_decode_and_preemption_keep_private_state) ... ok
+test_same_architecture_with_changed_revision_or_tokenizer_is_rejected (test_hybrid_prefix.HybridPrefixTests.test_same_architecture_with_changed_revision_or_tokenizer_is_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.009s
+
+OK
+test_cross_model_selection_fails (test_model_adapters.DedicatedAdapterTests.test_cross_model_selection_fails) ... ok
+test_gemma_precision_and_tokenizer_bindings_are_enforced_by_rust (test_model_adapters.DedicatedAdapterTests.test_gemma_precision_and_tokenizer_bindings_are_enforced_by_rust) ... ok
+test_qwen_private_seed_plan_handles_preemption_and_rejects_slot_aliasing (test_model_adapters.DedicatedAdapterTests.test_qwen_private_seed_plan_handles_preemption_and_rejects_slot_aliasing) ... ok
+test_real_gemma_publication_is_owned_by_rust_and_readable (test_model_adapters.DedicatedAdapterTests.test_real_gemma_publication_is_owned_by_rust_and_readable) ... ok
+test_real_rust_positions_handle_mixed_requests_and_padding (test_model_adapters.DedicatedAdapterTests.test_real_rust_positions_handle_mixed_requests_and_padding) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.084s
+
+OK
+test_old_identity_is_preserved_and_cross_precision_states_rejected (test_precision.PrecisionTests.test_old_identity_is_preserved_and_cross_precision_states_rejected) ... ok
+test_q4_identity_binds_checkpoint_runtime_and_gpu (test_precision.PrecisionTests.test_q4_identity_binds_checkpoint_runtime_and_gpu) ... ok
+test_unsupported_quantization_is_fail_closed (test_precision.PrecisionTests.test_unsupported_quantization_is_fail_closed) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.004s
+
+OK
+test_adapter_renders_closed_prefix_without_stock_system_only_template (test_preparation.PreparationTests.test_adapter_renders_closed_prefix_without_stock_system_only_template) ... Executing <Task pending name='Task-2' coro=<PreparationTests.test_adapter_renders_closed_prefix_without_stock_system_only_template() running at /work/aimee-native/distribution/vllm/tests/test_preparation.py:113> wait_for=<Future pending cb=[_chain_future.<locals>._call_check_cancel() at /usr/local/lib/python3.12/asyncio/futures.py:389, Task.task_wakeup()] created at /usr/local/lib/python3.12/asyncio/base_events.py:448> cb=[_run_until_complete_cb() at /usr/local/lib/python3.12/asyncio/base_events.py:181] created at /usr/local/lib/python3.12/asyncio/runners.py:100> took 3.905 seconds
+ok
+test_exclusive_capture_waits_for_drain_and_uses_adapter_owned_rpc (test_preparation.PreparationTests.test_exclusive_capture_waits_for_drain_and_uses_adapter_owned_rpc) ... ok
+test_rejects_unwithdrawn_disabled_superseded_and_foreign_destinations_before_rpc (test_preparation.PreparationTests.test_rejects_unwithdrawn_disabled_superseded_and_foreign_destinations_before_rpc) ... ok
+test_withdrawal_supersedes_a_pending_drain_without_touching_workers (test_preparation.PreparationTests.test_withdrawal_supersedes_a_pending_drain_without_touching_workers) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 3.916s
+
+OK
+test_enabled_hybrid_hooks_are_installed_with_empty_catalogue (test_state.StateTests.test_enabled_hybrid_hooks_are_installed_with_empty_catalogue) ... ok
+test_missing_request_fails_instead_of_borrowing_another_bank (test_state.StateTests.test_missing_request_fails_instead_of_borrowing_another_bank) ... ok
+test_missing_v2_slots_bypass_only_publication_free_warmup (test_state.StateTests.test_missing_v2_slots_bypass_only_publication_free_warmup) ... ok
+test_q4_hooks_require_bound_weights_and_preserve_runner_guards (test_state.StateTests.test_q4_hooks_require_bound_weights_and_preserve_runner_guards) ... ok
+test_refresh_preserves_requested_stage_measurements (test_state.StateTests.test_refresh_preserves_requested_stage_measurements) ... ok
+test_reorder_and_retirement_preserve_identity (test_state.StateTests.test_reorder_and_retirement_preserve_identity) ... ok
+test_resumed_request_keeps_revision_after_replacement_and_withdrawal (test_state.StateTests.test_resumed_request_keeps_revision_after_replacement_and_withdrawal) ... ok
+test_unapproved_selection_and_mid_request_rebinding_fail (test_state.StateTests.test_unapproved_selection_and_mid_request_rebinding_fail) ... ok
+test_v2_physical_slots_resolve_during_forward (test_state.StateTests.test_v2_physical_slots_resolve_during_forward) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.005s
+
+OK
+test_all_choices_must_finish_before_done (test_stream_completion.StreamTests.test_all_choices_must_finish_before_done) ... ok
+test_model_text_error_and_partial_completion_cannot_acknowledge (test_stream_completion.StreamTests.test_model_text_error_and_partial_completion_cannot_acknowledge) ... ok
+test_parser_bounds_and_invalid_choice_fail_closed (test_stream_completion.StreamTests.test_parser_bounds_and_invalid_choice_fail_closed) ... ok
+test_terminal_frames_can_cross_every_byte_boundary (test_stream_completion.StreamTests.test_terminal_frames_can_cross_every_byte_boundary) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.001s
+
+OK
+test_activation_and_failed_plan_have_separate_bounded_counters (test_telemetry.CacheTelemetryTests.test_activation_and_failed_plan_have_separate_bounded_counters) ... ok
+test_failed_upload_remains_poisoned_with_telemetry_enabled (test_telemetry.CacheTelemetryTests.test_failed_upload_remains_poisoned_with_telemetry_enabled) ... ok
+test_configuration_is_not_truthiness (test_telemetry.TelemetryTests.test_configuration_is_not_truthiness) ... ok
+test_disabled_is_empty_and_preserves_exception (test_telemetry.TelemetryTests.test_disabled_is_empty_and_preserves_exception) ... ok
+test_failures_are_separate_and_snapshots_do_not_alias (test_telemetry.TelemetryTests.test_failures_are_separate_and_snapshots_do_not_alias) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.002s
+
+OK

@@ -5,7 +5,7 @@ lab=pathlib.Path(a.lab_root);release=pathlib.Path(a.release_root);build=lab/'vll
 digest=(release/'image-digest.txt').read_text().strip();assert digest.startswith('sha256:')
 descriptor=release/f'image-{a.sequence}.json';descriptor.write_text(json.dumps({'image':'192.168.0.126:5443/aimee-native@'+digest,'model_config':'models/config.json'}))
 shim=release/'aimee-vllm';shim.write_text('#!/bin/sh\nexec aimee-vllm "$@"\n')
-files={'bin/aimee-vllm':str(shim),'lib/libaimee_native.so':str(build/'target/release/libaimee_qwen.so'),'runtime/image.json':str(descriptor),'models/model.gguf':str(lab/'gemma4-aimee-q8.gguf')}
+files={'bin/aimee-vllm':str(shim),'lib/libaimee_native.so':str(build/'target/release/libaimee_native.so'),'runtime/image.json':str(descriptor),'models/model.gguf':str(lab/'gemma4-aimee-q8.gguf')}
 if a.profile:files['runtime/profile.json']=a.profile
 for path in (lab/'gemma4').iterdir():
  if path.is_file() and path.suffix in ('.json','.jinja','.model') and not path.name.endswith('.safetensors.index.json'):files['models/'+path.name]=str(path)

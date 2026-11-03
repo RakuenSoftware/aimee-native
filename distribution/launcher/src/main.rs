@@ -91,12 +91,6 @@ enum Action {
     /// Show installation/hardware information without reading credentials.
     Doctor,
 }
-struct AimeeCredentials {
-    endpoint: String,
-    token: String,
-    ca: Option<Vec<u8>>,
-    identity: Vec<u8>,
-}
 fn aimee_home(explicit: Option<PathBuf>) -> Result<PathBuf> {
     if let Some(home) = explicit.or_else(|| std::env::var_os("AIMEE_HOME").map(PathBuf::from)) {
         ensure!(home.is_absolute(), "Aimee home must be an absolute path");
@@ -124,28 +118,15 @@ fn private_aimee_file(path: &std::path::Path) -> Result<Vec<u8>> {
     file.read_to_end(&mut contents)?;
     Ok(contents)
 }
-fn read_aimee_credentials(home: &std::path::Path) -> Result<AimeeCredentials> {
+fn enrolled_connection(root: &std::path::Path, home: &std::path::Path) -> Result<native::Config> {
     let remote = String::from_utf8(private_aimee_file(&home.join("remote.conf"))?)?;
-    let mut lines = remote.lines();
-    let endpoint = lines.next().context("Aimee remote URL is missing")?.to_owned();
-    let token = lines.next().context("Aimee enrollment bearer is missing")?.to_owned();
-    ensure!(lines.next().is_none() && !token.is_empty(), "invalid Aimee remote configuration");
-    native::validate_endpoint(&endpoint)?;
-    // Aimee stores a pin for self-signed servers. Publicly trusted servers
-    // need no local pin and use the runtime's normal trust roots instead.
-    let ca = match fs::read(home.join("remote-ca.pem")) {
-        Ok(pem) => Some(pem),
-        Err(error) if error.kind() == io::ErrorKind::NotFound => None,
-        Err(error) => return Err(error.into()),
-    };
-    if let Some(pem) = &ca {
-        reqwest::Certificate::from_pem(pem)?;
-    }
-    let mut identity = private_aimee_file(&home.join("tls/client.crt"))?;
-    identity.push(b'\n');
-    identity.extend(private_aimee_file(&home.join("tls/client.key"))?);
-    reqwest::Identity::from_pem(&identity)?;
-    Ok(AimeeCredentials { endpoint, token, ca, identity })
+    let endpoint = remote.lines().next().context("Aimee remote URL is missing")?.to_owned();
+    Ok(native::Config {
+        schema: 1, endpoint,
+        token_file: root.join("thinclient-managed"), memory_root: root.join("memory"),
+        ca_file: None, client_identity: None, connect_address: None,
+        thinclient_home: Some(home.to_path_buf()),
+    })
 }
 
 fn local_model_fingerprint(model: &std::path::Path, gguf: Option<&str>) -> Result<String> {
@@ -186,26 +167,14 @@ fn local_model_fingerprint(model: &std::path::Path, gguf: Option<&str>) -> Resul
     Ok(hex::encode(digest.finalize()))
 }
 fn connect_from_aimee(root: &std::path::Path, home: &std::path::Path) -> Result<()> {
-    let credentials = read_aimee_credentials(home)?;
-    let http = if let Some(pin) = credentials.ca.as_deref() {
-        reqwest::blocking::Client::builder()
-            .https_only(true)
-            .redirect(reqwest::redirect::Policy::none())
-            .connect_timeout(Duration::from_secs(15))
-            .timeout(Duration::from_secs(3600))
-            .tls_built_in_root_certs(false)
-            .danger_accept_invalid_hostnames(true)
-            .add_root_certificate(reqwest::Certificate::from_pem(pin)?)
-            .identity(reqwest::Identity::from_pem(&credentials.identity)?)
-            .build()?
-    } else {
-        tls_client(None, Some(&credentials.identity), Some(&credentials.endpoint), None)?
-    };
+    let connection = enrolled_connection(root, home)?;
+    // Enrollment and every later read use the same owner-only profile reader
+    // and exact-leaf TLS pin policy as the dedicated model client.
+    let current = native::thin_client::open(&connection)?;
     native::primitive::fetch_with_token(
-        &http,
-        &credentials.endpoint, &credentials.token, "native memory connection", 64,
+        &current.http, &connection.endpoint, &current.token, "native memory connection", 64,
     )?;
-    native::connect_with_thinclient(root, &credentials.endpoint, home)?;
+    native::connect_with_thinclient(root, &connection.endpoint, home)?;
     println!("Authenticated Aimee native-memory connection established.");
     Ok(())
 }
@@ -782,7 +751,7 @@ mod aimee_enrollment_tests {
         let remote = dir.path().join("remote.conf");
         fs::write(&remote, "https://memory.example:8743\ninvitation\n").unwrap();
         fs::set_permissions(&remote, fs::Permissions::from_mode(0o600)).unwrap();
-        assert!(read_aimee_credentials(dir.path()).is_err()); // no certificate
+        assert!(native::thin_client::open(&enrolled_connection(dir.path(), dir.path()).unwrap()).is_err()); // no certificate
         fs::set_permissions(&remote, fs::Permissions::from_mode(0o644)).unwrap();
         assert!(private_aimee_file(&remote).is_err());
     }
@@ -806,12 +775,13 @@ mod aimee_enrollment_tests {
         fs::write(&remote, "https://memory.example:8743\ninvitation\n").unwrap();
         fs::set_permissions(&remote, fs::Permissions::from_mode(0o600)).unwrap();
         fs::copy(&cert, dir.path().join("remote-ca.pem")).unwrap();
-        let credentials = read_aimee_credentials(dir.path()).unwrap();
-        assert_eq!(credentials.endpoint, "https://memory.example:8743");
-        assert_eq!(credentials.token, "invitation");
-        assert!(credentials.identity.windows(17).any(|v| v == b"BEGIN PRIVATE KEY"));
+        let connection = enrolled_connection(dir.path(), dir.path()).unwrap();
+        let authorization = native::thin_client::open(&connection).unwrap();
+        assert_eq!(connection.endpoint, "https://memory.example:8743");
+        assert_eq!(authorization.token, "invitation");
+        assert_eq!(authorization.recipient.len(), 64);
         fs::remove_file(dir.path().join("remote-ca.pem")).unwrap();
-        assert!(read_aimee_credentials(dir.path()).unwrap().ca.is_none());
+        assert!(native::thin_client::open(&connection).is_ok());
     }
 
     #[test]

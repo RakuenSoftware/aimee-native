@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/RakuenSoftware/aimee-qwen/memory/sparse"
+	"github.com/RakuenSoftware/aimee-native/memory/sparse"
 )
 
 func fetchPublication(ctx context.Context, endpoint, ca, cert, key, bearer, root string, gid int) (out sparse.PublicationResult, err error) {

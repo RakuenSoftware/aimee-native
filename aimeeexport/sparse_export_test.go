@@ -86,8 +86,10 @@ func TestSelectedExportNeverFallsBackToWholeStore(t *testing.T) {
 	if _, e := ExportSparseRecordsSelected(context.Background(), db, memory.PlacementServer, memory.Scope{}, "personal", []string{"5 OR 1=1"}); e == nil || db.sql != "" {
 		t.Fatal("invalid ID reached source")
 	}
+	// The core exports raw rows, including lifecycle metadata. Selection must
+	// remain parameterized; publication applies eligibility and release policy.
 	rows, e := ExportSparseRecordsSelected(context.Background(), db, memory.PlacementServer, memory.Scope{}, "personal", []string{"5"})
-	if e != nil || len(rows) != 1 || !strings.Contains(db.sql, "m.id IN") || !strings.Contains(db.sql, "m.lifecycle_state='active'") || !reflect.DeepEqual(db.args, []any{`["5"]`}) {
+	if e != nil || len(rows) != 1 || !strings.Contains(db.sql, "id IN (SELECT jsonb_array_elements_text($1::jsonb)::bigint)") || !reflect.DeepEqual(db.args, []any{`["5"]`}) {
 		t.Fatalf("not parameterized: %s %+v %v", db.sql, db.args, e)
 	}
 }

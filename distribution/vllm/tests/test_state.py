@@ -14,7 +14,9 @@ class StateTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'bound Q4_K_M'):
             runtime.install_hybrid_hooks()
         runtime.config.update(gguf_weights_sha256='a'*64,gguf_weight_profile='Q4_K_M',serve={'async_scheduling':True})
-        with patch('torch.cuda.get_device_capability',return_value=(11,0)),self.assertRaisesRegex(RuntimeError,'eager'):
+        with patch('torch.cuda.get_device_capability',return_value=(11,0)), \
+                patch('aimee_vllm.precision.importlib.metadata.version', return_value='fixture-runtime'), \
+                self.assertRaisesRegex(RuntimeError,'eager'):
             runtime.install_hybrid_hooks()
 
     def test_enabled_hybrid_hooks_are_installed_with_empty_catalogue(self):

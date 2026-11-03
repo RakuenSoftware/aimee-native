@@ -1,150 +1,72 @@
-# Aimee native memory model integrations
+# Aimee Native
 
-The next plugin release uses [one dedicated plugin and Rust adapter per supported model](distribution/vllm/MODEL_PLUGINS.md).
+[Aimee Native](https://github.com/RakuenSoftware/aimee-native) connects supported
+local models to Aimee-selected personal memory through model-native state.
+Memory is kept outside the chat prompt. Aimee owns authentication, source
+selection, authorization and updates; this repository owns model-specific
+adapters, local preparation, native storage and serving integration.
 
+The current product uses five dedicated model plugins with one shared Rust
+connection/runtime and the unmodified vLLM framework. The Python Qwen adapter,
+standalone Rust Qwen server and Go publication tools are retained research paths.
 
-This repository owns the supported models' native integrations with Aimee memory,
-their experiments, tests, design documentation and validation evidence. The original
-Qwen integration moved from the sibling `aimee` repository on 2026-09-20.
+## Documentation
 
-Dedicated adapters deliver Aimee-selected records through Gemma attention states
-and Qwen's complete attention/recurrent prefix, without inserting memory text
-into the main conversation. The adapters do not learn or authorize knowledge. Aimee remains authoritative for memory,
-governance, authorization, and updates. Persistent local images and reusable
-native states reside in RAM/disk, with temporary device copies for attention.
+- [Install, enroll, configure and operate a model](docs/usage.md)
+- [Aimee v1.0.2 compatibility and protocol](docs/aimee-compatibility.md)
+- [Build and test from source](docs/development.md)
+- [Documentation map](docs/README.md)
+- [Public release preparation and outstanding gates](docs/public-release.md)
+- [0.3.4 candidate, signatures and rollback](docs/releases/0.3.4.md)
+- [Signed installation and final release qualification](docs/validation/public-release-20261103.md)
+- [Aimee v1.0.2 validation on .252](docs/validation/aimee-v1.0.2-20261103.md)
+- [RTX 5080 execution on .253](docs/validation/aimee-5080-20261103.md)
+- [Research results and historical validation](docs/research-index.md)
 
-## Start here
+The current application compatibility target is **Aimee v1.0.2**, the latest
+published release checked on 2026-11-03. The enrolled runtime uses
+`POST /v1/native/primitive`; it needs neither a Go source checkout nor a second
+model on the Aimee server. GPU serving requires a qualified vLLM/model/hardware
+profile. CPU and protocol tests do not establish GPU qualification.
 
-- [Native addressing, bounded working sets, and completed evaluation decisions](benchmarks/native_addressing/RESULTS.md)
+## Models
 
-- [Native distribution implementation and remaining release gates](distribution/README.md)
-
-- [Publication latency: immutable base, overlays, and measured update reductions](docs/validation/publication-latency.md)
-
-- [Live incremental publication and native cache retention](docs/validation/incremental-publication.md)
-
-- [Independent record encoding: measured reuse and streaming boundary](docs/validation/record-cache.md)
-- [Aimee-driven incremental local KB updates](docs/proposals/pending/incremental-kb-updates.md)
-
-- [Canonical-name cue correction and native answer regressions](docs/validation/canonical-cues.md)
-- [Native-memory positional bug, correction and keyed/drink regression evidence](docs/validation/keyed-encoding.md)
-- [249,105-object scale study and publication/lookup follow-ups](docs/validation/kb-scale-followup.md)
-- [Expanded public corpus and approved cues](knowledge/general-v2/README.md)
-
-- [Publisher-controlled installation, updates and withdrawal](docs/validation/local-delivery.md)
-- [Published local reads: authorization before delivery](docs/validation/published-local.md)
-- [13,261-object general KB and full-Qwen results](docs/validation/general-kb.md)
-- [General reference corpus and official sources](knowledge/general-v1/README.md)
-- [Rust adapter and serving setup](docs/rust-runtime.md)
-- [Rust port validation](docs/validation/rust-port.md)
-- [Passing combined KB/memory run with restricted Aimee retrieval](docs/validation/restricted-kb.md)
-- [General KB and Aimee memory integration](docs/validation/layered-kb.md)
-- [Starter general knowledge corpus](knowledge/general-v0/README.md)
-- [Historical Python reference](integrations/qwen_aimee/README.md)
-- [Established native-consumption baseline and corrected interpretations](docs/validation/qwen-aimee-poc-baseline.md)
-- [Local knowledge-base architecture](docs/proposals/pending/aimee-local-sparse-memory.md)
-- [Measured local-first results and limitations](docs/validation/aimee-local-first-memory.md)
-- [Authorization-specific images and full-Qwen checks](docs/validation/aimee-authorized-memory.md)
-- [Latest authorization transition fixes and unresolved policy dependency](docs/validation/aimee-authorization-transitions.md)
-- [Closed-source binary distribution and reverse-engineering resistance](docs/proposals/pending/closed-source-adapter.md)
-
-Authorization belongs to Aimee before publication. The model receives only the
-recipient's approved projection and reads it without local grant checks. The new live publisher supports an explicit server-owned exact-record release
-policy and actual Aimee source updates. Broader organization-policy integration
-remains unfinished; older reports used fixture approvals. Local checks cannot protect data already delivered to the recipient.
-Rich evidence, episode, and graph responses need authorized release codecs.
-
-## Repository boundary
-
-| Here: `aimee-qwen` | Sibling: `aimee` |
+| Model | Package and console command |
 |---|---|
-| Qwen attention/runtime adapter and transports | Authoritative memory and governance |
-| Qwen serving, sparse-image compiler/reader and publication tools | Scoped source export and shared read contract |
-| Qwen experiment drivers and validation artifacts | Canonical authorization policy |
-| Source-row projection, integration tests and research fixture issuer | General Aimee benchmarks and poison fixtures |
+| Gemma4 E2B | `aimee-gemma4-e2b` |
+| Gemma4 E4B | `aimee-gemma4-e4b` |
+| Gemma4 12B | `aimee-gemma4-12b` |
+| Gemma4 26B A4B | `aimee-gemma4-26b` |
+| Qwen 3.8 27B | `aimee-qwen3-8-27b` |
 
-The image implementation and `aimee-memory-image`, `aimee-memory-publish`,
-`aimee-memory-read`, and `aimee-memory-bus-probe` commands live here. They depend
-on Aimee's authoritative memory/policy packages through the local replacement
-in `go.mod`; keep the sibling checkout at the revision recorded in
-[the split report](docs/validation/repository-split.md). The older
-[dependency snapshot](dependencies/README.md) preserves the implementation before
-this split and is historical evidence, not the current build dependency.
-The fixture issuer is research-only and must not be installed inside a model's
-security boundary.
+See [qualified profiles and installation](docs/usage.md). Model weights are
+supplied separately and are never committed here. Qwen consumes its complete
+attention and recurrent prefix; Gemma uses its dedicated attention adapter.
 
-## Build and test
+## Source and authority boundary
 
-The active serving implementation is Rust. See [Rust build/run instructions](docs/rust-runtime.md).
-The Python commands below run the retained reference and regression tests.
+| This repository | Aimee core |
+|---|---|
+| Dedicated model adapters and vLLM integration | Authentication, authorization and memory selection |
+| Local model-native preparation and caches | Authoritative storage, governance and updates |
+| Sparse-image research tools and source projection | Scoped source release and shared policy contracts |
+| Experiments, tests and preserved evidence | Application deployment and memory backend selection |
 
-Run from this repository root, alongside `../aimee`:
+The runtime reads the existing enrolled thin-client profile and rechecks
+current source authority for warm reuse. Delivered data is visible to the model
+host. Research fixture grants do not establish production authorization, and
+personal-memory support does not imply shared organization-memory support.
 
-```sh
-mkdir -p .local/bin
-go build -o .local/bin/aimee-memory-image ./cmd/aimee-memory-image
-go build -o .local/bin/aimee-memory-publish ./cmd/aimee-memory-publish
-go build -o .local/bin/aimee-memory-read ./cmd/aimee-memory-read
-go test -race ./...
-go build -o .local/bin/aimee-issue-fixture ./benchmarks/local_memory
+## License and evidence
 
-export AIMEE_IMAGE_READER="$PWD/.local/bin/aimee-memory-image"
-export AIMEE_FIXTURE_ISSUER="$PWD/.local/bin/aimee-issue-fixture"
-python3 -m unittest discover -s integrations/qwen_aimee -v
-```
+Current source is [GNU AGPL version 3](LICENSE), `AGPL-3.0-only`.
+[Third-party notices](THIRD_PARTY_NOTICES.md), [data and archive notices](DATASETS.md) and model
+licenses remain applicable. New binary releases require their exact corresponding
+source, license and notices. Archived binaries retain their recorded metadata.
 
-The full suite needs a suitable PyTorch build and Transformers; the tested
-research environment uses Torch 2.14 and Transformers 5.17. Dependencies are
-listed in [requirements](benchmarks/native_memory/requirements.txt). Full model
-weights are unnecessary for the structural suite, which uses tiny Qwen models.
-
-The authorization-boundary tests run without PyTorch:
-
-```sh
-PYTHONPATH=integrations/qwen_aimee python3 -m unittest -v \
-  test_authorized_gateway test_local_first.AuthorizationBindingTests
-```
-
-Historical P0 tests are separate from the current adapter suite:
-
-```sh
-python3 -m unittest discover -s benchmarks/native_memory -p test_p0.py -v
-```
-
-They read Aimee's existing poison fixtures from `../aimee`; set `AIMEE_SOURCE`
-to override that fixture checkout. They do not retrain the current adapter.
-
-## Optional live-bus research probe
-
-Build `go build -o .local/bin/aimee-memory-bus-probe ./cmd/aimee-memory-bus-probe`.
-On an isolated validation container, install that executable at
-`/root/aimee-memory-bus-probe`, copy `scripts/install-memory-probe-grants.sh`,
-and run the grant installer **before** starting either daemon. Existing daemons
-must be restarted to read their grant directories. The Aimee deployment script
-no longer installs this optional Qwen research probe. This is a validation-only
-principal, not a production model grant. No deployment is performed by a build.
-
-## Historical evidence
-
-`benchmarks/native_memory` and `benchmarks/memory/latent_projection` retain the
-earlier experiments, including approaches superseded by the current adapter.
-`benchmarks/local_memory` contains the local/remote and authorization probes.
-Reports explain invalid comparisons and corrected interpretations.
-
-Archived results keep their original bytes, source hashes, and historical
-machine paths. Those paths describe where a run happened, not the current
-repository layout. [The move manifest](docs/repository-move-2026-09-20.json)
-records every moved file's hash before cross-repository path updates.
-The [relocation report](docs/validation/repository-move.md) records the passing
-42-test adapter suite and 11 historical tests from the new layout.
-
-Native memory addressing and complete hybrid state are implemented and validated
-under the matching BF16 consumption profile. The [completion report](docs/validation/native-memory-completion-20261004.md)
-records RTX 5080 results, source identities and the retained limitations.
-
-The matching-contract [INT8 native consumption retest](docs/validation/native-memory-int8-20261004.md)
-also passes 432/432 answers, including strict prepared reuse and matched text controls.
-
-The [shared-runtime model-plugin validation](docs/validation/native-memory-shared-runtime-20261004.md)
-records one shared runtime with separate Gemma4 12B, Gemma4 26B A4B and
-Qwen 3.8 27B adapter plugins, quantized execution profiles and deployment checks.
+Archived reports, runtime paths, result bytes, source snapshots and hashes remain
+unchanged. The [move manifest](docs/repository-move-2026-09-20.json) and
+[split report](docs/validation/repository-split.md) record the original ownership
+move. Their September Aimee source pin is for research reproduction. Prepare it
+with the [development instructions](docs/development.md); replacing it with a
+modern sibling checkout does not restore APIs retired by Aimee.

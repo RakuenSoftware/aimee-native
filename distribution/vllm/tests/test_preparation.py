@@ -1,6 +1,8 @@
 import asyncio
 from pathlib import Path
 import tempfile
+import sys
+from types import ModuleType
 from types import SimpleNamespace as NS
 import unittest
 from unittest.mock import patch
@@ -8,6 +10,20 @@ from aimee_vllm.preparation import prepare
 
 
 class PreparationTests(unittest.IsolatedAsyncioTestCase):
+    def setUp(self):
+        # Engine and tokenizer are fixtures; sampling construction is not the
+        # upstream GPU runtime behavior exercised by these ownership tests.
+        module = ModuleType("vllm")
+        module.SamplingParams = lambda **fields: NS(**fields)
+        prior = sys.modules.get("vllm")
+        sys.modules["vllm"] = module
+        def restore():
+            if prior is None:
+                sys.modules.pop("vllm", None)
+            else:
+                sys.modules["vllm"] = prior
+        self.addCleanup(restore)
+
     def fixture(self, root):
         idle = asyncio.Event()
         idle.set()

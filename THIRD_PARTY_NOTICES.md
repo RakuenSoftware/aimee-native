@@ -11,5 +11,5 @@ The license is included in `licenses/Apache-2.0.txt`.
 
 The adapter uses native libtorch through tch/torch-sys, Rust tokenizers, and
 other dependencies pinned in Cargo.lock. Their licenses and notices remain
-applicable to redistribution. A private adapter binary does not remove those
-obligations. Qwen model weights are separately supplied and are not included.
+applicable to redistribution. Aimee Native is licensed under AGPL-3.0-only; those third-party
+obligations remain applicable. Model weights are separately supplied and are not included.

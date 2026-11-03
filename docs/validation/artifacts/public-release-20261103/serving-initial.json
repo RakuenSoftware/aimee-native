@@ -1,0 +1,377 @@
+{
+  "scope": "Installed model GPU gate, invoked inside aimee-release.py's disposable stack.\n\nProfiles are local JSON configurations with real immutable checkpoint hashes.\nOnly synthetic facts are written. No existing model service is stopped; each\nowned process group is terminated, even on failure. Serving logs and enrollment\ncredentials stay in temporary directories, never in the public report.\n",
+  "models": [
+    {
+      "model": "gemma4-12b",
+      "checks": [
+        {
+          "name": "actual checkpoint matches declared hash",
+          "passed": true
+        },
+        {
+          "name": "real enrolled profile accepted",
+          "passed": true
+        },
+        {
+          "name": "model ready",
+          "passed": true
+        },
+        {
+          "name": "missing API key denied",
+          "passed": true
+        },
+        {
+          "name": "synthetic source stored",
+          "passed": true
+        },
+        {
+          "name": "cold native recall",
+          "passed": true
+        },
+        {
+          "name": "warm native recall",
+          "passed": true
+        },
+        {
+          "name": "warm publication reused",
+          "passed": true
+        },
+        {
+          "name": "source correction accepted",
+          "passed": true
+        },
+        {
+          "name": "corrected native recall",
+          "passed": true
+        },
+        {
+          "name": "correction produces new publication",
+          "passed": true
+        },
+        {
+          "name": "source retirement accepted",
+          "passed": true
+        },
+        {
+          "name": "retired value no longer recalled",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "library_sha256": "b61d3b15730143173d2c645225ad2ec1d4aae88c984c04d842dc0990d7a2557b",
+      "checkpoint_sha256": "a509d1e25b028dfcf9b311a3321e510b7d78309f04421891a62488feab3289e9",
+      "checkpoint_profile": "Q4_K_M",
+      "model_revision": null,
+      "model_config_sha256": "478c46e8d2c52d5c2d85bf67e3b3e8c90e7c9d91086cee27e3c267907e936bd9",
+      "tokenizer_sha256": "cc8d3a0ce36466ccc1278bf987df5f71db1719b9ca6b4118264f45cb627bfe0f",
+      "serving": {
+        "host": "127.0.0.1",
+        "port": 53875,
+        "tensor_parallel_size": 1,
+        "gpu_memory_utilization": 0.6,
+        "max_model_len": 2048,
+        "max_num_seqs": 1,
+        "max_num_batched_tokens": 128,
+        "num_gpu_blocks_override": 512,
+        "enable_prefix_caching": false,
+        "async_scheduling": false,
+        "v2_model_runner": false,
+        "enable_model_compilation": false,
+        "enable_piecewise_graphs": false,
+        "use_flashinfer_sampler": false,
+        "cpu_offload_gb": 0,
+        "flashinfer_sampler": false
+      },
+      "phase": "source_lifecycle"
+    },
+    {
+      "model": "gemma4-26b",
+      "checks": [
+        {
+          "name": "actual checkpoint matches declared hash",
+          "passed": true
+        },
+        {
+          "name": "real enrolled profile accepted",
+          "passed": true
+        }
+      ],
+      "passed": false,
+      "library_sha256": "5a1c6b34007f7de60d60eb8478f4b5e745ee1447ef1f47f6e45e324fb5932dc0",
+      "checkpoint_sha256": "cbb174d5585b8dd2e8f8d9d2294b8beb6eaa0022bceaf1989bc8d0e0ec2f473c",
+      "checkpoint_profile": "Q3_K_M",
+      "model_revision": null,
+      "model_config_sha256": "ed0c1eb3633de771906e9ba004a44cc5635bcc06ee2062077c3d2e88a50707d3",
+      "tokenizer_sha256": "cc8d3a0ce36466ccc1278bf987df5f71db1719b9ca6b4118264f45cb627bfe0f",
+      "serving": {
+        "host": "127.0.0.1",
+        "port": 60381,
+        "tensor_parallel_size": 1,
+        "gpu_memory_utilization": 0.88,
+        "max_model_len": 2048,
+        "max_num_seqs": 1,
+        "max_num_batched_tokens": 128,
+        "num_gpu_blocks_override": 512,
+        "enable_prefix_caching": false,
+        "async_scheduling": false,
+        "v2_model_runner": false,
+        "enable_model_compilation": false,
+        "enable_piecewise_graphs": false,
+        "use_flashinfer_sampler": false,
+        "cpu_offload_gb": 0,
+        "flashinfer_sampler": false,
+        "cpu_offload_pinned_memory": false,
+        "cpu_offload_disable_uva": true
+      },
+      "phase": "startup",
+      "error_type": "RuntimeError"
+    },
+    {
+      "model": "qwen3-8-27b",
+      "checks": [
+        {
+          "name": "real enrolled profile accepted",
+          "passed": true
+        },
+        {
+          "name": "model ready",
+          "passed": true
+        },
+        {
+          "name": "missing API key denied",
+          "passed": true
+        },
+        {
+          "name": "synthetic source stored",
+          "passed": true
+        },
+        {
+          "name": "cold native recall",
+          "passed": true
+        },
+        {
+          "name": "warm native recall",
+          "passed": true
+        },
+        {
+          "name": "warm publication reused",
+          "passed": true
+        },
+        {
+          "name": "changed hybrid system context rejected",
+          "passed": true
+        },
+        {
+          "name": "source correction accepted",
+          "passed": true
+        },
+        {
+          "name": "corrected native recall",
+          "passed": true
+        },
+        {
+          "name": "correction produces new publication",
+          "passed": true
+        },
+        {
+          "name": "source retirement accepted",
+          "passed": true
+        },
+        {
+          "name": "retired value no longer recalled",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "library_sha256": "3102e67a0e7b0232809ba8b6f7e3a55219be788ef3fc20f67403e27670c04255",
+      "checkpoint_sha256": null,
+      "checkpoint_profile": "fp8",
+      "model_revision": "1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0",
+      "model_config_sha256": "cac01fe6702bbf0be06995868da8db8b4887f85ba43cf244974412e0d45417e9",
+      "tokenizer_sha256": "0997f410c57a1f4e53b09e4be8f4a172d90edd9564368fb0847030937229b9f3",
+      "serving": {
+        "host": "127.0.0.1",
+        "port": 53663,
+        "tensor_parallel_size": 1,
+        "gpu_memory_utilization": 0.6,
+        "max_model_len": 2048,
+        "max_num_seqs": 1,
+        "max_num_batched_tokens": 128,
+        "enable_prefix_caching": false,
+        "async_scheduling": false,
+        "v2_model_runner": false,
+        "enable_model_compilation": false,
+        "enable_piecewise_graphs": false,
+        "use_flashinfer_sampler": false,
+        "cpu_offload_gb": 24,
+        "cpu_offload_pin_memory": true,
+        "cpu_offload_disable_uva": true,
+        "cpu_offload_params": [
+          "gate_up_proj.weight",
+          "down_proj.weight",
+          "in_proj_qkvz.weight",
+          "in_proj_ba.weight",
+          "out_proj.weight",
+          "qkv_proj.weight",
+          "o_proj.weight"
+        ],
+        "cpu_offload_pinned_memory": false,
+        "flashinfer_sampler": false
+      },
+      "phase": "source_lifecycle"
+    },
+    {
+      "model": "gemma4-e2b",
+      "checks": [
+        {
+          "name": "actual checkpoint matches declared hash",
+          "passed": true
+        },
+        {
+          "name": "real enrolled profile accepted",
+          "passed": true
+        },
+        {
+          "name": "model ready",
+          "passed": true
+        },
+        {
+          "name": "missing API key denied",
+          "passed": true
+        },
+        {
+          "name": "synthetic source stored",
+          "passed": true
+        },
+        {
+          "name": "cold native recall",
+          "passed": true
+        },
+        {
+          "name": "warm native recall",
+          "passed": true
+        },
+        {
+          "name": "warm publication reused",
+          "passed": true
+        },
+        {
+          "name": "source correction accepted",
+          "passed": true
+        },
+        {
+          "name": "corrected native recall",
+          "passed": true
+        },
+        {
+          "name": "correction produces new publication",
+          "passed": true
+        },
+        {
+          "name": "source retirement accepted",
+          "passed": true
+        },
+        {
+          "name": "retired value no longer recalled",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "library_sha256": "4cba15998cc71c307ed37afd4fc21c7bb4a4fea79d19ad63154e4f0fbb4d1f00",
+      "checkpoint_sha256": "b52f438017efaec5debf1c0d8be690571e212a07c312f1102bbce927258cfc32",
+      "checkpoint_profile": "UD-Q4_K_XL",
+      "model_revision": null,
+      "model_config_sha256": "1b28f3d2c3100f6c594754b81107428bd7b822a7f48272ca681dae9d2ec38330",
+      "tokenizer_sha256": "cc8d3a0ce36466ccc1278bf987df5f71db1719b9ca6b4118264f45cb627bfe0f",
+      "serving": {
+        "host": "127.0.0.1",
+        "port": 33655,
+        "max_model_len": 2048,
+        "max_num_seqs": 1,
+        "max_num_batched_tokens": 128,
+        "gpu_memory_utilization": 0.6,
+        "num_gpu_blocks_override": 512,
+        "flashinfer_sampler": false,
+        "cpu_offload_gb": 0
+      },
+      "phase": "source_lifecycle"
+    },
+    {
+      "model": "gemma4-e4b",
+      "checks": [
+        {
+          "name": "actual checkpoint matches declared hash",
+          "passed": true
+        },
+        {
+          "name": "real enrolled profile accepted",
+          "passed": true
+        },
+        {
+          "name": "model ready",
+          "passed": true
+        },
+        {
+          "name": "missing API key denied",
+          "passed": true
+        },
+        {
+          "name": "synthetic source stored",
+          "passed": true
+        },
+        {
+          "name": "cold native recall",
+          "passed": true
+        },
+        {
+          "name": "warm native recall",
+          "passed": true
+        },
+        {
+          "name": "warm publication reused",
+          "passed": true
+        },
+        {
+          "name": "source correction accepted",
+          "passed": true
+        },
+        {
+          "name": "corrected native recall",
+          "passed": true
+        },
+        {
+          "name": "correction produces new publication",
+          "passed": true
+        },
+        {
+          "name": "source retirement accepted",
+          "passed": true
+        },
+        {
+          "name": "retired value no longer recalled",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "library_sha256": "a40d00dea715a5eccdf4bb6ae2e8fc544410dcf958c3e95c1a5a1f36653d4d3c",
+      "checkpoint_sha256": "3cf61de12daa015ee0f7b68e7b7c541405bf220e1e942bad8b47cab827d7df80",
+      "checkpoint_profile": "UD-Q4_K_XL",
+      "model_revision": null,
+      "model_config_sha256": "33b10c02df3c2e8536cf323d29d53262aaa2f4d11dbe19bc729373fbe90295d4",
+      "tokenizer_sha256": "cc8d3a0ce36466ccc1278bf987df5f71db1719b9ca6b4118264f45cb627bfe0f",
+      "serving": {
+        "host": "127.0.0.1",
+        "port": 51527,
+        "max_model_len": 2048,
+        "max_num_seqs": 1,
+        "max_num_batched_tokens": 128,
+        "gpu_memory_utilization": 0.6,
+        "num_gpu_blocks_override": 512,
+        "flashinfer_sampler": false,
+        "cpu_offload_gb": 0
+      },
+      "phase": "source_lifecycle"
+    }
+  ],
+  "passed": false
+}

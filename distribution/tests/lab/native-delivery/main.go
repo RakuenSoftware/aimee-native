@@ -11,7 +11,7 @@ import (
 	"encoding/json"
 	"errors"
 	"flag"
-	native "github.com/RakuenSoftware/aimee-qwen/memory/nativepublication"
+	native "github.com/RakuenSoftware/aimee-native/memory/nativepublication"
 	"log"
 	"net/http"
 	"os"

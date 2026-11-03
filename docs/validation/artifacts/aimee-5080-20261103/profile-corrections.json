@@ -1,0 +1,24 @@
+{
+  "gemma4-26b": {
+    "initial": {
+      "cpu_offload_gb": 6,
+      "gpu_memory_utilization": 0.6
+    },
+    "observed": "upstream CPU offload calls detach on GGUFUninitializedWeightTypeParameter and fails during loading",
+    "retry": {
+      "cpu_offload_gb": 0,
+      "gpu_memory_utilization": 0.88
+    }
+  },
+  "qwen3-8-27b": {
+    "initial": {
+      "num_gpu_blocks_override": 512
+    },
+    "observed": "hybrid attention block size 784; fixed block override requests 24.50 GiB and fails CUDA allocation",
+    "retry": {
+      "num_gpu_blocks_override": "unset; vLLM automatic sizing",
+      "cpu_offload_gb": 24,
+      "device_memory_budget": 536870912
+    }
+  }
+}

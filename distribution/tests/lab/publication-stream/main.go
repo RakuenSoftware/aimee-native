@@ -5,7 +5,7 @@ import (
 	"context"
 	"errors"
 	"flag"
-	"github.com/RakuenSoftware/aimee-qwen/memory/sparse"
+	"github.com/RakuenSoftware/aimee-native/memory/sparse"
 	"net"
 	"net/http"
 	"os"

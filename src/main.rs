@@ -1,4 +1,4 @@
-use aimee_qwen::transport::{ImageConfig, ImageReader, LocalFirst, MemorySource, unix_post};
+use aimee_native::transport::{ImageConfig, ImageReader, LocalFirst, MemorySource, unix_post};
 use anyhow::{Context, Result, ensure};
 use clap::{Parser, Subcommand};
 #[cfg(any(feature = "torch", test))]
@@ -249,7 +249,7 @@ fn read_check(c: Connection) -> Result<()> {
         let value = match result {
             Ok(v) => v,
             Err(e) => {
-                json!({"error":"read unavailable","denied":e.downcast_ref::<aimee_qwen::transport::Denied>().is_some()})
+                json!({"error":"read unavailable","denied":e.downcast_ref::<aimee_native::transport::Denied>().is_some()})
             }
         };
         let (admitted, local_ready) = source.state();
@@ -265,8 +265,8 @@ fn read_check(c: Connection) -> Result<()> {
 #[derive(clap::Args)]
 struct Serve {
     /// Server-owned research schedule; clients cannot increase read work.
-    #[arg(long, value_enum, default_value_t = aimee_qwen::native_schedule::Mode::EveryStep)]
-    native_schedule: aimee_qwen::native_schedule::Mode,
+    #[arg(long, value_enum, default_value_t = aimee_native::native_schedule::Mode::EveryStep)]
+    native_schedule: aimee_native::native_schedule::Mode,
     #[arg(long, default_value_t = 4)]
     native_refresh_interval: usize,
     /// Includes preload and failed reads. Omit for legacy unbounded retrieval.
@@ -376,7 +376,7 @@ fn prepared_identity(args: &Serve) -> Result<String> {
 }
 #[cfg(feature = "torch")]
 fn prepare_memory(args: PrepareMemory) -> Result<()> {
-    use aimee_qwen::{adapter::Adapter, model::Model, prepared_memory::Store, tokens::Tokens};
+    use aimee_native::{adapter::Adapter, model::Model, prepared_memory::Store, tokens::Tokens};
     let runtime = &args.runtime;
     let identity = prepared_identity(runtime)?;
     let path = runtime
@@ -512,7 +512,7 @@ fn write_private(path: &std::path::Path, value: &Value) -> Result<()> {
 
 #[cfg(feature = "torch")]
 fn serve(args: Serve) -> Result<()> {
-    use aimee_qwen::{
+    use aimee_native::{
         adapter::Adapter,
         model::{Cache, Model},
         tokens::Tokens,
@@ -552,14 +552,14 @@ fn serve(args: Serve) -> Result<()> {
             .checked_mul(1 << 20)
             .context("cache budget overflow")?,
     );
-    adapter.schedule = aimee_qwen::native_schedule::Policy {
+    adapter.schedule = aimee_native::native_schedule::Policy {
         mode: args.native_schedule,
         interval: args.native_refresh_interval,
         max_reads: args.native_max_reads.unwrap_or(usize::MAX),
     }
     .validate()?;
     ensure!(
-        args.native_schedule != aimee_qwen::native_schedule::Mode::BoundedRefresh
+        args.native_schedule != aimee_native::native_schedule::Mode::BoundedRefresh
             || args.native_max_reads.is_some(),
         "bounded refresh requires a source-read budget"
     );
@@ -575,7 +575,7 @@ fn serve(args: Serve) -> Result<()> {
     adapter.candidate_routing = args.native_candidate_routing;
     adapter.compact_root = args.compact_working_root.clone();
     if let Some(path) = &args.prepared_memory {
-        adapter.prepared_store = Some(aimee_qwen::prepared_memory::Store::open_with_idle(
+        adapter.prepared_store = Some(aimee_native::prepared_memory::Store::open_with_idle(
             path,
             &prepared_identity(&args)?,
             false,
@@ -922,7 +922,7 @@ fn serve(args: Serve) -> Result<()> {
 
 #[cfg(feature = "torch")]
 fn probe(p: Probe) -> Result<()> {
-    use aimee_qwen::{
+    use aimee_native::{
         adapter::tensor_values,
         model::{Bank, Cache, Model},
     };
