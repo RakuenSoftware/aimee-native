@@ -98,9 +98,14 @@ def main():
     notes = a.notes.read_text()
     release = choose_release([r for page in pages for r in page], tag, commit, notes)
     definition = dict(tag_name=tag, target_commitish=commit, name='Aimee Native ' + a.version, body=notes)
-    if a.stage_only and (release is None or not release['draft'] or release['target_commitish'] != commit
-                        or release['name'] != definition['name'] or (release.get('body') or '').strip() != notes.strip()):
-        raise ValueError('staging requires the matching existing draft')
+    if a.stage_only:
+        if release is None:
+            raise ValueError('staging requires an existing release')
+        if release['draft'] and (release['target_commitish'] != commit or release['name'] != definition['name']
+                               or (release.get('body') or '').strip() != notes.strip()):
+            raise ValueError('staging requires the matching existing draft')
+        if not release['draft'] and release['tag_name'] != tag:
+            raise ValueError('published release has a different tag')
     if release is None:
         release = api('releases', 'POST', dict(definition, draft=True, prerelease=False))
     elif release['draft'] and not a.stage_only:
@@ -133,7 +138,8 @@ def main():
                                 '-H', 'Accept: application/octet-stream'], stdout=output, check=True)
         verify(folder)
     if a.stage_only:
-        print('Verified draft ready:', release['html_url'], 'intended tag:', tag, 'commit:', commit)
+        print('Verified release ready:', release['html_url'], 'draft:', release['draft'],
+              'intended tag:', tag, 'commit:', commit)
         return
     if release['draft']:
         api('releases/' + str(release_id), 'PATCH', dict(definition, draft=False, prerelease=False, make_latest='true'))
