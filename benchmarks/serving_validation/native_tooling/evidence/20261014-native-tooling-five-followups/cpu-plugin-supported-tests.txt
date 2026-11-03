@@ -1,0 +1,20 @@
+INFO 10-14 09:38:54 [__init__.py:52] Available plugins for group vllm.platform_plugins:
+INFO 10-14 09:38:54 [__init__.py:54] - aimee_cpu_native_platform -> aimee_vllm.cpu_plugin:register
+INFO 10-14 09:38:54 [__init__.py:57] All plugins in this group will be loaded. Set `VLLM_PLUGINS` to control which plugins to load.
+WARNING 10-14 09:38:58 [importing.py:45] Triton is installed, but doesn't include CPU backend. Disabling Triton.
+INFO 10-14 09:38:58 [importing.py:74] Triton is installed but 0 active driver(s) found (expected 1). Disabling Triton to prevent runtime errors.
+INFO 10-14 09:38:58 [importing.py:98] Triton not installed or not compatible; certain GPU-related functions will not be available.
+........................s.....ss...sssss.......sssssssssss..ssss.....s.........Native control operation failed
+Traceback (most recent call last):
+  File "/opt/native-tooling-research/phase3-owner-wave-v107/aimee_vllm/control.py", line 21, in handle
+    async with lock:result=await operate(owner,engine,request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/native-tooling-research/phase3-owner-wave-v107/aimee_vllm/control.py", line 63, in operate
+    if generation!=getattr(owner,'generation',0):raise RuntimeError('superseded publication activation')
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: superseded publication activation
+....
+----------------------------------------------------------------------
+Ran 83 tests in 0.094s
+
+OK (skipped=24)

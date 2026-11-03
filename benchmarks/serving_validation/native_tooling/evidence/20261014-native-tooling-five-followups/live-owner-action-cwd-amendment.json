@@ -1,0 +1,24 @@
+{
+  "original_error": "open .aimee-policy.json: permission denied",
+  "correction": "Run unchanged test binary from dedicated postgres-owned working directory",
+  "args": [
+    "pct",
+    "exec",
+    "9221",
+    "--",
+    "runuser",
+    "-u",
+    "postgres",
+    "--",
+    "env",
+    "-C",
+    "/opt/native-owner-research/v107-live-test",
+    "LC_ALL=C",
+    "AIMEE_TEST_PG_URL=postgres://postgres@/phase3_native_research?host=/var/run/postgresql",
+    "/opt/native-owner-research/v100/families-v107-r1.test",
+    "-test.v",
+    "-test.run",
+    "^TestNativeToolingLiveOwnerPins$"
+  ],
+  "returncode": 1
+}

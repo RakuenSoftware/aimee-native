@@ -1,0 +1,26 @@
+{
+  "args": [
+    "pct",
+    "exec",
+    "9222",
+    "--",
+    "systemd-run",
+    "--unit=phase3-owner-v109-qwen-intake",
+    "--property=MemoryMax=512M",
+    "--property=CPUQuota=100%",
+    "--property=TasksMax=32",
+    "--working-directory=/opt/native-tooling-research/phase3-owner-wave-v107",
+    "--setenv=AIMEE_RESOLVER_ENDPOINT=http://127.0.0.1:8437/v1/chat/completions",
+    "--setenv=AIMEE_RESOLVER_MODEL=research-qwen-native",
+    "--setenv=AIMEE_RESOLVER_SCHEMA=1",
+    "--setenv=AIMEE_RESOLVER_DISABLE_THINKING=1",
+    "/bin/sh",
+    "-c",
+    "./resolver-v109 < automatic-intake-inputs.jsonl > speech-act-qwen-results.jsonl"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "Running as unit: phase3-owner-v109-qwen-intake.service; invocation ID: db938f6fefe84773ba6db5e9ef7c63ba\n",
+  "resolver_sha256": "905c3591ed1573e6d15646c1a29f4c18b91c8166bb82d8cd1f3c80b3216517d0",
+  "condition": "Development protocol: explicit bare-value association, scope conflict, mandatory actionable bindings, owner-only structured output; original22cases references excluded"
+}

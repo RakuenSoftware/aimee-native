@@ -1,0 +1,22 @@
+{
+  "args": [
+    "pct",
+    "exec",
+    "9205",
+    "--",
+    "systemd-run",
+    "--unit=phase3-owner-v112-e2b-compiled-episodes",
+    "--property=MemoryMax=2G",
+    "--working-directory=/opt/native-tooling-research/phase3-owner-wave-v107",
+    "--setenv=EPISODE_MODEL=research-e2b-native",
+    "--setenv=EPISODE_PORT=8437",
+    "--setenv=EPISODE_CHECKPOINT=/opt/research-models/gemma",
+    "sh",
+    "-c",
+    "while systemctl is-active --quiet phase3-owner-v115-9205-inflight; do sleep 5; done; /opt/vllm-cpu/bin/python cpu_compiled_episodes_v112.py > cpu-compiled-episode-v112-log.txt 2>&1"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "Running as unit: phase3-owner-v112-e2b-compiled-episodes.service; invocation ID: 1f0859a550b548529eb8564db88906ab\n",
+  "condition": "Matches Qwen v112 protocol: general contribution instruction, owner-restricted speech acts and semantic per-source routing through actual Aimee compiler. Same four domains, development follow-up. Fixture effects not enrolled canonical dispatch."
+}

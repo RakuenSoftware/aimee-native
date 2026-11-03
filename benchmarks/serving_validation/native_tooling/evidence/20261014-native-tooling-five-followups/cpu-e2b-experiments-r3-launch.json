@@ -1,0 +1,22 @@
+{
+  "args": [
+    "pct",
+    "exec",
+    "9205",
+    "--",
+    "systemd-run",
+    "--unit=phase3-owner-v110-e2b-experiments-r3",
+    "--property=MemoryMax=2G",
+    "--working-directory=/opt/native-tooling-research/phase3-owner-wave-v107",
+    "--setenv=EPISODE_MODEL=research-e2b-native",
+    "--setenv=EPISODE_PORT=8437",
+    "--setenv=EPISODE_CHECKPOINT=/opt/research-models/gemma",
+    "sh",
+    "-c",
+    "while systemctl is-active --quiet phase3-owner-v110-9205-longrun-r2; do sleep 5; done; test -S /opt/native-tooling-research/phase3-owner-wave-v107/cpu-control.sock && /opt/vllm-cpu/bin/python cpu_canary_e2b.py > cpu-canary-e2b-log.txt 2>&1 && /opt/vllm-cpu/bin/python cpu_parity_e2b.py > cpu-parity-e2b-log.txt 2>&1 && /opt/vllm-cpu/bin/python cpu_lifecycle_e2b.py > cpu-lifecycle-e2b-log.txt 2>&1 && /opt/vllm-cpu/bin/python cpu_episodes.py > cpu-episodes-e2b-log.txt 2>&1"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "Running as unit: phase3-owner-v110-e2b-experiments-r3.service; invocation ID: 617ff68f0b984e25b4f4bb824c71b067\n",
+  "amendment": "Readiness must use private control socket; native HTTP health remains503 while initiallypaused. r2 thus ran no canary/corpus. The independently queued longrun activated its own bank and has actual samples; finish it before this replacement."
+}

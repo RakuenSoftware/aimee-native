@@ -1,0 +1,25 @@
+{
+  "args": [
+    "pct",
+    "exec",
+    "9205",
+    "--",
+    "systemd-run",
+    "--unit=phase3-owner-v110-e2b-native",
+    "--property=MemoryMax=36G",
+    "--property=TasksMax=256",
+    "--property=CPUQuota=400%",
+    "--working-directory=/opt/native-tooling-research/phase3-owner-wave-v107",
+    "--setenv=OMP_NUM_THREADS=4",
+    "--setenv=VLLM_CPU_OMP_THREADS_BIND=1,4,5,6",
+    "--setenv=CUDA_VISIBLE_DEVICES=",
+    "--setenv=HIP_VISIBLE_DEVICES=",
+    "--setenv=ROCR_VISIBLE_DEVICES=",
+    "sh",
+    "-c",
+    "while systemctl is-active --quiet phase3-owner-v110-e2b-intake; do sleep 5; done; systemctl stop phase3-owner-v107-e2b-baseline; exec /opt/vllm-cpu/bin/python -m aimee_vllm.cpu_cli --config /opt/native-tooling-research/phase3-owner-wave-v107/cpu-config.json"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "Running as unit: phase3-owner-v110-e2b-native.service; invocation ID: 6f268fdcd3db42ed90da2d7e9021a502\n"
+}

@@ -1,0 +1,103 @@
+{
+  "request": {
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    },
+    "max_tokens": 128,
+    "messages": [
+      {
+        "role": "user",
+        "content": "Return exactly this JSON object: {\"kind\":\"content\",\"capability_id\":\"propose\",\"quotes\":{\"value\":\"13\"},\"reason\":\"explicit proposed value\"}"
+      }
+    ],
+    "model": "research-qwen-native",
+    "response_format": {
+      "json_schema": {
+        "name": "aimee_semantic_intake",
+        "schema": {
+          "oneOf": [
+            {
+              "additionalProperties": false,
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "content",
+                    "need"
+                  ],
+                  "type": "string"
+                },
+                "capability_id": {
+                  "const": "propose",
+                  "type": "string"
+                },
+                "quotes": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object"
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "unsupported_claims": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "kind",
+                "capability_id",
+                "quotes",
+                "reason"
+              ],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "clarify",
+                    "refusal",
+                    "none"
+                  ],
+                  "type": "string"
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "unsupported_claims": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "kind",
+                "reason"
+              ],
+              "type": "object"
+            }
+          ]
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "stream": false,
+    "temperature": 0
+  },
+  "returncode": 0,
+  "response": "{\"id\":\"chatcmpl-8d5908c370bcb3ab\",\"object\":\"chat.completion\",\"created\":1791966335,\"model\":\"research-qwen-native\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"kind\\\": \\\"content\\\", \\\"capability_id\\\": \\\"propose\\\", \\\"quotes\\\": {\\\"value\\\": \\\"13\\\"}, \\\"reason\\\": \\\"explicit proposed value\\\"}\",\"refusal\":null,\"annotations\":null,\"audio\":null,\"function_call\":null,\"reasoning\":null},\"logprobs\":null,\"finish_reason\":\"stop\",\"stop_reason\":null,\"token_ids\":null,\"routed_experts\":null}],\"service_tier\":null,\"system_fingerprint\":\"vllm-0.30.0-fb8a5290\",\"usage\":{\"prompt_tokens\":42,\"total_tokens\":75,\"completion_tokens\":33,\"prompt_tokens_details\":null,\"completion_tokens_details\":null},\"prompt_logprobs\":null,\"prompt_token_ids\":null,\"prompt_text\":null,\"kv_transfer_params\":null,\"ec_transfer_params\":null,\"metrics\":null}\n",
+  "stderr": "",
+  "purpose": "Grammar branch viability only, explicit output supplied; not semantic or native usability evidence."
+}

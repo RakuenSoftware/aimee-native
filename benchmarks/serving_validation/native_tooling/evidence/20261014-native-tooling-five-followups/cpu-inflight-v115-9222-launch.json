@@ -1,0 +1,19 @@
+{
+  "args": [
+    "pct",
+    "exec",
+    "9222",
+    "--",
+    "systemd-run",
+    "--unit=phase3-owner-v115-9222-inflight",
+    "--property=MemoryMax=1G",
+    "--working-directory=/opt/native-tooling-research/phase3-owner-wave-v107",
+    "sh",
+    "-c",
+    "while systemctl is-active --quiet phase3-owner-v114-9222-scalar-feedback; do sleep 5; done; /opt/vllm-cpu/bin/python cpu_inflight_measure.py > cpu-inflight-measure-log.txt 2>&1"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "Running as unit: phase3-owner-v115-9222-inflight.service; invocation ID: bfa29f722506487cb6d1def9136e2634\n",
+  "condition": "In-flight old-view retention, withdrawal rejection, bounded drain and next-view activation; min64 output tokens solely for overlap instrumentation, not task quality. RPC tensor audits perturb latency; RAM/cache measurements labelled accordingly."
+}

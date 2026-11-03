@@ -1,0 +1,22 @@
+{
+  "args": [
+    "pct",
+    "exec",
+    "9205",
+    "--",
+    "systemd-run",
+    "--unit=phase3-owner-v110-e2b-experiments-r2",
+    "--property=MemoryMax=2G",
+    "--working-directory=/opt/native-tooling-research/phase3-owner-wave-v107",
+    "--setenv=EPISODE_MODEL=research-e2b-native",
+    "--setenv=EPISODE_PORT=8437",
+    "--setenv=EPISODE_CHECKPOINT=/opt/research-models/gemma",
+    "sh",
+    "-c",
+    "for i in $(seq 1 120); do /opt/vllm-cpu/bin/python -c 'import urllib.request; urllib.request.urlopen(\"http://127.0.0.1:8437/health\",timeout=2)' >/dev/null 2>&1 && break; sleep 2; done; /opt/vllm-cpu/bin/python -c 'import urllib.request; urllib.request.urlopen(\"http://127.0.0.1:8437/health\",timeout=2)' && /opt/vllm-cpu/bin/python cpu_canary_e2b.py > cpu-canary-e2b-log.txt 2>&1 && /opt/vllm-cpu/bin/python cpu_parity_e2b.py > cpu-parity-e2b-log.txt 2>&1 && /opt/vllm-cpu/bin/python cpu_lifecycle_e2b.py > cpu-lifecycle-e2b-log.txt 2>&1 && /opt/vllm-cpu/bin/python cpu_episodes.py > cpu-episodes-e2b-log.txt 2>&1"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "Running as unit: phase3-owner-v110-e2b-experiments-r2.service; invocation ID: be7c8a426e5549a6881845e63a0cafae\n",
+  "amendment": "Original startup wait had invalid shell/Python quote nesting and did not run model experiments. Fixed bounded health check; original launch retained. Longrun stopped before replacement to preserve serial order."
+}

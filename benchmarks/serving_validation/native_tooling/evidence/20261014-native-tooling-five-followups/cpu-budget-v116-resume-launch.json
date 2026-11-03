@@ -1,0 +1,22 @@
+{
+  "args": [
+    "pct",
+    "exec",
+    "9205",
+    "--",
+    "systemd-run",
+    "--unit=phase3-owner-v116-9205-budget-resume",
+    "--property=MemoryMax=2G",
+    "--working-directory=/opt/native-tooling-research/phase3-owner-wave-v107",
+    "--setenv=EPISODE_MODEL=research-e2b-native",
+    "--setenv=EPISODE_PORT=8437",
+    "--setenv=EPISODE_CHECKPOINT=/opt/research-models/gemma",
+    "sh",
+    "-c",
+    "until test -S cpu-control.sock; do sleep 2; done; sleep 20; /opt/vllm-cpu/bin/python cpu_budget_v116_resume.py > cpu-budget-v116-resume-log.txt 2>&1"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "Running as unit: phase3-owner-v116-9205-budget-resume.service; invocation ID: 9bf4d134d0fb45b280449e96e7d32409\n",
+  "qualification": "Preserve original timeout; skip completed episodes; unchanged model output budget, HTTP deadline900s; supervised owned CPU server restart."
+}

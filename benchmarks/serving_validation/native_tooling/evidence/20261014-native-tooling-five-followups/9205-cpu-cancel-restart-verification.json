@@ -1,0 +1,129 @@
+{
+  "kind": "terminal",
+  "cancel_state": {
+    "state": "restart_required"
+  },
+  "restart_status": {
+    "state": "paused"
+  },
+  "publication": {
+    "state": "prepared",
+    "publication": {
+      "revision": "post-cancel-001",
+      "publication_sha256": "d858c60fdcdfa64eb44f5a7cb847bebe38537ebf7cd7f38826c8abf57e143aab",
+      "tokens": 20,
+      "layers": 35,
+      "fingerprint": "2f35577bea1aa6cf78424d81daef76cc019c18268997cac6ab980ddb6b524b5d",
+      "bytes": 1720320,
+      "external_request_id": "aimee-cpu-prepare-de67f09ed8884c1fac0f2e7313d585e9",
+      "internal_request_id": "aimee-cpu-prepare-de67f09ed8884c1fac0f2e7313d585e9-8d6b0ae9"
+    }
+  },
+  "request": {
+    "model": "research-e2b-native",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What is the current display colour? Answer with one word."
+      }
+    ],
+    "max_tokens": 32,
+    "temperature": 0,
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    },
+    "vllm_xargs": {
+      "aimee_publication": "post-cancel-001"
+    }
+  },
+  "response": {
+    "id": "chatcmpl-983b6297258fcf90",
+    "object": "chat.completion",
+    "created": 1791979144,
+    "model": "research-e2b-native",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "Cerulean",
+          "refusal": null,
+          "annotations": null,
+          "audio": null,
+          "function_call": null,
+          "reasoning": null
+        },
+        "logprobs": null,
+        "finish_reason": "stop",
+        "stop_reason": 106,
+        "token_ids": null,
+        "routed_experts": null
+      }
+    ],
+    "service_tier": null,
+    "system_fingerprint": "vllm-0.30.0-f903b3db",
+    "usage": {
+      "prompt_tokens": 21,
+      "total_tokens": 25,
+      "completion_tokens": 4,
+      "prompt_tokens_details": null,
+      "completion_tokens_details": null
+    },
+    "prompt_logprobs": null,
+    "prompt_token_ids": null,
+    "prompt_text": null,
+    "kv_transfer_params": null,
+    "ec_transfer_params": null,
+    "metrics": null
+  },
+  "correct": true,
+  "metrics": {
+    "workers": [
+      {
+        "shadow_text_bytes": 0,
+        "bank_fingerprints": {
+          "post-cancel-001": "2f35577bea1aa6cf78424d81daef76cc019c18268997cac6ab980ddb6b524b5d"
+        },
+        "device": "cpu",
+        "native_attention_reads": 140,
+        "publications": 1,
+        "pinned_requests": 0,
+        "weights_unchanged": true,
+        "native_bytes": 1720320,
+        "observations": [
+          {
+            "request_id": "chatcmpl-983b6297258fcf90-bfed068b",
+            "ordinary_seq_len": 21,
+            "native_tokens": 20,
+            "bank_fingerprint": "2f35577bea1aa6cf78424d81daef76cc019c18268997cac6ab980ddb6b524b5d"
+          },
+          {
+            "request_id": "chatcmpl-983b6297258fcf90-bfed068b",
+            "ordinary_seq_len": 22,
+            "native_tokens": 20,
+            "bank_fingerprint": "2f35577bea1aa6cf78424d81daef76cc019c18268997cac6ab980ddb6b524b5d"
+          },
+          {
+            "request_id": "chatcmpl-983b6297258fcf90-bfed068b",
+            "ordinary_seq_len": 23,
+            "native_tokens": 20,
+            "bank_fingerprint": "2f35577bea1aa6cf78424d81daef76cc019c18268997cac6ab980ddb6b524b5d"
+          },
+          {
+            "request_id": "chatcmpl-983b6297258fcf90-bfed068b",
+            "ordinary_seq_len": 24,
+            "native_tokens": 20,
+            "bank_fingerprint": "2f35577bea1aa6cf78424d81daef76cc019c18268997cac6ab980ddb6b524b5d"
+          }
+        ]
+      }
+    ],
+    "active_requests": 0,
+    "state": "active"
+  },
+  "withdrawn": {
+    "state": "withdrawn",
+    "generation": 2,
+    "active_requests": 0
+  }
+}

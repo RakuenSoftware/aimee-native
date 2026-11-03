@@ -1,0 +1,23 @@
+{
+  "args": [
+    "pct",
+    "exec",
+    "9205",
+    "--",
+    "systemd-run",
+    "--unit=phase3-owner-v108-schema-intake-r1",
+    "--property=MemoryMax=512M",
+    "--property=CPUQuota=100%",
+    "--property=TasksMax=32",
+    "--working-directory=/opt/native-tooling-research/phase3-owner-wave-v107",
+    "--setenv=AIMEE_RESOLVER_ENDPOINT=http://127.0.0.1:8436/v1/chat/completions",
+    "--setenv=AIMEE_RESOLVER_MODEL=research-e2b",
+    "--setenv=AIMEE_RESOLVER_SCHEMA=1",
+    "/bin/sh",
+    "-c",
+    "./resolver-schema-r1 < automatic-intake-inputs.jsonl > schema-intake-r1-results.jsonl"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "Running as unit: phase3-owner-v108-schema-intake-r1.service; invocation ID: d11de361d9764b0f9e0cf038a94eb76e\n"
+}

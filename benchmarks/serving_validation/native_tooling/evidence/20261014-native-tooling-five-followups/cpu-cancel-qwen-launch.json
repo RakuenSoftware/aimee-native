@@ -1,0 +1,18 @@
+{
+  "args": [
+    "pct",
+    "exec",
+    "9222",
+    "--",
+    "systemd-run",
+    "--unit=phase3-owner-v112-qwen-cancel",
+    "--property=MemoryMax=1G",
+    "--working-directory=/opt/native-tooling-research/phase3-owner-wave-v107",
+    "sh",
+    "-c",
+    "while systemctl is-active --quiet phase3-owner-v112-qwen-compiled-episodes; do sleep 5; done; /opt/vllm-cpu/bin/python cpu_cancel_restart.py > cpu-cancel-log.txt 2>&1"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "Running as unit: phase3-owner-v112-qwen-cancel.service; invocation ID: 1cd9a52d4d2041fbb4f4706d22846eff\n"
+}

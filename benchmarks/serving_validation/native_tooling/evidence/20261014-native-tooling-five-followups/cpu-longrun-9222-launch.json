@@ -1,0 +1,18 @@
+{
+  "args": [
+    "pct",
+    "exec",
+    "9222",
+    "--",
+    "systemd-run",
+    "--unit=phase3-owner-v110-9222-longrun",
+    "--property=MemoryMax=2G",
+    "--working-directory=/opt/native-tooling-research/phase3-owner-wave-v107",
+    "sh",
+    "-c",
+    "while systemctl is-active --quiet phase3-owner-v110-qwen-episodes; do sleep 5; done; /opt/vllm-cpu/bin/python cpu_longrun.py > cpu-longrun-log.txt 2>&1"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "Running as unit: phase3-owner-v110-9222-longrun.service; invocation ID: 65e09349eb86430ea714b54d837ddc30\n"
+}

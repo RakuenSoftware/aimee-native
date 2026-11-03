@@ -1,0 +1,19 @@
+{
+  "args": [
+    "pct",
+    "exec",
+    "9222",
+    "--",
+    "systemd-run",
+    "--unit=phase3-owner-v113-9222-scalar",
+    "--property=MemoryMax=2G",
+    "--working-directory=/opt/native-tooling-research/phase3-owner-wave-v107",
+    "sh",
+    "-c",
+    "for i in $(seq 1 120); do /opt/vllm-cpu/bin/python -c 'import urllib.request; urllib.request.urlopen(\"http://127.0.0.1:8437/health\",timeout=2)' >/dev/null 2>&1 && break; sleep 2; done; /opt/vllm-cpu/bin/python -c 'import urllib.request; urllib.request.urlopen(\"http://127.0.0.1:8437/health\",timeout=2)' && /opt/vllm-cpu/bin/python cpu_scalar_v113.py > cpu-scalar-v113-log.txt 2>&1"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "Running as unit: phase3-owner-v113-9222-scalar.service; invocation ID: 4817fe8013c1409fb1d0bbae04b10f44\n",
+  "condition": "Declared single integer content contract; no owner semantic backend request, no candidate extraction from prose, no hidden-policy repair. Four new candidate goals; eligibility visible natively; fixture effects not enrolled canonical dispatch."
+}

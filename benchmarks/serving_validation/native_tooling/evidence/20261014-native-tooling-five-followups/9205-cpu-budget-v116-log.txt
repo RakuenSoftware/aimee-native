@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "/opt/native-tooling-research/phase3-owner-wave-v107/cpu_budget_v116.py", line 71, in <module>
+    asyncio.run(main())
+  File "/root/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/asyncio/runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/root/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/opt/native-tooling-research/phase3-owner-wave-v107/cpu_budget_v116.py", line 45, in main
+    result,seconds=await asyncio.to_thread(query,body);text=result['choices'][0]['text'];finish=result['choices'][0]['finish_reason']
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TimeoutError: timed out
