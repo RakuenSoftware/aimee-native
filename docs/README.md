@@ -7,6 +7,7 @@
 | Install a model plugin, enroll, serve and call it | [Usage and operations](usage.md) |
 | Understand the Aimee release/API boundary | [Aimee compatibility](aimee-compatibility.md) |
 | Build, test and reproduce validation | [Development](development.md) |
+| Inspect rebuilt CUDA artifacts and GPU execution | [RTX 5080 validation](validation/aimee-5080-20261103.md) |
 | Review licensing, signatures and publication gates | [Public release](public-release.md) |
 | Inspect dedicated plugin layout and qualified model profiles | [Model plugins](../distribution/vllm/MODEL_PLUGINS.md) |
 | Report a vulnerability | [Security](../SECURITY.md) |

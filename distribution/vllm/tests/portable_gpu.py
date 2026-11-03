@@ -2,13 +2,14 @@
 import argparse
 import ctypes
 import json
+import importlib
 import time
 from pathlib import Path
 import torch
-from aimee_vllm import runtime_ops
-from aimee_vllm.kernel import native_attention
 
-p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True);p.add_argument('--library',type=Path,required=True);a=p.parse_args()
+p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True);p.add_argument('--library',type=Path,required=True);p.add_argument('--package',default='aimee_vllm',help='source or installed dedicated model namespace');a=p.parse_args()
+runtime_ops=importlib.import_module(a.package+'.runtime_ops')
+native_attention=importlib.import_module(a.package+'.kernel').native_attention
 torch.manual_seed(90430)
 device=torch.device('cuda:0')
 results=[]
@@ -67,5 +68,5 @@ for heads,kvheads,width,window,cap in ((4,2,64,-1,0.),(4,1,128,3,0.),(4,1,128,10
  results.append({'heads':heads,'kvheads':kvheads,'width':width,'window':window,'cap':cap,'max_abs_error':float((out.float()-reference.float()).abs().max())})
 lib=ctypes.CDLL(str(a.library));lib.aimee_store_runtime_warmup.argtypes=[ctypes.c_int];lib.aimee_store_runtime_warmup.restype=ctypes.c_bool
 assert lib.aimee_store_runtime_warmup(0),'Rust/public torch runtime bridge warmup'
-a.output.write_text(json.dumps({'status':'passed','gpu':torch.cuda.get_device_name(),'arch':torch.cuda.get_device_properties(0).gcnArchName if torch.version.hip else str(torch.cuda.get_device_capability()),'cases':results,'runtime_bridge':True},indent=2)+'\n')
+a.output.write_text(json.dumps({'status':'passed','package':a.package,'gpu':torch.cuda.get_device_name(),'arch':torch.cuda.get_device_properties(0).gcnArchName if torch.version.hip else str(torch.cuda.get_device_capability()),'cases':results,'runtime_bridge':True},indent=2)+'\n')
 print(a.output.read_text())

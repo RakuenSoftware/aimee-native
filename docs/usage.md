@@ -14,8 +14,11 @@ For the historical 0.3.3 ROCm profile this was Torch 2.12.0, Triton 3.7.1 and
 ROCm 7.2 on one RX 7900 XTX. Other public vLLM versions are rejected. CUDA
 results qualify only their recorded checkpoint/runtime combinations.
 
-New AGPL artifacts built from this repository require fresh signing, packaging
-and GPU qualification before publication. Archived 0.3.3 candidates are historical
+The rebuilt AGPL `0.3.4.dev0` candidate wheels have
+[scoped RTX 5080 qualification](validation/aimee-5080-20261103.md) with Aimee
+v1.0.2, vLLM 0.30.0, Torch 2.13.0/CUDA 13.0 and Triton 3.7.1. They remain
+unpublished validation artifacts. Signing, signed upgrade/rollback and the
+remaining publication gates still apply; other rebuilt profiles need qualification. Archived 0.3.3 candidates are historical
 payloads, not freshly certified AGPL releases. The signed model bundles carried
 by earlier Aimee application releases retain their original metadata and their
 own instructions. See [public release gates](public-release.md) and
@@ -124,8 +127,17 @@ and is outside this text-only profile.
 | `host_memory_budget` | Native-bank host-memory admission budget; managed default 8 GiB |
 | `device_memory_budget` | Native-bank device admission budget; managed default 512 MiB |
 | `disk_budget` | Prepared-cache cap; default 16 GiB; must accommodate the host reservation |
-| `native_system_context` | System context captured with the native bank; request context must match |
+| `native_system_context` | Startup system context captured with the native bank; Qwen hybrid requests must match it |
 | `gpu_memory_utilization` | vLLM model/KV allocation fraction, separate from native-bank budgets |
+
+`num_gpu_blocks_override`, when explicitly supplied, counts runtime cache blocks,
+not tokens. It is architecture-specific. In the current CUDA Qwen FP8 run, 512
+hybrid blocks requested a 24.5 GiB allocation on a 16 GiB GPU; let vLLM size that
+profile automatically. Attention-only Gemma has different block geometry. Do not
+copy an override between architectures or historical runtime profiles.
+The tested CUDA Gemma 26B GGUF profile uses no CPU offload: enabling it hit an
+upstream uninitialized-parameter error during loading. Use its qualified GPU
+memory allocation rather than assuming an offload budget will make it fit.
 
 The enrolled path qualifies a single GPU, eager synchronous V1 serving, no
 prefix caching, no model compilation, no speculative decoding and no multimodal
@@ -152,10 +164,22 @@ curl --fail-with-body http://127.0.0.1:8000/v1/chat/completions \
 ```
 
 Use the model name advertised by the running vLLM server if an alias is configured.
-`GET /health` checks readiness. A cold or changed authorized source pauses
+`GET /health` reports 503 while startup admission is withdrawn. An authenticated
+canary request performs the first authorized source selection and preparation;
+do not require health 200 before sending it. After successful activation, health
+returns 200. The private control socket reports `paused` when the loaded model
+is ready for its first selection; see [the validation harness](../scripts/validation/serving-release.py).
+A cold or changed authorized source pauses
 admission while the resident model prepares its bank. A warm reuse still checks
 Aimee authority. Empty selection uses ordinary model behavior. An unavailable or
 denied source refuses selection; it does not silently serve an old authorized view.
+
+For Qwen's complete hybrid prefix, supply the configured nonempty
+`native_system_context` as the first system message on every request. The runtime
+checks it and removes that already captured turn before model execution. Gemma's
+attention-only path accepts ordinary chat messages and does not impose that
+hybrid system-turn check; do not infer the same request contract from shared
+command names.
 
 ## Operations and troubleshooting
 

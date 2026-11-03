@@ -7,6 +7,8 @@ published application release on 2026-11-03. The machine-readable target is
 Application, plugin, vLLM, Torch and model-checkpoint versions are independent.
 [The .252 validation report](validation/aimee-v1.0.2-20261103.md) records 27
 passing real-application checks, all five installed bindings and CPU coverage.
+[The .253 RTX 5080 follow-up](validation/aimee-5080-20261103.md) records actual
+CUDA execution for the rebuilt artifacts and their precise validation scope.
 
 ## Enrolled model runtime
 

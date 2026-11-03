@@ -60,7 +60,28 @@ python3 scripts/validation/bridge-cpu.py \
 The real GPU attention test and the upstream vLLM request-schema test retain
 explicit skips when their dependencies are absent. Run the complete
 `distribution/vllm/tests` suite in the qualified upstream vLLM/GGUF/GPU environment
-before release; fixture-based CPU checks do not replace it. To compile device
+before release; fixture-based CPU checks do not replace it. With the complete
+GPU environment and an unbound portable development library, run:
+
+```sh
+python3 scripts/validation/bridge-gpu.py \
+  --library target/debug/libaimee_native.so --output .local/bridge-gpu.json
+```
+
+This gate isolates every module, includes upstream authentication/GGUF/hybrid
+checks and fails if a test skips. To exercise the installed compiled kernels
+and model library as well:
+
+```sh
+python3 distribution/vllm/tests/portable_gpu.py \
+  --package aimee_gemma4_12b \
+  --library /path/to/site-packages/aimee_gemma4_12b/native/libaimee_native.so \
+  --output .local/portable-gemma4-12b.json
+```
+
+Repeat for each installed model namespace/library. These checks execute decoder
+and attention kernels and the public Torch bridge, without model weights.
+To compile device
 operations for the declared architecture matrix without claiming execution:
 
 ```sh
@@ -169,4 +190,26 @@ The harness checks real release readiness, normal enrollment, native-client
 connection, populated unique source records, committed correction, restart and
 revocation. It records verdicts and image identities without credentials. A
 fixture-based TLS test and a real released server test are separate evidence.
-Neither test runs a full model or establishes additional GPU qualification.
+The default release command does not run a model. To add installed model serving,
+use `--serving-profiles /absolute/path/to/profiles.json`. The file is a JSON array
+of ordinary model serving configurations (see [usage](usage.md)), each pointing
+to a locally available checkpoint and model/tokenizer directory. Include its
+exact checkpoint checksum/profile, adapter and supported runtime settings.
+The matching dedicated wheel must be installed in the invoking Python environment;
+put that environment's `bin` on `PATH`. Use one GPU with enough free VRAM and
+host RAM for each profile and its explicit CPU offload, preserving existing jobs.
+Triton also needs a working C compiler, Python development headers and discoverable
+CUDA driver libraries at execution time. Confirm runtime warmup inside the actual
+serving container/environment; host-only GPU detection does not qualify a guest.
+
+The optional gate runs profiles sequentially against the harness's fresh enrolled
+identity and real release server. It checks startup, authentication, the Qwen
+hybrid prefix's system-context rejection, synthetic cold/warm recall and publication reuse, authoritative source
+correction/new publication, and retirement. It creates only its own process groups
+and short private `/tmp/ang-*` directories (Unix sockets have a path-length limit),
+and terminates each model on completion or failure. The gate hashes each GGUF
+before startup and rejects a mismatched declared checksum.
+No existing service is stopped. Startup diagnostics remain private under `TMPDIR`;
+public JSON reports contain verdicts and hashes, without credentials. Remove the
+private scratch directory after inspecting failures. This gate does not claim
+streaming, concurrency, multimodal, multi-GPU or arbitrary-checkpoint qualification.

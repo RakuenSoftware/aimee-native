@@ -77,8 +77,10 @@ remains tied to each exact artifact/profile.
   the parameterized selected-ID predicate; empty/invalid selection protections
   remain covered. No exporter or authorization behavior changed.
 
-Full model/GPU validation has not been repeated for these renamed binaries.
-Existing GPU evidence certifies only the artifact identities recorded with it.
+The later [RTX 5080 follow-up](validation/aimee-5080-20261103.md) validates the
+rebuilt `0.3.4.dev0` candidate wheels against Aimee v1.0.2, with exact artifact
+and model-profile scope. It does not perform signed upgrade/rollback or publish
+assets. Older GPU evidence continues to certify only its recorded identities.
 
 ## Credential and archive review
 

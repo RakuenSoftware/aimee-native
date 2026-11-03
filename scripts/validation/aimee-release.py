@@ -11,8 +11,10 @@ import json
 import os
 from pathlib import Path
 import re
+import signal
 import socket
 import subprocess
+import sys
 import tempfile
 import time
 import uuid
@@ -32,6 +34,8 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--installed-packages', type=Path,
                         help='optional site-packages with all five dedicated plugins and shared runtime')
+    parser.add_argument('--serving-profiles', type=Path,
+                        help='optional JSON list of installed GPU model serving configurations')
     parser.add_argument('--application-image', required=True)
     parser.add_argument('--postgres-image', required=True)
     parser.add_argument('--embedder-image', required=True)
@@ -184,11 +188,35 @@ def main():
             stack.compose('restart', 'aimee-server')
             wait_ready()
             check('enrollment and source survive application restart', current_source())
+            if args.serving_profiles:
+                report['phase'] = 'gpu_serving'
+                serving = subprocess.Popen([sys.executable,
+                    str(Path(__file__).with_name('serving-release.py')),
+                    '--profiles', str(args.serving_profiles.resolve()),
+                    '--aimee-home', str(home), '--aimee-source', str(args.aimee_source.resolve()),
+                    '--server', stack.application, '--store-db', stack.postgres,
+                    '--output', str(args.output.resolve() / 'serving.json')],
+                    env=client_env)
+                try:
+                    serving.wait(timeout=7200)
+                finally:
+                    if serving.poll() is None:
+                        # Allow the gate's finally block to stop its model group.
+                        serving.send_signal(signal.SIGINT)
+                        try:
+                            serving.wait(timeout=90)
+                        except subprocess.TimeoutExpired:
+                            serving.kill()
+                            serving.wait(timeout=30)
+                check('installed GPU model source lifecycle', serving.returncode == 0)
             check('revocation accepted by server owner', browser.request('/api/clients/revoke', {'id': invitation['id']})[0] == 200)
             check('Rust native client refuses revoked enrollment', launch('fetch-primitive', key).returncode != 0)
             report['lifecycle_completed'] = True
     except Exception as error:
         # Omit exception messages and command output: either can include credentials.
+        import traceback
+        with tempfile.NamedTemporaryFile(mode='w', prefix='native-release-failure-', suffix='.log', delete=False) as diagnostic:
+            diagnostic.write(traceback.format_exc())
         report['error_type'] = type(error).__name__
         print('FAIL release validation: ' + type(error).__name__, flush=True)
     finally:
