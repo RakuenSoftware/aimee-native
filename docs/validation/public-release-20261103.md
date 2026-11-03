@@ -16,6 +16,12 @@ used source revision `bff549fe7498f4f147267bd8b64bbaefa8eefd91`, preserved in th
 [initial manifest](artifacts/public-release-20261103/signed-manifest-initial.json)
 and [initial signature](artifacts/public-release-20261103/signed-manifest-initial.sig).
 Final documentation/source packaging does not replace any executable payload.
+The [final source proof](artifacts/public-release-20261103/final-source-proof.json)
+records the complete source revision and unchanged runtime inputs. All seven
+final wheel entries are identical to the initial signed manifest. The refreshed
+bundle passed [signature/asset verification](artifacts/public-release-20261103/final-verification.json)
+and another offline installation, `pip check` and
+[51/51 installed checks](artifacts/public-release-20261103/final-installed.json).
 
 The [wheel audit](artifacts/public-release-20261103/release-wheel-audit.json)
 passes all five namespaces and Rust adapter symbols. The
@@ -82,6 +88,13 @@ the 26B profile's 13.69 GiB reservation. That startup was refused; the original
 and [resource observation](artifacts/public-release-20261103/resource-contention.json)
 remain preserved. Unrelated services were left running.
 
+After capacity became available, the unchanged 26B profile passed all 13 checks
+in a new stack: [model receipt](artifacts/public-release-20261103/qualified-26b-serving.json),
+[28-check application receipt](artifacts/public-release-20261103/qualified-26b-release.json).
+The five stable profiles therefore pass 65/65 installed GPU lifecycle checks.
+The [qualification decision](artifacts/public-release-20261103/decision.json)
+checks every executed native-library hash against the final wheel audit.
+
 A requested RAM/approximately 10 GiB GPU alternative was separately tested with
 8 GiB CPU offload, pinned memory, UVA enabled and explicit weight parameter
 selection. vLLM reported only 0.02 GiB offloaded; the process reached 12.15 GiB
@@ -103,6 +116,8 @@ covers all 420 prior reachable commits and nested archives. The additional
 packaging commit has [zero detector findings](artifacts/public-release-20261103/packaging-secret-review.json).
 These detector reviews identified no operational credential; raw reports remain
 private. Original evidence bytes and historical paths were preserved.
+The next evidence commit's [seven detector matches](artifacts/public-release-20261103/qualification-secret-review.json)
+are also recorded model/config/tokenizer hashes, rather than operational secrets.
 
 Notices cover reachable locked Rust crates, bundled native dependency notices,
 the Rust standard library, Cython 3.3.1 and the GGUF plugin. The
@@ -127,3 +142,11 @@ The owner's publication steps are GitHub private vulnerability reporting,
 public visibility, tag/assets and anonymous download verification. The user
 requested pushing the prepared branch and handling GitHub publication separately;
 source preparation does not establish that those owner actions have occurred.
+
+The [cleanup receipt](artifacts/public-release-20261103/cleanup.json) confirms
+the disposable CT9304, owned scratch/model copies and read-only snapshot mount
+were removed. All owned Compose stacks had stopped before guest removal.
+Wolf remained at its original PID with 524 MiB GPU usage; unrelated workloads
+were not stopped or modified. The two local workspace-registration probe
+worktrees were also removed. Signed release assets remain in the operator's
+ignored local release directory for the owner to publish.
