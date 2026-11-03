@@ -25,6 +25,10 @@ def sha(path):
 def validate_metadata(release, tag, commit, expected):
     if release['tag_name'] != tag or release['target_commitish'] != commit:
         raise ValueError('existing release has a different target')
+    return validate_assets(release, expected)
+
+
+def validate_assets(release, expected):
     names = set()
     for asset in release['assets']:
         name = asset['name']
@@ -69,6 +73,7 @@ def main():
     p.add_argument('--notes', type=Path, required=True)
     p.add_argument('--version', required=True)
     p.add_argument('--resume-tag', action='store_true', help='recover the existing tag from its release branch')
+    p.add_argument('--stage-only', action='store_true', help='verify the draft without a workflow-authorized publish')
     a = p.parse_args()
     tag = 'v' + a.version
     allowed_ref = 'refs/heads/release/' + tag if a.resume_tag else 'refs/tags/' + tag
@@ -93,13 +98,16 @@ def main():
     notes = a.notes.read_text()
     release = choose_release([r for page in pages for r in page], tag, commit, notes)
     definition = dict(tag_name=tag, target_commitish=commit, name='Aimee Native ' + a.version, body=notes)
+    if a.stage_only and (release is None or not release['draft'] or release['target_commitish'] != commit
+                        or release['name'] != definition['name'] or (release.get('body') or '').strip() != notes.strip()):
+        raise ValueError('staging requires the matching existing draft')
     if release is None:
         release = api('releases', 'POST', dict(definition, draft=True, prerelease=False))
-    elif release['draft']:
+    elif release['draft'] and not a.stage_only:
         release = api('releases/' + str(release['id']), 'PATCH', definition)
     release_id = release['id']
     print('Release ID:', release_id, 'draft:', release['draft'], flush=True)
-    existing = validate_metadata(release, tag, commit, expected)
+    existing = validate_assets(release, expected) if a.stage_only else validate_metadata(release, tag, commit, expected)
     missing = sorted(set(expected) - existing)
     if missing and not release['draft']:
         raise ValueError('published release is incomplete; refusing to replace it')
@@ -113,7 +121,8 @@ def main():
             response.read()
         print('Uploaded:', name, flush=True)
     release = api('releases/' + str(release_id))
-    if validate_metadata(release, tag, commit, expected) != set(expected):
+    names = validate_assets(release, expected) if a.stage_only else validate_metadata(release, tag, commit, expected)
+    if names != set(expected):
         raise ValueError('release asset inventory is incomplete')
     with tempfile.TemporaryDirectory(prefix='aimee-release-download-') as folder:
         folder = Path(folder)
@@ -123,6 +132,9 @@ def main():
                 subprocess.run(['gh', 'api', 'repos/' + REPO + '/releases/assets/' + str(asset['id']),
                                 '-H', 'Accept: application/octet-stream'], stdout=output, check=True)
         verify(folder)
+    if a.stage_only:
+        print('Verified draft ready:', release['html_url'], 'intended tag:', tag, 'commit:', commit)
+        return
     if release['draft']:
         api('releases/' + str(release_id), 'PATCH', dict(definition, draft=False, prerelease=False, make_latest='true'))
     print('Published and download-verified: https://github.com/' + REPO + '/releases/tag/' + tag)
