@@ -10,6 +10,11 @@ The current product uses five dedicated model plugins with one shared Rust
 connection/runtime and the unmodified vLLM framework. The Python Qwen adapter,
 standalone Rust Qwen server and Go publication tools are retained research paths.
 
+Install [release v0.3.4](https://github.com/RakuenSoftware/aimee-native/releases/tag/v0.3.4)
+using the [signed download and installation instructions](distribution/release/github/v0.3.4/INSTALL.md).
+The release supplies all five model wheels, the shared runtime, GGUF dependency,
+matching source and notices. Model weights and the GPU runtime are supplied separately.
+
 ## Documentation
 
 - [Install, enroll, configure and operate a model](docs/usage.md)
@@ -17,7 +22,7 @@ standalone Rust Qwen server and Go publication tools are retained research paths
 - [Build and test from source](docs/development.md)
 - [Documentation map](docs/README.md)
 - [Public release preparation and outstanding gates](docs/public-release.md)
-- [0.3.4 candidate, signatures and rollback](docs/releases/0.3.4.md)
+- [0.3.4 release, signatures and rollback](docs/releases/0.3.4.md)
 - [Signed installation and final release qualification](docs/validation/public-release-20261103.md)
 - [Aimee v1.0.2 validation on .252](docs/validation/aimee-v1.0.2-20261103.md)
 - [RTX 5080 execution on .253](docs/validation/aimee-5080-20261103.md)

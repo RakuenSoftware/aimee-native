@@ -20,6 +20,7 @@ PAGES = (
     'docs/validation/aimee-5080-20261103.md',
     'DATASETS.md', 'docs/releases/0.3.4.md',
     'docs/validation/public-release-20261103.md',
+    'distribution/release/github/v0.3.4/INSTALL.md',
 )
 
 

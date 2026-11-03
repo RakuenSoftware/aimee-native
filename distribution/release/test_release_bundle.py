@@ -5,6 +5,8 @@ from pathlib import Path
 import subprocess
 import tempfile
 import unittest
+import io
+from unittest.mock import patch
 
 spec = importlib.util.spec_from_file_location('release_bundle', Path(__file__).with_name('release-bundle.py'))
 bundle = importlib.util.module_from_spec(spec)
@@ -75,6 +77,28 @@ class SignatureBoundaryTests(unittest.TestCase):
         p.symlink_to(target)
         with self.assertRaisesRegex(ValueError, 'missing regular asset'):
             bundle.verify(self.payload, self.public, '0.3.4')
+
+    def fetch(self, request, timeout):
+        return io.BytesIO((self.payload / request.full_url.rsplit('/', 1)[-1]).read_bytes())
+
+    def test_public_download_verifies_signature_and_each_asset(self):
+        with patch.object(bundle.urllib.request, 'urlopen', side_effect=self.fetch):
+            value = bundle.download(self.root / 'download', self.public, '0.3.4')
+        self.assertEqual(value['version'], '0.3.4')
+
+    def test_download_rejects_wrong_signature_before_fetching_assets(self):
+        with patch.object(bundle.urllib.request, 'urlopen', side_effect=self.fetch) as fetch:
+            with self.assertRaises(subprocess.CalledProcessError):
+                bundle.download(self.root / 'download', self.other, '0.3.4')
+        self.assertEqual(fetch.call_count, 2)
+
+    def test_download_rejects_even_signed_path_escape_before_fetching_assets(self):
+        self.rows[0]['name'] = '../outside.whl'
+        self.sign()
+        with patch.object(bundle.urllib.request, 'urlopen', side_effect=self.fetch) as fetch:
+            with self.assertRaisesRegex(ValueError, 'invalid or duplicate'):
+                bundle.download(self.root / 'download', self.public, '0.3.4')
+        self.assertEqual(fetch.call_count, 2)
 
 
 if __name__ == '__main__':

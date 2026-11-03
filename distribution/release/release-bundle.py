@@ -12,6 +12,8 @@ from pathlib import Path
 import shutil
 import subprocess
 import sys
+import urllib.parse
+import urllib.request
 
 REPOSITORY = 'https://github.com/RakuenSoftware/aimee-native'
 
@@ -24,7 +26,7 @@ def digest(path):
     return h.hexdigest()
 
 
-def verify(root, key, version=None):
+def signed_manifest(root, key, version=None):
     root, key = root.resolve(), key.resolve()
     # OpenSSL receives paths, never private-key bytes or credentials in argv.
     subprocess.run(['openssl', 'pkeyutl', '-verify', '-pubin', '-inkey', str(key),
@@ -35,6 +37,12 @@ def verify(root, key, version=None):
         raise ValueError('unexpected manifest identity')
     if version is not None and manifest.get('version') != version:
         raise ValueError('unexpected release version')
+    return manifest
+
+
+def verify(root, key, version=None):
+    root = root.resolve()
+    manifest = signed_manifest(root, key, version)
     entries = manifest.get('files')
     if not isinstance(entries, list) or not entries:
         raise ValueError('empty release manifest')
@@ -59,6 +67,39 @@ def verify(root, key, version=None):
     return manifest
 
 
+def download(root, key, version):
+    root.mkdir(parents=True, exist_ok=False)
+    base = REPOSITORY + '/releases/download/' + urllib.parse.quote('v' + version, safe='') + '/'
+    def fetch(name, limit):
+        request = urllib.request.Request(base + urllib.parse.quote(name, safe=''),
+                                         headers={'User-Agent': 'Aimee-Native-release'})
+        with urllib.request.urlopen(request, timeout=120) as response, (root / name).open('xb') as out:
+            total = 0
+            while chunk := response.read(1024 * 1024):
+                total += len(chunk)
+                if total > limit:
+                    raise ValueError('download exceeds declared size: ' + name)
+                out.write(chunk)
+    fetch('manifest.json', 1024 * 1024)
+    fetch('manifest.sig', 1024)
+    # Authenticate names and hashes before following any asset instructions.
+    manifest = signed_manifest(root, key, version)
+    names = {'manifest.json', 'manifest.sig'}
+    entries = manifest.get('files')
+    if not isinstance(entries, list) or not entries:
+        raise ValueError('empty release manifest')
+    for entry in entries:
+        name = entry['name']
+        if (not isinstance(name, str) or Path(name).name != name or name in ('.', '..') or name in names):
+            raise ValueError('invalid or duplicate manifest filename')
+        if type(entry['bytes']) is not int or not 0 <= entry['bytes'] <= 2 * 1024**3:
+            raise ValueError('invalid download size')
+        names.add(name)
+    for entry in entries:
+        fetch(entry['name'], entry['bytes'])
+    return verify(root, key, version)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='action', required=True)
@@ -71,7 +112,7 @@ def main():
     pack.add_argument('--public-key', type=Path, required=True)
     pack.add_argument('--output', type=Path, required=True)
     pack.add_argument('--document', type=Path, action='append', default=[])
-    for name in ('verify', 'install'):
+    for name in ('verify', 'install', 'download'):
         command = sub.add_parser(name)
         command.add_argument('--bundle', type=Path, required=True)
         command.add_argument('--public-key', type=Path, required=True)
@@ -102,7 +143,8 @@ def main():
         verify(args.output, args.public_key, args.version)
         print(json.dumps(dict(status='signed_and_verified', version=args.version, assets=len(rows))))
     else:
-        manifest = verify(args.bundle, args.public_key, args.expected_version)
+        manifest = (download(args.bundle, args.public_key, args.expected_version) if args.action == 'download'
+                    else verify(args.bundle, args.public_key, args.expected_version))
         if args.action == 'install':
             # Preserve the venv executable path: resolving its symlink would
             # execute the base interpreter and lose the isolated environment.
@@ -117,7 +159,8 @@ def main():
             subprocess.run([str(python), '-m', 'pip', 'install', '--no-index', '--no-deps',
                             '--force-reinstall', *wheels], check=True)
             subprocess.run([str(python), '-m', 'pip', 'check'], check=True)
-        print(json.dumps(dict(status='verified' if args.action == 'verify' else 'installed_verified',
+        status = {'verify': 'verified', 'download': 'downloaded_verified', 'install': 'installed_verified'}[args.action]
+        print(json.dumps(dict(status=status,
                               version=manifest['version'], assets=len(manifest['files']))))
 
 

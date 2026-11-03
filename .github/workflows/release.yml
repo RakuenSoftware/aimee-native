@@ -1,0 +1,68 @@
+name: Signed release
+on:
+  push:
+    branches: ['release/v0.3.4']
+    tags: ['v0.3.4']
+permissions:
+  contents: read
+concurrency:
+  group: signed-release-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned Rust toolchain
+        run: rustup toolchain install --profile minimal "$(python -c 'import tomllib; print(tomllib.load(open("rust-toolchain.toml", "rb"))["toolchain"]["channel"])')"
+      - name: Runtime tests
+        run: cargo test --locked --no-default-features
+      - name: Launcher and client tests
+        run: cargo test --manifest-path distribution/launcher/Cargo.toml --locked --features model-plugin-client
+      - name: Packaging contracts and documentation
+        run: |
+          python -m unittest discover -s distribution/release -p 'test_*.py' -v
+          python scripts/validation/docs.py
+      - name: Reconstruct and verify the exact signed assets
+        run: >-
+          python distribution/release/assemble-github-release.py
+          --payload distribution/release/github/v0.3.4
+          --output .local/github-assets
+          --public-key distribution/release/public-keys/2026-ed25519.pub
+          --version 0.3.4
+  publish:
+    needs: verify
+    if: github.ref == 'refs/tags/v0.3.4' && github.repository == 'RakuenSoftware/aimee-native'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Reconstruct and verify the exact signed assets
+        run: >-
+          python distribution/release/assemble-github-release.py
+          --payload distribution/release/github/v0.3.4
+          --output .local/github-assets
+          --public-key distribution/release/public-keys/2026-ed25519.pub
+          --version 0.3.4
+      - name: Upload draft, verify downloads, then publish
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: >-
+          python distribution/release/publish-github-release.py
+          --bundle .local/github-assets
+          --public-key distribution/release/public-keys/2026-ed25519.pub
+          --notes distribution/release/github/v0.3.4/notes.md
+          --version 0.3.4
