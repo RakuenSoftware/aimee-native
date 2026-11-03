@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-"""Publish verified assets through GitHub Actions' repository-scoped gh token.
+"""Publish signed assets with the repository-scoped GitHub Actions token.
 
-Uploads to a draft, downloads and verifies every byte, then publishes. A retry
-can complete the same draft; it never replaces mismatched assets or published
-release contents. No operator signing key is used by CI.
+Use REST release IDs throughout: draft web URLs are temporary and release-list
+indexes can lag creation. Never move a tag or replace published/mismatched assets.
 """
 import argparse
 import hashlib
@@ -12,6 +11,8 @@ import os
 from pathlib import Path
 import subprocess
 import tempfile
+import urllib.parse
+import urllib.request
 
 REPO = 'RakuenSoftware/aimee-native'
 
@@ -37,62 +38,93 @@ def validate_metadata(release, tag, commit, expected):
     return names
 
 
+def choose_release(releases, tag, commit, notes):
+    matches = [r for r in releases if r['tag_name'] == tag]
+    if not matches:
+        # GitHub may assign a temporary untagged URL/name to a new draft.
+        matches = [r for r in releases if r['draft'] and r['name'] == 'Aimee Native ' + tag[1:]
+                   and r['target_commitish'] == commit and (r.get('body') or '').strip() == notes.strip()]
+    if len(matches) > 1:
+        raise ValueError('ambiguous release drafts')
+    return matches[0] if matches else None
+
+
+def api(path, method='GET', body=None):
+    command = ['gh', 'api', 'repos/' + REPO + '/' + path, '--method', method]
+    if body is not None:
+        command += ['--input', '-']
+    return json.loads(subprocess.check_output(command, input=json.dumps(body).encode() if body is not None else None))
+
+
+class NoUploadRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, request, fp, code, msg, headers, newurl):
+        # The authenticated upload stays at GitHub's fixed upload endpoint.
+        return None
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--bundle', type=Path, required=True)
     p.add_argument('--public-key', type=Path, required=True)
     p.add_argument('--notes', type=Path, required=True)
     p.add_argument('--version', required=True)
+    p.add_argument('--resume-tag', action='store_true', help='recover the existing tag from its release branch')
     a = p.parse_args()
     tag = 'v' + a.version
-    if os.environ.get('GITHUB_REPOSITORY') != REPO or os.environ.get('GITHUB_REF') != 'refs/tags/' + tag:
-        raise ValueError('publication requires the canonical repository tag workflow')
-    commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
-    assert subprocess.check_output(['git', 'rev-parse', 'refs/tags/' + tag + '^{commit}'], text=True).strip() == commit
+    allowed_ref = 'refs/heads/release/' + tag if a.resume_tag else 'refs/tags/' + tag
+    if os.environ.get('GITHUB_REPOSITORY') != REPO or os.environ.get('GITHUB_REF') != allowed_ref:
+        raise ValueError('publication requires the canonical release workflow')
+    commit = subprocess.check_output(['git', 'rev-parse', 'refs/tags/' + tag + '^{commit}'], text=True).strip()
+    if a.resume_tag:
+        subprocess.run(['git', 'merge-base', '--is-ancestor', commit, 'HEAD'], check=True)
+        # Recovery may change automation, never the signed payload or trust key.
+        subprocess.run(['git', 'diff', '--exit-code', commit, 'HEAD', '--',
+            'distribution/release/github/' + tag, 'distribution/release/public-keys'], check=True)
+    else:
+        assert subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip() == commit
     verifier = Path(__file__).with_name('release-bundle.py')
     def verify(folder):
         subprocess.run(['python3', str(verifier), 'verify', '--bundle', str(folder),
             '--public-key', str(a.public_key), '--expected-version', a.version], check=True)
     verify(a.bundle)
     expected = {f.name: {'bytes': f.stat().st_size, 'sha256': sha(f)} for f in a.bundle.iterdir()}
-    def lookup():
-        # The tag endpoint only promises published releases. The authenticated
-        # list also returns drafts, which matters after an interrupted upload.
-        pages = json.loads(subprocess.check_output(['gh', 'api',
-            'repos/' + REPO + '/releases?per_page=100', '--paginate', '--slurp']))
-        matches = [r for page in pages for r in page if r['tag_name'] == tag]
-        if len(matches) > 1:
-            raise ValueError('duplicate releases for tag')
-        return matches[0] if matches else None
-    release = lookup()
+    pages = json.loads(subprocess.check_output(['gh', 'api', 'repos/' + REPO +
+        '/releases?per_page=100', '--paginate', '--slurp', '-H', 'Cache-Control: no-cache']))
+    notes = a.notes.read_text()
+    release = choose_release([r for page in pages for r in page], tag, commit, notes)
+    definition = dict(tag_name=tag, target_commitish=commit, name='Aimee Native ' + a.version, body=notes)
     if release is None:
-        subprocess.run(['gh', 'release', 'create', tag, '--repo', REPO, '--verify-tag',
-            '--target', commit, '--draft', '--title', 'Aimee Native ' + a.version,
-            '--notes-file', str(a.notes)], check=True)
-        release = lookup()
-        if release is None:
-            raise RuntimeError('created draft was not returned by GitHub')
+        release = api('releases', 'POST', dict(definition, draft=True, prerelease=False))
+    elif release['draft']:
+        release = api('releases/' + str(release['id']), 'PATCH', definition)
+    release_id = release['id']
+    print('Release ID:', release_id, 'draft:', release['draft'], flush=True)
     existing = validate_metadata(release, tag, commit, expected)
+    missing = sorted(set(expected) - existing)
+    if missing and not release['draft']:
+        raise ValueError('published release is incomplete; refusing to replace it')
+    upload = urllib.request.build_opener(NoUploadRedirect())
+    for name in missing:
+        url = 'https://uploads.github.com/repos/' + REPO + '/releases/' + str(release_id) + '/assets?name=' + urllib.parse.quote(name, safe='')
+        request = urllib.request.Request(url, data=(a.bundle / name).read_bytes(), method='POST',
+            headers={'Authorization': 'Bearer ' + os.environ['GH_TOKEN'], 'Content-Type': 'application/octet-stream',
+                     'Accept': 'application/vnd.github+json', 'User-Agent': 'Aimee-Native-release'})
+        with upload.open(request, timeout=300) as response:
+            response.read()
+        print('Uploaded:', name, flush=True)
+    release = api('releases/' + str(release_id))
+    if validate_metadata(release, tag, commit, expected) != set(expected):
+        raise ValueError('release asset inventory is incomplete')
     with tempfile.TemporaryDirectory(prefix='aimee-release-download-') as folder:
         folder = Path(folder)
-        if existing:
-            subprocess.run(['gh', 'release', 'download', tag, '--repo', REPO, '--dir', str(folder)], check=True)
-            for name in existing:
-                if sha(folder / name) != expected[name]['sha256']:
-                    raise ValueError('existing asset bytes mismatch: ' + name)
-        missing = sorted(set(expected) - existing)
-        if missing:
-            if not release['draft']:
-                raise ValueError('published release is incomplete; refusing to replace it')
-            subprocess.run(['gh', 'release', 'upload', tag, '--repo', REPO,
-                            *(str(a.bundle / n) for n in missing)], check=True)
-            command = ['gh', 'release', 'download', tag, '--repo', REPO, '--dir', str(folder)]
-            for name in missing:
-                command += ['--pattern', name]
-            subprocess.run(command, check=True)
+        for asset in release['assets']:
+            # gh's HTTP client handles authenticated API redirects safely.
+            with (folder / asset['name']).open('xb') as output:
+                subprocess.run(['gh', 'api', 'repos/' + REPO + '/releases/assets/' + str(asset['id']),
+                                '-H', 'Accept: application/octet-stream'], stdout=output, check=True)
         verify(folder)
     if release['draft']:
-        subprocess.run(['gh', 'release', 'edit', tag, '--repo', REPO, '--draft=false', '--latest'], check=True)
+        api('releases/' + str(release_id), 'PATCH', dict(definition, draft=False, prerelease=False, make_latest='true'))
     print('Published and download-verified: https://github.com/' + REPO + '/releases/tag/' + tag)
 
 

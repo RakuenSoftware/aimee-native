@@ -18,6 +18,15 @@ publisher = load('github_publisher', 'publish-github-release.py')
 
 
 class DeliveryTests(unittest.TestCase):
+    def test_temporary_draft_is_recovered_only_with_matching_identity(self):
+        draft = {'id': 1, 'tag_name': 'untagged-temporary', 'target_commitish': 'commit',
+                 'draft': True, 'name': 'Aimee Native 0.3.4', 'body': 'reviewed notes'}
+        self.assertEqual(publisher.choose_release([draft], 'v0.3.4', 'commit', 'reviewed notes'), draft)
+        self.assertIsNone(publisher.choose_release([draft], 'v0.3.4', 'other', 'reviewed notes'))
+        self.assertIsNone(publisher.choose_release([draft], 'v0.3.4', 'commit', 'other notes'))
+        with self.assertRaisesRegex(ValueError, 'ambiguous'):
+            publisher.choose_release([draft, dict(draft, id=2)], 'v0.3.4', 'commit', 'reviewed notes')
+
     def test_export_is_immutable_repeatable_and_excludes_operator_files(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
