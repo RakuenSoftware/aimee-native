@@ -17,3 +17,6 @@ Repository = "https://github.com/RakuenSoftware/aimee-native"
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["aimee_vllm*"]
+
+[project.entry-points."vllm.platform_plugins"]
+aimee_cpu_native_platform = "aimee_vllm.cpu_plugin:register"

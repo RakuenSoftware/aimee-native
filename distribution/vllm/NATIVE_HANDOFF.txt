@@ -1,0 +1,61 @@
+PRIVATE RESEARCH — NOT FOR PUBLICATION
+
+Selected first architecture: a plugin-owned loop around completed inference
+segments, with an Aimee-owned semantic and execution boundary.
+
+The ordinary caller supplies its task. An enrolled integration must derive actor
+and session from authenticated context; this experiment explicitly uses synthetic
+identity and a private owner-controlled UNIX socket.
+
+1. Plugin asks Aimee to open a request-bound task. Aimee selects the resolved
+   publication and opaque revision. Plugin neither selects capabilities nor
+   compares revision strings.
+2. Plugin prepares/activates that publication through existing native K/V
+   machinery, then requests an inference segment with the ordinary task cue.
+3. Plugin holds the completed contribution. Only a normal stop is eligible for
+   owner intake. Token-limit termination and cancellation cannot trigger tools.
+4. Aimee receives exact text, actor/session/request/task binding, contribution
+   ordinal, publication revision and SHA256. Text is proposed untrusted content.
+5. Aimee performs interpretation, private tool/resource binding, authorization,
+   canonical dispatch and observed-effect handling. The plugin performs none of
+   those decisions. The current experimental owner uses real core interpretation
+   binaries and explicit synthetic fixture effects; full enrolled governance and
+   physical dispatcher integration remain unqualified.
+6. Aimee responds with resume + resolved next publication, or a terminal state
+   complete / clarify / refusal. Terminal output is owner-selected. The plugin
+   checks the reply binding before using it. A fresh inference segment consumes
+   the updated native evidence. It is not a demonstrated mid-decode pause/resume.
+7. The bounded loop ends with runtime withdrawal/drain and owner task closure.
+   Failed or interrupted cleanup prevents reuse until supervised recovery.
+
+Current implementation: distribution/vllm/aimee_vllm/native_handoff.py in this repository. The companion
+private research evidence contains the exact driver and observed results.
+It is a plugin-package orchestration component invoked by a private harness;
+it is not installed as an automatic ordinary HTTP serving interception layer.
+The CPU test has one serialized publication lane. Multi-user concurrent serving
+requires per-request publication selection/pins rather than this global lane.
+
+Why completion boundary first:
+- Uses ordinary stock-model output and existing inference completion semantics.
+- Needs no learned hidden-state classifier or new model weights.
+- Allows withholding intermediate tool needs from the ordinary caller.
+- Reuses established native input instead of adding tool schemas to the task cue.
+
+Tradeoffs and later avenues:
+- A completed segment can contain several needs or an assessment mixed with a
+  request. Aimee decides how to interpret it; plugin transport does not fix this.
+- A deliberate model yield could reduce waiting, but stock checkpoint behavior
+  must be demonstrated before treating a delimiter as a reliable control signal.
+- Intermediate tensor/hidden-state signals could be investigated separately;
+  established native memory injection does not by itself prove such a signal.
+- Initial and updated publications require private preparation; owner semantic
+  inference also consumes tokens. No latency/compute/context multiplier claim.
+- Aimee must deduplicate effects durably by contribution/action identity. A
+  transport deadline never proves a tool did not run; this prototype fails closed
+  without retrying uncertain execution.
+- Production authentication, source revalidation, tool authorization, expiry,
+  durable action replay and cancellation of in-flight effects belong to the
+  existing Aimee owner. The private socket is not a substitute for that channel.
+
+Privacy: no Git operations, publication, PRs or external messages are authorized
+for this work. Existing archived evidence remains unchanged.
